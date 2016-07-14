@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007-2016 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2016 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ public abstract class Preference {
 
 	/**
 	 * Get the preference key.
-	 * 
+	 *
 	 * @return The preference key.
 	 */
 	public final String key() {
