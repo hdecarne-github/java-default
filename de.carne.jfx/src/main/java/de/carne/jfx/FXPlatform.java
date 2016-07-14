@@ -50,7 +50,7 @@ public final class FXPlatform {
 	 */
 	public static Collection<Image> stageIcons(Collection<Image> icons) {
 		if (Platform.IS_OS_X) {
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 		return icons;
 	}
