@@ -46,7 +46,6 @@ public final class ObjectHolder<T> {
 	 * <p>
 	 * The resource object will be created the first time this function is
 	 * invoked.
-	 * </p>
 	 * 
 	 * @return The resource object.
 	 */

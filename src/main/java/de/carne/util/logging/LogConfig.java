@@ -26,7 +26,6 @@ import java.util.logging.LogManager;
  * <p>
  * For proper initialization of the logging setup set the
  * "java.util.logging.config.class" property to this class' name.
- * </p>
  */
 public final class LogConfig {
 
@@ -62,7 +61,6 @@ public final class LogConfig {
 	 * property named after this package for a configuration file name. If the
 	 * property is not set the default configuration file name
 	 * ({@link #CONFIG_DEFAULT}) is used.
-	 * </p>
 	 */
 	public LogConfig() {
 		applyConfig(System.getProperty(THIS_PACKAGE, CONFIG_DEFAULT));
@@ -74,7 +72,6 @@ public final class LogConfig {
 	 * The submitted configuration name has to denote an existing file or a
 	 * resource. First the method tries to read the corresponding file. If this
 	 * fails it tries to read a resource with the submitted name.
-	 * </p>
 	 *
 	 * @param config The configuration file name or the resource name to read
 	 *        the configuration from.

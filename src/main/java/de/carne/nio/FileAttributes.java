@@ -30,6 +30,10 @@ import java.util.Set;
  */
 public final class FileAttributes {
 
+	private FileAttributes() {
+		// Make sure this class is not instantiated from outside
+	}
+
 	private static final String POSIX = "posix";
 
 	/**
@@ -38,7 +42,6 @@ public final class FileAttributes {
 	 * Based upon the corresponding file system's capabilities this function
 	 * determines the best suiting file attributes for only letting the current
 	 * user access the directory.
-	 * </p>
 	 *
 	 * @param directoryPath The directory path to get the default file
 	 *        attributes for.
@@ -63,7 +66,6 @@ public final class FileAttributes {
 	 * Based upon the corresponding file system's capabilities this function
 	 * determines the best suiting file attributes for only letting the current
 	 * user access the file.
-	 * </p>
 	 *
 	 * @param filePath The file path to get the default file attributes for.
 	 * @return The determined default file attributes.

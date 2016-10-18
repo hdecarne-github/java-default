@@ -33,7 +33,6 @@ public final class Log {
 	 * Construct {@code Log}.
 	 * <p>
 	 * The logger name is automatically derived from the calling class.
-	 * </p>
 	 */
 	public Log() {
 		this(getCallerClassName());
@@ -43,7 +42,6 @@ public final class Log {
 	 * Construct {@code Log}.
 	 * <p>
 	 * The logger name is automatically derived from the calling class.
-	 * </p>
 	 *
 	 * @param bundle The {@code ResourceBundle} to use for message localization.
 	 */

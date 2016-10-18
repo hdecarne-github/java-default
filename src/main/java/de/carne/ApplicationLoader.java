@@ -45,7 +45,6 @@ import java.util.jar.JarFile;
  * {@link ClassLoader} and {@link URLStreamHandlerFactory} making 3rd party jars
  * which are included in the application jar available to the application during
  * runtime.
- * </p>
  * <p>
  * This class retrieves the actual application information from a file resource
  * named ApplicationLoader which has be to be located in the application root
@@ -53,7 +52,6 @@ import java.util.jar.JarFile;
  * {@link Main} class to be loaded and executed. All remaining lines are
  * considered as system properties that are set prior to loading and invoking
  * the main class.
- * </p>
  */
 public final class ApplicationLoader extends URLClassLoader implements URLStreamHandlerFactory {
 
@@ -109,7 +107,6 @@ public final class ApplicationLoader extends URLClassLoader implements URLStream
 	 * By using this function the application can provide resource access via
 	 * one of the JDK's standard {@link URLStreamHandler} classes for code that
 	 * cannot handle our custom {@link URLStreamHandler}.
-	 * </p>
 	 *
 	 * @param u The {@linkplain URL} to get the direct {@linkplain URL}.
 	 * @return The native resource {@linkplain URL}.

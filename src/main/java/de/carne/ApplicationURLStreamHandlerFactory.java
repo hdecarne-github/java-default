@@ -28,7 +28,6 @@ import java.util.HashMap;
  * This {@code URLStreamHandlerFactory} acts as a multiplexer for an arbitrary
  * number of custom {@code URLStreamHandlerFactory} instances registered via the
  * {@link #createURLStreamHandler(String)} function.
- * </p>
  */
 public final class ApplicationURLStreamHandlerFactory implements URLStreamHandlerFactory {
 

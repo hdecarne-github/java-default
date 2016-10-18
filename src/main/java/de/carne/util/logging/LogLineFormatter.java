@@ -36,7 +36,7 @@ public class LogLineFormatter extends Formatter {
 
 	@Override
 	public String format(LogRecord record) {
-		String message;
+		String message = "...";
 
 		try (StringWriter sw = new StringWriter(STRING_BUFFER_SIZE); PrintWriter pw = new PrintWriter(sw)) {
 			pw.print(DATE_FORMAT.format(new Date(record.getMillis())));
@@ -59,7 +59,6 @@ public class LogLineFormatter extends Formatter {
 		} catch (Exception e) {
 			System.err.println("An error occurred during log message formatting");
 			e.printStackTrace();
-			message = "...";
 		}
 		return message;
 	}
