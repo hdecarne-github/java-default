@@ -17,6 +17,8 @@
 package de.carne.util.validation;
 
 import java.nio.file.Path;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.carne.util.MessageFormatter;
 
@@ -61,6 +63,35 @@ public final class InputValidator {
 			throw new ValidationException(message.format());
 		}
 		return input;
+	}
+
+	/**
+	 * Make sure input matches a given {@link Pattern}.
+	 *
+	 * @param input The input to invalidated.
+	 * @param pattern The pattern to check the input against.
+	 * @param message The exception message to use if the input is invalid.
+	 * @return The pattern's capturing groups.
+	 * @throws ValidationException if the input is invalid.
+	 */
+	public static String[] matches(String input, Pattern pattern, MessageFormatter message) throws ValidationException {
+		assert input != null;
+		assert pattern != null;
+		assert message != null;
+
+		Matcher matcher = pattern.matcher(input);
+
+		if (!matcher.matches()) {
+			throw new ValidationException(message.format(input));
+		}
+
+		int groupCount = matcher.groupCount();
+		String[] groups = new String[groupCount];
+
+		for (int groupIndex = 0; groupIndex < groupCount; groupIndex++) {
+			groups[groupIndex] = matcher.group(groupIndex + 1);
+		}
+		return groups;
 	}
 
 }

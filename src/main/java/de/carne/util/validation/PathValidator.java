@@ -73,4 +73,22 @@ public final class PathValidator {
 		return inputPath;
 	}
 
+	/**
+	 * Make sure input is a readable directory.
+	 *
+	 * @param input The input to validate.
+	 * @param message The exception message to use if the input is invalid.
+	 * @return The validated {@link Path} object.
+	 * @throws ValidationException if the input is invalid.
+	 * @see Files#isReadable(Path)
+	 */
+	public static Path isReadableDirectory(String input, MessageFormatter message) throws ValidationException {
+		Path inputPath = isPath(input, message);
+
+		if (!Files.isDirectory(inputPath)) {
+			throw new ValidationException(message.format(input));
+		}
+		return inputPath;
+	}
+
 }
