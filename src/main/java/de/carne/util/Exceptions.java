@@ -34,6 +34,17 @@ public final class Exceptions {
 	private static final Log LOG = new Log();
 
 	/**
+	 * Make an {@link Exception} unchecked by wrapping it into a
+	 * {@link RuntimeException}.
+	 *
+	 * @param exception The exception to make unchecked.
+	 * @return The created runtime exception.
+	 */
+	public static RuntimeException toRuntime(Throwable exception) {
+		return new RuntimeException(exception.getMessage(), exception);
+	}
+
+	/**
 	 * Ignore an {@link Exception}.
 	 * <p>
 	 * This function simply logs the exception using the trace log level.
