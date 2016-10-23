@@ -112,10 +112,12 @@ public final class PropertiesHelper {
 	private static int toInt(String property, String key, int def) {
 		int propertyValue = def;
 
-		try {
-			propertyValue = Integer.valueOf(property).intValue();
-		} catch (NumberFormatException e) {
-			LOG.warning(e, "Invalid integer property value ''{0}'' = ''{1}''; using default value", key, property);
+		if (property != null) {
+			try {
+				propertyValue = Integer.valueOf(property).intValue();
+			} catch (NumberFormatException e) {
+				LOG.warning(e, "Invalid integer property value ''{0}''=''{1}''; using default value", key, property);
+			}
 		}
 		return propertyValue;
 	}
