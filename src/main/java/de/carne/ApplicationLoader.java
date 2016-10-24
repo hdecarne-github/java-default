@@ -234,6 +234,7 @@ public final class ApplicationLoader extends URLClassLoader implements URLStream
 		int status;
 
 		try (ApplicationLoader classLoader = new ApplicationLoader()) {
+			ApplicationURLStreamHandlerFactory.registerURLStreamHandlerFactory(RESOURCE_PROTOCOL, classLoader);
 			Thread.currentThread().setContextClassLoader(classLoader);
 			if (DEBUG) {
 				logOut("Invoking application...");
