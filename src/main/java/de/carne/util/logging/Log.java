@@ -52,20 +52,20 @@ public final class Log {
 	/**
 	 * Construct {@code Log}.
 	 *
-	 * @param clazz The {@code Class} defining the logger name.
+	 * @param cls The {@code Class} defining the logger name.
 	 */
-	public Log(Class<?> clazz) {
-		this(clazz.getName());
+	public Log(Class<?> cls) {
+		this(cls.getName());
 	}
 
 	/**
 	 * Construct {@code Log}.
 	 *
-	 * @param clazz The {@code Class} defining the logger name.
+	 * @param cls The {@code Class} defining the logger name.
 	 * @param bundle The {@code ResourceBundle} to use for message localization.
 	 */
-	public Log(Class<?> clazz, ResourceBundle bundle) {
-		this(clazz.getName(), bundle);
+	public Log(Class<?> cls, ResourceBundle bundle) {
+		this(cls.getName(), bundle);
 	}
 
 	/**
@@ -87,6 +87,15 @@ public final class Log {
 		assert name != null;
 
 		this.logger = Logger.getLogger(name, (bundle != null ? bundle.getBaseBundleName() : null));
+	}
+
+	/**
+	 * Get the underlying JDK {@link Logger} instance.
+	 *
+	 * @return The underlying JDK {@link Logger} instance.
+	 */
+	public Logger getLogger() {
+		return this.logger;
 	}
 
 	/**

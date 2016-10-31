@@ -38,18 +38,18 @@ public final class PropertiesHelper {
 	 * package name of the submitted class with the submitted key.
 	 * </p>
 	 *
-	 * @param clazz The class to use for system property key creation.
+	 * @param cls The class to use for system property key creation.
 	 * @param key The key to use for system property key creation.
 	 * @param def The default value to use in case the system property is
 	 *        undefined.
 	 * @return The system property value or the submitted default value if the
 	 *         system property is undefined.
 	 */
-	public static String get(Class<?> clazz, String key, String def) {
-		assert clazz != null;
+	public static String get(Class<?> cls, String key, String def) {
+		assert cls != null;
 		assert key != null;
 
-		return System.getProperty(systemPropertyKey(clazz, key), def);
+		return System.getProperty(systemPropertyKey(cls, key), def);
 	}
 
 	/**
@@ -59,18 +59,18 @@ public final class PropertiesHelper {
 	 * package name of the submitted class with the submitted key.
 	 * </p>
 	 *
-	 * @param clazz The class to use for system property key creation.
+	 * @param cls The class to use for system property key creation.
 	 * @param key The key to use for system property key creation.
 	 * @param def The default value to use in case the system property is
 	 *        undefined.
 	 * @return The system property value or the submitted default value if the
 	 *         system property is undefined.
 	 */
-	public static int getInt(Class<?> clazz, String key, int def) {
-		assert clazz != null;
+	public static int getInt(Class<?> cls, String key, int def) {
+		assert cls != null;
 		assert key != null;
 
-		return getInt(System.getProperties(), systemPropertyKey(clazz, key), def);
+		return getInt(System.getProperties(), systemPropertyKey(cls, key), def);
 	}
 
 	/**
@@ -105,8 +105,8 @@ public final class PropertiesHelper {
 		return toInt(properties.getProperty(key), key, def);
 	}
 
-	private static String systemPropertyKey(Class<?> clazz, String key) {
-		return clazz.getPackage().getName() + key;
+	private static String systemPropertyKey(Class<?> cls, String key) {
+		return cls.getPackage().getName() + key;
 	}
 
 	private static int toInt(String property, String key, int def) {

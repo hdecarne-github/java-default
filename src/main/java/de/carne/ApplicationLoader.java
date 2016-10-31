@@ -127,18 +127,18 @@ public final class ApplicationLoader extends URLClassLoader implements URLStream
 
 	@Override
 	public Class<?> loadClass(String name) throws ClassNotFoundException {
-		Class<?> clazz = null;
+		Class<?> cls = null;
 
 		for (String systemClassPrefix : SYSTEM_CLASS_PREFIXES) {
 			if (name.startsWith(systemClassPrefix)) {
-				clazz = this.systemClassLoader.loadClass(name);
+				cls = this.systemClassLoader.loadClass(name);
 				break;
 			}
 		}
-		if (clazz == null) {
-			clazz = super.loadClass(name);
+		if (cls == null) {
+			cls = super.loadClass(name);
 		}
-		return clazz;
+		return cls;
 	}
 
 	// Application Jar handling code
