@@ -30,13 +30,12 @@ import java.util.logging.Logger;
 import de.carne.util.PropertiesHelper;
 
 /**
- * This class is used to collect log messages in a selective manner (for example
- * to display it to the user after a long running task which can collect several
- * warnings/message or the like).
+ * This class is used to monitor and collect log messages in a selective manner
+ * (for example to display them to the user after a long running task).
  */
-public class LogBuffer extends Handler implements AutoCloseable {
+public class LogMonitor extends Handler implements AutoCloseable {
 
-	private final static int BUFFER_LIMIT = PropertiesHelper.getInt(LogBuffer.class, ".limit", 100);
+	private final static int BUFFER_LIMIT = PropertiesHelper.getInt(LogMonitor.class, ".limit", 100);
 
 	private final Collection<Logger> loggers = new ArrayList<>();
 
@@ -47,18 +46,18 @@ public class LogBuffer extends Handler implements AutoCloseable {
 	private final LogLevel level;
 
 	/**
-	 * Construct {@code LogBuffer}.
+	 * Construct {@code LogMonitor}.
 	 *
-	 * @param level The log level to use for filtering.
+	 * @param level The log level to use for monitoring.
 	 */
-	public LogBuffer(LogLevel level) {
+	public LogMonitor(LogLevel level) {
 		this.level = level;
 	}
 
 	/**
-	 * Add a {@link Log} to the buffer for monitoring.
+	 * Include a {@link Log} in monitoring.
 	 *
-	 * @param log The log to add.
+	 * @param log The log to monitor.
 	 */
 	public void includeLog(Log log) {
 		assert log != null;
@@ -67,10 +66,9 @@ public class LogBuffer extends Handler implements AutoCloseable {
 	}
 
 	/**
-	 * Add all loggers for specific {@link Package} to the buffer for
-	 * monitoring.
+	 * Include the loggers for a specific {@link Package} in monitoring.
 	 *
-	 * @param pkg The package to add.
+	 * @param pkg The package to monitor.
 	 */
 	public void includePackage(Package pkg) {
 		assert pkg != null;
@@ -79,9 +77,9 @@ public class LogBuffer extends Handler implements AutoCloseable {
 	}
 
 	/**
-	 * Add a {@link Logger} to the buffer for monitoring.
+	 * Include a {@link Logger} in monitoring.
 	 *
-	 * @param logger The logger to add.
+	 * @param logger The logger to monitor.
 	 */
 	public synchronized void includeLogger(Logger logger) {
 		assert logger != null;
@@ -91,9 +89,9 @@ public class LogBuffer extends Handler implements AutoCloseable {
 	}
 
 	/**
-	 * Add a {@link Thread} to the buffer for monitoring.
+	 * Include a {@link Thread} in monitoring.
 	 *
-	 * @param thread The thread to add.
+	 * @param thread The thread to monitor.
 	 * @see #excludeThread(Thread)
 	 */
 	public synchronized void includeThread(Thread thread) {
@@ -103,7 +101,7 @@ public class LogBuffer extends Handler implements AutoCloseable {
 	}
 
 	/**
-	 * Remove a previously added {@link Thread} from the buffer.
+	 * Exclude a {@link Thread} from monitoring.
 	 *
 	 * @param thread The thread to remove.
 	 * @see #includeThread(Thread)
@@ -115,19 +113,20 @@ public class LogBuffer extends Handler implements AutoCloseable {
 	}
 
 	/**
-	 * Check whether this buffer is empty and does not contain any records.
+	 * Check whether this monitor's buffer is empty and does not contain any
+	 * records.
 	 *
-	 * @return {@code true} if this buffer is empty and does not contain any
-	 *         records.
+	 * @return {@code true} if this monitor's buffer is empty and does not
+	 *         contain any records.
 	 */
 	public synchronized boolean isEmpty() {
 		return this.buffer.isEmpty();
 	}
 
 	/**
-	 * Get the {@link LogRecord} collected by this buffer.
+	 * Get the {@link LogRecord}s collected by this monitor.
 	 *
-	 * @return The {@link LogRecord} collected by this buffer.
+	 * @return The {@link LogRecord}s collected by this monitor.
 	 */
 	public synchronized Collection<LogRecord> getRecords() {
 		return Collections.unmodifiableCollection(this.buffer);

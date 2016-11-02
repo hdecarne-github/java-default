@@ -175,7 +175,7 @@ public final class ApplicationLoader extends URLClassLoader implements URLStream
 	/**
 	 * Get the {@code JarFile} this application has been loaded from.
 	 *
-	 * @return The {@code JarFile} or {@code null} if the application was not
+	 * @return The {@code JarFile}, or {@code null} if the application was not
 	 *         loaded from a release Jar.
 	 * @throws IOException if an I/O error occurs while opening the Jar.
 	 */

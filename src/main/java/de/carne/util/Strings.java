@@ -75,7 +75,8 @@ public final class Strings {
 	 * value.
 	 *
 	 * @param s The string to trim.
-	 * @return The trimmed string or {@code null} if {@code null} was submitted.
+	 * @return The trimmed string, or {@code null} if {@code null} was
+	 *         submitted.
 	 */
 	public static String safeTrim(String s) {
 		return (s != null ? s.trim() : s);

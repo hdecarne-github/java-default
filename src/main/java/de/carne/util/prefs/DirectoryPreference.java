@@ -47,7 +47,7 @@ public class DirectoryPreference extends Preference<Path> {
 	/**
 	 * Get the preference value as a {@link File} object.
 	 *
-	 * @return The found preference value or {@code null} if the preference is
+	 * @return The found preference value, or {@code null} if the preference is
 	 *         undefined.
 	 */
 	public File getValueAsFile() {

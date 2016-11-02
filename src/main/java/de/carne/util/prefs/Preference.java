@@ -65,7 +65,7 @@ public abstract class Preference<T> {
 	/**
 	 * Get the preference value.
 	 *
-	 * @return The found preference value or {@code null} if the preference is
+	 * @return The found preference value, or {@code null} if the preference is
 	 *         undefined.
 	 */
 	public T getValue() {
