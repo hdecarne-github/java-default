@@ -20,6 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -49,6 +50,19 @@ public final class IOHelper {
 	 * @throws IOException if an I/O error occurs while reading data.
 	 */
 	public static byte[] readBytes(InputStream in) throws IOException {
+		return readBytes(in, Integer.MAX_VALUE);
+	}
+
+	/**
+	 * Read up to a maximum number of bytes from an {@link InputStream}.
+	 *
+	 * @param in The input stream to read from.
+	 * @param limit The maximum number of bytes to read.
+	 * @return The read bytes.
+	 * @throws InterruptedIOException if the read limit has been reached.
+	 * @throws IOException if an I/O error occurs while reading data.
+	 */
+	public static byte[] readBytes(InputStream in, int limit) throws IOException {
 		assert in != null;
 
 		byte[] bytes;
