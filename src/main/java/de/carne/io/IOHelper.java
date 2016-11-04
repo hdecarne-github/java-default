@@ -67,9 +67,10 @@ public final class IOHelper {
 
 		byte[] bytes;
 
-		try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+		try (LimitOutputStream<ByteArrayOutputStream> out = new LimitOutputStream<>(new ByteArrayOutputStream(),
+				limit)) {
 			copyStream(in, out);
-			bytes = out.toByteArray();
+			bytes = out.outputStream().toByteArray();
 		}
 		return bytes;
 	}
