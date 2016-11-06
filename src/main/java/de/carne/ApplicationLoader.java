@@ -53,7 +53,7 @@ import java.util.jar.JarFile;
  * considered as system properties that are set prior to loading and invoking
  * the main class.
  */
-public final class ApplicationLoader extends URLClassLoader implements URLStreamHandlerFactory {
+public final class ApplicationLoader extends URLClassLoader {
 
 	private static final boolean DEBUG = System.getProperty(ApplicationLoader.class.getName() + ".DEBUG") != null;
 
@@ -61,21 +61,28 @@ public final class ApplicationLoader extends URLClassLoader implements URLStream
 
 	private static final String RESOURCE_PROTOCOL = "resource";
 
-	@Override
-	public URLStreamHandler createURLStreamHandler(String protocol) {
-		URLStreamHandler handler = null;
+	static {
+		ApplicationURLStreamHandlerFactory.registerURLStreamHandlerFactory(RESOURCE_PROTOCOL,
+				new URLStreamHandlerFactory() {
 
-		if (RESOURCE_PROTOCOL.equals(protocol)) {
-			handler = new URLStreamHandler() {
+					@Override
+					public URLStreamHandler createURLStreamHandler(String protocol) {
+						URLStreamHandler handler = null;
 
-				@Override
-				protected URLConnection openConnection(URL u) throws IOException {
-					return ApplicationLoader.openResourceConnection(u);
-				}
+						if (RESOURCE_PROTOCOL.equals(protocol)) {
+							handler = new URLStreamHandler() {
 
-			};
-		}
-		return handler;
+								@Override
+								protected URLConnection openConnection(URL u) throws IOException {
+									return ApplicationLoader.openResourceConnection(u);
+								}
+
+							};
+						}
+						return handler;
+					}
+
+				});
 	}
 
 	static URLConnection openResourceConnection(URL u) {
@@ -121,7 +128,7 @@ public final class ApplicationLoader extends URLClassLoader implements URLStream
 	// Prefix of class names that need to be loaded via system classloader (e.g.
 	// log handlers).
 	private static String[] SYSTEM_CLASS_PREFIXES = new String[] { ApplicationLoader.class.getName(),
-			"de.carne.util.logging" };
+			Main.class.getName(), "de.carne.util.logging" };
 
 	private final ClassLoader systemClassLoader = getSystemClassLoader();
 
@@ -234,7 +241,6 @@ public final class ApplicationLoader extends URLClassLoader implements URLStream
 		int status;
 
 		try (ApplicationLoader classLoader = new ApplicationLoader()) {
-			ApplicationURLStreamHandlerFactory.registerURLStreamHandlerFactory(RESOURCE_PROTOCOL, classLoader);
 			Thread.currentThread().setContextClassLoader(classLoader);
 			if (DEBUG) {
 				logOut("Invoking application...");
