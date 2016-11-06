@@ -36,11 +36,11 @@ import de.carne.util.PropertiesHelper;
  */
 public final class IOHelper {
 
-	private static final int DEFAULT_BUFFER_SIZE = PropertiesHelper.getInt(IOHelper.class, ".bufferSize", 4096);
-
 	private IOHelper() {
 		// Make sure this class is not instantiated from outside
 	}
+
+	private static final int DEFAULT_BUFFER_SIZE = PropertiesHelper.getInt(IOHelper.class, ".bufferSize", 4096);
 
 	/**
 	 * Read all bytes from an {@link InputStream}.

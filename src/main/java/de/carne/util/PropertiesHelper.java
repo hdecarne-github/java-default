@@ -25,11 +25,11 @@ import de.carne.util.logging.Log;
  */
 public final class PropertiesHelper {
 
-	private static final Log LOG = new Log();
-
 	private PropertiesHelper() {
 		// Make sure this class is not instantiated from outside
 	}
+
+	private static final Log LOG = new Log();
 
 	/**
 	 * Get a {@link String} system property.

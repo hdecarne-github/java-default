@@ -31,14 +31,14 @@ import java.util.HashMap;
  */
 public final class ApplicationURLStreamHandlerFactory implements URLStreamHandlerFactory {
 
+	private ApplicationURLStreamHandlerFactory() {
+		// Prevent this class from being instantiated from outside
+	}
+
 	private static final HashMap<String, URLStreamHandlerFactory> URL_STREAM_HANDLER_FACTORY_MAP = new HashMap<>();
 
 	static {
 		URL.setURLStreamHandlerFactory(new ApplicationURLStreamHandlerFactory());
-	}
-
-	private ApplicationURLStreamHandlerFactory() {
-		// Prevent this class from being instantiated from outside
 	}
 
 	/**
