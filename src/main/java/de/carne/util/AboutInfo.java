@@ -44,14 +44,14 @@ public final class AboutInfo {
 	public static final String PROJECT_NAME;
 
 	/**
-	 * The build version.
+	 * The project version.
 	 */
-	public static final String BUILD_VERSION;
+	public static final String PROJECT_VERSION;
 
 	/**
-	 * The build date.
+	 * The project build.
 	 */
-	public static final String BUILD_DATE;
+	public static final String PROJECT_BUILD;
 
 	static {
 		Attributes attributes = null;
@@ -65,8 +65,8 @@ public final class AboutInfo {
 		}
 		PROJECT_ID = getAttributeValue(attributes, "X-Version-ProjectId");
 		PROJECT_NAME = getAttributeValue(attributes, "X-Version-ProjectName");
-		BUILD_VERSION = getAttributeValue(attributes, "X-Version-ProjectVersion");
-		BUILD_DATE = getAttributeValue(attributes, "X-Version-BuildDate");
+		PROJECT_VERSION = getAttributeValue(attributes, "X-Version-ProjectVersion");
+		PROJECT_BUILD = getAttributeValue(attributes, "X-Version-ProjectBuild");
 	}
 
 	private static String getAttributeValue(Attributes attributes, String name) {
