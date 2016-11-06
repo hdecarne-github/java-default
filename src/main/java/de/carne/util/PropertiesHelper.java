@@ -16,6 +16,9 @@
  */
 package de.carne.util;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import de.carne.util.logging.Log;
@@ -30,6 +33,51 @@ public final class PropertiesHelper {
 	}
 
 	private static final Log LOG = new Log();
+
+	/**
+	 * Initialize a {@link Properties} object for a specific class.
+	 * <p>
+	 * The function is identical to {@link #load(Class)} except for that it
+	 * generates a {@link RuntimeException} if the load operation fails.
+	 *
+	 * @param cls The class to load the properties for.
+	 * @return The loaded properties.
+	 */
+	public static Properties init(Class<?> cls) {
+		Properties properties;
+
+		try {
+			properties = load(cls);
+		} catch (IOException e) {
+			throw Exceptions.toRuntime(e);
+		}
+		return properties;
+	}
+
+	/**
+	 * Load a {@link Properties} object for a specific class.
+	 * <p>
+	 * This function assumes that the properties file is a resource named as the
+	 * submitted class with the extension .properties.
+	 *
+	 * @param cls The class to load the properties for.
+	 * @return The loaded properties.
+	 * @throws IOException if an I/O error occurs during loading.
+	 */
+	public static Properties load(Class<?> cls) throws IOException {
+		assert cls != null;
+
+		Properties properties;
+
+		try (InputStream stream = cls.getResourceAsStream(cls.getSimpleName() + ".properties")) {
+			if (stream == null) {
+				throw new FileNotFoundException("Resource not found for class: " + cls.getName());
+			}
+			properties = new Properties();
+			properties.load(stream);
+		}
+		return properties;
+	}
 
 	/**
 	 * Get a {@link String} system property.
