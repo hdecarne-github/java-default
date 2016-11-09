@@ -61,7 +61,7 @@ public final class AboutInfo {
 				attributes = codeJar.getManifest().getMainAttributes();
 			}
 		} catch (Exception e) {
-			Exceptions.ignore(e);
+			Exceptions.warn(e);
 		}
 		PROJECT_ID = getAttributeValue(attributes, "X-Version-ProjectId");
 		PROJECT_NAME = getAttributeValue(attributes, "X-Version-ProjectName");

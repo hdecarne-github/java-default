@@ -58,6 +58,19 @@ public final class Exceptions {
 	}
 
 	/**
+	 * Warn about an {@link Exception} and discard it.
+	 * <p>
+	 * This function simply logs the exception using the warning log level.
+	 *
+	 * @param exception The exception to warn about (may be {@code null}).
+	 */
+	public static void warn(Throwable exception) {
+		if (exception != null) {
+			LOG.trace(exception, "Ignoring exception {0}", exception.getClass());
+		}
+	}
+
+	/**
 	 * Get an {@link Exception}'s stack trace.
 	 *
 	 * @param exception The exception to get the stack trace for.
@@ -73,7 +86,7 @@ public final class Exceptions {
 			pw.flush();
 			stackTrace = sw.toString();
 		} catch (IOException e) {
-			ignore(e);
+			warn(e);
 		}
 		return stackTrace;
 	}
