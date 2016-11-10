@@ -62,7 +62,7 @@ public class DirectoryPreference extends Preference<Path> {
 	 * @return The found preference value.
 	 */
 	public File getValueAsFile(File defaultValue) {
-		Path value = getValue();
+		Path value = get();
 
 		return (value != null ? value.toFile() : defaultValue);
 	}
@@ -73,7 +73,7 @@ public class DirectoryPreference extends Preference<Path> {
 	 * @param value The value to set. If {@code null} the preference is removed.
 	 */
 	public void putValueFromFile(File value) {
-		putValue(value != null ? value.toPath() : null);
+		put(value != null ? value.toPath() : null);
 	}
 
 	@Override

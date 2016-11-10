@@ -19,7 +19,7 @@ package de.carne.util.prefs;
 import java.util.prefs.Preferences;
 
 /**
- * Generic base class for the utility classes used for preference access.
+ * Generic base class for preference access.
  *
  * @param <T> The preference type.
  */
@@ -49,7 +49,7 @@ public abstract class Preference<T> {
 	 *
 	 * @return The {@code Preferences} object storing this preference.
 	 */
-	public Preferences getPreferences() {
+	public Preferences preferences() {
 		return this.preferences;
 	}
 
@@ -58,7 +58,7 @@ public abstract class Preference<T> {
 	 *
 	 * @return The preference key.
 	 */
-	public String getKey() {
+	public String key() {
 		return this.key;
 	}
 
@@ -68,8 +68,8 @@ public abstract class Preference<T> {
 	 * @return The found preference value, or {@code null} if the preference is
 	 *         undefined.
 	 */
-	public T getValue() {
-		return getValue(null);
+	public T get() {
+		return get(null);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public abstract class Preference<T> {
 	 *        preference is undefined.
 	 * @return The found preference value.
 	 */
-	public T getValue(T defaultValue) {
+	public T get(T defaultValue) {
 		String valueString = this.preferences.get(this.key, null);
 
 		return (valueString != null ? toValue(valueString) : defaultValue);
@@ -90,12 +90,19 @@ public abstract class Preference<T> {
 	 *
 	 * @param value The value to set. If {@code null} the preference is removed.
 	 */
-	public void putValue(T value) {
+	public void put(T value) {
 		if (value != null) {
 			this.preferences.put(this.key, fromValue(value));
 		} else {
-			this.preferences.remove(this.key);
+			remove();
 		}
+	}
+
+	/**
+	 * Remove the preference value.
+	 */
+	public void remove() {
+		this.preferences.remove(this.key);
 	}
 
 	/**
@@ -116,7 +123,7 @@ public abstract class Preference<T> {
 
 	@Override
 	public String toString() {
-		return this.key;
+		return this.key + " = " + get();
 	}
 
 }
