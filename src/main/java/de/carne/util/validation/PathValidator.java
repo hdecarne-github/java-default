@@ -56,6 +56,30 @@ public final class PathValidator {
 	}
 
 	/**
+	 * Make sure input is a valid relative path.
+	 *
+	 * @param basePath The base path to validate the input against.
+	 * @param input The input to validate.
+	 * @param message The exception message to use if the input is invalid.
+	 * @return The validated {@link Path} object.
+	 * @throws ValidationException if the input is invalid.
+	 */
+	public static Path isPath(Path basePath, String input, MessageFormatter message) throws ValidationException {
+		assert basePath != null;
+		assert input != null;
+		assert message != null;
+
+		Path path;
+
+		try {
+			path = basePath.resolve(input);
+		} catch (InvalidPathException e) {
+			throw new ValidationException(message.format(input));
+		}
+		return path;
+	}
+
+	/**
 	 * Make sure input is a readable file.
 	 *
 	 * @param input The input to validate.
@@ -86,6 +110,24 @@ public final class PathValidator {
 		Path inputPath = isPath(input, message);
 
 		if (!Files.isDirectory(inputPath)) {
+			throw new ValidationException(message.format(input));
+		}
+		return inputPath;
+	}
+
+	/**
+	 * Make sure input is a writable directory.
+	 *
+	 * @param input The input to validate.
+	 * @param message The exception message to use if the input is invalid.
+	 * @return The validated {@link Path} object.
+	 * @throws ValidationException if the input is invalid.
+	 * @see Files#isWritable(Path)
+	 */
+	public static Path isWritableDirectory(String input, MessageFormatter message) throws ValidationException {
+		Path inputPath = isPath(input, message);
+
+		if (!Files.isWritable(inputPath)) {
 			throw new ValidationException(message.format(input));
 		}
 		return inputPath;

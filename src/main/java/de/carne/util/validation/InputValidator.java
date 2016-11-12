@@ -32,6 +32,22 @@ public final class InputValidator {
 	}
 
 	/**
+	 * Make sure a condition is met.
+	 *
+	 * @param condition The condition to check.
+	 * @param message The exception message to use if the condition is
+	 *        {@code false}.
+	 * @throws ValidationException if the condition is {@code false}.
+	 */
+	public static void isTrue(boolean condition, MessageFormatter message) throws ValidationException {
+		assert message != null;
+
+		if (!condition) {
+			throw new ValidationException(message.format());
+		}
+	}
+
+	/**
 	 * Make sure input is not {@code null}.
 	 *
 	 * @param input The input to validate.
