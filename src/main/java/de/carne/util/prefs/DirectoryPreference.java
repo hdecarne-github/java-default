@@ -24,7 +24,7 @@ import java.nio.file.Paths;
 import java.util.prefs.Preferences;
 
 /**
- * Utility class providing access to a directory preference.
+ * Utility class providing access to a {@link Path} preference.
  */
 public class DirectoryPreference extends Preference<Path> {
 

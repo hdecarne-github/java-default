@@ -19,18 +19,18 @@ package de.carne.util.prefs;
 import java.util.prefs.Preferences;
 
 /**
- * Utility class providing access to a {@link Boolean} preference.
+ * Utility class providing access to a {@link Integer} preference.
  */
-public class BooleanPreference extends Preference<Boolean> {
+public class IntPreference extends Preference<Integer> {
 
 	/**
-	 * Construct {@code BooleanPreference}.
+	 * Construct {@code IntPreference}.
 	 *
 	 * @param preferences The {@link Preferences} object storing this
 	 *        preference.
 	 * @param key The preference key.
 	 */
-	public BooleanPreference(Preferences preferences, String key) {
+	public IntPreference(Preferences preferences, String key) {
 		super(preferences, key);
 	}
 
@@ -41,8 +41,8 @@ public class BooleanPreference extends Preference<Boolean> {
 	 *        preference is undefined.
 	 * @return The preference value.
 	 */
-	public boolean getBoolean(boolean defaultValue) {
-		return preferences().getBoolean(key(), false);
+	public int getInt(int defaultValue) {
+		return preferences().getInt(key(), defaultValue);
 	}
 
 	/**
@@ -50,17 +50,17 @@ public class BooleanPreference extends Preference<Boolean> {
 	 *
 	 * @param value The value to set.
 	 */
-	public void putBoolean(boolean value) {
-		preferences().putBoolean(key(), value);
+	public void putInt(int value) {
+		preferences().putInt(key(), value);
 	}
 
 	@Override
-	protected Boolean toValue(String valueString) {
-		return Boolean.valueOf(valueString);
+	protected Integer toValue(String valueString) {
+		return Integer.valueOf(valueString);
 	}
 
 	@Override
-	protected String fromValue(Boolean value) {
+	protected String fromValue(Integer value) {
 		return value.toString();
 	}
 

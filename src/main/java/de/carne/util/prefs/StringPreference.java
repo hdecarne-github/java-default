@@ -19,49 +19,29 @@ package de.carne.util.prefs;
 import java.util.prefs.Preferences;
 
 /**
- * Utility class providing access to a {@link Boolean} preference.
+ * Utility class providing access to a {@link String} preference.
  */
-public class BooleanPreference extends Preference<Boolean> {
+public class StringPreference extends Preference<String> {
 
 	/**
-	 * Construct {@code BooleanPreference}.
+	 * Construct {@code StringPreference}.
 	 *
 	 * @param preferences The {@link Preferences} object storing this
 	 *        preference.
 	 * @param key The preference key.
 	 */
-	public BooleanPreference(Preferences preferences, String key) {
+	public StringPreference(Preferences preferences, String key) {
 		super(preferences, key);
 	}
 
-	/**
-	 * Get the preference value.
-	 *
-	 * @param defaultValue The default preference value to return in case the
-	 *        preference is undefined.
-	 * @return The preference value.
-	 */
-	public boolean getBoolean(boolean defaultValue) {
-		return preferences().getBoolean(key(), false);
-	}
-
-	/**
-	 * Set the preference value.
-	 *
-	 * @param value The value to set.
-	 */
-	public void putBoolean(boolean value) {
-		preferences().putBoolean(key(), value);
+	@Override
+	protected String toValue(String valueString) {
+		return valueString;
 	}
 
 	@Override
-	protected Boolean toValue(String valueString) {
-		return Boolean.valueOf(valueString);
-	}
-
-	@Override
-	protected String fromValue(Boolean value) {
-		return value.toString();
+	protected String fromValue(String value) {
+		return value;
 	}
 
 }
