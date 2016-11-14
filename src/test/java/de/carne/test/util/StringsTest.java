@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test;
+package de.carne.test.util;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class StringsTest {
 	 * Test {@link Strings} class functionality.
 	 */
 	@Test
-	public void test() {
+	public void testStrings() {
 		Assert.assertTrue(Strings.isEmpty(null));
 		Assert.assertTrue(Strings.isEmpty(""));
 		Assert.assertFalse(Strings.isEmpty(" "));
@@ -43,6 +43,7 @@ public class StringsTest {
 		Assert.assertEquals(null, Strings.safeTrim(null));
 		Assert.assertEquals("", Strings.safeTrim(""));
 		Assert.assertEquals("", Strings.safeTrim(" "));
+		Assert.assertArrayEquals(new String[] { "1", "2", "3" }, Strings.split("1,2,3", ","));
 	}
 
 }
