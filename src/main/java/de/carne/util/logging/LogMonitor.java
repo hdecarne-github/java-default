@@ -30,18 +30,17 @@ import java.util.logging.Logger;
 import de.carne.util.PropertiesHelper;
 
 /**
- * This class is used to monitor and collect log messages in a selective manner
- * (for example to display them to the user after a long running task).
+ * This class is used to monitor and record log messages in a selective manner
+ * and only during a defined period (for example to display them to the user
+ * after a long running task).
  */
-public class LogMonitor extends Handler implements AutoCloseable {
+public class LogMonitor extends Handler {
 
 	private final static int BUFFER_LIMIT = PropertiesHelper.getInt(LogMonitor.class, ".limit", 100);
 
-	private final Collection<Logger> loggers = new ArrayList<>();
+	private final Deque<LogRecord> buffer = new LinkedList<>();
 
 	private final Set<Long> threadIds = new HashSet<>();
-
-	private final Deque<LogRecord> buffer = new LinkedList<>();
 
 	private final LogLevel level;
 
@@ -52,40 +51,6 @@ public class LogMonitor extends Handler implements AutoCloseable {
 	 */
 	public LogMonitor(LogLevel level) {
 		this.level = level;
-	}
-
-	/**
-	 * Include a {@link Log} in monitoring.
-	 *
-	 * @param log The log to monitor.
-	 */
-	public void includeLog(Log log) {
-		assert log != null;
-
-		includeLogger(log.getLogger());
-	}
-
-	/**
-	 * Include the loggers for a specific {@link Package} in monitoring.
-	 *
-	 * @param pkg The package to monitor.
-	 */
-	public void includePackage(Package pkg) {
-		assert pkg != null;
-
-		includeLogger(Logger.getLogger(pkg.getName()));
-	}
-
-	/**
-	 * Include a {@link Logger} in monitoring.
-	 *
-	 * @param logger The logger to monitor.
-	 */
-	public synchronized void includeLogger(Logger logger) {
-		assert logger != null;
-
-		this.loggers.add(logger);
-		logger.addHandler(this);
 	}
 
 	/**
@@ -113,14 +78,14 @@ public class LogMonitor extends Handler implements AutoCloseable {
 	}
 
 	/**
-	 * Check whether this monitor's buffer is empty and does not contain any
+	 * Check whether this monitor's buffer is not empty and does contain any
 	 * records.
 	 *
-	 * @return {@code true} if this monitor's buffer is empty and does not
+	 * @return {@code true} if this monitor's buffer is not empty and does
 	 *         contain any records.
 	 */
-	public synchronized boolean isEmpty() {
-		return this.buffer.isEmpty();
+	public synchronized boolean notEmpty() {
+		return !this.buffer.isEmpty();
 	}
 
 	/**
@@ -130,6 +95,16 @@ public class LogMonitor extends Handler implements AutoCloseable {
 	 */
 	public synchronized Collection<LogRecord> getRecords() {
 		return Collections.unmodifiableCollection(this.buffer);
+	}
+
+	/**
+	 * Start a monitoring session.
+	 *
+	 * @return The session object.
+	 * @see Session
+	 */
+	public Session start() {
+		return new Session();
 	}
 
 	@Override
@@ -149,11 +124,66 @@ public class LogMonitor extends Handler implements AutoCloseable {
 
 	@Override
 	public void close() {
-		for (Logger logger : this.loggers) {
-			logger.removeHandler(this);
-		}
-		this.loggers.clear();
 		this.buffer.clear();
+	}
+
+	/**
+	 * This class represents a running monitoring session.
+	 */
+	public class Session implements AutoCloseable {
+
+		private final Collection<Logger> loggers = new ArrayList<>();
+
+		Session() {
+			// Make sure this class is not instantiated from outside
+		}
+
+		/**
+		 * Include the loggers for a specific {@link Package} in monitoring.
+		 *
+		 * @param pkg The package to monitor.
+		 * @return This session.
+		 */
+		public Session includePackage(Package pkg) {
+			assert pkg != null;
+
+			return includeLogger(Logger.getLogger(pkg.getName()));
+		}
+
+		/**
+		 * Include a {@link Log} in the monitoring session.
+		 *
+		 * @param log The log to monitor.
+		 * @return This session.
+		 */
+		public Session includeLog(Log log) {
+			assert log != null;
+
+			return includeLogger(log.getLogger());
+		}
+
+		/**
+		 * Include a {@link Logger} in the monitoring session.
+		 *
+		 * @param logger The logger to monitor.
+		 * @return This session.
+		 */
+		public synchronized Session includeLogger(Logger logger) {
+			assert logger != null;
+
+			this.loggers.add(logger);
+			logger.addHandler(LogMonitor.this);
+			return this;
+		}
+
+		@Override
+		public void close() {
+			for (Logger logger : this.loggers) {
+				logger.removeHandler(LogMonitor.this);
+			}
+			this.loggers.clear();
+		}
+
 	}
 
 }
