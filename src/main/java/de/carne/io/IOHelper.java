@@ -31,6 +31,8 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import de.carne.util.PropertiesHelper;
 
@@ -157,34 +159,29 @@ public final class IOHelper {
 	}
 
 	/**
-	 * Create a temporary file and initialize it by copying a resource.
+	 * Create a temporary file and initialize it by copying a resource's
+	 * content.
 	 *
 	 * @param resource The resource to use for file initialization.
 	 * @param prefix The prefix to use for temp file creation (may be
 	 *        {@code null}).
 	 * @param suffix The suffix to use for temp file creation (may be
 	 *        {@code null}).
-	 * @param attr The file attributes to use for temp file creation (may be
-	 *        {@code null}).
-	 * @return The create and initialized file.
+	 * @param attrs The file attributes to use for temp file creation.
+	 * @return The created and initialized file.
 	 * @throws IOException if an I/O error occurs.
 	 * @see Files#createTempFile(String, String, FileAttribute...)
 	 */
-	public static Path createTempFileFromResource(URL resource, String prefix, String suffix, FileAttribute<?>... attr)
+	public static Path createTempFileFromResource(URL resource, String prefix, String suffix, FileAttribute<?>... attrs)
 			throws IOException {
 		assert resource != null;
 
-		Path tempFile = Files.createTempFile(prefix, suffix, attr);
-
-		try (InputStream in = resource.openStream();
-				OutputStream out = Files.newOutputStream(tempFile, StandardOpenOption.CREATE_NEW)) {
-			copyStream(in, out);
-		}
-		return tempFile;
+		return copyResourceToFile(resource, Files.createTempFile(prefix, suffix, attrs));
 	}
 
 	/**
-	 * Create a temporary file and initialize it by copying a resource.
+	 * Create a temporary file and initialize it by copying a resource's
+	 * content.
 	 *
 	 * @param resource The resource to use for file initialization.
 	 * @param dir The directory to use for temp file creation.
@@ -192,24 +189,87 @@ public final class IOHelper {
 	 *        {@code null}).
 	 * @param suffix The suffix to use for temp file creation (may be
 	 *        {@code null}).
-	 * @param attr The file attributes to use for temp file creation (may be
-	 *        {@code null}).
-	 * @return The create and initialized file.
+	 * @param attrs The file attributes to use for temp file creation.
+	 * @return The created and initialized file.
 	 * @throws IOException if an I/O error occurs.
 	 * @see Files#createTempFile(Path, String, String, FileAttribute...)
 	 */
 	public static Path createTempFileFromResource(URL resource, Path dir, String prefix, String suffix,
-			FileAttribute<?>... attr) throws IOException {
+			FileAttribute<?>... attrs) throws IOException {
 		assert resource != null;
 		assert dir != null;
 
-		Path tempFile = Files.createTempFile(dir, prefix, suffix, attr);
+		return copyResourceToFile(resource, Files.createTempFile(dir, prefix, suffix, attrs));
+	}
 
+	private static Path copyResourceToFile(URL resource, Path file) throws IOException {
 		try (InputStream in = resource.openStream();
-				OutputStream out = Files.newOutputStream(tempFile, StandardOpenOption.CREATE_NEW)) {
+				OutputStream out = Files.newOutputStream(file, StandardOpenOption.CREATE_NEW)) {
 			copyStream(in, out);
 		}
-		return tempFile;
+		return file;
+	}
+
+	/**
+	 * Create a temporary directory and initialize it by copying a ZIP
+	 * resource's content.
+	 *
+	 * @param resource The resource to use for directory initialization.
+	 * @param prefix The prefix to use for temp dir creation (may be
+	 *        {@code null}).
+	 * @param attrs The file attributes to use for temp dir creation.
+	 * @return The created and initialized directory.
+	 * @throws IOException if an I/O error occurs.
+	 * @see Files#createTempDirectory(String, FileAttribute...)
+	 */
+	public static Path createTempDirFromZIPResource(URL resource, String prefix, FileAttribute<?>... attrs)
+			throws IOException {
+		assert resource != null;
+
+		return exportZIPResourceToDirectory(resource, Files.createTempDirectory(prefix, attrs));
+	}
+
+	/**
+	 * Create a temporary directory and initialize it by copying a ZIP
+	 * resource's content.
+	 *
+	 * @param resource The resource to use for directory initialization.
+	 * @param dir The directory to use for temp dir creation.
+	 * @param prefix The prefix to use for temp dir creation (may be
+	 *        {@code null}).
+	 * @param attrs The file attributes to use for temp dir creation.
+	 * @return The created and initialized directory.
+	 * @throws IOException if an I/O error occurs.
+	 * @see Files#createTempDirectory(Path, String, FileAttribute...)
+	 */
+	public static Path createTempDirFromZIPResource(URL resource, Path dir, String prefix, FileAttribute<?>... attrs)
+			throws IOException {
+		assert resource != null;
+		assert dir != null;
+
+		return exportZIPResourceToDirectory(resource, Files.createTempDirectory(dir, prefix, attrs), attrs);
+	}
+
+	private static Path exportZIPResourceToDirectory(URL resource, Path dir, FileAttribute<?>... attrs)
+			throws IOException {
+		try (ZipInputStream in = new ZipInputStream(resource.openStream())) {
+			ZipEntry entry;
+
+			while ((entry = in.getNextEntry()) != null) {
+				Path entryPath = dir.resolve(entry.getName());
+
+				if (entry.isDirectory()) {
+					Files.createDirectories(entryPath, attrs);
+				} else {
+					Files.createDirectories(entryPath.getParent(), attrs);
+					try (OutputStream out = Files.newOutputStream(entryPath, StandardOpenOption.CREATE_NEW)) {
+						copyStream(in, out);
+					}
+				}
+				in.closeEntry();
+			}
+		}
+		return dir;
 	}
 
 }
