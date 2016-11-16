@@ -22,12 +22,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
+import java.net.URL;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileAttribute;
 
 import de.carne.util.PropertiesHelper;
 
@@ -151,6 +154,62 @@ public final class IOHelper {
 			}
 
 		});
+	}
+
+	/**
+	 * Create a temporary file and initialize it by copying a resource.
+	 *
+	 * @param resource The resource to use for file initialization.
+	 * @param prefix The prefix to use for temp file creation (may be
+	 *        {@code null}).
+	 * @param suffix The suffix to use for temp file creation (may be
+	 *        {@code null}).
+	 * @param attr The file attributes to use for temp file creation (may be
+	 *        {@code null}).
+	 * @return The create and initialized file.
+	 * @throws IOException if an I/O error occurs.
+	 * @see Files#createTempFile(String, String, FileAttribute...)
+	 */
+	public static Path createTempFileFromResource(URL resource, String prefix, String suffix, FileAttribute<?>... attr)
+			throws IOException {
+		assert resource != null;
+
+		Path tempFile = Files.createTempFile(prefix, suffix, attr);
+
+		try (InputStream in = resource.openStream();
+				OutputStream out = Files.newOutputStream(tempFile, StandardOpenOption.CREATE_NEW)) {
+			copyStream(in, out);
+		}
+		return tempFile;
+	}
+
+	/**
+	 * Create a temporary file and initialize it by copying a resource.
+	 *
+	 * @param resource The resource to use for file initialization.
+	 * @param dir The directory to use for temp file creation.
+	 * @param prefix The prefix to use for temp file creation (may be
+	 *        {@code null}).
+	 * @param suffix The suffix to use for temp file creation (may be
+	 *        {@code null}).
+	 * @param attr The file attributes to use for temp file creation (may be
+	 *        {@code null}).
+	 * @return The create and initialized file.
+	 * @throws IOException if an I/O error occurs.
+	 * @see Files#createTempFile(Path, String, String, FileAttribute...)
+	 */
+	public static Path createTempFileFromResource(URL resource, Path dir, String prefix, String suffix,
+			FileAttribute<?>... attr) throws IOException {
+		assert resource != null;
+		assert dir != null;
+
+		Path tempFile = Files.createTempFile(dir, prefix, suffix, attr);
+
+		try (InputStream in = resource.openStream();
+				OutputStream out = Files.newOutputStream(tempFile, StandardOpenOption.CREATE_NEW)) {
+			copyStream(in, out);
+		}
+		return tempFile;
 	}
 
 }
