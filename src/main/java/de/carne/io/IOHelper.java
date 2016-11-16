@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.file.FileVisitOption;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,6 +32,10 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -101,6 +106,40 @@ public final class IOHelper {
 			copied += read;
 		}
 		return copied;
+	}
+
+	/**
+	 * Collect all files in a directory.
+	 *
+	 * @param start The directory path to scan.
+	 * @param options The scan options.
+	 * @return The collected file paths.
+	 * @throws IOException if an I/O error occurs.
+	 */
+	public static List<Path> collectDirectoryFiles(Path start, FileVisitOption... options) throws IOException {
+		return collectDirectoryFiles(start, (p) -> Files.isRegularFile(p), options);
+	}
+
+	/**
+	 * Collect all files in a directory.
+	 *
+	 * @param start The directory path to scan.
+	 * @param filter The filter to apply to the scan result.
+	 * @param options The scan options.
+	 * @return The collected file paths.
+	 * @throws IOException if an I/O error occurs.
+	 */
+	public static List<Path> collectDirectoryFiles(Path start, Predicate<Path> filter, FileVisitOption... options)
+			throws IOException {
+		assert start != null;
+		assert filter != null;
+
+		List<Path> collection;
+
+		try (Stream<Path> stream = Files.walk(start, options)) {
+			collection = stream.filter(filter).collect(Collectors.toList());
+		}
+		return collection;
 	}
 
 	/**
