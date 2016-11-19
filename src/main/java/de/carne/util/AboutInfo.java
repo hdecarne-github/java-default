@@ -18,6 +18,9 @@ package de.carne.util;
 
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
+import java.util.jar.Manifest;
+
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import de.carne.ApplicationLoader;
 
@@ -58,7 +61,11 @@ public final class AboutInfo {
 
 		try (JarFile codeJar = ApplicationLoader.getApplicationJarFile()) {
 			if (codeJar != null) {
-				attributes = codeJar.getManifest().getMainAttributes();
+				Manifest manifest = codeJar.getManifest();
+
+				if (manifest != null) {
+					attributes = manifest.getMainAttributes();
+				}
 			}
 		} catch (Exception e) {
 			Exceptions.warn(e);
@@ -69,7 +76,7 @@ public final class AboutInfo {
 		PROJECT_BUILD = getAttributeValue(attributes, "X-Version-ProjectBuild");
 	}
 
-	private static String getAttributeValue(Attributes attributes, String name) {
+	private static String getAttributeValue(@Nullable Attributes attributes, String name) {
 		String value = (attributes != null ? attributes.getValue(name) : null);
 
 		return (value != null ? value : "?");

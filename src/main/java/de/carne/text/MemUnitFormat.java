@@ -101,7 +101,6 @@ public class MemUnitFormat extends NumberFormat {
 			} else {
 				parsePosition.setErrorIndex(parsePosition.getIndex());
 				parsePosition.setIndex(startIndex);
-				number = null;
 			}
 		}
 		return number;

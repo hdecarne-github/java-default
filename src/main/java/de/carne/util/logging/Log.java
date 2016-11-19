@@ -16,10 +16,13 @@
  */
 package de.carne.util.logging;
 
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Simple wrapper for JDK's {@link Logger} class to have a minimum level of
@@ -45,7 +48,7 @@ public final class Log {
 	 *
 	 * @param bundle The {@code ResourceBundle} to use for message localization.
 	 */
-	public Log(ResourceBundle bundle) {
+	public Log(@Nullable ResourceBundle bundle) {
 		this(getCallerClassName(), bundle);
 	}
 
@@ -64,7 +67,7 @@ public final class Log {
 	 * @param cls The {@code Class} defining the logger name.
 	 * @param bundle The {@code ResourceBundle} to use for message localization.
 	 */
-	public Log(Class<?> cls, ResourceBundle bundle) {
+	public Log(Class<?> cls, @Nullable ResourceBundle bundle) {
 		this(cls.getName(), bundle);
 	}
 
@@ -83,7 +86,7 @@ public final class Log {
 	 * @param name The logger name to use.
 	 * @param bundle The {@code ResourceBundle} to use for message localization.
 	 */
-	public Log(String name, ResourceBundle bundle) {
+	public Log(String name, @Nullable ResourceBundle bundle) {
 		assert name != null;
 
 		this.logger = Logger.getLogger(name, (bundle != null ? bundle.getBaseBundleName() : null));
@@ -118,7 +121,7 @@ public final class Log {
 	 * @param msg The message to log.
 	 * @param parameters The message parameters to log.
 	 */
-	public void log(Level level, Throwable thrown, String msg, Object... parameters) {
+	public void log(Level level, @Nullable Throwable thrown, String msg, Object... parameters) {
 		assert level != null;
 		assert msg != null;
 
@@ -128,7 +131,7 @@ public final class Log {
 			record.setResourceBundle(this.logger.getResourceBundle());
 			record.setThrown(thrown);
 			record.setParameters(parameters);
-			record.setLoggerName(this.logger.getName());
+			record.setLoggerName(Objects.toString(this.logger.getName()));
 			this.logger.log(record);
 		}
 	}

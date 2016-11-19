@@ -19,7 +19,10 @@ package de.carne.util.logging;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.logging.LogManager;
+
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * This class is used for logging initialization during startup and afterwards.
@@ -29,7 +32,7 @@ import java.util.logging.LogManager;
  */
 public final class LogConfig {
 
-	private static final String THIS_PACKAGE = LogConfig.class.getPackage().getName();
+	private static final String THIS_PACKAGE = Objects.requireNonNull(LogConfig.class.getPackage()).getName();
 
 	static {
 		// Make sure our custom level class is loaded and the custom levels are
@@ -52,6 +55,7 @@ public final class LogConfig {
 	 */
 	public static final String CONFIG_DEBUG = "logging-debug.properties";
 
+	@Nullable
 	private static String currentConfig = null;
 
 	/**
@@ -106,7 +110,8 @@ public final class LogConfig {
 	private static boolean applyResourceConfig(String config) {
 		boolean applied = false;
 
-		try (InputStream configStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(config)) {
+		try (InputStream configStream = Objects.requireNonNull(Thread.currentThread().getContextClassLoader())
+				.getResourceAsStream(config)) {
 			if (configStream != null) {
 				LogManager.getLogManager().readConfiguration(configStream);
 				applied = true;

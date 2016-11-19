@@ -29,6 +29,8 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import de.carne.util.PropertiesHelper;
 
 /**
@@ -55,6 +57,7 @@ public class LogBuffer extends Handler {
 	 * @return The attached log buffer, or {@code null} if none has been
 	 *         configured.
 	 */
+	@Nullable
 	public static LogBuffer getInstance(Logger logger) {
 		assert logger != null;
 

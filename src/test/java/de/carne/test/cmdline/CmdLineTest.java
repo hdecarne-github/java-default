@@ -19,6 +19,7 @@ package de.carne.test.cmdline;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -51,7 +52,7 @@ public class CmdLineTest {
 		try {
 			cmdLine.eval();
 		} catch (CmdLineException e) {
-			Assert.fail(e.getMessage());
+			Assert.fail(Objects.toString(e.getMessage()));
 		}
 		Assert.assertEquals(in, out);
 	}

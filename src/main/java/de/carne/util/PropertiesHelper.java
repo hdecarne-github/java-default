@@ -19,7 +19,11 @@ package de.carne.util;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Properties;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import de.carne.util.logging.Log;
 
@@ -146,18 +150,15 @@ public final class PropertiesHelper {
 	 * @return The property value or the submitted default value if the property
 	 *         is undefined.
 	 */
-	public static int getInt(Properties properties, String key, int def) {
-		assert properties != null;
-		assert key != null;
-
+	public static int getInt(@NonNull Properties properties, @NonNull String key, int def) {
 		return toInt(properties.getProperty(key), key, def);
 	}
 
-	private static String systemPropertyKey(Class<?> cls, String key) {
-		return cls.getPackage().getName() + key;
+	private static String systemPropertyKey(@NonNull Class<?> cls, @NonNull String key) {
+		return Objects.requireNonNull(cls.getPackage()).getName() + key;
 	}
 
-	private static int toInt(String property, String key, int def) {
+	private static int toInt(@Nullable String property, String key, int def) {
 		int propertyValue = def;
 
 		if (property != null) {

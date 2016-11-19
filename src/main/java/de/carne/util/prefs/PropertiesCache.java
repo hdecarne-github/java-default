@@ -25,8 +25,11 @@ import java.nio.file.attribute.FileTime;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import de.carne.nio.FileAttributes;
 import de.carne.util.logging.Log;
@@ -39,6 +42,7 @@ final class PropertiesCache {
 
 	private final Properties cache = new Properties();
 
+	@Nullable
 	private FileTime propertiesPathLastModifiedTime = null;
 
 	PropertiesCache(Path propertiesPath) {
@@ -83,8 +87,8 @@ final class PropertiesCache {
 		return children;
 	}
 
-	public synchronized void sync(PropertiesPreferences preferences, Map<String, String> values,
-			Set<String> childrenNames) {
+	public synchronized void sync(PropertiesPreferences preferences, @Nullable Map<String, String> values,
+			@Nullable Set<String> childrenNames) {
 		try {
 			initCache();
 
@@ -139,7 +143,7 @@ final class PropertiesCache {
 
 			FileTime lastModifiedTime = Files.getLastModifiedTime(this.propertiesPath);
 
-			if (!lastModifiedTime.equals(this.propertiesPathLastModifiedTime)) {
+			if (!Objects.equals(lastModifiedTime, this.propertiesPathLastModifiedTime)) {
 				this.LOG.debug("Re-loading preferences from file ''{0}''...", this.propertiesPath);
 				try (InputStream propertiesStream = Files.newInputStream(this.propertiesPath)) {
 					this.cache.clear();
@@ -162,6 +166,7 @@ final class PropertiesCache {
 		return absolutePreferencesPath;
 	}
 
+	@Nullable
 	private String determinePreferencesKey(String absolutePreferencesPath, String cacheKey) {
 		String key = null;
 
@@ -173,6 +178,7 @@ final class PropertiesCache {
 		return key;
 	}
 
+	@Nullable
 	private String determinePreferencesChildName(String absolutePreferencesPath, String cacheKey) {
 		String key = null;
 

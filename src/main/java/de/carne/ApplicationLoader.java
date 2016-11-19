@@ -32,10 +32,14 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * This class is the generic entry point for all kind of applications.
@@ -156,7 +160,13 @@ public final class ApplicationLoader extends URLClassLoader {
 		Path codePath;
 
 		try {
-			URL codeURL = ApplicationLoader.class.getProtectionDomain().getCodeSource().getLocation();
+			CodeSource codeSource = ApplicationLoader.class.getProtectionDomain().getCodeSource();
+
+			if (codeSource == null) {
+				throw new IllegalStateException("Unable to determine code source");
+			}
+
+			URL codeURL = codeSource.getLocation();
 
 			if (DEBUG) {
 				logOut("Code source URL: " + codeURL);
@@ -186,6 +196,7 @@ public final class ApplicationLoader extends URLClassLoader {
 	 *         loaded from a release Jar.
 	 * @throws IOException if an I/O error occurs while opening the Jar.
 	 */
+	@Nullable
 	public static JarFile getApplicationJarFile() throws IOException {
 		JarFile applicationJarFile = null;
 
@@ -197,7 +208,7 @@ public final class ApplicationLoader extends URLClassLoader {
 
 	// initialization code
 
-	private static final URL[] RESOURCE_URLS;
+	private static final @NonNull URL[] RESOURCE_URLS;
 
 	static {
 		ArrayList<URL> libURLs = new ArrayList<>();
@@ -264,6 +275,9 @@ public final class ApplicationLoader extends URLClassLoader {
 						new InputStreamReader(mainStream, StandardCharsets.UTF_8))) {
 			String mainClassName = mainReader.readLine();
 
+			if (mainClassName == null) {
+				throw new IllegalArgumentException("ApplicationLoader config is empty");
+			}
 			if (DEBUG) {
 				logOut("Main-Class " + mainClassName);
 			}
@@ -304,7 +318,7 @@ public final class ApplicationLoader extends URLClassLoader {
 		InputStream mainStream = ApplicationLoader.class.getResourceAsStream(resourceName);
 
 		if (mainStream == null) {
-			throw new RuntimeException("Unable to access resource " + resourceName);
+			throw new IllegalStateException("Unable to access ApplicationLoader config " + resourceName);
 		}
 		return mainStream;
 	}

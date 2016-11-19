@@ -19,6 +19,7 @@ package de.carne.test.text;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
+import java.util.Objects;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -61,7 +62,7 @@ public class MemUnitFormatTest {
 			Assert.assertEquals(number1t, format.parse(number1tString).doubleValue());
 			Assert.assertEquals(number1p, format.parse(number1pString).doubleValue());
 		} catch (ParseException e) {
-			Assert.fail(e.getMessage());
+			Assert.fail(Objects.toString(e.getMessage()));
 		}
 	}
 

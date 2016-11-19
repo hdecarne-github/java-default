@@ -20,6 +20,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.prefs.Preferences;
 import java.util.prefs.PreferencesFactory;
@@ -30,7 +31,8 @@ import java.util.prefs.PreferencesFactory;
  */
 public class PropertiesPreferencesFactory implements PreferencesFactory {
 
-	private static final String THIS_PACKAGE = PropertiesPreferencesFactory.class.getPackage().getName();
+	private static final String THIS_PACKAGE = Objects.requireNonNull(PropertiesPreferencesFactory.class.getPackage())
+			.getName();
 
 	private static final String PREFERENCES_DIR = System.getProperty(THIS_PACKAGE, "." + THIS_PACKAGE);
 

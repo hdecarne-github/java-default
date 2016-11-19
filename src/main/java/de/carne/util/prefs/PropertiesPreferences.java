@@ -17,19 +17,24 @@
 package de.carne.util.prefs;
 
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.BackingStoreException;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 class PropertiesPreferences extends AbstractPreferences {
 
 	private final PropertiesCache propertiesCache;
 
-	private Map<String, String> values = null;
+	@Nullable
+	private Map<String, String> cachedValues = null;
 
-	private Map<String, PropertiesPreferences> children = null;
+	@Nullable
+	private Map<String, PropertiesPreferences> cachedChildren = null;
 
 	PropertiesPreferences(Path propertiesPath) {
 		super(null, "");
@@ -43,55 +48,52 @@ class PropertiesPreferences extends AbstractPreferences {
 
 	@Override
 	protected void putSpi(String key, String value) {
-		initValues();
-		this.values.put(key, value);
+		getCachedValues().put(key, value);
 	}
 
 	@Override
 	protected String getSpi(String key) {
-		initValues();
-		return this.values.get(key);
+		return getCachedValues().get(key);
 	}
 
 	@Override
 	protected void removeSpi(String key) {
-		initValues();
-		this.values.remove(key);
+		getCachedValues().remove(key);
 	}
 
 	@Override
 	protected void removeNodeSpi() throws BackingStoreException {
-		initValues();
-		this.values.clear();
+		getCachedValues().clear();
 	}
 
 	@Override
 	protected String[] keysSpi() throws BackingStoreException {
-		initValues();
-
-		Set<String> keys = getValueKeySet();
+		Set<String> keys = getCachedValues().keySet();
 
 		return keys.toArray(new String[keys.size()]);
 	}
 
 	@Override
 	protected String[] childrenNamesSpi() throws BackingStoreException {
-		initChildren();
+		Collection<PropertiesPreferences> childrenPreferences = getCachedChildren().values();
+		Set<String> childrenNames = new HashSet<>(childrenPreferences.size());
 
-		Set<String> childrenNames = getChildrenNameSet();
-
+		for (PropertiesPreferences childPreferences : childrenPreferences) {
+			if (!childPreferences.isRemoved()) {
+				childrenNames.add(childPreferences.name());
+			}
+		}
 		return childrenNames.toArray(new String[childrenNames.size()]);
 	}
 
 	@Override
 	protected AbstractPreferences childSpi(String name) {
-		initChildren();
-
-		PropertiesPreferences child = this.children.get(name);
+		Map<String, PropertiesPreferences> children = getCachedChildren();
+		PropertiesPreferences child = children.get(name);
 
 		if (child == null) {
 			child = new PropertiesPreferences(this, name);
-			this.children.put(name, child);
+			children.put(name, child);
 		}
 		return child;
 	}
@@ -99,44 +101,43 @@ class PropertiesPreferences extends AbstractPreferences {
 	@Override
 	protected void syncSpi() throws BackingStoreException {
 		flushSpi();
-		this.values = null;
-		this.children = null;
+		this.cachedValues = null;
+		this.cachedChildren = null;
 	}
 
 	@Override
 	protected void flushSpi() throws BackingStoreException {
-		Set<String> childrenNames = (this.children != null ? getChildrenNameSet() : null);
+		if (this.cachedValues != null || this.cachedChildren != null) {
+			Set<String> childrenNames = (this.cachedChildren != null ? getChildrenNames() : null);
 
-		if (this.values != null || childrenNames != null) {
-			this.propertiesCache.sync(this, this.values, childrenNames);
+			this.propertiesCache.sync(this, this.cachedValues, childrenNames);
 		}
 	}
 
-	private void initValues() {
-		if (this.values == null) {
-			this.values = this.propertiesCache.getValues(this);
+	private Map<String, String> getCachedValues() {
+		if (this.cachedValues == null) {
+			this.cachedValues = this.propertiesCache.getValues(this);
 		}
+		return this.cachedValues;
 	}
 
-	private Set<String> getValueKeySet() {
-		return this.values.keySet();
-	}
-
-	private void initChildren() {
-		if (this.children == null) {
-			this.children = this.propertiesCache.getChildren(this);
+	private Map<String, PropertiesPreferences> getCachedChildren() {
+		if (this.cachedChildren == null) {
+			this.cachedChildren = this.propertiesCache.getChildren(this);
 		}
+		return this.cachedChildren;
 	}
 
-	private Set<String> getChildrenNameSet() {
-		Set<String> childrenNameSet = new HashSet<>(this.children.size());
+	private Set<String> getChildrenNames() {
+		Collection<PropertiesPreferences> childrenPreferences = getCachedChildren().values();
+		Set<String> childrenNames = new HashSet<>(childrenPreferences.size());
 
-		for (PropertiesPreferences child : this.children.values()) {
-			if (!child.isRemoved()) {
-				childrenNameSet.add(child.name());
+		for (PropertiesPreferences childPreferences : childrenPreferences) {
+			if (!childPreferences.isRemoved()) {
+				childrenNames.add(childPreferences.name());
 			}
 		}
-		return childrenNameSet;
+		return childrenNames;
 	}
 
 }

@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 /**
  * Utility class for command line evaluation.
  */
@@ -33,8 +35,10 @@ public final class CmdLine {
 
 	private final List<CmdLineActionBiConsumer> namedOptionActions = new ArrayList<>();
 
+	@Nullable
 	private CmdLineActionConsumer unnamedOptionAction = null;
 
+	@Nullable
 	private CmdLineActionConsumer unknownArgumentAction = null;
 
 	/**
@@ -67,6 +71,7 @@ public final class CmdLine {
 	 */
 	public void eval() throws CmdLineException {
 		CmdLineActionBiConsumer pendingNamedOptionAction = null;
+		@Nullable
 		String pendingArg = null;
 
 		try {
@@ -119,6 +124,7 @@ public final class CmdLine {
 		}
 	}
 
+	@Nullable
 	private static <T extends CmdLineAction> T matchAction(List<T> actions, String arg) {
 		T matchingAction = null;
 
