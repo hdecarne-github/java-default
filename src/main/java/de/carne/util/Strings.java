@@ -18,7 +18,9 @@ package de.carne.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringTokenizer;
+import java.util.function.Function;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -119,6 +121,61 @@ public final class Strings {
 			split.add(tokenBuffer.toString());
 		}
 		return split.toArray(new String[split.size()]);
+	}
+
+	/**
+	 * Join a collection of strings.
+	 *
+	 * @param objects The objects to join.
+	 * @param delimiter The delimiter to use.
+	 * @return The joined string.
+	 */
+	public static <T> String join(Iterable<T> objects, String delimiter) {
+		return join(objects, (o) -> Objects.toString(o), delimiter, Integer.MAX_VALUE);
+	}
+
+	/**
+	 * Join a collection of strings.
+	 *
+	 * @param objects The objects to join.
+	 * @param delimiter The delimiter to use.
+	 * @param limit The length after which the output will be truncated.
+	 * @return The joined string.
+	 */
+	public static <T> String join(Iterable<T> objects, String delimiter, int limit) {
+		return join(objects, (o) -> Objects.toString(o), delimiter, limit);
+	}
+
+	/**
+	 * Join a collection of strings.
+	 *
+	 * @param objects The objects to join.
+	 * @param converter The converter to use for object to string conversion.
+	 * @param delimiter The delimiter to use.
+	 * @param limit The length after which the output will be truncated.
+	 * @return The joined string.
+	 */
+	public static <T> String join(Iterable<T> objects, Function<T, String> converter, String delimiter, int limit) {
+		assert objects != null;
+		assert converter != null;
+		assert delimiter != null;
+		assert limit > 0;
+
+		StringBuilder buffer = new StringBuilder();
+
+		for (T object : objects) {
+			int bufferLength = buffer.length();
+
+			if (bufferLength > 0) {
+				buffer.append(delimiter);
+			}
+			if (bufferLength >= limit) {
+				buffer.append("\u2026");
+				break;
+			}
+			buffer.append(converter.apply(object));
+		}
+		return buffer.toString();
 	}
 
 }
