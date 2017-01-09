@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'jacoco'
+apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -35,5 +36,29 @@ jacocoTestReport {
 		html.enabled true
 		html.destination "${buildDir}/reports/jacoco"
 		csv.enabled false
+	}
+}
+
+task sourcesJar(type: Jar) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar) {
+	classifier = 'javadoc'
+	from javadoc
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+			artifact sourcesJar {
+				classifier 'sources'
+			}
+			artifact javadocJar {
+				classifier 'javadoc'
+			}
+		}
 	}
 }
