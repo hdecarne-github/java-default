@@ -1,2 +1,2 @@
 # de.carne
-Common Java code shared as submodule between projects
+Common Java code shared between projects.
