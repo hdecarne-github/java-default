@@ -1,3 +1,39 @@
+apply plugin: 'java'
+apply plugin: 'jacoco'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+ext.checkerFrameworkVersion = '2.1.6'
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+configurations {
+	checkerFrameworkAnnotatedJDK {
+		description = 'a copy of JDK classes with Checker Framework type qualifers inserted'
+	}
+	checkerFramework {
+		description = 'The Checker Framework: custom pluggable types for Java'
+	}
+}
+
 dependencies {
-	// No sub-project specific dependencies so far
+    checkerFrameworkAnnotatedJDK("org.checkerframework:jdk8:${checkerFrameworkVersion}")
+	checkerFramework("org.checkerframework:checker:${checkerFrameworkVersion}")
+	compile("org.checkerframework:checker-qual:${checkerFrameworkVersion}")
+    
+    testCompile('junit:junit:4.12')
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+		xml.destination "${buildDir}/reports/jacoco/coverage.xml"
+		html.enabled true
+		html.destination "${buildDir}/reports/jacoco"
+		csv.enabled false
+	}
 }
