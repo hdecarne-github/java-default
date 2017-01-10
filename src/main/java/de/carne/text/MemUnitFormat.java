@@ -21,8 +21,7 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 
 /**
- * {@link NumberFormat} implementation supporting formatting and parsing of
- * memory unit numbers.
+ * {@link NumberFormat} implementation supporting formatting and parsing of memory unit numbers.
  */
 public class MemUnitFormat extends NumberFormat {
 
@@ -42,8 +41,7 @@ public class MemUnitFormat extends NumberFormat {
 	/**
 	 * Construct {@code MemUnitFormat}.
 	 *
-	 * @param numberFormat The {@link NumberFormat} to use for the actual number
-	 *        formatting and parsing.
+	 * @param numberFormat The {@link NumberFormat} to use for the actual number formatting and parsing.
 	 */
 	public MemUnitFormat(NumberFormat numberFormat) {
 		assert numberFormat != null;
@@ -96,7 +94,7 @@ public class MemUnitFormat extends NumberFormat {
 						&& doubleNumber <= Long.MAX_VALUE) {
 					number = Long.valueOf((long) doubleNumber);
 				} else {
-					number = Double.valueOf(doubleNumber).longValue();
+					number = Double.valueOf(doubleNumber);
 				}
 			} else {
 				parsePosition.setErrorIndex(parsePosition.getIndex());
