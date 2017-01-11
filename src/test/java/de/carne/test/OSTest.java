@@ -14,35 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne;
+package de.carne.test;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import de.carne.OS;
 
 /**
- * Utility class to support OS specific behavior.
+ * Test {@link OS} class functionality.
  */
-public class OS {
+public class OSTest {
 
-	private OS() {
-		// To prevent instantiation
+	/**
+	 * Test os name and flags.
+	 */
+	@Test
+	public void test() {
+		Assert.assertNotNull(OS.OS_NAME);
+		Assert.assertNotEquals("", OS.OS_NAME);
+		Assert.assertTrue("Unrecognized OS: " + OS.OS_NAME, OS.IS_WINDOWS || OS.IS_MACOS || OS.IS_LINUX);
 	}
-
-	/**
-	 * OS name.
-	 */
-	public static final String OS_NAME = System.getProperty("os.name");
-
-	/**
-	 * Windows platform flag.
-	 */
-	public static final boolean IS_WINDOWS = OS_NAME.startsWith("Windows");
-
-	/**
-	 * macOS platform flag.
-	 */
-	public static final boolean IS_MACOS = OS_NAME.startsWith("Mac OS X");
-
-	/**
-	 * Linux platform flag.
-	 */
-	public static final boolean IS_LINUX = OS_NAME.startsWith("Linux") || OS_NAME.startsWith("LINUX");
 
 }

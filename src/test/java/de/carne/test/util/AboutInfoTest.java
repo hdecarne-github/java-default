@@ -27,7 +27,7 @@ import de.carne.util.AboutInfo;
 public class AboutInfoTest {
 
 	/**
-	 * Test {@link AboutInfo} class functionality.
+	 * Test about attributes.
 	 */
 	@Test
 	public void testAboutInfo() {
