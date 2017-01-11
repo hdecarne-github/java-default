@@ -1,11 +1,12 @@
 apply plugin: 'java'
 apply plugin: 'jacoco'
-apply plugin: 'maven-publish'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-ext.checkerFrameworkVersion = '2.1.6'
+ext.checkerFrameworkVersion = '2.1.7'
 
 repositories {
 	mavenLocal()
@@ -26,7 +27,7 @@ dependencies {
 	checkerFramework("org.checkerframework:checker:${checkerFrameworkVersion}")
 	compile("org.checkerframework:checker-qual:${checkerFrameworkVersion}")
     
-    testCompile('junit:junit:4.12')
+	testCompile('junit:junit:4.12')
 }
 
 jacocoTestReport {
@@ -39,25 +40,64 @@ jacocoTestReport {
 	}
 }
 
-task sourcesJar(type: Jar) {
-	classifier = 'sources'
-	from sourceSets.main.allSource
-}
-
 task javadocJar(type: Jar) {
 	classifier = 'javadoc'
 	from javadoc
 }
 
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-			artifact sourcesJar {
-				classifier 'sources'
+task sourcesJar(type: Jar) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+artifacts {
+	archives javadocJar, sourcesJar
+}
+
+signing {
+	sign configurations.archives
+}
+
+uploadArchives {
+	repositories {
+		mavenDeployer {
+			beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
 			}
-			artifact javadocJar {
-				classifier 'javadoc'
+
+			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
+			}
+
+			pom.project {
+				name project.name
+				packaging 'jar'
+				description projectDescription
+				url projectUrl
+
+				scm {
+					connection projectScm
+					developerConnection projectScm
+					url projectScmUrl
+				}
+
+				licenses {
+					license {
+						name projectLicense
+						url projectLicenseUrl
+						distribution 'repo'
+					}
+				}
+
+				developers {
+					developer {
+						id 'hdecarne'
+						name 'Holger de Carne'
+						email 'hdecarne@gmail.com'
+					}
+				}
 			}
 		}
 	}
