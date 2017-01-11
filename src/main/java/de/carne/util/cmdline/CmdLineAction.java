@@ -28,11 +28,9 @@ import java.util.Set;
  * <li>Named Option (e.g. --file some_file.txt)</li>
  * <li>Unnamed Option (e.g. some_file.txt)</li>
  * </ul>
- * An action can be associated with one or more arguments (e.g --file and -f).
- * The parsing algorithm in class {@link CmdLine} assumes that arguments
- * prefixed with a single '-' are one char only (e.g. -f) or all other arguments
+ * An action can be associated with one or more arguments (e.g --file and -f). The parsing algorithm in class
+ * {@link CmdLine} assumes that arguments prefixed with a single '-' are one char only (e.g. -f) or all other arguments
  * are either an unnamed option or are prefixed with '--' (e.g. --file).
- * <p>
  *
  * @see CmdLine#switchAction(java.util.function.Consumer)
  * @see CmdLine#namedOptionAction(java.util.function.BiConsumer)
