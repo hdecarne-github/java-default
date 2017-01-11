@@ -36,8 +36,7 @@ public final class Strings {
 	/**
 	 * Check whether a {@link String} is empty.
 	 * <p>
-	 * A {@link String} is considered empty if it is either {@code null} of of
-	 * length 0.
+	 * A {@link String} is considered empty if it is either {@code null} of of length 0.
 	 *
 	 * @param s The string to check.
 	 * @return {@code true} if the string is empty.
@@ -49,8 +48,7 @@ public final class Strings {
 	/**
 	 * Check whether a {@link String} is not empty.
 	 * <p>
-	 * A {@link String} is considered empty if it is either {@code null} of of
-	 * length 0.
+	 * A {@link String} is considered empty if it is either {@code null} of of length 0.
 	 *
 	 * @param s The string to check.
 	 * @return {@code true} if the string is not empty.
@@ -65,8 +63,7 @@ public final class Strings {
 	 * The empty string is returned if a {@code null} value is submitted.
 	 *
 	 * @param s The string to check.
-	 * @return The submitted string or the empty string if {@code null} was
-	 *         submitted.
+	 * @return The submitted string or the empty string if {@code null} was submitted.
 	 */
 	@Nullable
 	public static String safe(@Nullable String s) {
@@ -76,12 +73,10 @@ public final class Strings {
 	/**
 	 * Make sure a {@link String} is trimmed.
 	 * <p>
-	 * If the string is {@code null} this function simply returns the submitted
-	 * value.
+	 * If the string is {@code null} this function simply returns the submitted value.
 	 *
 	 * @param s The string to trim.
-	 * @return The trimmed string, or {@code null} if {@code null} was
-	 *         submitted.
+	 * @return The trimmed string, or {@code null} if {@code null} was submitted.
 	 */
 	@Nullable
 	public static String safeTrim(@Nullable String s) {
@@ -126,6 +121,7 @@ public final class Strings {
 	/**
 	 * Join a collection of strings.
 	 *
+	 * @param <T> The object type to join.
 	 * @param objects The objects to join.
 	 * @param delimiter The delimiter to use.
 	 * @return The joined string.
@@ -137,6 +133,7 @@ public final class Strings {
 	/**
 	 * Join a collection of strings.
 	 *
+	 * @param <T> The object type to join.
 	 * @param objects The objects to join.
 	 * @param delimiter The delimiter to use.
 	 * @param limit The length after which the output will be truncated.
@@ -149,6 +146,7 @@ public final class Strings {
 	/**
 	 * Join a collection of strings.
 	 *
+	 * @param <T> The object type to join.
 	 * @param objects The objects to join.
 	 * @param converter The converter to use for object to string conversion.
 	 * @param delimiter The delimiter to use.

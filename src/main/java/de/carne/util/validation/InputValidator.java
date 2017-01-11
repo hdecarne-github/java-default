@@ -35,8 +35,7 @@ public final class InputValidator {
 	 * Make sure a condition is met.
 	 *
 	 * @param condition The condition to check.
-	 * @param message The exception message to use if the condition is
-	 *        {@code false}.
+	 * @param message The exception message to use if the condition is {@code false}.
 	 * @throws ValidationException if the condition is {@code false}.
 	 */
 	public static void isTrue(boolean condition, MessageFormatter message) throws ValidationException {
@@ -50,6 +49,7 @@ public final class InputValidator {
 	/**
 	 * Make sure input is not {@code null}.
 	 *
+	 * @param <T> The object type to check.
 	 * @param input The input to validate.
 	 * @param message The exception message to use if the input is invalid.
 	 * @return The validated {@link Path} object.
