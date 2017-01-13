@@ -29,13 +29,11 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 import de.carne.util.PropertiesHelper;
 
 /**
- * {@link Handler} implementation used to buffer log records for later
- * publishing by one or more dynamically defined {@link Handler} instances.
+ * {@link Handler} implementation used to buffer log records for later publishing by one or more dynamically defined
+ * {@link Handler} instances.
  */
 public class LogBuffer extends Handler {
 
@@ -54,10 +52,8 @@ public class LogBuffer extends Handler {
 	 * Get the {@code LogBuffer} instance attached to a given {@link Logger}.
 	 *
 	 * @param logger The logger to get the log buffer for.
-	 * @return The attached log buffer, or {@code null} if none has been
-	 *         configured.
+	 * @return The attached log buffer, or {@code null} if none has been configured.
 	 */
-	@Nullable
 	public static LogBuffer getInstance(Logger logger) {
 		assert logger != null;
 
@@ -79,8 +75,7 @@ public class LogBuffer extends Handler {
 	/**
 	 * Get the {@code LogBuffer} and add a {@link Handler}.
 	 * <p>
-	 * If no log buffer has been configured for the submitted logger, this
-	 * function does nothing.
+	 * If no log buffer has been configured for the submitted logger, this function does nothing.
 	 *
 	 * @param logger The logger to get the log buffer for.
 	 * @param handler The handler to add.
@@ -114,8 +109,7 @@ public class LogBuffer extends Handler {
 	/**
 	 * Get the {@code LogBuffer} and remove a {@link Handler}.
 	 * <p>
-	 * If no log buffer has been configured for the submitted logger, this
-	 * function does nothing.
+	 * If no log buffer has been configured for the submitted logger, this function does nothing.
 	 *
 	 * @param logger The logger to get the log buffer for.
 	 * @param handler The handler to remove.
@@ -144,8 +138,7 @@ public class LogBuffer extends Handler {
 	/**
 	 * Get the {@code LogBuffer} and clear it's content.
 	 * <p>
-	 * If no log buffer has been configured for the submitted logger, this
-	 * function does nothing.
+	 * If no log buffer has been configured for the submitted logger, this function does nothing.
 	 *
 	 * @param logger The logger to get the log buffer for.
 	 * @see #getInstance(Logger)
@@ -169,8 +162,7 @@ public class LogBuffer extends Handler {
 	/**
 	 * Get the {@code LogBuffer} and export it's content.
 	 * <p>
-	 * If no log buffer has been configured for the submitted logger, this
-	 * function does nothing.
+	 * If no log buffer has been configured for the submitted logger, this function does nothing.
 	 *
 	 * @param logger The logger to get the log buffer for.
 	 * @param file The file to export to.

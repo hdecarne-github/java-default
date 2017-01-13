@@ -22,8 +22,6 @@ import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.function.Function;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 /**
  * Utility class providing {@link String} related functions.
  */
@@ -41,7 +39,7 @@ public final class Strings {
 	 * @param s The string to check.
 	 * @return {@code true} if the string is empty.
 	 */
-	public static boolean isEmpty(@Nullable String s) {
+	public static boolean isEmpty(String s) {
 		return s == null || s.length() == 0;
 	}
 
@@ -53,7 +51,7 @@ public final class Strings {
 	 * @param s The string to check.
 	 * @return {@code true} if the string is not empty.
 	 */
-	public static boolean notEmpty(@Nullable String s) {
+	public static boolean notEmpty(String s) {
 		return s != null && s.length() > 0;
 	}
 
@@ -65,8 +63,7 @@ public final class Strings {
 	 * @param s The string to check.
 	 * @return The submitted string or the empty string if {@code null} was submitted.
 	 */
-	@Nullable
-	public static String safe(@Nullable String s) {
+	public static String safe(String s) {
 		return (s != null ? s : "");
 	}
 
@@ -78,8 +75,7 @@ public final class Strings {
 	 * @param s The string to trim.
 	 * @return The trimmed string, or {@code null} if {@code null} was submitted.
 	 */
-	@Nullable
-	public static String safeTrim(@Nullable String s) {
+	public static String safeTrim(String s) {
 		return (s != null ? s.trim() : s);
 	}
 

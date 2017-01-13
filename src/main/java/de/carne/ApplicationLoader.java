@@ -38,24 +38,17 @@ import java.util.Iterator;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 /**
  * This class is the generic entry point for all kind of applications.
  * <p>
- * It provides the necessary services for setting up the execution environment
- * and invoking the actual application code. Further more it acts as a
- * {@link ClassLoader} and {@link URLStreamHandlerFactory} making 3rd party jars
- * which are included in the application jar available to the application during
- * runtime.
+ * It provides the necessary services for setting up the execution environment and invoking the actual application code.
+ * Further more it acts as a {@link ClassLoader} and {@link URLStreamHandlerFactory} making 3rd party jars which are
+ * included in the application jar available to the application during runtime.
  * <p>
- * This class retrieves the actual application information from a file resource
- * named ApplicationLoader which has be to be located in the application root
- * resource folder. The first line of this resource defines the actual
- * {@link Main} class to be loaded and executed. All remaining lines are
- * considered as system properties that are set prior to loading and invoking
- * the main class.
+ * This class retrieves the actual application information from a file resource named ApplicationLoader which has be to
+ * be located in the application root resource folder. The first line of this resource defines the actual {@link Main}
+ * class to be loaded and executed. All remaining lines are considered as system properties that are set prior to
+ * loading and invoking the main class.
  */
 public final class ApplicationLoader extends URLClassLoader {
 
@@ -66,27 +59,21 @@ public final class ApplicationLoader extends URLClassLoader {
 	private static final String RESOURCE_PROTOCOL = "resource";
 
 	static {
-		ApplicationURLStreamHandlerFactory.registerURLStreamHandlerFactory(RESOURCE_PROTOCOL,
-				new URLStreamHandlerFactory() {
+		ApplicationURLStreamHandlerFactory.registerURLStreamHandlerFactory(RESOURCE_PROTOCOL, protocol -> {
+			URLStreamHandler handler = null;
+
+			if (RESOURCE_PROTOCOL.equals(protocol)) {
+				handler = new URLStreamHandler() {
 
 					@Override
-					public URLStreamHandler createURLStreamHandler(String protocol) {
-						URLStreamHandler handler = null;
-
-						if (RESOURCE_PROTOCOL.equals(protocol)) {
-							handler = new URLStreamHandler() {
-
-								@Override
-								protected URLConnection openConnection(URL u) throws IOException {
-									return ApplicationLoader.openResourceConnection(u);
-								}
-
-							};
-						}
-						return handler;
+					protected URLConnection openConnection(URL u) throws IOException {
+						return ApplicationLoader.openResourceConnection(u);
 					}
 
-				});
+				};
+			}
+			return handler;
+		});
 	}
 
 	static URLConnection openResourceConnection(URL u) {
@@ -112,12 +99,10 @@ public final class ApplicationLoader extends URLClassLoader {
 	}
 
 	/**
-	 * Get the direct {@linkplain URL} and remove a possibly existing resource
-	 * re-direct.
+	 * Get the direct {@linkplain URL} and remove a possibly existing resource re-direct.
 	 * <p>
-	 * By using this function the application can provide resource access via
-	 * one of the JDK's standard {@link URLStreamHandler} classes for code that
-	 * cannot handle our custom {@link URLStreamHandler}.
+	 * By using this function the application can provide resource access via one of the JDK's standard
+	 * {@link URLStreamHandler} classes for code that cannot handle our custom {@link URLStreamHandler}.
 	 *
 	 * @param u The {@linkplain URL} to get the direct {@linkplain URL}.
 	 * @return The native resource {@linkplain URL}.
@@ -192,11 +177,9 @@ public final class ApplicationLoader extends URLClassLoader {
 	/**
 	 * Get the {@code JarFile} this application has been loaded from.
 	 *
-	 * @return The {@code JarFile}, or {@code null} if the application was not
-	 *         loaded from a release Jar.
+	 * @return The {@code JarFile}, or {@code null} if the application was not loaded from a release Jar.
 	 * @throws IOException if an I/O error occurs while opening the Jar.
 	 */
-	@Nullable
 	public static JarFile getApplicationJarFile() throws IOException {
 		JarFile applicationJarFile = null;
 
@@ -208,7 +191,7 @@ public final class ApplicationLoader extends URLClassLoader {
 
 	// initialization code
 
-	private static final @NonNull URL[] RESOURCE_URLS;
+	private static final URL[] RESOURCE_URLS;
 
 	static {
 		ArrayList<URL> libURLs = new ArrayList<>();

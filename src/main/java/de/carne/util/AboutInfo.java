@@ -20,15 +20,13 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 import de.carne.ApplicationLoader;
 
 /**
  * Utility class providing access to the applications version information.
  * <p>
- * Version informations are stored in the application's manifest file and
- * therefore only available after the application has been build/packaged.
+ * Version informations are stored in the application's manifest file and therefore only available after the application
+ * has been build/packaged.
  */
 public final class AboutInfo {
 
@@ -76,7 +74,7 @@ public final class AboutInfo {
 		PROJECT_BUILD = getAttributeValue(attributes, "X-Version-ProjectBuild");
 	}
 
-	private static String getAttributeValue(@Nullable Attributes attributes, String name) {
+	private static String getAttributeValue(Attributes attributes, String name) {
 		String value = (attributes != null ? attributes.getValue(name) : null);
 
 		return (value != null ? value : "?");

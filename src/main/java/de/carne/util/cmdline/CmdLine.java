@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 /**
  * Utility class for command line evaluation.
  */
@@ -35,10 +33,8 @@ public final class CmdLine {
 
 	private final List<CmdLineActionBiConsumer> namedOptionActions = new ArrayList<>();
 
-	@Nullable
 	private CmdLineActionConsumer unnamedOptionAction = null;
 
-	@Nullable
 	private CmdLineActionConsumer unknownArgumentAction = null;
 
 	/**
@@ -66,12 +62,10 @@ public final class CmdLine {
 	/**
 	 * Evaluate the command line and invoke the corresponding actions.
 	 *
-	 * @throws CmdLineException If one of the actions fails with a
-	 *         {@link CmdLineActionException}.
+	 * @throws CmdLineException If one of the actions fails with a {@link CmdLineActionException}.
 	 */
 	public void eval() throws CmdLineException {
 		CmdLineActionBiConsumer pendingNamedOptionAction = null;
-		@Nullable
 		String pendingArg = null;
 
 		try {
@@ -124,7 +118,6 @@ public final class CmdLine {
 		}
 	}
 
-	@Nullable
 	private static <T extends CmdLineAction> T matchAction(List<T> actions, String arg) {
 		T matchingAction = null;
 
@@ -140,8 +133,8 @@ public final class CmdLine {
 	/**
 	 * Register a switch action.
 	 *
-	 * @param consumer The consumer to be invoked with the argument if this
-	 *        action matches during command line evaluation.
+	 * @param consumer The consumer to be invoked with the argument if this action matches during command line
+	 *        evaluation.
 	 * @return The registered action.
 	 * @see CmdLineAction
 	 */
@@ -157,8 +150,8 @@ public final class CmdLine {
 	/**
 	 * Register a named option action.
 	 *
-	 * @param consumer The consumer to be invoked with the argument and the
-	 *        option if this action matches during command line evaluation.
+	 * @param consumer The consumer to be invoked with the argument and the option if this action matches during command
+	 *        line evaluation.
 	 * @return The registered action.
 	 * @see CmdLineAction
 	 */
@@ -174,8 +167,7 @@ public final class CmdLine {
 	/**
 	 * Register an unnamed option action.
 	 *
-	 * @param consumer The consumer to be invoked with the option if this action
-	 *        matches during command line evaluation.
+	 * @param consumer The consumer to be invoked with the option if this action matches during command line evaluation.
 	 */
 	public void unnamedOptionAction(Consumer<String> consumer) {
 		assert consumer != null;
@@ -186,8 +178,8 @@ public final class CmdLine {
 	/**
 	 * Register an action for unknown arguments.
 	 *
-	 * @param consumer The consumer to be invoked if an argument is encountered
-	 *        during evaluation which matches no action.
+	 * @param consumer The consumer to be invoked if an argument is encountered during evaluation which matches no
+	 *        action.
 	 */
 	public void unknownArgument(Consumer<String> consumer) {
 		assert consumer != null;

@@ -22,9 +22,6 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.Properties;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 import de.carne.util.logging.Log;
 
 /**
@@ -41,8 +38,8 @@ public final class PropertiesHelper {
 	/**
 	 * Initialize a {@link Properties} object for a specific class.
 	 * <p>
-	 * The function is identical to {@link #load(Class)} except for that it
-	 * generates a {@link RuntimeException} if the load operation fails.
+	 * The function is identical to {@link #load(Class)} except for that it generates a {@link RuntimeException} if the
+	 * load operation fails.
 	 *
 	 * @param cls The class to load the properties for.
 	 * @return The loaded properties.
@@ -61,8 +58,8 @@ public final class PropertiesHelper {
 	/**
 	 * Load a {@link Properties} object for a specific class.
 	 * <p>
-	 * This function assumes that the properties file is a resource named as the
-	 * submitted class with the extension .properties.
+	 * This function assumes that the properties file is a resource named as the submitted class with the extension
+	 * .properties.
 	 *
 	 * @param cls The class to load the properties for.
 	 * @return The loaded properties.
@@ -86,16 +83,14 @@ public final class PropertiesHelper {
 	/**
 	 * Get a {@link String} system property.
 	 * <p>
-	 * The system property key to retrieve is created by concatenating the
-	 * package name of the submitted class with the submitted key.
+	 * The system property key to retrieve is created by concatenating the package name of the submitted class with the
+	 * submitted key.
 	 * </p>
 	 *
 	 * @param cls The class to use for system property key creation.
 	 * @param key The key to use for system property key creation.
-	 * @param def The default value to use in case the system property is
-	 *        undefined.
-	 * @return The system property value or the submitted default value if the
-	 *         system property is undefined.
+	 * @param def The default value to use in case the system property is undefined.
+	 * @return The system property value or the submitted default value if the system property is undefined.
 	 */
 	public static String get(Class<?> cls, String key, String def) {
 		assert cls != null;
@@ -107,16 +102,14 @@ public final class PropertiesHelper {
 	/**
 	 * Get a {@code int} system property.
 	 * <p>
-	 * The system property key to retrieve is created by concatenating the
-	 * package name of the submitted class with the submitted key.
+	 * The system property key to retrieve is created by concatenating the package name of the submitted class with the
+	 * submitted key.
 	 * </p>
 	 *
 	 * @param cls The class to use for system property key creation.
 	 * @param key The key to use for system property key creation.
-	 * @param def The default value to use in case the system property is
-	 *        undefined.
-	 * @return The system property value or the submitted default value if the
-	 *         system property is undefined.
+	 * @param def The default value to use in case the system property is undefined.
+	 * @return The system property value or the submitted default value if the system property is undefined.
 	 */
 	public static int getInt(Class<?> cls, String key, int def) {
 		assert cls != null;
@@ -131,8 +124,7 @@ public final class PropertiesHelper {
 	 * @param properties The properties object to evaluate.
 	 * @param key The property key to retrieve.
 	 * @param def The default value to use in case the property is undefined.
-	 * @return The property value or the submitted default value if the property
-	 *         is undefined.
+	 * @return The property value or the submitted default value if the property is undefined.
 	 */
 	public static String get(Properties properties, String key, String def) {
 		assert properties != null;
@@ -147,23 +139,22 @@ public final class PropertiesHelper {
 	 * @param properties The properties object to evaluate.
 	 * @param key The property key to retrieve.
 	 * @param def The default value to use in case the property is undefined.
-	 * @return The property value or the submitted default value if the property
-	 *         is undefined.
+	 * @return The property value or the submitted default value if the property is undefined.
 	 */
-	public static int getInt(@NonNull Properties properties, @NonNull String key, int def) {
+	public static int getInt(Properties properties, String key, int def) {
 		return toInt(properties.getProperty(key), key, def);
 	}
 
-	private static String systemPropertyKey(@NonNull Class<?> cls, @NonNull String key) {
+	private static String systemPropertyKey(Class<?> cls, String key) {
 		return Objects.requireNonNull(cls.getPackage()).getName() + key;
 	}
 
-	private static int toInt(@Nullable String property, String key, int def) {
+	private static int toInt(String property, String key, int def) {
 		int propertyValue = def;
 
 		if (property != null) {
 			try {
-				propertyValue = Integer.valueOf(property).intValue();
+				propertyValue = Integer.decode(property).intValue();
 			} catch (NumberFormatException e) {
 				LOG.warning(e, "Invalid integer property value ''{0}''=''{1}''; using default value", key, property);
 			}

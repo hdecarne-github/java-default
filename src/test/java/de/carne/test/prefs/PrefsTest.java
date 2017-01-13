@@ -25,7 +25,6 @@ import java.util.Objects;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,7 +36,6 @@ import de.carne.util.prefs.PropertiesPreferencesFactory;
  */
 public class PrefsTest {
 
-	@Nullable
 	private static Path PROPERTIES_PATH = null;
 
 	/**

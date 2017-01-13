@@ -23,8 +23,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.prefs.Preferences;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 /**
  * Utility class providing access to a {@link Path} preference.
  */
@@ -35,11 +33,9 @@ public class DirectoryPreference extends Preference<Path> {
 	/**
 	 * Construct {@code DirectoryPreference}.
 	 *
-	 * @param preferences The {@link Preferences} object storing this
-	 *        preference.
+	 * @param preferences The {@link Preferences} object storing this preference.
 	 * @param key The preference key.
-	 * @param validate Flag to control whether to validate the preference and
-	 *        ignore invalid ones.
+	 * @param validate Flag to control whether to validate the preference and ignore invalid ones.
 	 */
 	public DirectoryPreference(Preferences preferences, String key, boolean validate) {
 		super(preferences, key);
@@ -49,10 +45,8 @@ public class DirectoryPreference extends Preference<Path> {
 	/**
 	 * Get the preference value as a {@link File} object.
 	 *
-	 * @return The found preference value, or {@code null} if the preference is
-	 *         undefined.
+	 * @return The found preference value, or {@code null} if the preference is undefined.
 	 */
-	@Nullable
 	public File getValueAsFile() {
 		return getValueAsFile(null);
 	}
@@ -60,12 +54,10 @@ public class DirectoryPreference extends Preference<Path> {
 	/**
 	 * Get the preference value as a {@link File} object.
 	 *
-	 * @param defaultValue The default preference value to return in case the
-	 *        preference is undefined.
+	 * @param defaultValue The default preference value to return in case the preference is undefined.
 	 * @return The found preference value.
 	 */
-	@Nullable
-	public File getValueAsFile(@Nullable File defaultValue) {
+	public File getValueAsFile(File defaultValue) {
 		Path value = get();
 
 		return (value != null ? value.toFile() : defaultValue);
@@ -76,7 +68,7 @@ public class DirectoryPreference extends Preference<Path> {
 	 *
 	 * @param value The value to set. If {@code null} the preference is removed.
 	 */
-	public void putValueFromFile(@Nullable File value) {
+	public void putValueFromFile(File value) {
 		put(value != null ? value.toPath() : null);
 	}
 
@@ -97,8 +89,7 @@ public class DirectoryPreference extends Preference<Path> {
 		return value.toString();
 	}
 
-	@Nullable
-	private Path validatePath(@Nullable Path path) {
+	private Path validatePath(Path path) {
 		return (!this.validate || path == null || Files.isDirectory(path) ? path : null);
 	}
 

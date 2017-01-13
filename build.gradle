@@ -9,27 +9,12 @@ archivesBaseName = project.artifactId
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-ext.checkerFrameworkVersion = '2.1.7'
-
 repositories {
 	mavenLocal()
 	mavenCentral()
 }
 
-configurations {
-	checkerFrameworkAnnotatedJDK {
-		description = 'a copy of JDK classes with Checker Framework type qualifers inserted'
-	}
-	checkerFramework {
-		description = 'The Checker Framework: custom pluggable types for Java'
-	}
-}
-
 dependencies {
-    checkerFrameworkAnnotatedJDK("org.checkerframework:jdk8:${checkerFrameworkVersion}")
-	checkerFramework("org.checkerframework:checker:${checkerFrameworkVersion}")
-	compile("org.checkerframework:checker-qual:${checkerFrameworkVersion}")
-    
 	testCompile('junit:junit:4.12')
 }
 

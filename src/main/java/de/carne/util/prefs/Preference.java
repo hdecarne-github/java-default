@@ -18,8 +18,6 @@ package de.carne.util.prefs;
 
 import java.util.prefs.Preferences;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 /**
  * Generic base class for preference access.
  *
@@ -34,8 +32,7 @@ public abstract class Preference<T> {
 	/**
 	 * Construct {@code Preference}.
 	 *
-	 * @param preferences The {@link Preferences} object storing this
-	 *        preference.
+	 * @param preferences The {@link Preferences} object storing this preference.
 	 * @param key The preference key.
 	 */
 	protected Preference(Preferences preferences, String key) {
@@ -67,10 +64,8 @@ public abstract class Preference<T> {
 	/**
 	 * Get the preference value.
 	 *
-	 * @return The found preference value, or {@code null} if the preference is
-	 *         undefined.
+	 * @return The found preference value, or {@code null} if the preference is undefined.
 	 */
-	@Nullable
 	public T get() {
 		return get(null);
 	}
@@ -78,12 +73,10 @@ public abstract class Preference<T> {
 	/**
 	 * Get the preference value.
 	 *
-	 * @param defaultValue The default preference value to return in case the
-	 *        preference is undefined.
+	 * @param defaultValue The default preference value to return in case the preference is undefined.
 	 * @return The found preference value.
 	 */
-	@Nullable
-	public T get(@Nullable T defaultValue) {
+	public T get(T defaultValue) {
 		String valueString = this.preferences.get(this.key, null);
 
 		return (valueString != null ? toValue(valueString) : defaultValue);
@@ -94,7 +87,7 @@ public abstract class Preference<T> {
 	 *
 	 * @param value The value to set. If {@code null} the preference is removed.
 	 */
-	public void put(@Nullable T value) {
+	public void put(T value) {
 		if (value != null) {
 			this.preferences.put(this.key, fromValue(value));
 		} else {
@@ -115,7 +108,6 @@ public abstract class Preference<T> {
 	 * @param valueString The string to convert.
 	 * @return The converted preference value.
 	 */
-	@Nullable
 	protected abstract T toValue(String valueString);
 
 	/**

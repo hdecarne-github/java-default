@@ -22,13 +22,10 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.logging.LogManager;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 /**
  * This class is used for logging initialization during startup and afterwards.
  * <p>
- * For proper initialization of the logging setup set the
- * "java.util.logging.config.class" property to this class' name.
+ * For proper initialization of the logging setup set the "java.util.logging.config.class" property to this class' name.
  */
 public final class LogConfig {
 
@@ -55,16 +52,14 @@ public final class LogConfig {
 	 */
 	public static final String CONFIG_DEBUG = "logging-debug.properties";
 
-	@Nullable
 	private static String currentConfig = null;
 
 	/**
 	 * Initialize the logging system using the default configuration.
 	 * <p>
-	 * The default configuration is determined by first checking the system
-	 * property named after this package for a configuration file name. If the
-	 * property is not set the default configuration file name
-	 * ({@link #CONFIG_DEFAULT}) is used.
+	 * The default configuration is determined by first checking the system property named after this package for a
+	 * configuration file name. If the property is not set the default configuration file name ({@link #CONFIG_DEFAULT})
+	 * is used.
 	 */
 	public LogConfig() {
 		applyConfig(System.getProperty(THIS_PACKAGE, CONFIG_DEFAULT));
@@ -73,12 +68,10 @@ public final class LogConfig {
 	/**
 	 * Apply a specific logging configuration.
 	 * <p>
-	 * The submitted configuration name has to denote an existing file or a
-	 * resource. First the method tries to read the corresponding file. If this
-	 * fails it tries to read a resource with the submitted name.
+	 * The submitted configuration name has to denote an existing file or a resource. First the method tries to read the
+	 * corresponding file. If this fails it tries to read a resource with the submitted name.
 	 *
-	 * @param config The configuration file name or the resource name to read
-	 *        the configuration from.
+	 * @param config The configuration file name or the resource name to read the configuration from.
 	 */
 	public static synchronized void applyConfig(String config) {
 		if (currentConfig == null || !currentConfig.equals(config)) {

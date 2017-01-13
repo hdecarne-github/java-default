@@ -24,16 +24,12 @@ import java.util.Set;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.BackingStoreException;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 class PropertiesPreferences extends AbstractPreferences {
 
 	private final PropertiesCache propertiesCache;
 
-	@Nullable
 	private Map<String, String> cachedValues = null;
 
-	@Nullable
 	private Map<String, PropertiesPreferences> cachedChildren = null;
 
 	PropertiesPreferences(Path propertiesPath) {

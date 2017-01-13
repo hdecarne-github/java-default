@@ -18,8 +18,6 @@ package de.carne.util;
 
 import java.util.function.Supplier;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 /**
  * Utility class used to manage lazy initialized resources.
  *
@@ -29,14 +27,12 @@ public final class ObjectHolder<T> {
 
 	private final Supplier<T> objectSupplier;
 
-	@Nullable
 	private T object = null;
 
 	/**
 	 * Construct {@code ObjectHolder}.
 	 *
-	 * @param objectSupplier The {@link Supplier} to use for resource object
-	 *        creation.
+	 * @param objectSupplier The {@link Supplier} to use for resource object creation.
 	 */
 	public ObjectHolder(Supplier<T> objectSupplier) {
 		assert objectSupplier != null;
@@ -47,8 +43,7 @@ public final class ObjectHolder<T> {
 	/**
 	 * Get the resource object managed by this class.
 	 * <p>
-	 * The resource object will be created the first time this function is
-	 * invoked.
+	 * The resource object will be created the first time this function is invoked.
 	 *
 	 * @return The resource object.
 	 */

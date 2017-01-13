@@ -29,8 +29,6 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 import de.carne.nio.FileAttributes;
 import de.carne.util.logging.Log;
 
@@ -42,7 +40,6 @@ final class PropertiesCache {
 
 	private final Properties cache = new Properties();
 
-	@Nullable
 	private FileTime propertiesPathLastModifiedTime = null;
 
 	PropertiesCache(Path propertiesPath) {
@@ -87,8 +84,8 @@ final class PropertiesCache {
 		return children;
 	}
 
-	public synchronized void sync(PropertiesPreferences preferences, @Nullable Map<String, String> values,
-			@Nullable Set<String> childrenNames) {
+	public synchronized void sync(PropertiesPreferences preferences, Map<String, String> values,
+			Set<String> childrenNames) {
 		try {
 			initCache();
 
@@ -166,7 +163,6 @@ final class PropertiesCache {
 		return absolutePreferencesPath;
 	}
 
-	@Nullable
 	private String determinePreferencesKey(String absolutePreferencesPath, String cacheKey) {
 		String key = null;
 
@@ -178,7 +174,6 @@ final class PropertiesCache {
 		return key;
 	}
 
-	@Nullable
 	private String determinePreferencesChildName(String absolutePreferencesPath, String cacheKey) {
 		String key = null;
 
