@@ -2,4 +2,4 @@
 
 Common Java code shared between my projects.
 
-![store view](https://travis-ci.org/hdecarne/de.carne.svg?branch=master)
+[![Build Status](https://travis-ci.org/hdecarne/de.carne.svg?branch=master)](https://travis-ci.org/hdecarne/de.carne)
