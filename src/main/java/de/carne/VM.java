@@ -27,6 +27,6 @@ public final class VM {
 	/**
 	 * Whether this VM is in test mode ({@code true}) or not ({@code false}).
 	 */
-	public static final boolean testModeEnabled = Boolean.getBoolean("enableTestMode");
+	public static final boolean TEST_MODE_ENABLED = Boolean.getBoolean("enableTestMode");
 
 }

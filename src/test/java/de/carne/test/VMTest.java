@@ -17,32 +17,32 @@
 package de.carne.test;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.carne.OS;
+import de.carne.VM;
 import de.carne.check.NonNullByDefault;
 
 /**
- * Test {@link OS} class.
+ * Test {@link VM} class.
  */
 @NonNullByDefault
-public class OSTest {
+public class VMTest {
 
 	/**
-	 * Test OS name.
+	 * Setup necessary System properties.
 	 */
-	@Test
-	public void testOSName() {
-		Assert.assertNotNull(OS.OS_NAME);
-		Assert.assertNotEquals("", OS.OS_NAME);
+	@BeforeClass
+	public static void setupSystemProperties() {
+		System.setProperty("enableTestMode", "true");
 	}
 
 	/**
-	 * Test OS flags.
+	 * Test VM flags.
 	 */
 	@Test
 	public void testOSFlags() {
-		Assert.assertTrue("Unrecognized OS: " + OS.OS_NAME, OS.IS_WINDOWS || OS.IS_MACOS || OS.IS_LINUX);
+		Assert.assertTrue(VM.TEST_MODE_ENABLED);
 	}
 
 }
