@@ -20,11 +20,15 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
+
 /**
- * Utilitiy class combining a result set with a corresponding default value.
+ * Utility class combining a result set with a corresponding default value.
  *
  * @param <T> The set element type.
  */
+@NonNullByDefault
 public final class DefaultSet<T> extends HashSet<T> {
 
 	/*
@@ -32,6 +36,7 @@ public final class DefaultSet<T> extends HashSet<T> {
 	 */
 	private static final long serialVersionUID = 2969592903102269986L;
 
+	@Nullable
 	private T defaultEntry = null;
 
 	/**
@@ -57,7 +62,7 @@ public final class DefaultSet<T> extends HashSet<T> {
 	}
 
 	@Override
-	public boolean add(T entry) {
+	public boolean add(@Nullable T entry) {
 		if (this.defaultEntry == null) {
 			this.defaultEntry = entry;
 		}
@@ -75,7 +80,7 @@ public final class DefaultSet<T> extends HashSet<T> {
 	 *
 	 * @param entry The default entry.
 	 */
-	public void addDefault(T entry) {
+	public void addDefault(@Nullable T entry) {
 		add(entry);
 		this.defaultEntry = entry;
 	}
@@ -85,6 +90,7 @@ public final class DefaultSet<T> extends HashSet<T> {
 	 *
 	 * @return The default entry.
 	 */
+	@Nullable
 	public T getDefault() {
 		return this.defaultEntry;
 	}

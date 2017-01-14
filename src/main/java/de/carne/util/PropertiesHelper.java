@@ -19,14 +19,17 @@ package de.carne.util;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
 import java.util.Properties;
 
+import de.carne.check.Check;
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
 import de.carne.util.logging.Log;
 
 /**
  * Utility class providing {@link Properties} related functions.
  */
+@NonNullByDefault
 public final class PropertiesHelper {
 
 	private PropertiesHelper() {
@@ -66,8 +69,6 @@ public final class PropertiesHelper {
 	 * @throws IOException if an I/O error occurs during loading.
 	 */
 	public static Properties load(Class<?> cls) throws IOException {
-		assert cls != null;
-
 		Properties properties;
 
 		try (InputStream stream = cls.getResourceAsStream(cls.getSimpleName() + ".properties")) {
@@ -92,10 +93,8 @@ public final class PropertiesHelper {
 	 * @param def The default value to use in case the system property is undefined.
 	 * @return The system property value or the submitted default value if the system property is undefined.
 	 */
-	public static String get(Class<?> cls, String key, String def) {
-		assert cls != null;
-		assert key != null;
-
+	@Nullable
+	public static String get(Class<?> cls, String key, @Nullable String def) {
 		return System.getProperty(systemPropertyKey(cls, key), def);
 	}
 
@@ -112,10 +111,7 @@ public final class PropertiesHelper {
 	 * @return The system property value or the submitted default value if the system property is undefined.
 	 */
 	public static int getInt(Class<?> cls, String key, int def) {
-		assert cls != null;
-		assert key != null;
-
-		return getInt(System.getProperties(), systemPropertyKey(cls, key), def);
+		return getInt(Check.nonNullS(System.getProperties()), systemPropertyKey(cls, key), def);
 	}
 
 	/**
@@ -126,10 +122,8 @@ public final class PropertiesHelper {
 	 * @param def The default value to use in case the property is undefined.
 	 * @return The property value or the submitted default value if the property is undefined.
 	 */
+	@Nullable
 	public static String get(Properties properties, String key, String def) {
-		assert properties != null;
-		assert key != null;
-
 		return properties.getProperty(key, def);
 	}
 
@@ -146,10 +140,10 @@ public final class PropertiesHelper {
 	}
 
 	private static String systemPropertyKey(Class<?> cls, String key) {
-		return Objects.requireNonNull(cls.getPackage()).getName() + key;
+		return Check.nonNullS(cls.getPackage()).getName() + key;
 	}
 
-	private static int toInt(String property, String key, int def) {
+	private static int toInt(@Nullable String property, String key, int def) {
 		int propertyValue = def;
 
 		if (property != null) {

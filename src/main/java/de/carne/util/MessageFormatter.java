@@ -16,15 +16,18 @@
  */
 package de.carne.util;
 
+import de.carne.check.NonNullByDefault;
+
 /**
  * Functional interface for message formatting.
  */
 @FunctionalInterface
+@NonNullByDefault
 public interface MessageFormatter {
 
 	/**
 	 * Format message.
-	 * 
+	 *
 	 * @param arguments Format arguments.
 	 * @return The formatted message.
 	 */

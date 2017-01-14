@@ -18,10 +18,14 @@ package de.carne.util.cmdline;
 
 import java.util.function.BiConsumer;
 
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
+
 /**
- * {@code CmdLineAction} implementation for named options. The action is invoked
- * with the argument name as well as the option string.
+ * {@code CmdLineAction} implementation for named options. The action is invoked with the argument name as well as the
+ * option string.
  */
+@NonNullByDefault
 class CmdLineActionBiConsumer extends CmdLineAction implements BiConsumer<String, String> {
 
 	private BiConsumer<String, String> consumer;
@@ -31,7 +35,7 @@ class CmdLineActionBiConsumer extends CmdLineAction implements BiConsumer<String
 	}
 
 	@Override
-	public void accept(String t, String u) throws CmdLineActionException {
+	public void accept(@Nullable String t, @Nullable String u) throws CmdLineActionException {
 		this.consumer.accept(t, u);
 	}
 

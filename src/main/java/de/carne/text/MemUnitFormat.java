@@ -20,9 +20,14 @@ import java.text.FieldPosition;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 
+import de.carne.check.Check;
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
+
 /**
  * {@link NumberFormat} implementation supporting formatting and parsing of memory unit numbers.
  */
+@NonNullByDefault
 public class MemUnitFormat extends NumberFormat {
 
 	/**
@@ -50,7 +55,7 @@ public class MemUnitFormat extends NumberFormat {
 	}
 
 	@Override
-	public StringBuffer format(double number, StringBuffer toAppendTo, FieldPosition pos) {
+	public StringBuffer format(double number, @Nullable StringBuffer toAppendTo, @Nullable FieldPosition pos) {
 		double normalizedNumber = number;
 		int memUnitIndex = 0;
 
@@ -60,16 +65,21 @@ public class MemUnitFormat extends NumberFormat {
 				memUnitIndex++;
 			}
 		}
-		return this.numberFormat.format(normalizedNumber, toAppendTo, pos).append(MEM_UNITS[memUnitIndex]);
+		return Check
+				.nonNullS(this.numberFormat.format(normalizedNumber, toAppendTo, pos).append(MEM_UNITS[memUnitIndex]));
 	}
 
 	@Override
-	public StringBuffer format(long number, StringBuffer toAppendTo, FieldPosition pos) {
+	public StringBuffer format(long number, @Nullable StringBuffer toAppendTo, @Nullable FieldPosition pos) {
 		return format(number * 1.0, toAppendTo, pos);
 	}
 
 	@Override
-	public Number parse(String source, ParsePosition parsePosition) {
+	@Nullable
+	public Number parse(@Nullable String _source, @Nullable ParsePosition _parsePosition) {
+		String source = Check.nonNullA(_source);
+		ParsePosition parsePosition = Check.nonNullA(_parsePosition);
+
 		int startIndex = parsePosition.getIndex();
 		Number number = this.numberFormat.parse(source, parsePosition);
 

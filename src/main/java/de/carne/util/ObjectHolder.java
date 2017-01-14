@@ -18,15 +18,20 @@ package de.carne.util;
 
 import java.util.function.Supplier;
 
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
+
 /**
  * Utility class used to manage lazy initialized resources.
  *
  * @param <T> The resource object type.
  */
+@NonNullByDefault
 public final class ObjectHolder<T> {
 
 	private final Supplier<T> objectSupplier;
 
+	@Nullable
 	private T object = null;
 
 	/**
@@ -47,6 +52,7 @@ public final class ObjectHolder<T> {
 	 *
 	 * @return The resource object.
 	 */
+	@Nullable
 	public synchronized T get() {
 		if (this.object == null) {
 			this.object = this.objectSupplier.get();

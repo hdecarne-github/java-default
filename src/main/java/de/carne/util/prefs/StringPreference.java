@@ -18,16 +18,18 @@ package de.carne.util.prefs;
 
 import java.util.prefs.Preferences;
 
+import de.carne.check.NonNullByDefault;
+
 /**
  * Utility class providing access to a {@link String} preference.
  */
+@NonNullByDefault
 public class StringPreference extends Preference<String> {
 
 	/**
 	 * Construct {@code StringPreference}.
 	 *
-	 * @param preferences The {@link Preferences} object storing this
-	 *        preference.
+	 * @param preferences The {@link Preferences} object storing this preference.
 	 * @param key The preference key.
 	 */
 	public StringPreference(Preferences preferences, String key) {

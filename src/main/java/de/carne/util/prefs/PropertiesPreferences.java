@@ -24,6 +24,9 @@ import java.util.Set;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.BackingStoreException;
 
+import de.carne.check.NonNullByDefault;
+
+@NonNullByDefault
 class PropertiesPreferences extends AbstractPreferences {
 
 	private final PropertiesCache propertiesCache;

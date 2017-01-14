@@ -14,25 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.annotation;
+package de.carne.check;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.LOCAL_VARIABLE;
 import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PACKAGE;
-import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.CLASS;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+/**
+ * This element may be null.
+ */
 @Documented
 @Retention(CLASS)
-@Target({ TYPE, METHOD, PACKAGE })
-/**
- * {@code NotNullByDefault} annotation to be used for code analysis (e.g. by the eclipse compiler).
- * <p>
- * For elements annotated by it the {@link NotNull} annotation is assumed for all applicable sub-elements.
- */
-public @interface NonNullByDefault {
+@Target({ FIELD, METHOD, PARAMETER, LOCAL_VARIABLE })
+public @interface Nullable {
+
+	// Just for code analysis.
 
 }

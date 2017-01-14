@@ -16,14 +16,17 @@
  */
 package de.carne;
 
+import de.carne.check.NonNullByDefault;
+
 /**
  * Application entry point.
  */
+@NonNullByDefault
 public interface Main {
 
 	/**
 	 * Run application.
-	 * 
+	 *
 	 * @param args The application's command line.
 	 * @return The application's exit status.
 	 */

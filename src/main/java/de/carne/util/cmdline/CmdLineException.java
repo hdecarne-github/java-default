@@ -16,11 +16,15 @@
  */
 package de.carne.util.cmdline;
 
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
+
 /**
  * This exception indicates a problem during command line evaluation.
  *
  * @see CmdLine#eval()
  */
+@NonNullByDefault
 public class CmdLineException extends Exception {
 
 	/**
@@ -30,6 +34,7 @@ public class CmdLineException extends Exception {
 
 	private final String arg;
 
+	@Nullable
 	private final String option;
 
 	CmdLineException(CmdLineActionException cause) {
@@ -52,6 +57,7 @@ public class CmdLineException extends Exception {
 	 *
 	 * @return The argument option (may be {@code null}).
 	 */
+	@Nullable
 	public String getOption() {
 		return this.option;
 	}

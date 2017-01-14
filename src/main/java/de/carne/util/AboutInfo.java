@@ -21,6 +21,8 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 import de.carne.ApplicationLoader;
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
 
 /**
  * Utility class providing access to the applications version information.
@@ -28,6 +30,7 @@ import de.carne.ApplicationLoader;
  * Version informations are stored in the application's manifest file and therefore only available after the application
  * has been build/packaged.
  */
+@NonNullByDefault
 public final class AboutInfo {
 
 	private AboutInfo() {
@@ -74,7 +77,7 @@ public final class AboutInfo {
 		PROJECT_BUILD = getAttributeValue(attributes, "X-Version-ProjectBuild");
 	}
 
-	private static String getAttributeValue(Attributes attributes, String name) {
+	private static String getAttributeValue(@Nullable Attributes attributes, String name) {
 		String value = (attributes != null ? attributes.getValue(name) : null);
 
 		return (value != null ? value : "?");

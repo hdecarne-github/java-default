@@ -25,10 +25,13 @@ import java.util.Properties;
 import java.util.prefs.Preferences;
 import java.util.prefs.PreferencesFactory;
 
+import de.carne.check.NonNullByDefault;
+import de.carne.util.Exceptions;
+
 /**
- * {@link Properties} based implementation of the {@link PreferencesFactory}
- * interface.
+ * {@link Properties} based implementation of the {@link PreferencesFactory} interface.
  */
+@NonNullByDefault
 public class PropertiesPreferencesFactory implements PreferencesFactory {
 
 	private static final String THIS_PACKAGE = Objects.requireNonNull(PropertiesPreferencesFactory.class.getPackage())
@@ -55,11 +58,9 @@ public class PropertiesPreferencesFactory implements PreferencesFactory {
 	}
 
 	/**
-	 * Create a {@link Preferences} object backed up by a custom properties
-	 * file.
+	 * Create a {@link Preferences} object backed up by a custom properties file.
 	 *
-	 * @param propertiesPath The path to properties file to use as a preference
-	 *        store.
+	 * @param propertiesPath The path to properties file to use as a preference store.
 	 * @return The created {@link Preferences} object.
 	 */
 	public static Preferences customRoot(Path propertiesPath) {
@@ -73,12 +74,12 @@ public class PropertiesPreferencesFactory implements PreferencesFactory {
 	}
 
 	private static String getSystemName() {
-		String systemName;
+		String systemName = "localhost";
 
 		try {
 			systemName = InetAddress.getLocalHost().getHostName();
 		} catch (UnknownHostException e) {
-			systemName = "localhost";
+			Exceptions.ignore(e);
 		}
 		return systemName;
 	}

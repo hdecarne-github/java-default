@@ -22,9 +22,14 @@ import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.function.Function;
 
+import de.carne.check.Check;
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
+
 /**
  * Utility class providing {@link String} related functions.
  */
+@NonNullByDefault
 public final class Strings {
 
 	private Strings() {
@@ -39,7 +44,7 @@ public final class Strings {
 	 * @param s The string to check.
 	 * @return {@code true} if the string is empty.
 	 */
-	public static boolean isEmpty(String s) {
+	public static boolean isEmpty(@Nullable String s) {
 		return s == null || s.length() == 0;
 	}
 
@@ -51,7 +56,7 @@ public final class Strings {
 	 * @param s The string to check.
 	 * @return {@code true} if the string is not empty.
 	 */
-	public static boolean notEmpty(String s) {
+	public static boolean notEmpty(@Nullable String s) {
 		return s != null && s.length() > 0;
 	}
 
@@ -63,7 +68,7 @@ public final class Strings {
 	 * @param s The string to check.
 	 * @return The submitted string or the empty string if {@code null} was submitted.
 	 */
-	public static String safe(String s) {
+	public static String safe(@Nullable String s) {
 		return (s != null ? s : "");
 	}
 
@@ -75,7 +80,8 @@ public final class Strings {
 	 * @param s The string to trim.
 	 * @return The trimmed string, or {@code null} if {@code null} was submitted.
 	 */
-	public static String safeTrim(String s) {
+	@Nullable
+	public static String safeTrim(@Nullable String s) {
 		return (s != null ? s.trim() : s);
 	}
 
@@ -87,10 +93,6 @@ public final class Strings {
 	 * @return The split string.
 	 */
 	public static String[] split(String s, String delimiter) {
-		assert s != null;
-		assert delimiter != null;
-		assert delimiter.length() == 1;
-
 		List<String> split = new ArrayList<>();
 		StringTokenizer tokens = new StringTokenizer(s, delimiter);
 		StringBuilder tokenBuffer = new StringBuilder();
@@ -111,7 +113,7 @@ public final class Strings {
 		if (tokenBuffer.length() > 0) {
 			split.add(tokenBuffer.toString());
 		}
-		return split.toArray(new String[split.size()]);
+		return Check.nonNullS(split.toArray(new String[split.size()]));
 	}
 
 	/**
@@ -169,7 +171,7 @@ public final class Strings {
 			}
 			buffer.append(converter.apply(object));
 		}
-		return buffer.toString();
+		return Check.nonNullS(buffer.toString());
 	}
 
 }

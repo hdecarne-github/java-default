@@ -20,22 +20,26 @@ import java.net.URL;
 import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
 import java.util.HashMap;
+import java.util.Map;
+
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
 
 /**
- * This class is used to circumvent the limitation of the {@code URL} class that
- * only one custom {@code URLStreamHandlerFactory} can be set per VM.
+ * This class is used to circumvent the limitation of the {@code URL} class that only one custom
+ * {@code URLStreamHandlerFactory} can be set per VM.
  * <p>
- * This {@code URLStreamHandlerFactory} acts as a multiplexer for an arbitrary
- * number of custom {@code URLStreamHandlerFactory} instances registered via the
- * {@link #createURLStreamHandler(String)} function.
+ * This {@code URLStreamHandlerFactory} acts as a multiplexer for an arbitrary number of custom
+ * {@code URLStreamHandlerFactory} instances registered via the {@link #createURLStreamHandler(String)} function.
  */
+@NonNullByDefault
 public final class ApplicationURLStreamHandlerFactory implements URLStreamHandlerFactory {
 
 	private ApplicationURLStreamHandlerFactory() {
 		// Prevent this class from being instantiated from outside
 	}
 
-	private static final HashMap<String, URLStreamHandlerFactory> URL_STREAM_HANDLER_FACTORY_MAP = new HashMap<>();
+	private static final Map<String, URLStreamHandlerFactory> URL_STREAM_HANDLER_FACTORY_MAP = new HashMap<>();
 
 	static {
 		URL.setURLStreamHandlerFactory(new ApplicationURLStreamHandlerFactory());
@@ -48,16 +52,14 @@ public final class ApplicationURLStreamHandlerFactory implements URLStreamHandle
 	 * @param factory The {@link URLStreamHandlerFactory} to register.
 	 */
 	public static void registerURLStreamHandlerFactory(String protocol, URLStreamHandlerFactory factory) {
-		assert protocol != null;
-		assert factory != null;
-
 		synchronized (URL_STREAM_HANDLER_FACTORY_MAP) {
 			URL_STREAM_HANDLER_FACTORY_MAP.put(protocol, factory);
 		}
 	}
 
 	@Override
-	public URLStreamHandler createURLStreamHandler(String protocol) {
+	@Nullable
+	public URLStreamHandler createURLStreamHandler(@Nullable String protocol) {
 		URLStreamHandlerFactory factory;
 
 		synchronized (URL_STREAM_HANDLER_FACTORY_MAP) {

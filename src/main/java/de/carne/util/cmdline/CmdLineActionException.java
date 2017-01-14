@@ -16,14 +16,16 @@
  */
 package de.carne.util.cmdline;
 
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
+
 /**
- * This exception indicates a problem while invoking a command line action
- * {@link CmdLineAction}.
+ * This exception indicates a problem while invoking a command line action {@link CmdLineAction}.
  * <p>
- * This exception can be thrown by the command line action's consumer
- * expressions to indicate a problem during command line evaluation. The command
- * line evaluation is stopped as soon as this exception is encountered.
+ * This exception can be thrown by the command line action's consumer expressions to indicate a problem during command
+ * line evaluation. The command line evaluation is stopped as soon as this exception is encountered.
  */
+@NonNullByDefault
 public class CmdLineActionException extends RuntimeException {
 
 	/**
@@ -33,6 +35,7 @@ public class CmdLineActionException extends RuntimeException {
 
 	private final String arg;
 
+	@Nullable
 	private final String option;
 
 	/**
@@ -71,11 +74,8 @@ public class CmdLineActionException extends RuntimeException {
 	 * @param option The option argument option.
 	 * @param cause The causing exception.
 	 */
-	public CmdLineActionException(String arg, String option, Throwable cause) {
+	public CmdLineActionException(String arg, @Nullable String option, @Nullable Throwable cause) {
 		super(cause);
-
-		assert arg != null;
-
 		this.arg = arg;
 		this.option = option;
 	}
@@ -94,6 +94,7 @@ public class CmdLineActionException extends RuntimeException {
 	 *
 	 * @return The argument option (may be {@code null}).
 	 */
+	@Nullable
 	public String getOption() {
 		return this.option;
 	}

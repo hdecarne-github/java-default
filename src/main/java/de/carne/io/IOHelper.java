@@ -39,11 +39,15 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import de.carne.check.Check;
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
 import de.carne.util.PropertiesHelper;
 
 /**
  * Utility class providing I/O related functions.
  */
+@NonNullByDefault
 public final class IOHelper {
 
 	private IOHelper() {
@@ -73,14 +77,12 @@ public final class IOHelper {
 	 * @throws IOException if an I/O error occurs while reading data.
 	 */
 	public static byte[] readBytes(InputStream in, int limit) throws IOException {
-		assert in != null;
-
 		byte[] bytes;
 
 		try (LimitOutputStream<ByteArrayOutputStream> out = new LimitOutputStream<>(new ByteArrayOutputStream(),
 				limit)) {
 			copyStream(in, out);
-			bytes = out.outputStream().toByteArray();
+			bytes = Check.nonNullS(out.outputStream().toByteArray());
 		}
 		return bytes;
 	}
@@ -94,9 +96,6 @@ public final class IOHelper {
 	 * @throws IOException if an I/O error occurs while reading or writing data.
 	 */
 	public static long copyStream(InputStream in, OutputStream out) throws IOException {
-		assert in != null;
-		assert out != null;
-
 		int read;
 		byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
 		long copied = 0;
@@ -131,13 +130,10 @@ public final class IOHelper {
 	 */
 	public static List<Path> collectDirectoryFiles(Path start, Predicate<Path> filter, FileVisitOption... options)
 			throws IOException {
-		assert start != null;
-		assert filter != null;
-
 		List<Path> collection;
 
 		try (Stream<Path> stream = Files.walk(start, options)) {
-			collection = stream.filter(filter).collect(Collectors.toList());
+			collection = Check.nonNullS(stream.filter(filter).collect(Collectors.toList()));
 		}
 		return collection;
 	}
@@ -146,34 +142,27 @@ public final class IOHelper {
 	 * Delete a directory and all it's included sub-directories/files.
 	 *
 	 * @param directory The directory to delete.
-	 * @throws IOException if an I/O error occurs while deleting the directory
-	 *         tree.
+	 * @throws IOException if an I/O error occurs while deleting the directory tree.
 	 */
 	public static void deleteDirectoryTree(String directory) throws IOException {
-		assert directory != null;
-
-		deleteDirectoryTree(Paths.get(directory));
+		deleteDirectoryTree(Check.nonNullS(Paths.get(directory)));
 	}
 
 	/**
 	 * Delete a directory and all it's included sub-directories/files.
 	 *
 	 * @param directory The directory to delete.
-	 * @throws IOException if an I/O error occurs while deleting the directory
-	 *         tree.
+	 * @throws IOException if an I/O error occurs while deleting the directory tree.
 	 */
 	public static void deleteDirectoryTree(File directory) throws IOException {
-		assert directory != null;
-
-		deleteDirectoryTree(directory.toPath());
+		deleteDirectoryTree(Check.nonNullS(directory.toPath()));
 	}
 
 	/**
 	 * Delete a directory and all it's included sub-directories/files.
 	 *
 	 * @param directory The directory to delete.
-	 * @throws IOException if an I/O error occurs while deleting the directory
-	 *         tree.
+	 * @throws IOException if an I/O error occurs while deleting the directory tree.
 	 */
 	public static void deleteDirectoryTree(Path directory) throws IOException {
 		assert directory != null;
@@ -181,13 +170,17 @@ public final class IOHelper {
 		Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
 
 			@Override
-			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+			@Nullable
+			public FileVisitResult visitFile(@Nullable Path file, @Nullable BasicFileAttributes attrs)
+					throws IOException {
 				Files.delete(file);
 				return super.visitFile(file, attrs);
 			}
 
 			@Override
-			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+			@Nullable
+			public FileVisitResult postVisitDirectory(@Nullable Path dir, @Nullable IOException exc)
+					throws IOException {
 				if (exc == null) {
 					Files.delete(dir);
 				}
@@ -198,14 +191,11 @@ public final class IOHelper {
 	}
 
 	/**
-	 * Create a temporary file and initialize it by copying a resource's
-	 * content.
+	 * Create a temporary file and initialize it by copying a resource's content.
 	 *
 	 * @param resource The resource to use for file initialization.
-	 * @param prefix The prefix to use for temp file creation (may be
-	 *        {@code null}).
-	 * @param suffix The suffix to use for temp file creation (may be
-	 *        {@code null}).
+	 * @param prefix The prefix to use for temp file creation (may be {@code null}).
+	 * @param suffix The suffix to use for temp file creation (may be {@code null}).
 	 * @param attrs The file attributes to use for temp file creation.
 	 * @return The created and initialized file.
 	 * @throws IOException if an I/O error occurs.
@@ -213,21 +203,16 @@ public final class IOHelper {
 	 */
 	public static Path createTempFileFromResource(URL resource, String prefix, String suffix, FileAttribute<?>... attrs)
 			throws IOException {
-		assert resource != null;
-
-		return copyResourceToFile(resource, Files.createTempFile(prefix, suffix, attrs));
+		return copyResourceToFile(resource, Check.nonNullS(Files.createTempFile(prefix, suffix, attrs)));
 	}
 
 	/**
-	 * Create a temporary file and initialize it by copying a resource's
-	 * content.
+	 * Create a temporary file and initialize it by copying a resource's content.
 	 *
 	 * @param resource The resource to use for file initialization.
 	 * @param dir The directory to use for temp file creation.
-	 * @param prefix The prefix to use for temp file creation (may be
-	 *        {@code null}).
-	 * @param suffix The suffix to use for temp file creation (may be
-	 *        {@code null}).
+	 * @param prefix The prefix to use for temp file creation (may be {@code null}).
+	 * @param suffix The suffix to use for temp file creation (may be {@code null}).
 	 * @param attrs The file attributes to use for temp file creation.
 	 * @return The created and initialized file.
 	 * @throws IOException if an I/O error occurs.
@@ -235,27 +220,22 @@ public final class IOHelper {
 	 */
 	public static Path createTempFileFromResource(URL resource, Path dir, String prefix, String suffix,
 			FileAttribute<?>... attrs) throws IOException {
-		assert resource != null;
-		assert dir != null;
-
-		return copyResourceToFile(resource, Files.createTempFile(dir, prefix, suffix, attrs));
+		return copyResourceToFile(resource, Check.nonNullS(Files.createTempFile(dir, prefix, suffix, attrs)));
 	}
 
 	private static Path copyResourceToFile(URL resource, Path file) throws IOException {
-		try (InputStream in = resource.openStream();
-				OutputStream out = Files.newOutputStream(file, StandardOpenOption.CREATE_NEW)) {
+		try (InputStream in = Check.nonNullS(resource.openStream());
+				OutputStream out = Check.nonNullS(Files.newOutputStream(file, StandardOpenOption.CREATE_NEW))) {
 			copyStream(in, out);
 		}
 		return file;
 	}
 
 	/**
-	 * Create a temporary directory and initialize it by copying a ZIP
-	 * resource's content.
+	 * Create a temporary directory and initialize it by copying a ZIP resource's content.
 	 *
 	 * @param resource The resource to use for directory initialization.
-	 * @param prefix The prefix to use for temp dir creation (may be
-	 *        {@code null}).
+	 * @param prefix The prefix to use for temp dir creation (may be {@code null}).
 	 * @param attrs The file attributes to use for temp dir creation.
 	 * @return The created and initialized directory.
 	 * @throws IOException if an I/O error occurs.
@@ -263,19 +243,15 @@ public final class IOHelper {
 	 */
 	public static Path createTempDirFromZIPResource(URL resource, String prefix, FileAttribute<?>... attrs)
 			throws IOException {
-		assert resource != null;
-
-		return exportZIPResourceToDirectory(resource, Files.createTempDirectory(prefix, attrs));
+		return exportZIPResourceToDirectory(resource, Check.nonNullS(Files.createTempDirectory(prefix, attrs)));
 	}
 
 	/**
-	 * Create a temporary directory and initialize it by copying a ZIP
-	 * resource's content.
+	 * Create a temporary directory and initialize it by copying a ZIP resource's content.
 	 *
 	 * @param resource The resource to use for directory initialization.
 	 * @param dir The directory to use for temp dir creation.
-	 * @param prefix The prefix to use for temp dir creation (may be
-	 *        {@code null}).
+	 * @param prefix The prefix to use for temp dir creation (may be {@code null}).
 	 * @param attrs The file attributes to use for temp dir creation.
 	 * @return The created and initialized directory.
 	 * @throws IOException if an I/O error occurs.
@@ -283,10 +259,8 @@ public final class IOHelper {
 	 */
 	public static Path createTempDirFromZIPResource(URL resource, Path dir, String prefix, FileAttribute<?>... attrs)
 			throws IOException {
-		assert resource != null;
-		assert dir != null;
-
-		return exportZIPResourceToDirectory(resource, Files.createTempDirectory(dir, prefix, attrs), attrs);
+		return exportZIPResourceToDirectory(resource, Check.nonNullS(Files.createTempDirectory(dir, prefix, attrs)),
+				attrs);
 	}
 
 	private static Path exportZIPResourceToDirectory(URL resource, Path dir, FileAttribute<?>... attrs)
@@ -301,7 +275,8 @@ public final class IOHelper {
 					Files.createDirectories(entryPath, attrs);
 				} else {
 					Files.createDirectories(entryPath.getParent(), attrs);
-					try (OutputStream out = Files.newOutputStream(entryPath, StandardOpenOption.CREATE_NEW)) {
+					try (OutputStream out = Check
+							.nonNullS(Files.newOutputStream(entryPath, StandardOpenOption.CREATE_NEW))) {
 						copyStream(in, out);
 					}
 				}

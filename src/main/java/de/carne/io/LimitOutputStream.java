@@ -20,15 +20,19 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
 
+import de.carne.check.Check;
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
+
 /**
- * {@link OutputStream} implementation used for limiting the number of bytes to
- * be written to an underlying {@link OutputStream}.
+ * {@link OutputStream} implementation used for limiting the number of bytes to be written to an underlying
+ * {@link OutputStream}.
  * <p>
- * An {@link InterruptedIOException} is thrown as soon as the given limit is
- * reached.
+ * An {@link InterruptedIOException} is thrown as soon as the given limit is reached.
  *
  * @param <T> The type of the underlying {@link OutputStream}.
  */
+@NonNullByDefault
 public class LimitOutputStream<T extends OutputStream> extends OutputStream {
 
 	private final T out;
@@ -44,15 +48,13 @@ public class LimitOutputStream<T extends OutputStream> extends OutputStream {
 	 * @param limit The limit to apply.
 	 */
 	public LimitOutputStream(T out, long limit) {
-		assert out != null;
-
-		this.out = out;
+		this.out = Check.nonNullA(out);
 		this.limit = limit;
 	}
 
 	/**
 	 * The underlying {@link OutputStream}.
-	 * 
+	 *
 	 * @return The underlying output stream.
 	 */
 	public T outputStream() {
@@ -66,13 +68,17 @@ public class LimitOutputStream<T extends OutputStream> extends OutputStream {
 	}
 
 	@Override
-	public void write(byte[] b) throws IOException {
+	public void write(@Nullable byte[] _b) throws IOException {
+		byte[] b = Check.nonNullA(_b);
+
 		this.out.write(b);
 		recordWrite(b.length);
 	}
 
 	@Override
-	public void write(byte[] b, int off, int len) throws IOException {
+	public void write(@Nullable byte[] _b, int off, int len) throws IOException {
+		byte[] b = Check.nonNullA(_b);
+
 		this.out.write(b, off, len);
 		recordWrite(len);
 	}

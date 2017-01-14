@@ -27,13 +27,14 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import de.carne.check.NonNullByDefault;
 import de.carne.util.PropertiesHelper;
 
 /**
- * This class is used to monitor and record log messages in a selective manner
- * and only during a defined period (for example to display them to the user
- * after a long running task).
+ * This class is used to monitor and record log messages in a selective manner and only during a defined period (for
+ * example to display them to the user after a long running task).
  */
+@NonNullByDefault
 public class LogMonitor extends Handler {
 
 	private final static int BUFFER_LIMIT = PropertiesHelper.getInt(LogMonitor.class, ".limit", 100);
@@ -78,11 +79,9 @@ public class LogMonitor extends Handler {
 	}
 
 	/**
-	 * Check whether this monitor's buffer is not empty and does contain any
-	 * records.
+	 * Check whether this monitor's buffer is not empty and does contain any records.
 	 *
-	 * @return {@code true} if this monitor's buffer is not empty and does
-	 *         contain any records.
+	 * @return {@code true} if this monitor's buffer is not empty and does contain any records.
 	 */
 	public synchronized boolean notEmpty() {
 		return !this.buffer.isEmpty();

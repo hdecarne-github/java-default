@@ -18,10 +18,12 @@ package de.carne.util.logging;
 
 import java.util.logging.Level;
 
+import de.carne.check.NonNullByDefault;
+
 /**
- * Custom level class for supporting the level names as defined by the
- * {@link Log} class.
+ * Custom level class for supporting the level names as defined by the {@link Log} class.
  */
+@NonNullByDefault
 public final class LogLevel extends Level {
 
 	/**
@@ -64,8 +66,8 @@ public final class LogLevel extends Level {
 	}
 
 	/*
-	 * Dummy function enabling {@link LogConfig} to access this class and by
-	 * this trigger the registration of the custom levels defined above.
+	 * Dummy function enabling {@link LogConfig} to access this class and by this trigger the registration of the custom
+	 * levels defined above.
 	 */
 	static void init() {
 		// Nothing to do here

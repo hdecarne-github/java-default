@@ -18,16 +18,18 @@ package de.carne.util.prefs;
 
 import java.util.prefs.Preferences;
 
+import de.carne.check.NonNullByDefault;
+
 /**
  * Utility class providing access to a {@link Long} preference.
  */
+@NonNullByDefault
 public class LongPreference extends Preference<Long> {
 
 	/**
 	 * Construct {@code LongPreference}.
 	 *
-	 * @param preferences The {@link Preferences} object storing this
-	 *        preference.
+	 * @param preferences The {@link Preferences} object storing this preference.
 	 * @param key The preference key.
 	 */
 	public LongPreference(Preferences preferences, String key) {
@@ -37,8 +39,7 @@ public class LongPreference extends Preference<Long> {
 	/**
 	 * Get the preference value.
 	 *
-	 * @param defaultValue The default preference value to return in case the
-	 *        preference is undefined.
+	 * @param defaultValue The default preference value to return in case the preference is undefined.
 	 * @return The preference value.
 	 */
 	public long getLong(long defaultValue) {

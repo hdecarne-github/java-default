@@ -23,9 +23,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.prefs.Preferences;
 
+import de.carne.check.NonNullByDefault;
+import de.carne.util.Exceptions;
+
 /**
  * Utility class providing access to a {@link Path} preference.
  */
+@NonNullByDefault
 public class DirectoryPreference extends Preference<Path> {
 
 	private final boolean validate;
@@ -74,12 +78,12 @@ public class DirectoryPreference extends Preference<Path> {
 
 	@Override
 	protected Path toValue(String valueString) {
-		Path value;
+		Path value = null;
 
 		try {
 			value = validatePath(Paths.get(valueString));
 		} catch (InvalidPathException e) {
-			value = null;
+			Exceptions.ignore(e);
 		}
 		return value;
 	}

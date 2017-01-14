@@ -20,11 +20,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import de.carne.check.NonNullByDefault;
 import de.carne.util.logging.Log;
 
 /**
  * Utility class providing {@link Exception} related functions.
  */
+@NonNullByDefault
 public final class Exceptions {
 
 	private Exceptions() {
@@ -34,8 +36,7 @@ public final class Exceptions {
 	private static final Log LOG = new Log();
 
 	/**
-	 * Make an {@link Exception} unchecked by wrapping it into a
-	 * {@link RuntimeException}.
+	 * Make an {@link Exception} unchecked by wrapping it into a {@link RuntimeException}.
 	 *
 	 * @param exception The exception to make unchecked.
 	 * @return The created runtime exception.
@@ -79,7 +80,7 @@ public final class Exceptions {
 	public static String getStackTrace(Throwable exception) {
 		assert exception != null;
 
-		String stackTrace = "<no stack trace>";
+		String stackTrace = null;
 
 		try (StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw)) {
 			exception.printStackTrace(pw);
@@ -88,7 +89,7 @@ public final class Exceptions {
 		} catch (IOException e) {
 			warn(e);
 		}
-		return stackTrace;
+		return (stackTrace != null ? stackTrace : "<no stack trace>");
 	}
 
 }

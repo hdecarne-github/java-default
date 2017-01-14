@@ -16,9 +16,13 @@
  */
 package de.carne;
 
+import de.carne.check.Check;
+import de.carne.check.NonNullByDefault;
+
 /**
  * Utility class to support OS specific behavior.
  */
+@NonNullByDefault
 public class OS {
 
 	private OS() {
@@ -28,7 +32,7 @@ public class OS {
 	/**
 	 * OS name.
 	 */
-	public static final String OS_NAME = System.getProperty("os.name");
+	public static final String OS_NAME = Check.nonNullS(System.getProperty("os.name"));
 
 	/**
 	 * Windows platform flag.

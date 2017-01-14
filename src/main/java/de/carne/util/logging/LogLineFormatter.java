@@ -24,10 +24,13 @@ import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
+
 /**
- * {@link Formatter} implementation producing a static non-localized single line
- * format output.
+ * {@link Formatter} implementation producing a static non-localized single line format output.
  */
+@NonNullByDefault
 public class LogLineFormatter extends Formatter {
 
 	private static final int STRING_BUFFER_SIZE = 2048;
@@ -35,32 +38,34 @@ public class LogLineFormatter extends Formatter {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss,SSS");
 
 	@Override
-	public String format(LogRecord record) {
-		String message = "...";
+	public String format(@Nullable LogRecord record) {
+		String message = null;
 
-		try (StringWriter sw = new StringWriter(STRING_BUFFER_SIZE); PrintWriter pw = new PrintWriter(sw)) {
-			pw.print(DATE_FORMAT.format(new Date(record.getMillis())));
-			pw.print(" [");
-			pw.print(record.getThreadID());
-			pw.print("] ");
-			pw.print(record.getLevel());
-			pw.print(" ");
-			pw.print(record.getLoggerName());
-			pw.print(": ");
-			pw.println(formatMessage(record));
+		if (record != null) {
+			try (StringWriter sw = new StringWriter(STRING_BUFFER_SIZE); PrintWriter pw = new PrintWriter(sw)) {
+				pw.print(DATE_FORMAT.format(new Date(record.getMillis())));
+				pw.print(" [");
+				pw.print(record.getThreadID());
+				pw.print("] ");
+				pw.print(record.getLevel());
+				pw.print(" ");
+				pw.print(record.getLoggerName());
+				pw.print(": ");
+				pw.println(formatMessage(record));
 
-			Throwable thrown = record.getThrown();
+				Throwable thrown = record.getThrown();
 
-			if (thrown != null) {
-				thrown.printStackTrace(pw);
+				if (thrown != null) {
+					thrown.printStackTrace(pw);
+				}
+				pw.flush();
+				message = sw.toString();
+			} catch (Exception e) {
+				System.err.println("An error occurred during log message formatting");
+				e.printStackTrace();
 			}
-			pw.flush();
-			message = sw.toString();
-		} catch (Exception e) {
-			System.err.println("An error occurred during log message formatting");
-			e.printStackTrace();
 		}
-		return message;
+		return (message != null ? message : "...");
 	}
 
 }

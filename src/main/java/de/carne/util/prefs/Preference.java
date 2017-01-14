@@ -18,11 +18,14 @@ package de.carne.util.prefs;
 
 import java.util.prefs.Preferences;
 
+import de.carne.check.NonNullByDefault;
+
 /**
  * Generic base class for preference access.
  *
  * @param <T> The preference type.
  */
+@NonNullByDefault
 public abstract class Preference<T> {
 
 	private final Preferences preferences;

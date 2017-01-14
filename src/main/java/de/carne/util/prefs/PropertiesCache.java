@@ -29,9 +29,11 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 
+import de.carne.check.NonNullByDefault;
 import de.carne.nio.FileAttributes;
 import de.carne.util.logging.Log;
 
+@NonNullByDefault
 final class PropertiesCache {
 
 	private final Log LOG = new Log();

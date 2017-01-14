@@ -21,12 +21,13 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import de.carne.check.NonNullByDefault;
 import de.carne.util.MessageFormatter;
 
 /**
- * This class provides validation function for {@link Path} objects and the
- * like.
+ * This class provides validation function for {@link Path} objects and the like.
  */
+@NonNullByDefault
 public final class PathValidator {
 
 	private PathValidator() {
@@ -50,7 +51,7 @@ public final class PathValidator {
 		try {
 			path = Paths.get(input);
 		} catch (InvalidPathException e) {
-			throw new ValidationException(message.format(input));
+			throw new ValidationException(message.format(input), e);
 		}
 		return path;
 	}
@@ -74,7 +75,7 @@ public final class PathValidator {
 		try {
 			path = basePath.resolve(input);
 		} catch (InvalidPathException e) {
-			throw new ValidationException(message.format(input));
+			throw new ValidationException(message.format(input), e);
 		}
 		return path;
 	}

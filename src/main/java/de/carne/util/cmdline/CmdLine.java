@@ -22,9 +22,15 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import de.carne.check.Check;
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
+import de.carne.util.Strings;
+
 /**
  * Utility class for command line evaluation.
  */
+@NonNullByDefault
 public final class CmdLine {
 
 	private final Iterable<String> args;
@@ -33,8 +39,10 @@ public final class CmdLine {
 
 	private final List<CmdLineActionBiConsumer> namedOptionActions = new ArrayList<>();
 
+	@Nullable
 	private CmdLineActionConsumer unnamedOptionAction = null;
 
+	@Nullable
 	private CmdLineActionConsumer unknownArgumentAction = null;
 
 	/**
@@ -43,9 +51,7 @@ public final class CmdLine {
 	 * @param args The command line to evaluate.
 	 */
 	public CmdLine(String[] args) {
-		assert args != null;
-
-		this.args = Arrays.asList(args);
+		this.args = Check.nonNullS(Arrays.asList(args));
 	}
 
 	/**
@@ -70,6 +76,13 @@ public final class CmdLine {
 
 		try {
 			for (String arg : this.args) {
+				// Ignore empty strings
+				if (Strings.isEmpty(arg)) {
+					continue;
+				}
+
+				assert arg != null;
+
 				// Check if this argument is an option for a previously
 				// encountered
 				// named option argument and if this the case, invoke the action
@@ -90,8 +103,7 @@ public final class CmdLine {
 				}
 
 				// Check if the argument is switch option argument and if this
-				// is
-				// the case, invoke the action
+				// is the case, invoke the action
 				CmdLineActionConsumer matchingSwitchAction = matchAction(this.switchActions, arg);
 
 				if (matchingSwitchAction != null) {
@@ -118,6 +130,7 @@ public final class CmdLine {
 		}
 	}
 
+	@Nullable
 	private static <T extends CmdLineAction> T matchAction(List<T> actions, String arg) {
 		T matchingAction = null;
 
@@ -197,7 +210,7 @@ public final class CmdLine {
 			}
 			buffer.append(arg);
 		}
-		return buffer.toString();
+		return Strings.safe(buffer.toString());
 	}
 
 }

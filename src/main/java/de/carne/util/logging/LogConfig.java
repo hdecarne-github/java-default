@@ -22,14 +22,20 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.logging.LogManager;
 
+import de.carne.check.Check;
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
+import de.carne.util.Exceptions;
+
 /**
  * This class is used for logging initialization during startup and afterwards.
  * <p>
  * For proper initialization of the logging setup set the "java.util.logging.config.class" property to this class' name.
  */
+@NonNullByDefault
 public final class LogConfig {
 
-	private static final String THIS_PACKAGE = Objects.requireNonNull(LogConfig.class.getPackage()).getName();
+	private static final String THIS_PACKAGE = Check.nonNullS(LogConfig.class.getPackage().getName());
 
 	static {
 		// Make sure our custom level class is loaded and the custom levels are
@@ -52,6 +58,7 @@ public final class LogConfig {
 	 */
 	public static final String CONFIG_DEBUG = "logging-debug.properties";
 
+	@Nullable
 	private static String currentConfig = null;
 
 	/**
@@ -73,8 +80,8 @@ public final class LogConfig {
 	 *
 	 * @param config The configuration file name or the resource name to read the configuration from.
 	 */
-	public static synchronized void applyConfig(String config) {
-		if (currentConfig == null || !currentConfig.equals(config)) {
+	public static synchronized void applyConfig(@Nullable String config) {
+		if (!Objects.equals(currentConfig, config)) {
 			if (config != null) {
 				if (!applyFileConfig(config)) {
 					applyResourceConfig(config);
@@ -92,7 +99,7 @@ public final class LogConfig {
 			LogManager.getLogManager().readConfiguration(configStream);
 			applied = true;
 		} catch (FileNotFoundException e) {
-			// Ignore and report
+			Exceptions.ignore(e);
 		} catch (Exception e) {
 			System.err.println("An error occurred while reading logging configuration file: " + config);
 			e.printStackTrace();

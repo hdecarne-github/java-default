@@ -29,12 +29,15 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
 import de.carne.util.PropertiesHelper;
 
 /**
  * {@link Handler} implementation used to buffer log records for later publishing by one or more dynamically defined
  * {@link Handler} instances.
  */
+@NonNullByDefault
 public class LogBuffer extends Handler {
 
 	/**
@@ -54,6 +57,7 @@ public class LogBuffer extends Handler {
 	 * @param logger The logger to get the log buffer for.
 	 * @return The attached log buffer, or {@code null} if none has been configured.
 	 */
+	@Nullable
 	public static LogBuffer getInstance(Logger logger) {
 		assert logger != null;
 
@@ -197,8 +201,8 @@ public class LogBuffer extends Handler {
 	}
 
 	@Override
-	public void publish(LogRecord record) {
-		if (this.locked.compareAndSet(false, true)) {
+	public void publish(@Nullable LogRecord record) {
+		if (record != null && this.locked.compareAndSet(false, true)) {
 			synchronized (this) {
 				try {
 					while (this.buffer.size() >= BUFFER_LIMIT) {

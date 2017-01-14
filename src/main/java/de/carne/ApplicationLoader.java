@@ -38,6 +38,10 @@ import java.util.Iterator;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import de.carne.check.Check;
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
+
 /**
  * This class is the generic entry point for all kind of applications.
  * <p>
@@ -50,6 +54,7 @@ import java.util.jar.JarFile;
  * class to be loaded and executed. All remaining lines are considered as system properties that are set prior to
  * loading and invoking the main class.
  */
+@NonNullByDefault
 public final class ApplicationLoader extends URLClassLoader {
 
 	private static final boolean DEBUG = System.getProperty(ApplicationLoader.class.getName() + ".DEBUG") != null;
@@ -66,7 +71,9 @@ public final class ApplicationLoader extends URLClassLoader {
 				handler = new URLStreamHandler() {
 
 					@Override
-					protected URLConnection openConnection(URL u) throws IOException {
+					protected URLConnection openConnection(@Nullable URL _u) throws IOException {
+						URL u = Check.nonNullA(_u);
+
 						return ApplicationLoader.openResourceConnection(u);
 					}
 
@@ -105,8 +112,9 @@ public final class ApplicationLoader extends URLClassLoader {
 	 * {@link URLStreamHandler} classes for code that cannot handle our custom {@link URLStreamHandler}.
 	 *
 	 * @param u The {@linkplain URL} to get the direct {@linkplain URL}.
-	 * @return The native resource {@linkplain URL}.
+	 * @return The native resource {@linkplain URL} or {@code null} if the resource does not exist.
 	 */
+	@Nullable
 	public static URL getDirectURL(URL u) {
 		return (u != null && RESOURCE_PROTOCOL.equals(u.getProtocol())
 				? ApplicationLoader.class.getResource(u.getFile()) : u);
@@ -119,21 +127,38 @@ public final class ApplicationLoader extends URLClassLoader {
 	private static String[] SYSTEM_CLASS_PREFIXES = new String[] { ApplicationLoader.class.getName(),
 			Main.class.getName(), "de.carne.util.logging" };
 
-	private final ClassLoader systemClassLoader = getSystemClassLoader();
+	private static final ClassLoader SYSTEM_CLASS_LOADER;
+
+	static {
+		ClassLoader systemClassLoader = getSystemClassLoader();
+
+		if (systemClassLoader == null) {
+			systemClassLoader = ApplicationLoader.class.getClassLoader();
+		}
+
+		assert systemClassLoader != null;
+
+		SYSTEM_CLASS_LOADER = systemClassLoader;
+	}
 
 	@Override
-	public Class<?> loadClass(String name) throws ClassNotFoundException {
+	public Class<?> loadClass(@Nullable String name) throws ClassNotFoundException {
 		Class<?> cls = null;
 
-		for (String systemClassPrefix : SYSTEM_CLASS_PREFIXES) {
-			if (name.startsWith(systemClassPrefix)) {
-				cls = this.systemClassLoader.loadClass(name);
-				break;
+		if (name != null) {
+			for (String systemClassPrefix : SYSTEM_CLASS_PREFIXES) {
+				if (name.startsWith(systemClassPrefix)) {
+					cls = SYSTEM_CLASS_LOADER.loadClass(name);
+					break;
+				}
 			}
 		}
 		if (cls == null) {
 			cls = super.loadClass(name);
 		}
+
+		assert cls != null;
+
 		return cls;
 	}
 
@@ -145,12 +170,8 @@ public final class ApplicationLoader extends URLClassLoader {
 		Path codePath;
 
 		try {
-			CodeSource codeSource = ApplicationLoader.class.getProtectionDomain().getCodeSource();
-
-			if (codeSource == null) {
-				throw new IllegalStateException("Unable to determine code source");
-			}
-
+			CodeSource codeSource = Check.nonNullS(ApplicationLoader.class.getProtectionDomain().getCodeSource(),
+					"Unable to determine code source");
 			URL codeURL = codeSource.getLocation();
 
 			if (DEBUG) {
@@ -171,6 +192,9 @@ public final class ApplicationLoader extends URLClassLoader {
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
 		}
+
+		assert codePath != null;
+
 		CODE_PATH = codePath;
 	}
 
@@ -180,6 +204,7 @@ public final class ApplicationLoader extends URLClassLoader {
 	 * @return The {@code JarFile}, or {@code null} if the application was not loaded from a release Jar.
 	 * @throws IOException if an I/O error occurs while opening the Jar.
 	 */
+	@Nullable
 	public static JarFile getApplicationJarFile() throws IOException {
 		JarFile applicationJarFile = null;
 
@@ -218,7 +243,7 @@ public final class ApplicationLoader extends URLClassLoader {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		RESOURCE_URLS = libURLs.toArray(new URL[libURLs.size()]);
+		RESOURCE_URLS = Check.nonNullS(libURLs.toArray(new URL[libURLs.size()]));
 	}
 
 	private ApplicationLoader() {
@@ -291,7 +316,7 @@ public final class ApplicationLoader extends URLClassLoader {
 					logErr("Ignoring invalid system property definition '" + propertyLine + "'");
 				}
 			}
-			mainClass = classLoader.loadClass(mainClassName).asSubclass(Main.class);
+			mainClass = Check.nonNullS(classLoader.loadClass(mainClassName).asSubclass(Main.class));
 		}
 		return mainClass;
 	}

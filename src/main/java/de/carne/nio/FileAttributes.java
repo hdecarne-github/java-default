@@ -25,9 +25,13 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import de.carne.check.Check;
+import de.carne.check.NonNullByDefault;
+
 /**
  * Utility class for {@link FileAttribute} handling.
  */
+@NonNullByDefault
 public final class FileAttributes {
 
 	private FileAttributes() {
@@ -39,12 +43,10 @@ public final class FileAttributes {
 	/**
 	 * Get a proper default {@link FileAttribute} set for a user directory.
 	 * <p>
-	 * Based upon the corresponding file system's capabilities this function
-	 * determines the best suiting file attributes for only letting the current
-	 * user access the directory.
+	 * Based upon the corresponding file system's capabilities this function determines the best suiting file attributes
+	 * for only letting the current user access the directory.
 	 *
-	 * @param directoryPath The directory path to get the default file
-	 *        attributes for.
+	 * @param directoryPath The directory path to get the default file attributes for.
 	 * @return The determined default file attributes.
 	 */
 	public static FileAttribute<?>[] defaultUserDirectoryAttributes(Path directoryPath) {
@@ -57,15 +59,14 @@ public final class FileAttributes {
 			attributes.add(PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ,
 					PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_EXECUTE)));
 		}
-		return attributes.toArray(new FileAttribute<?>[attributes.size()]);
+		return Check.nonNullS(attributes.toArray(new FileAttribute<?>[attributes.size()]));
 	}
 
 	/**
 	 * Get a proper default {@link FileAttribute} set for a user file.
 	 * <p>
-	 * Based upon the corresponding file system's capabilities this function
-	 * determines the best suiting file attributes for only letting the current
-	 * user access the file.
+	 * Based upon the corresponding file system's capabilities this function determines the best suiting file attributes
+	 * for only letting the current user access the file.
 	 *
 	 * @param filePath The file path to get the default file attributes for.
 	 * @return The determined default file attributes.
@@ -80,7 +81,7 @@ public final class FileAttributes {
 			attributes.add(PosixFilePermissions
 					.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)));
 		}
-		return attributes.toArray(new FileAttribute<?>[attributes.size()]);
+		return Check.nonNullA(attributes.toArray(new FileAttribute<?>[attributes.size()]));
 	}
 
 }

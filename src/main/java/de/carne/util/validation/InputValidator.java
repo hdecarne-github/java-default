@@ -20,11 +20,13 @@ import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.carne.check.NonNullByDefault;
 import de.carne.util.MessageFormatter;
 
 /**
  * This class provides validation function for all kind of general input.
  */
+@NonNullByDefault
 public final class InputValidator {
 
 	private InputValidator() {
