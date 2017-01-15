@@ -24,6 +24,10 @@ import de.carne.check.NonNullByDefault;
 @NonNullByDefault
 public final class VM {
 
+	private VM() {
+		// To prevent instantiation
+	}
+
 	/**
 	 * Whether this VM is in test mode ({@code true}) or not ({@code false}).
 	 */
