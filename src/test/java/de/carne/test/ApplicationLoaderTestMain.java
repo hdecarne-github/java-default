@@ -22,6 +22,7 @@ import de.carne.ApplicationLoader;
 import de.carne.Main;
 import de.carne.VM;
 import de.carne.check.NonNullByDefault;
+import de.carne.util.logging.Log;
 
 /**
  * Test main class for testing {@link ApplicationLoader}.
@@ -29,11 +30,14 @@ import de.carne.check.NonNullByDefault;
 @NonNullByDefault
 public class ApplicationLoaderTestMain implements Main {
 
+	private static final Log LOG = new Log();
+
 	/**
 	 * Main entry point.
 	 */
 	@Override
 	public int run(String[] args) {
+		LOG.notice("Running...");
 		Assert.assertTrue(VM.TEST_MODE_ENABLED);
 		return 0;
 	}

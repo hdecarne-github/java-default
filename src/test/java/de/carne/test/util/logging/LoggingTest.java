@@ -1,0 +1,201 @@
+/*
+ * Copyright (c) 2016-2017 Holger de Carne and contributors, All Rights Reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package de.carne.test.util.logging;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import de.carne.check.Check;
+import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
+import de.carne.util.logging.Log;
+import de.carne.util.logging.LogBuffer;
+import de.carne.util.logging.LogConfig;
+
+/**
+ * Test {@link Log} class functionality.
+ */
+@NonNullByDefault
+public class LoggingTest {
+
+	private static final Log LOG = new Log();
+
+	private static final String LOG_MESSAGE = Check.nonNullS(LoggingTest.class.getSimpleName());
+
+	/**
+	 * Setup necessary System properties.
+	 */
+	@BeforeClass
+	public static void setupSystemProperties() {
+		System.setProperty("java.util.logging.config.class", LogConfig.class.getName());
+	}
+
+	/**
+	 * Test basic log functions.
+	 */
+	@Test
+	public void testBasicLogFunctions() {
+		LogConfig.applyConfig(LogConfig.CONFIG_DEFAULT);
+
+		Log log = new Log();
+
+		log.notice(new Throwable(), "Notice");
+		log.error(new Throwable(), "Error");
+		log.warning(new Throwable(), "Warning");
+		log.info(new Throwable(), "Info");
+		log.debug(new Throwable(), "Debug");
+		log.trace(new Throwable(), "Trace");
+	}
+
+	/**
+	 * Test runtime log configuration.
+	 */
+	@Test
+	public void testLogConfig() {
+		Log log = new Log();
+
+		LogConfig.applyConfig(LogConfig.CONFIG_DEFAULT);
+		log.notice(LogConfig.CONFIG_DEFAULT);
+
+		Assert.assertTrue(log.isNoticeLoggable());
+		Assert.assertTrue(log.isErrorLoggable());
+		Assert.assertTrue(log.isWarningLoggable());
+		Assert.assertFalse(log.isInfoLoggable());
+		Assert.assertFalse(log.isDebugLoggable());
+		Assert.assertFalse(log.isTraceLoggable());
+
+		LogConfig.applyConfig(LogConfig.CONFIG_VERBOSE);
+		log.info(LogConfig.CONFIG_VERBOSE);
+
+		Assert.assertTrue(log.isNoticeLoggable());
+		Assert.assertTrue(log.isErrorLoggable());
+		Assert.assertTrue(log.isWarningLoggable());
+		Assert.assertTrue(log.isInfoLoggable());
+		Assert.assertFalse(log.isDebugLoggable());
+		Assert.assertFalse(log.isTraceLoggable());
+
+		LogConfig.applyConfig(LogConfig.CONFIG_DEBUG);
+		log.debug(LogConfig.CONFIG_DEBUG);
+
+		Assert.assertTrue(log.isNoticeLoggable());
+		Assert.assertTrue(log.isErrorLoggable());
+		Assert.assertTrue(log.isWarningLoggable());
+		Assert.assertTrue(log.isInfoLoggable());
+		Assert.assertTrue(log.isDebugLoggable());
+		Assert.assertFalse(log.isTraceLoggable());
+	}
+
+	/**
+	 * Test log buffer.
+	 *
+	 * @throws IOException if an error occurs.
+	 */
+	@Test
+	public void testLogBuffer() throws IOException {
+		LOG.notice(LOG_MESSAGE);
+
+		LogBuffer logBuffer = LogBuffer.getInstance(LOG.getLogger());
+
+		Assert.assertNotNull(logBuffer);
+
+		LogCounter logCounter1 = new LogCounter();
+
+		logBuffer.addHandler(logCounter1);
+
+		int logCounter1BaseValue = logCounter1.getPublishCounter();
+
+		Assert.assertTrue(logCounter1BaseValue > 0);
+
+		LOG.notice(LOG_MESSAGE);
+
+		Assert.assertEquals(logCounter1BaseValue + 1, logCounter1.getPublishCounter());
+
+		logBuffer.flush();
+
+		Assert.assertEquals(1, logCounter1.getFlushCounter());
+
+		logBuffer.removeHandler(logCounter1);
+
+		File exportFile = Files.createTempFile(getClass().getSimpleName(), null).toFile();
+
+		assert exportFile != null;
+
+		try {
+			logBuffer.exportTo(exportFile);
+			Assert.assertTrue(exportFile.length() > 0);
+		} finally {
+			exportFile.delete();
+		}
+		try {
+			LogBuffer.exportTo(LOG.getLogger(), exportFile);
+			Assert.assertTrue(exportFile.length() > 0);
+		} finally {
+			exportFile.delete();
+		}
+
+		LogCounter logCounter2 = new LogCounter();
+
+		logBuffer.clear();
+		LogBuffer.addHandler(LOG.getLogger(), logCounter2);
+
+		Assert.assertEquals(0, logCounter2.getPublishCounter());
+
+		LogBuffer.removeHandler(LOG.getLogger(), logCounter2);
+	}
+
+	private static class LogCounter extends Handler {
+
+		private int publishCounter = 0;
+		private int flushCounter = 0;
+
+		LogCounter() {
+			// Just to prevent access warning
+		}
+
+		public int getPublishCounter() {
+			return this.publishCounter;
+		}
+
+		public int getFlushCounter() {
+			return this.flushCounter;
+		}
+
+		@Override
+		public void publish(@Nullable LogRecord record) {
+			this.publishCounter++;
+		}
+
+		@Override
+		public void flush() {
+			this.flushCounter++;
+		}
+
+		@Override
+		public void close() throws SecurityException {
+			// Nothing to do here
+		}
+
+	}
+
+}

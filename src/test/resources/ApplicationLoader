@@ -1,2 +1,4 @@
 de.carne.test.ApplicationLoaderTestMain
-enableTestMode=true
+enableTestMode
+java.util.logging.config.class = de.carne.util.logging.LogConfig
+java.util.prefs.PreferencesFactory = de.carne.util.prefs.PropertiesPreferencesFactory
