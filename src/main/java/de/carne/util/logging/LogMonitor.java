@@ -108,8 +108,8 @@ public class LogMonitor extends Handler {
 
 	@Override
 	public synchronized void publish(LogRecord record) {
-		if (record.getLevel().intValue() >= this.level.intValue()
-				&& (this.threadIds.isEmpty() || this.threadIds.contains(record.getThreadID()))) {
+		if (record.getLevel().intValue() >= this.level.intValue() && (this.threadIds.isEmpty()
+				|| this.threadIds.contains(Long.valueOf(record.getThreadID() & 0xffffffffl)))) {
 			if (this.buffer.size() < BUFFER_LIMIT) {
 				this.buffer.addLast(record);
 			}

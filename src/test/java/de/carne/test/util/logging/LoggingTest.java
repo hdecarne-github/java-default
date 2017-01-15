@@ -32,6 +32,8 @@ import de.carne.check.Nullable;
 import de.carne.util.logging.Log;
 import de.carne.util.logging.LogBuffer;
 import de.carne.util.logging.LogConfig;
+import de.carne.util.logging.LogLevel;
+import de.carne.util.logging.LogMonitor;
 
 /**
  * Test {@link Log} class functionality.
@@ -113,23 +115,23 @@ public class LoggingTest {
 	 */
 	@Test
 	public void testLogBuffer() throws IOException {
-		LOG.notice(LOG_MESSAGE);
-
 		LogBuffer logBuffer = LogBuffer.getInstance(LOG.getLogger());
 
 		Assert.assertNotNull(logBuffer);
+
+		logBuffer.clear();
+
+		LOG.notice(LOG_MESSAGE);
 
 		LogCounter logCounter1 = new LogCounter();
 
 		logBuffer.addHandler(logCounter1);
 
-		int logCounter1BaseValue = logCounter1.getPublishCounter();
-
-		Assert.assertTrue(logCounter1BaseValue > 0);
+		Assert.assertEquals(1, logCounter1.getPublishCounter());
 
 		LOG.notice(LOG_MESSAGE);
 
-		Assert.assertEquals(logCounter1BaseValue + 1, logCounter1.getPublishCounter());
+		Assert.assertEquals(2, logCounter1.getPublishCounter());
 
 		logBuffer.flush();
 
@@ -156,7 +158,7 @@ public class LoggingTest {
 
 		LogCounter logCounter2 = new LogCounter();
 
-		logBuffer.clear();
+		LogBuffer.clear(LOG.getLogger());
 		LogBuffer.addHandler(LOG.getLogger(), logCounter2);
 
 		Assert.assertEquals(0, logCounter2.getPublishCounter());
@@ -196,6 +198,34 @@ public class LoggingTest {
 			// Nothing to do here
 		}
 
+	}
+
+	/**
+	 * Test log monitor.
+	 */
+	@Test
+	public void testLogMonitor() {
+		LogMonitor monitor1 = new LogMonitor(LogLevel.LEVEL_ERROR);
+
+		try (LogMonitor.Session session1 = monitor1.start()) {
+			session1.includeLog(LOG);
+			LOG.warning(LOG_MESSAGE);
+			LOG.error(LOG_MESSAGE);
+		}
+
+		Assert.assertTrue(monitor1.notEmpty());
+		Assert.assertEquals(1, monitor1.getRecords().size());
+
+		LogMonitor monitor2 = new LogMonitor(LogLevel.LEVEL_WARNING);
+
+		monitor2.includeThread(Thread.currentThread());
+		try (LogMonitor.Session session2 = monitor2.start()) {
+			session2.includeLogger(LOG.getLogger());
+			LOG.warning(LOG_MESSAGE);
+		}
+
+		Assert.assertTrue(monitor2.notEmpty());
+		Assert.assertEquals(1, monitor2.getRecords().size());
 	}
 
 }
