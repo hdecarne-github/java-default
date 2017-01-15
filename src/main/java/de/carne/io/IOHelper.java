@@ -201,8 +201,8 @@ public final class IOHelper {
 	 * @throws IOException if an I/O error occurs.
 	 * @see Files#createTempFile(String, String, FileAttribute...)
 	 */
-	public static Path createTempFileFromResource(URL resource, String prefix, String suffix, FileAttribute<?>... attrs)
-			throws IOException {
+	public static Path createTempFileFromResource(URL resource, @Nullable String prefix, @Nullable String suffix,
+			FileAttribute<?>... attrs) throws IOException {
 		return copyResourceToFile(resource, Check.nonNullS(Files.createTempFile(prefix, suffix, attrs)));
 	}
 
@@ -225,7 +225,8 @@ public final class IOHelper {
 
 	private static Path copyResourceToFile(URL resource, Path file) throws IOException {
 		try (InputStream in = Check.nonNullS(resource.openStream());
-				OutputStream out = Check.nonNullS(Files.newOutputStream(file, StandardOpenOption.CREATE_NEW))) {
+				OutputStream out = Check.nonNullS(
+						Files.newOutputStream(file, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING))) {
 			copyStream(in, out);
 		}
 		return file;
@@ -241,7 +242,7 @@ public final class IOHelper {
 	 * @throws IOException if an I/O error occurs.
 	 * @see Files#createTempDirectory(String, FileAttribute...)
 	 */
-	public static Path createTempDirFromZIPResource(URL resource, String prefix, FileAttribute<?>... attrs)
+	public static Path createTempDirFromZIPResource(URL resource, @Nullable String prefix, FileAttribute<?>... attrs)
 			throws IOException {
 		return exportZIPResourceToDirectory(resource, Check.nonNullS(Files.createTempDirectory(prefix, attrs)));
 	}
@@ -257,8 +258,8 @@ public final class IOHelper {
 	 * @throws IOException if an I/O error occurs.
 	 * @see Files#createTempDirectory(Path, String, FileAttribute...)
 	 */
-	public static Path createTempDirFromZIPResource(URL resource, Path dir, String prefix, FileAttribute<?>... attrs)
-			throws IOException {
+	public static Path createTempDirFromZIPResource(URL resource, Path dir, @Nullable String prefix,
+			FileAttribute<?>... attrs) throws IOException {
 		return exportZIPResourceToDirectory(resource, Check.nonNullS(Files.createTempDirectory(dir, prefix, attrs)),
 				attrs);
 	}
