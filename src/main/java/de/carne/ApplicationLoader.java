@@ -57,7 +57,7 @@ import de.carne.check.Nullable;
 @NonNullByDefault
 public final class ApplicationLoader extends URLClassLoader {
 
-	private static final boolean DEBUG = System.getProperty(ApplicationLoader.class.getName() + ".DEBUG") != null;
+	private static final boolean DEBUG = Boolean.getBoolean(ApplicationLoader.class.getName() + ".DEBUG");
 
 	// resource URL handling code
 
@@ -272,7 +272,10 @@ public final class ApplicationLoader extends URLClassLoader {
 		if (DEBUG) {
 			logOut("Exit status " + status);
 		}
-		System.exit(status);
+		// To make this class invokable e.g. during automatic testing we simply return in case of success (status 0).
+		if (status != 0) {
+			System.exit(status);
+		}
 	}
 
 	private static Class<? extends Main> loadMain(ClassLoader classLoader) throws IOException, ClassNotFoundException {
