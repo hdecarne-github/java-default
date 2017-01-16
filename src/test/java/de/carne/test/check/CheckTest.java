@@ -33,7 +33,7 @@ public class CheckTest {
 	 * Test all checks in success scenario.
 	 */
 	@Test
-	public void testCheckSuccess() {
+	public void testSuccess() {
 		Check.nonNullA(this);
 		Check.nonNullA(this, CHECK_MESSAGE);
 		Check.nonNullS(this);
@@ -46,7 +46,7 @@ public class CheckTest {
 	 * Test {@link Check#nonNullA(Object)} in failure scenario.
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testCheckNonNullAFailure1() {
+	public void testNonNullAFailure1() {
 		Check.nonNullA(null);
 	}
 
@@ -54,7 +54,7 @@ public class CheckTest {
 	 * Test {@link Check#nonNullA(Object, String)} in failure scenario.
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testCheckNonNullAFailure2() {
+	public void testNonNullAFailure2() {
 		Check.nonNullA(null, CHECK_MESSAGE);
 	}
 
@@ -62,7 +62,7 @@ public class CheckTest {
 	 * Test {@link Check#nonNullS(Object)} in failure scenario.
 	 */
 	@Test(expected = IllegalStateException.class)
-	public void testCheckNonNullSFailure1() {
+	public void testNonNullSFailure1() {
 		Check.nonNullS(null);
 	}
 
@@ -70,7 +70,7 @@ public class CheckTest {
 	 * Test {@link Check#nonNullS(Object, String)} in failure scenario.
 	 */
 	@Test(expected = IllegalStateException.class)
-	public void testCheckNonNullSFailure2() {
+	public void testNonNullSFailure2() {
 		Check.nonNullS(null, CHECK_MESSAGE);
 	}
 
@@ -78,7 +78,7 @@ public class CheckTest {
 	 * Test {@link Check#condition(boolean)} in failure scenario.
 	 */
 	@Test(expected = IllegalStateException.class)
-	public void testCheckConditionFailure1() {
+	public void testConditionFailure1() {
 		Check.condition(false);
 	}
 
@@ -86,7 +86,7 @@ public class CheckTest {
 	 * Test {@link Check#condition(boolean, String)} in failure scenario.
 	 */
 	@Test(expected = IllegalStateException.class)
-	public void testCheckConditionFailure2() {
+	public void testConditionFailure2() {
 		Check.condition(false, CHECK_MESSAGE);
 	}
 

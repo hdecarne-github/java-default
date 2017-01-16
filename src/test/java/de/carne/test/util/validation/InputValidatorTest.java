@@ -18,6 +18,7 @@ package de.carne.test.util.validation;
 
 import java.util.regex.Pattern;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import de.carne.util.validation.InputValidator;
@@ -38,9 +39,14 @@ public class InputValidatorTest {
 	@Test
 	public void testSuccess() throws ValidationException {
 		InputValidator.isTrue(true, (a) -> VALIDATION_MESSAGE);
-		InputValidator.notNull("1", (a) -> VALIDATION_MESSAGE);
-		InputValidator.notEmpty("2", (a) -> VALIDATION_MESSAGE);
-		InputValidator.matches("3", Pattern.compile("\\d*"), (a) -> VALIDATION_MESSAGE);
+		InputValidator.notNull("not null", (a) -> VALIDATION_MESSAGE);
+		InputValidator.notEmpty("not empty", (a) -> VALIDATION_MESSAGE);
+
+		String[] matches = InputValidator.matches("3rd", Pattern.compile("(\\d*).*"), (a) -> VALIDATION_MESSAGE);
+
+		Assert.assertNotNull(matches);
+		Assert.assertTrue(matches.length == 1);
+		Assert.assertEquals("3", matches[0]);
 	}
 
 	/**

@@ -223,6 +223,7 @@ public class LoggingTest {
 			session2.includeLogger(LOG.getLogger());
 			LOG.warning(LOG_MESSAGE);
 		}
+		monitor2.excludeThread(Thread.currentThread());
 
 		Assert.assertTrue(monitor2.notEmpty());
 		Assert.assertEquals(1, monitor2.getRecords().size());

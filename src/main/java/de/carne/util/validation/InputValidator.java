@@ -21,6 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
 import de.carne.util.MessageFormatter;
 
 /**
@@ -57,7 +58,7 @@ public final class InputValidator {
 	 * @return The validated {@link Path} object.
 	 * @throws ValidationException if the input is invalid.
 	 */
-	public static <T> T notNull(T input, MessageFormatter message) throws ValidationException {
+	public static <T> T notNull(@Nullable T input, MessageFormatter message) throws ValidationException {
 		assert message != null;
 
 		if (input == null) {
@@ -74,7 +75,7 @@ public final class InputValidator {
 	 * @return The validated {@link Path} object.
 	 * @throws ValidationException if the input is invalid.
 	 */
-	public static String notEmpty(String input, MessageFormatter message) throws ValidationException {
+	public static String notEmpty(@Nullable String input, MessageFormatter message) throws ValidationException {
 		assert message != null;
 
 		if (input == null || input.length() == 0) {
