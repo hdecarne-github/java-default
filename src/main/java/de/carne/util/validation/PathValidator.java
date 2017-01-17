@@ -81,25 +81,25 @@ public final class PathValidator {
 	}
 
 	/**
-	 * Make sure input is a readable file.
+	 * Make sure input is a file path.
 	 *
 	 * @param input The input to validate.
 	 * @param message The exception message to use if the input is invalid.
 	 * @return The validated {@link Path} object.
 	 * @throws ValidationException if the input is invalid.
-	 * @see Files#isReadable(Path)
+	 * @see Files#isRegularFile(Path, java.nio.file.LinkOption...)
 	 */
-	public static Path isReadableFile(String input, MessageFormatter message) throws ValidationException {
+	public static Path isRegularFilePath(String input, MessageFormatter message) throws ValidationException {
 		Path inputPath = isPath(input, message);
 
-		if (!Files.isReadable(inputPath)) {
+		if (!Files.isRegularFile(inputPath)) {
 			throw new ValidationException(message.format(input));
 		}
 		return inputPath;
 	}
 
 	/**
-	 * Make sure input is a readable directory.
+	 * Make sure input is a directory path.
 	 *
 	 * @param input The input to validate.
 	 * @param message The exception message to use if the input is invalid.
@@ -107,7 +107,7 @@ public final class PathValidator {
 	 * @throws ValidationException if the input is invalid.
 	 * @see Files#isReadable(Path)
 	 */
-	public static Path isReadableDirectory(String input, MessageFormatter message) throws ValidationException {
+	public static Path isDirectoryPath(String input, MessageFormatter message) throws ValidationException {
 		Path inputPath = isPath(input, message);
 
 		if (!Files.isDirectory(inputPath)) {
@@ -117,7 +117,25 @@ public final class PathValidator {
 	}
 
 	/**
-	 * Make sure input is a writable directory.
+	 * Make sure input is a readable path.
+	 *
+	 * @param input The input to validate.
+	 * @param message The exception message to use if the input is invalid.
+	 * @return The validated {@link Path} object.
+	 * @throws ValidationException if the input is invalid.
+	 * @see Files#isReadable(Path)
+	 */
+	public static Path isReadablePath(String input, MessageFormatter message) throws ValidationException {
+		Path inputPath = isPath(input, message);
+
+		if (!Files.isReadable(inputPath)) {
+			throw new ValidationException(message.format(input));
+		}
+		return inputPath;
+	}
+
+	/**
+	 * Make sure input is a writable path.
 	 *
 	 * @param input The input to validate.
 	 * @param message The exception message to use if the input is invalid.
@@ -125,7 +143,7 @@ public final class PathValidator {
 	 * @throws ValidationException if the input is invalid.
 	 * @see Files#isWritable(Path)
 	 */
-	public static Path isWritableDirectory(String input, MessageFormatter message) throws ValidationException {
+	public static Path isWritablePath(String input, MessageFormatter message) throws ValidationException {
 		Path inputPath = isPath(input, message);
 
 		if (!Files.isWritable(inputPath)) {

@@ -19,6 +19,7 @@ package de.carne.test.util.validation;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.Test;
 
@@ -45,8 +46,7 @@ public class PathValidatorTest {
 		try {
 			PathValidator.isPath(testDirectory.toString(), (a) -> VALIDATION_MESSAGE);
 			PathValidator.isPath(testDirectory, "test", (a) -> VALIDATION_MESSAGE);
-			PathValidator.isReadableDirectory(testDirectory.toString(), (a) -> VALIDATION_MESSAGE);
-			PathValidator.isWritableDirectory(testDirectory.toString(), (a) -> VALIDATION_MESSAGE);
+			PathValidator.isDirectoryPath(testDirectory.toString(), (a) -> VALIDATION_MESSAGE);
 		} finally {
 			Files.delete(testDirectory);
 		}
@@ -54,7 +54,102 @@ public class PathValidatorTest {
 		Path testFile = Files.createTempFile(getClass().getSimpleName(), null);
 
 		try {
-			PathValidator.isReadableFile(testFile.toString(), (a) -> VALIDATION_MESSAGE);
+			PathValidator.isPath(testFile.toString(), (a) -> VALIDATION_MESSAGE);
+			PathValidator.isRegularFilePath(testFile.toString(), (a) -> VALIDATION_MESSAGE);
+			PathValidator.isReadablePath(testFile.toString(), (a) -> VALIDATION_MESSAGE);
+			PathValidator.isWritablePath(testFile.toString(), (a) -> VALIDATION_MESSAGE);
+		} finally {
+			Files.delete(testFile);
+		}
+	}
+
+	/**
+	 * Test {@link PathValidator#isPath(String, de.carne.util.MessageFormatter)} in failure scenario.
+	 *
+	 * @throws ValidationException if test succeeds.
+	 * @throws IOException if an error occurs.
+	 */
+	@Test(expected = ValidationException.class)
+	public void testIsPathFailure1() throws ValidationException, IOException {
+		PathValidator.isPath("\u0000", (a) -> VALIDATION_MESSAGE);
+	}
+
+	/**
+	 * Test {@link PathValidator#isPath(Path, String, de.carne.util.MessageFormatter)} in failure scenario.
+	 *
+	 * @throws ValidationException if test succeeds.
+	 * @throws IOException if an error occurs.
+	 */
+	@Test(expected = ValidationException.class)
+	public void testIsPathFailure2() throws ValidationException, IOException {
+		PathValidator.isPath(Paths.get("."), "\u0000", (a) -> VALIDATION_MESSAGE);
+	}
+
+	/**
+	 * Test {@link PathValidator#isRegularFilePath(String, de.carne.util.MessageFormatter)} in failure scenario.
+	 *
+	 * @throws ValidationException if test succeeds.
+	 * @throws IOException if an error occurs.
+	 */
+	@Test(expected = ValidationException.class)
+	public void testIsRegularFilePathFailure() throws ValidationException, IOException {
+		Path testDirectory = Files.createTempDirectory(getClass().getSimpleName());
+
+		try {
+			PathValidator.isRegularFilePath(testDirectory.toString(), (a) -> VALIDATION_MESSAGE);
+		} finally {
+			Files.delete(testDirectory);
+		}
+	}
+
+	/**
+	 * Test {@link PathValidator#isDirectoryPath(String, de.carne.util.MessageFormatter)} in failure scenario.
+	 *
+	 * @throws ValidationException if test succeeds.
+	 * @throws IOException if an error occurs.
+	 */
+	@Test(expected = ValidationException.class)
+	public void testIsDirectoryPathFailure() throws ValidationException, IOException {
+		Path testFile = Files.createTempFile(getClass().getSimpleName(), null);
+
+		try {
+			PathValidator.isDirectoryPath(testFile.toString(), (a) -> VALIDATION_MESSAGE);
+		} finally {
+			Files.delete(testFile);
+		}
+	}
+
+	/**
+	 * Test {@link PathValidator#isReadablePath(String, de.carne.util.MessageFormatter)} in failure scenario.
+	 *
+	 * @throws ValidationException if test succeeds.
+	 * @throws IOException if an error occurs.
+	 */
+	@Test(expected = ValidationException.class)
+	public void testIsReadablePathFailure() throws ValidationException, IOException {
+		Path testFile = Files.createTempFile(getClass().getSimpleName(), null);
+
+		try {
+			testFile.toFile().setReadable(false, false);
+			PathValidator.isReadablePath(testFile.toString(), (a) -> VALIDATION_MESSAGE);
+		} finally {
+			Files.delete(testFile);
+		}
+	}
+
+	/**
+	 * Test {@link PathValidator#isWritablePath(String, de.carne.util.MessageFormatter)} in failure scenario.
+	 *
+	 * @throws ValidationException if test succeeds.
+	 * @throws IOException if an error occurs.
+	 */
+	@Test(expected = ValidationException.class)
+	public void testIsWritablePathFailure() throws ValidationException, IOException {
+		Path testFile = Files.createTempFile(getClass().getSimpleName(), null);
+
+		try {
+			testFile.toFile().setWritable(false, false);
+			PathValidator.isWritablePath(testFile.toString(), (a) -> VALIDATION_MESSAGE);
 		} finally {
 			Files.delete(testFile);
 		}
