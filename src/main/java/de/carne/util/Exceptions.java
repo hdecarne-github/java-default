@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
 import de.carne.util.logging.Log;
 
 /**
@@ -52,7 +53,7 @@ public final class Exceptions {
 	 *
 	 * @param exception The exception to ignore (may be {@code null}).
 	 */
-	public static void ignore(Throwable exception) {
+	public static void ignore(@Nullable Throwable exception) {
 		if (exception != null) {
 			LOG.trace(exception, "Ignoring exception {0}", exception.getClass());
 		}
@@ -65,7 +66,7 @@ public final class Exceptions {
 	 *
 	 * @param exception The exception to warn about (may be {@code null}).
 	 */
-	public static void warn(Throwable exception) {
+	public static void warn(@Nullable Throwable exception) {
 		if (exception != null) {
 			LOG.trace(exception, "Ignoring exception {0}", exception.getClass());
 		}

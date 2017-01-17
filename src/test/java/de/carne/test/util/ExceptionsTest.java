@@ -20,23 +20,49 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.carne.check.NonNullByDefault;
-import de.carne.util.ObjectHolder;
+import de.carne.util.Exceptions;
 
 /**
- * Test {@link ObjectHolder} class.
+ * Test {@link Exceptions} class.
  */
 @NonNullByDefault
-public class ObjectHolderTest {
+public class ExceptionsTest {
 
 	/**
-	 * Test {@link ObjectHolder} class functionality.
+	 * Test {@link Exceptions#getStackTrace(Throwable)} function.
 	 */
 	@Test
-	public void testAboutInfo() {
-		ObjectHolder<ObjectHolderTest> holder = new ObjectHolder<>(() -> this);
+	public void testStacktrace() {
+		String stacktrace = Exceptions.getStackTrace(new Throwable());
 
-		Assert.assertEquals(this, holder.get());
-		Assert.assertEquals(this, holder.get());
+		System.err.println(stacktrace);
+		Assert.assertTrue(stacktrace.startsWith(Throwable.class.getName()));
+	}
+
+	/**
+	 * Test {@link Exceptions#ignore(Throwable)} function.
+	 */
+	@Test
+	public void testIgnore() {
+		Exceptions.ignore(new Throwable());
+		Exceptions.ignore(null);
+	}
+
+	/**
+	 * Test {@link Exceptions#warn(Throwable)} function.
+	 */
+	@Test
+	public void testWarn() {
+		Exceptions.warn(new Throwable());
+		Exceptions.warn(null);
+	}
+
+	/**
+	 * Test {@link Exceptions#toRuntime(Throwable)} function.
+	 */
+	@Test(expected = RuntimeException.class)
+	public void testToRuntime() {
+		throw Exceptions.toRuntime(new Exception());
 	}
 
 }

@@ -16,6 +16,8 @@
  */
 package de.carne.test.util;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -44,6 +46,8 @@ public class StringsTest {
 		Assert.assertEquals("", Strings.safeTrim(""));
 		Assert.assertEquals("", Strings.safeTrim(" "));
 		Assert.assertArrayEquals(new String[] { "1", "2", "3" }, Strings.split("1,2,3", ","));
+		Assert.assertEquals("1,2,3", Strings.join(Arrays.asList("1", "2", "3"), ","));
+		Assert.assertEquals("1,2,\u2026", Strings.join(Arrays.asList("1", "2", "3"), ",", 2));
 	}
 
 }

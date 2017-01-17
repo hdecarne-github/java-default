@@ -19,6 +19,7 @@ package de.carne.test.util.logging;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
@@ -29,6 +30,7 @@ import org.junit.Test;
 import de.carne.check.Check;
 import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
+import de.carne.io.IOHelper;
 import de.carne.util.logging.Log;
 import de.carne.util.logging.LogBuffer;
 import de.carne.util.logging.LogConfig;
@@ -50,7 +52,7 @@ public class LoggingTest {
 	 */
 	@BeforeClass
 	public static void setupSystemProperties() {
-		System.setProperty("java.util.logging.config.class", LogConfig.class.getName());
+		new LogConfig();
 	}
 
 	/**
@@ -71,10 +73,21 @@ public class LoggingTest {
 	}
 
 	/**
-	 * Test runtime log configuration.
+	 * Test log creation.
 	 */
 	@Test
-	public void testLogConfig() {
+	public void testLogCreation() {
+		Assert.assertEquals(getClass().getName(), new Log().getLogger().getName());
+		Assert.assertEquals(getClass().getName(), new Log(getClass()).getLogger().getName());
+	}
+
+	/**
+	 * Test runtime log configuration.
+	 *
+	 * @throws IOException if an error occurs.
+	 */
+	@Test
+	public void testLogConfig() throws IOException {
 		Log log = new Log();
 
 		LogConfig.applyConfig(LogConfig.CONFIG_DEFAULT);
@@ -105,6 +118,32 @@ public class LoggingTest {
 		Assert.assertTrue(log.isWarningLoggable());
 		Assert.assertTrue(log.isInfoLoggable());
 		Assert.assertTrue(log.isDebugLoggable());
+		Assert.assertFalse(log.isTraceLoggable());
+
+		LogConfig.applyConfig("Unknown");
+
+		Assert.assertTrue(log.isNoticeLoggable());
+		Assert.assertTrue(log.isErrorLoggable());
+		Assert.assertTrue(log.isWarningLoggable());
+		Assert.assertTrue(log.isInfoLoggable());
+		Assert.assertTrue(log.isDebugLoggable());
+		Assert.assertFalse(log.isTraceLoggable());
+
+		LogConfig.applyConfig(null);
+		Path configFile = IOHelper.createTempFileFromResource(getClass().getResource("/logging-default.properties"),
+				getClass().getSimpleName(), null);
+
+		try {
+			LogConfig.applyConfig(configFile.toString());
+		} finally {
+			Files.delete(configFile);
+		}
+
+		Assert.assertTrue(log.isNoticeLoggable());
+		Assert.assertTrue(log.isErrorLoggable());
+		Assert.assertTrue(log.isWarningLoggable());
+		Assert.assertFalse(log.isInfoLoggable());
+		Assert.assertFalse(log.isDebugLoggable());
 		Assert.assertFalse(log.isTraceLoggable());
 	}
 

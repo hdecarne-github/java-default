@@ -20,23 +20,33 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.carne.check.NonNullByDefault;
-import de.carne.util.ObjectHolder;
+import de.carne.util.DefaultSet;
 
 /**
- * Test {@link ObjectHolder} class.
+ * Test {@link DefaultSet} class.
  */
 @NonNullByDefault
-public class ObjectHolderTest {
+public class DefaultSetTest {
 
 	/**
-	 * Test {@link ObjectHolder} class functionality.
+	 * Test {@link DefaultSet} class.
 	 */
 	@Test
-	public void testAboutInfo() {
-		ObjectHolder<ObjectHolderTest> holder = new ObjectHolder<>(() -> this);
+	public void testDefaultSet() {
+		DefaultSet<DefaultSetTest> defaultSet1 = new DefaultSet<>();
 
-		Assert.assertEquals(this, holder.get());
-		Assert.assertEquals(this, holder.get());
+		Assert.assertNull(defaultSet1.getDefault());
+
+		defaultSet1.add(this);
+
+		Assert.assertEquals(this, defaultSet1.getDefault());
+
+		DefaultSet<DefaultSetTest> defaultSet2 = new DefaultSet<>(defaultSet1);
+
+		defaultSet1.clear();
+
+		Assert.assertNull(defaultSet1.getDefault());
+		Assert.assertEquals(this, defaultSet2.getDefault());
 	}
 
 }

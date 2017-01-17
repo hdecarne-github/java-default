@@ -100,15 +100,11 @@ public final class Strings {
 		while (tokens.hasMoreTokens()) {
 			String token = tokens.nextToken();
 
-			if (token.length() > 0) {
-				if (tokenBuffer.length() > 0) {
-					split.add(tokenBuffer.toString());
-					tokenBuffer.setLength(0);
-				}
-				tokenBuffer.append(token);
-			} else {
-				tokenBuffer.append(delimiter);
+			if (tokenBuffer.length() > 0) {
+				split.add(tokenBuffer.toString());
+				tokenBuffer.setLength(0);
 			}
+			tokenBuffer.append(token);
 		}
 		if (tokenBuffer.length() > 0) {
 			split.add(tokenBuffer.toString());
