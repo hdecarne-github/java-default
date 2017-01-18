@@ -19,6 +19,7 @@ package de.carne.util.prefs;
 import java.util.prefs.Preferences;
 
 import de.carne.check.NonNullByDefault;
+import de.carne.util.Exceptions;
 
 /**
  * Utility class providing access to a {@link Integer} preference.
@@ -57,7 +58,14 @@ public class IntPreference extends Preference<Integer> {
 
 	@Override
 	protected Integer toValue(String valueString) {
-		return Integer.valueOf(valueString);
+		Integer value = null;
+
+		try {
+			value = Integer.valueOf(valueString);
+		} catch (NumberFormatException e) {
+			Exceptions.ignore(e);
+		}
+		return value;
 	}
 
 	@Override

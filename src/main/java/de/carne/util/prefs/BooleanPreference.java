@@ -43,7 +43,7 @@ public class BooleanPreference extends Preference<Boolean> {
 	 * @return The preference value.
 	 */
 	public boolean getBoolean(boolean defaultValue) {
-		return preferences().getBoolean(key(), false);
+		return preferences().getBoolean(key(), defaultValue);
 	}
 
 	/**

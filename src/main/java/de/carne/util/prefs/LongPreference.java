@@ -19,6 +19,7 @@ package de.carne.util.prefs;
 import java.util.prefs.Preferences;
 
 import de.carne.check.NonNullByDefault;
+import de.carne.util.Exceptions;
 
 /**
  * Utility class providing access to a {@link Long} preference.
@@ -57,7 +58,14 @@ public class LongPreference extends Preference<Long> {
 
 	@Override
 	protected Long toValue(String valueString) {
-		return Long.valueOf(valueString);
+		Long value = null;
+
+		try {
+			value = Long.valueOf(valueString);
+		} catch (NumberFormatException e) {
+			Exceptions.ignore(e);
+		}
+		return value;
 	}
 
 	@Override
