@@ -19,36 +19,47 @@ package de.carne.test.util.prefs;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.carne.check.NonNullByDefault;
+import de.carne.io.IOHelper;
+import de.carne.util.Exceptions;
 import de.carne.util.prefs.PropertiesPreferencesFactory;
 
 /**
- * Test {@link PropertiesPreferencesFactory} class functionality.
+ * Test {@link PropertiesPreferencesFactory} class.
  */
+@NonNullByDefault
 public class PrefsTest {
 
-	private static Path PROPERTIES_PATH = null;
+	private static final Path PROPERTIES_PATH;
+
+	static {
+		Path propertiesDirectory = Paths.get(".");
+
+		try {
+			propertiesDirectory = Files.createTempDirectory(PrefsTest.class.getSimpleName());
+		} catch (IOException e) {
+			Exceptions.toRuntime(e);
+		}
+		PROPERTIES_PATH = propertiesDirectory.resolve(PrefsTest.class.getSimpleName() + ".properties");
+	}
 
 	/**
-	 * Create a temporary property file for the test run.
-	 *
-	 * @return The path of the created temporary property file.
-	 * @throws IOException if property file creation fails
+	 * Setup necessary system properties.
 	 */
-	public static synchronized Path getPropertiesPath() throws IOException {
-		if (PROPERTIES_PATH == null) {
-			PROPERTIES_PATH = Files.createTempFile(PrefsTest.class.getSimpleName(), ".properties");
-		}
-		return PROPERTIES_PATH;
+	@BeforeClass
+	public static void setupSystemProperties() {
+		System.setProperty("java.util.prefs.PreferencesFactory", "de.carne.util.prefs.PropertiesPreferencesFactory");
 	}
 
 	/**
@@ -58,39 +69,42 @@ public class PrefsTest {
 	 */
 	@AfterClass
 	public static void deletePropertiesPath() throws IOException {
-		if (PROPERTIES_PATH != null) {
-			Files.delete(PROPERTIES_PATH);
-		}
+		IOHelper.deleteDirectoryTree(PROPERTIES_PATH);
+	}
+
+	/**
+	 * Test integration in standard preferences API.
+	 */
+	@Test
+	public void testPreferencesFactory() {
+		Preferences.systemNodeForPackage(getClass());
+		Preferences.userNodeForPackage(getClass());
 	}
 
 	/**
 	 * Test {@Preferences} functions
+	 *
+	 * @throws Exception if an error occurs.
 	 */
 	@Test
-	public void testPreferences() {
-		try {
-			populatePreferences();
-			dumpPropertiesPath();
-			readPreferences1();
-			removePreferences();
-			readPreferences2();
-		} catch (BackingStoreException | IOException e) {
-			Assert.fail(Objects.toString(e.getMessage()));
-		}
+	public void testPreferencesAccess() throws Exception {
+		populatePreferences();
+		dumpPropertiesPath();
+		readPreferences1();
+		removePreferences();
+		readPreferences2();
 	}
 
 	private void dumpPropertiesPath() throws IOException {
-		if (PROPERTIES_PATH != null) {
-			List<String> lines = Files.readAllLines(PROPERTIES_PATH);
+		List<String> lines = Files.readAllLines(PROPERTIES_PATH);
 
-			for (String line : lines) {
-				System.out.println(line);
-			}
+		for (String line : lines) {
+			System.out.println(line);
 		}
 	}
 
-	private void populatePreferences() throws IOException, BackingStoreException {
-		Preferences root = PropertiesPreferencesFactory.customRoot(getPropertiesPath());
+	private void populatePreferences() throws BackingStoreException {
+		Preferences root = PropertiesPreferencesFactory.customRoot(PROPERTIES_PATH);
 
 		root.put("k1", "v1");
 		root.put("k2", "v2");
@@ -108,8 +122,8 @@ public class PrefsTest {
 		root.sync();
 	}
 
-	private void readPreferences1() throws IOException, BackingStoreException {
-		Preferences root = PropertiesPreferencesFactory.customRoot(getPropertiesPath());
+	private void readPreferences1() throws BackingStoreException {
+		Preferences root = PropertiesPreferencesFactory.customRoot(PROPERTIES_PATH);
 		String[] rootKeys = root.keys();
 		String[] rootChildrenNames = root.childrenNames();
 
@@ -119,8 +133,8 @@ public class PrefsTest {
 		Assert.assertArrayEquals(new String[] { "n1", "n2" }, rootChildrenNames);
 	}
 
-	private void removePreferences() throws IOException, BackingStoreException {
-		Preferences root = PropertiesPreferencesFactory.customRoot(getPropertiesPath());
+	private void removePreferences() throws BackingStoreException {
+		Preferences root = PropertiesPreferencesFactory.customRoot(PROPERTIES_PATH);
 
 		root.remove("k1");
 		root.remove("k2");
@@ -130,8 +144,8 @@ public class PrefsTest {
 		root.sync();
 	}
 
-	private void readPreferences2() throws IOException, BackingStoreException {
-		Preferences root = PropertiesPreferencesFactory.customRoot(getPropertiesPath());
+	private void readPreferences2() throws BackingStoreException {
+		Preferences root = PropertiesPreferencesFactory.customRoot(PROPERTIES_PATH);
 		String[] rootKeys = root.keys();
 		String[] rootChildrenNames = root.childrenNames();
 
