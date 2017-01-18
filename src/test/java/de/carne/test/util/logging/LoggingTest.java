@@ -48,10 +48,10 @@ public class LoggingTest {
 	private static final String LOG_MESSAGE = Check.nonNullS(LoggingTest.class.getSimpleName());
 
 	/**
-	 * Setup necessary System properties.
+	 * Setup default log config.
 	 */
 	@BeforeClass
-	public static void setupSystemProperties() {
+	public static void setupLogConfig() {
 		new LogConfig();
 	}
 
