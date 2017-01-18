@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.function.Predicate;
 import java.util.prefs.Preferences;
 
 import de.carne.check.NonNullByDefault;
@@ -30,20 +31,40 @@ import de.carne.util.Exceptions;
  * Utility class providing access to a {@link Path} preference.
  */
 @NonNullByDefault
-public class DirectoryPreference extends Preference<Path> {
-
-	private final boolean validate;
+public class PathPreference extends Preference<Path> {
 
 	/**
-	 * Construct {@code DirectoryPreference}.
+	 * {@link Files#isRegularFile(Path, java.nio.file.LinkOption...)} validator.
+	 */
+	public static final Predicate<Path> IS_REGULAR_FILE = (p) -> Files.isRegularFile(p);
+
+	/**
+	 * {@link Files#isDirectory(Path, java.nio.file.LinkOption...)} validator.
+	 */
+	public static final Predicate<Path> IS_DIRECTORY = (p) -> Files.isDirectory(p);
+
+	private final Predicate<Path> validator;
+
+	/**
+	 * Construct {@code PathPreference}.
 	 *
 	 * @param preferences The {@link Preferences} object storing this preference.
 	 * @param key The preference key.
-	 * @param validate Flag to control whether to validate the preference and ignore invalid ones.
 	 */
-	public DirectoryPreference(Preferences preferences, String key, boolean validate) {
+	public PathPreference(Preferences preferences, String key) {
+		this(preferences, key, (p) -> true);
+	}
+
+	/**
+	 * Construct {@code PathPreference}.
+	 *
+	 * @param preferences The {@link Preferences} object storing this preference.
+	 * @param key The preference key.
+	 * @param validator {@link Predicate} to use for preference value validation.
+	 */
+	public PathPreference(Preferences preferences, String key, Predicate<Path> validator) {
 		super(preferences, key);
-		this.validate = validate;
+		this.validator = validator;
 	}
 
 	/**
@@ -94,7 +115,7 @@ public class DirectoryPreference extends Preference<Path> {
 	}
 
 	private Path validatePath(Path path) {
-		return (!this.validate || path == null || Files.isDirectory(path) ? path : null);
+		return (path == null || this.validator.test(path) ? path : null);
 	}
 
 }
