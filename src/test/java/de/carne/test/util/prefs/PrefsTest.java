@@ -267,17 +267,19 @@ public class PrefsTest {
 	 * Test {@link PathPreference} class.
 	 */
 	@Test
-	public void testDirectoryPreference() {
+	public void testPathPreference() {
 		Preferences root = PropertiesPreferencesFactory.customRoot(PROPERTIES_PATH);
 		PathPreference preference = new PathPreference(root, "directoryPreference", PathPreference.IS_REGULAR_FILE);
 
 		Assert.assertEquals(null, preference.get());
+		Assert.assertEquals(null, preference.getValueAsFile());
 
 		preference.put(PROPERTIES_PATH);
 
-		Assert.assertEquals(PROPERTIES_PATH, preference.get());
+		Assert.assertEquals(PROPERTIES_PATH, preference.get(null));
+		Assert.assertEquals(PROPERTIES_PATH.toFile(), preference.getValueAsFile(null));
 
-		preference.put(PROPERTIES_PATH.getParent().resolve("unknown.dat"));
+		preference.putValueFromFile(PROPERTIES_PATH.getParent().resolve("unknown.dat").toFile());
 
 		Assert.assertEquals(null, preference.get());
 
