@@ -18,7 +18,6 @@ package de.carne.util;
 
 import java.util.function.Supplier;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
 /**
@@ -26,7 +25,6 @@ import de.carne.check.Nullable;
  *
  * @param <T> The resource object type.
  */
-@NonNullByDefault
 public final class ObjectHolder<T> {
 
 	private final Supplier<T> objectSupplier;

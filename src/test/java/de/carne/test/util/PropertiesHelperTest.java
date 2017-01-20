@@ -23,13 +23,11 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.util.PropertiesHelper;
 
 /**
  * Test {@link PropertiesHelper} class.
  */
-@NonNullByDefault
 public class PropertiesHelperTest {
 
 	/**

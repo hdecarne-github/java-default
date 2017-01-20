@@ -20,12 +20,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.carne.OS;
-import de.carne.check.NonNullByDefault;
 
 /**
  * Test {@link OS} class.
  */
-@NonNullByDefault
 public class OSTest {
 
 	/**

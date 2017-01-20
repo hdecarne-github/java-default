@@ -16,12 +16,9 @@
  */
 package de.carne;
 
-import de.carne.check.NonNullByDefault;
-
 /**
  * Application entry point.
  */
-@NonNullByDefault
 public interface Main {
 
 	/**

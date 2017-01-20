@@ -22,13 +22,11 @@ import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.function.Function;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
 /**
  * Utility class providing {@link String} related functions.
  */
-@NonNullByDefault
 public final class Strings {
 
 	private Strings() {

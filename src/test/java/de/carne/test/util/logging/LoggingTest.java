@@ -27,7 +27,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 import de.carne.io.IOHelper;
 import de.carne.util.logging.Log;
@@ -39,7 +38,6 @@ import de.carne.util.logging.LogMonitor;
 /**
  * Test {@link Log} class functionality.
  */
-@NonNullByDefault
 public class LoggingTest {
 
 	private static final Log LOG = new Log();

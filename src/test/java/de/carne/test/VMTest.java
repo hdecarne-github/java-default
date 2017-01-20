@@ -21,12 +21,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.carne.VM;
-import de.carne.check.NonNullByDefault;
 
 /**
  * Test {@link VM} class.
  */
-@NonNullByDefault
 public class VMTest {
 
 	/**

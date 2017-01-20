@@ -39,7 +39,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import de.carne.check.Check;
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
 /**
@@ -54,7 +53,6 @@ import de.carne.check.Nullable;
  * class to be loaded and executed. All remaining lines are considered as system properties that are set prior to
  * loading and invoking the main class.
  */
-@NonNullByDefault
 public final class ApplicationLoader extends URLClassLoader {
 
 	private static final boolean DEBUG = Boolean.getBoolean(ApplicationLoader.class.getName() + ".DEBUG");

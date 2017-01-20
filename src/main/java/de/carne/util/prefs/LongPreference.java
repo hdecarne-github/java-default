@@ -18,14 +18,12 @@ package de.carne.util.prefs;
 
 import java.util.prefs.Preferences;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 import de.carne.util.Exceptions;
 
 /**
  * Utility class providing access to a {@link Long} preference.
  */
-@NonNullByDefault
 public class LongPreference extends Preference<Long> {
 
 	/**

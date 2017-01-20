@@ -18,12 +18,9 @@ package de.carne.util.prefs;
 
 import java.util.prefs.Preferences;
 
-import de.carne.check.NonNullByDefault;
-
 /**
  * Utility class providing access to a {@link Boolean} preference.
  */
-@NonNullByDefault
 public class BooleanPreference extends Preference<Boolean> {
 
 	/**

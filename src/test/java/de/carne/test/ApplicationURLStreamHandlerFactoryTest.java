@@ -31,13 +31,11 @@ import org.junit.Test;
 
 import de.carne.ApplicationURLStreamHandlerFactory;
 import de.carne.check.Check;
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
 /**
  * Test {@link ApplicationURLStreamHandlerFactory} class.
  */
-@NonNullByDefault
 public class ApplicationURLStreamHandlerFactoryTest {
 
 	private static final String PROTOCOL_1 = "protocol1";

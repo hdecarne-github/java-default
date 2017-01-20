@@ -22,13 +22,11 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
 /**
  * Simple wrapper for JDK's {@link Logger} class to have a minimum level of abstraction and a clear level semantics.
  */
-@NonNullByDefault
 public final class Log {
 
 	private Logger logger;

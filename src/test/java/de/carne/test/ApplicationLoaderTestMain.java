@@ -21,13 +21,11 @@ import org.junit.Assert;
 import de.carne.ApplicationLoader;
 import de.carne.Main;
 import de.carne.VM;
-import de.carne.check.NonNullByDefault;
 import de.carne.util.logging.Log;
 
 /**
  * Test main class for testing {@link ApplicationLoader}.
  */
-@NonNullByDefault
 public class ApplicationLoaderTestMain implements Main {
 
 	private static final Log LOG = new Log();

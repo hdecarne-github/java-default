@@ -31,14 +31,12 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.io.IOHelper;
 import de.carne.util.Exceptions;
 
 /**
  * Test {@link IOHelper} class.
  */
-@NonNullByDefault
 public class IOHelperTest {
 
 	private static final String TEST_DIR_ZIP = "test.zip";

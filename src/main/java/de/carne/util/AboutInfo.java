@@ -21,7 +21,6 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 import de.carne.ApplicationLoader;
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
 /**
@@ -30,7 +29,6 @@ import de.carne.check.Nullable;
  * Version informations are stored in the application's manifest file and therefore only available after the application
  * has been build/packaged.
  */
-@NonNullByDefault
 public final class AboutInfo {
 
 	private AboutInfo() {

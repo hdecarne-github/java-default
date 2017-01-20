@@ -16,12 +16,9 @@
  */
 package de.carne.util.validation;
 
-import de.carne.check.NonNullByDefault;
-
 /**
  * This exception indicates a failed data validation.
  */
-@NonNullByDefault
 public class ValidationException extends Exception {
 
 	/**

@@ -16,7 +16,6 @@
  */
 package de.carne.util.cmdline;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
 /**
@@ -24,7 +23,6 @@ import de.carne.check.Nullable;
  *
  * @see CmdLine#eval()
  */
-@NonNullByDefault
 public class CmdLineException extends Exception {
 
 	/**

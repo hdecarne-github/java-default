@@ -18,7 +18,6 @@ package de.carne.util.prefs;
 
 import java.util.prefs.Preferences;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
 /**
@@ -26,7 +25,6 @@ import de.carne.check.Nullable;
  *
  * @param <T> The preference type.
  */
-@NonNullByDefault
 public abstract class Preference<T> {
 
 	private final Preferences preferences;

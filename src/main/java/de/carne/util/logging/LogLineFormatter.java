@@ -24,13 +24,11 @@ import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
 /**
  * {@link Formatter} implementation producing a static non-localized single line format output.
  */
-@NonNullByDefault
 public class LogLineFormatter extends Formatter {
 
 	private static final int STRING_BUFFER_SIZE = 2048;

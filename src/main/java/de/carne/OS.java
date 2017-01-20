@@ -17,12 +17,10 @@
 package de.carne;
 
 import de.carne.check.Check;
-import de.carne.check.NonNullByDefault;
 
 /**
  * Utility class to support OS specific behavior.
  */
-@NonNullByDefault
 public class OS {
 
 	private OS() {

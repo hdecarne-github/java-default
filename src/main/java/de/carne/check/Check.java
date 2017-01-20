@@ -19,7 +19,6 @@ package de.carne.check;
 /**
  * Utility class providing code check related functions.
  */
-@NonNullByDefault
 public final class Check {
 
 	private Check() {

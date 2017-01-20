@@ -30,7 +30,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.io.IOHelper;
 import de.carne.util.Exceptions;
 import de.carne.util.prefs.BooleanPreference;
@@ -43,7 +42,6 @@ import de.carne.util.prefs.StringPreference;
 /**
  * Test {@link PropertiesPreferencesFactory} class.
  */
-@NonNullByDefault
 public class PrefsTest {
 
 	private static final Path PROPERTIES_PATH;

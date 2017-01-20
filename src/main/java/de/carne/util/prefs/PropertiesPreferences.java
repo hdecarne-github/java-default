@@ -25,10 +25,8 @@ import java.util.prefs.AbstractPreferences;
 import java.util.prefs.BackingStoreException;
 
 import de.carne.check.Check;
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
-@NonNullByDefault
 class PropertiesPreferences extends AbstractPreferences {
 
 	private final PropertiesCache propertiesCache;

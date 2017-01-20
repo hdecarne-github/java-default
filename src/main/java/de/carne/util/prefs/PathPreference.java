@@ -24,14 +24,12 @@ import java.nio.file.Paths;
 import java.util.function.Predicate;
 import java.util.prefs.Preferences;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 import de.carne.util.Exceptions;
 
 /**
  * Utility class providing access to a {@link Path} preference.
  */
-@NonNullByDefault
 public class PathPreference extends Preference<Path> {
 
 	/**

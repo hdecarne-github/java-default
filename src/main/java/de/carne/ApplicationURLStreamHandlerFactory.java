@@ -22,7 +22,6 @@ import java.net.URLStreamHandlerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
 /**
@@ -32,7 +31,6 @@ import de.carne.check.Nullable;
  * This {@code URLStreamHandlerFactory} acts as a multiplexer for an arbitrary number of custom
  * {@code URLStreamHandlerFactory} instances registered via the {@link #createURLStreamHandler(String)} function.
  */
-@NonNullByDefault
 public final class ApplicationURLStreamHandlerFactory implements URLStreamHandlerFactory {
 
 	private ApplicationURLStreamHandlerFactory() {

@@ -19,8 +19,6 @@ package de.carne.util.cmdline;
 import java.util.HashSet;
 import java.util.Set;
 
-import de.carne.check.NonNullByDefault;
-
 /**
  * This class is used to define an action for command line evaluation.
  * <p>
@@ -38,7 +36,6 @@ import de.carne.check.NonNullByDefault;
  * @see CmdLine#namedOptionAction(java.util.function.BiConsumer)
  * @see CmdLine#unnamedOptionAction(java.util.function.Consumer)
  */
-@NonNullByDefault
 public abstract class CmdLineAction {
 
 	private Set<String> args = new HashSet<>();

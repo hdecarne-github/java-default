@@ -29,7 +29,6 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 import de.carne.util.PropertiesHelper;
 
@@ -37,7 +36,6 @@ import de.carne.util.PropertiesHelper;
  * {@link Handler} implementation used to buffer log records for later publishing by one or more dynamically defined
  * {@link Handler} instances.
  */
-@NonNullByDefault
 public class LogBuffer extends Handler {
 
 	/**

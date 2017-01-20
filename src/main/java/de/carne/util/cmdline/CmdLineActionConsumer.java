@@ -18,14 +18,12 @@ package de.carne.util.cmdline;
 
 import java.util.function.Consumer;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
 /**
  * {@code CmdLineAction} implementation for switch and unnamed arguments. In the first case the action is invoked with
  * the argument name only (switch) in the second case with the (unnamed) option string.
  */
-@NonNullByDefault
 class CmdLineActionConsumer extends CmdLineAction implements Consumer<String> {
 
 	private Consumer<String> consumer;

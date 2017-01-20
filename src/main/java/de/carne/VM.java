@@ -16,12 +16,9 @@
  */
 package de.carne;
 
-import de.carne.check.NonNullByDefault;
-
 /**
  * Utility class for VM option support.
  */
-@NonNullByDefault
 public final class VM {
 
 	private VM() {

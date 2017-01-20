@@ -25,12 +25,9 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import de.carne.check.NonNullByDefault;
-
 /**
  * Utility class for {@link FileAttribute} handling.
  */
-@NonNullByDefault
 public final class FileAttributes {
 
 	private FileAttributes() {

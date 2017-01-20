@@ -21,13 +21,11 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 
 import de.carne.check.Check;
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
 /**
  * {@link NumberFormat} implementation supporting formatting and parsing of memory unit numbers.
  */
-@NonNullByDefault
 public class MemUnitFormat extends NumberFormat {
 
 	/**

@@ -25,13 +25,11 @@ import java.util.Properties;
 import java.util.prefs.Preferences;
 import java.util.prefs.PreferencesFactory;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.util.Exceptions;
 
 /**
  * {@link Properties} based implementation of the {@link PreferencesFactory} interface.
  */
-@NonNullByDefault
 public class PropertiesPreferencesFactory implements PreferencesFactory {
 
 	private static final String THIS_PACKAGE = Objects.requireNonNull(PropertiesPreferencesFactory.class.getPackage())

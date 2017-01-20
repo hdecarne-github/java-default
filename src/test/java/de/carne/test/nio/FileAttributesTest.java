@@ -24,13 +24,11 @@ import java.nio.file.attribute.FileAttribute;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.nio.FileAttributes;
 
 /**
  * Test {@link FileAttributes} class.
  */
-@NonNullByDefault
 public class FileAttributesTest {
 
 	/**

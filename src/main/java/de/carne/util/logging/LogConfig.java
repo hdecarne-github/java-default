@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.logging.LogManager;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 import de.carne.util.Exceptions;
 
@@ -31,7 +30,6 @@ import de.carne.util.Exceptions;
  * <p>
  * For proper initialization of the logging setup set the "java.util.logging.config.class" property to this class' name.
  */
-@NonNullByDefault
 public final class LogConfig {
 
 	private static final String THIS_PACKAGE = LogConfig.class.getPackage().getName();

@@ -19,13 +19,11 @@ package de.carne.test.util;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.util.Exceptions;
 
 /**
  * Test {@link Exceptions} class.
  */
-@NonNullByDefault
 public class ExceptionsTest {
 
 	/**

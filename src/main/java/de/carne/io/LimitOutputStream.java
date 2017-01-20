@@ -21,7 +21,6 @@ import java.io.InterruptedIOException;
 import java.io.OutputStream;
 
 import de.carne.check.Check;
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
 /**
@@ -32,7 +31,6 @@ import de.carne.check.Nullable;
  *
  * @param <T> The type of the underlying {@link OutputStream}.
  */
-@NonNullByDefault
 public class LimitOutputStream<T extends OutputStream> extends OutputStream {
 
 	private final T out;

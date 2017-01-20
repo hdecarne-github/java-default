@@ -27,7 +27,6 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 import de.carne.util.PropertiesHelper;
 
@@ -35,7 +34,6 @@ import de.carne.util.PropertiesHelper;
  * This class is used to monitor and record log messages in a selective manner and only during a defined period (for
  * example to display them to the user after a long running task).
  */
-@NonNullByDefault
 public class LogMonitor extends Handler {
 
 	private final static int BUFFER_LIMIT = PropertiesHelper.getInt(LogMonitor.class, ".limit", 100);

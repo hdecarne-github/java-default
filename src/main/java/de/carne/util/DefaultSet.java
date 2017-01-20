@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
 /**
@@ -28,7 +27,6 @@ import de.carne.check.Nullable;
  *
  * @param <T> The set element type.
  */
-@NonNullByDefault
 public final class DefaultSet<T> extends HashSet<T> {
 
 	/*

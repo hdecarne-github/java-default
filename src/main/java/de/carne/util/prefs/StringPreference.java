@@ -18,12 +18,9 @@ package de.carne.util.prefs;
 
 import java.util.prefs.Preferences;
 
-import de.carne.check.NonNullByDefault;
-
 /**
  * Utility class providing access to a {@link String} preference.
  */
-@NonNullByDefault
 public class StringPreference extends Preference<String> {
 
 	/**

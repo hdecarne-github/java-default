@@ -22,14 +22,12 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 import de.carne.util.Strings;
 
 /**
  * Utility class for command line evaluation.
  */
-@NonNullByDefault
 public final class CmdLine {
 
 	private final Iterable<String> args;

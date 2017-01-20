@@ -16,7 +16,6 @@
  */
 package de.carne.util.cmdline;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
 /**
@@ -25,7 +24,6 @@ import de.carne.check.Nullable;
  * This exception can be thrown by the command line action's consumer expressions to indicate a problem during command
  * line evaluation. The command line evaluation is stopped as soon as this exception is encountered.
  */
-@NonNullByDefault
 public class CmdLineActionException extends RuntimeException {
 
 	/**

@@ -20,14 +20,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 import de.carne.util.logging.Log;
 
 /**
  * Utility class providing {@link Exception} related functions.
  */
-@NonNullByDefault
 public final class Exceptions {
 
 	private Exceptions() {

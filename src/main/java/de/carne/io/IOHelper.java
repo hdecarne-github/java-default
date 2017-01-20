@@ -39,14 +39,12 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 import de.carne.util.PropertiesHelper;
 
 /**
  * Utility class providing I/O related functions.
  */
-@NonNullByDefault
 public final class IOHelper {
 
 	private IOHelper() {

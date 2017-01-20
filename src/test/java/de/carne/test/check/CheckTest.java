@@ -19,12 +19,10 @@ package de.carne.test.check;
 import org.junit.Test;
 
 import de.carne.check.Check;
-import de.carne.check.NonNullByDefault;
 
 /**
  * Test {@link Check} class.
  */
-@NonNullByDefault
 public class CheckTest {
 
 	private static final String CHECK_MESSAGE = "with message";
