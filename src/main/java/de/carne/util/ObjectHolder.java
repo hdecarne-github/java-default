@@ -40,8 +40,6 @@ public final class ObjectHolder<T> {
 	 * @param objectSupplier The {@link Supplier} to use for resource object creation.
 	 */
 	public ObjectHolder(Supplier<T> objectSupplier) {
-		assert objectSupplier != null;
-
 		this.objectSupplier = objectSupplier;
 	}
 

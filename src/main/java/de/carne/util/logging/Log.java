@@ -22,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import de.carne.check.Check;
 import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
@@ -60,7 +59,7 @@ public final class Log {
 	 * @param cls The {@code Class} defining the logger name.
 	 */
 	public Log(Class<?> cls) {
-		this(Check.nonNullS(cls.getName()));
+		this(cls.getName());
 	}
 
 	/**
@@ -70,7 +69,7 @@ public final class Log {
 	 * @param bundle The {@code ResourceBundle} to use for message localization.
 	 */
 	public Log(Class<?> cls, @Nullable ResourceBundle bundle) {
-		this(Check.nonNullS(cls.getName()), bundle);
+		this(cls.getName(), bundle);
 	}
 
 	/**
@@ -89,7 +88,7 @@ public final class Log {
 	 * @param bundle The {@code ResourceBundle} to use for message localization.
 	 */
 	public Log(String name, @Nullable ResourceBundle bundle) {
-		this.logger = Check.nonNullS(Logger.getLogger(name, (bundle != null ? bundle.getBaseBundleName() : null)));
+		this.logger = Logger.getLogger(name, (bundle != null ? bundle.getBaseBundleName() : null));
 	}
 
 	/**
@@ -327,7 +326,7 @@ public final class Log {
 		while (steIndex < stes.length && thisClassName.equals(stes[steIndex].getClassName())) {
 			steIndex++;
 		}
-		return Check.nonNullS(steIndex < stes.length ? stes[steIndex].getClassName() : thisClassName);
+		return (steIndex < stes.length ? stes[steIndex].getClassName() : thisClassName);
 	}
 
 }

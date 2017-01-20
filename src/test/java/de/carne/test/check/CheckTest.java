@@ -34,44 +34,26 @@ public class CheckTest {
 	 */
 	@Test
 	public void testSuccess() {
-		Check.nonNullA(this);
-		Check.nonNullA(this, CHECK_MESSAGE);
-		Check.nonNullS(this);
-		Check.nonNullS(this, CHECK_MESSAGE);
+		Check.nonNull(this);
+		Check.nonNull(this, CHECK_MESSAGE);
 		Check.condition(true);
 		Check.condition(true, CHECK_MESSAGE);
 	}
 
 	/**
-	 * Test {@link Check#nonNullA(Object)} in failure scenario.
+	 * Test {@link Check#nonNull(Object)} in failure scenario.
 	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testNonNullAFailure1() {
-		Check.nonNullA(null);
+	@Test(expected = NullPointerException.class)
+	public void testNonNullFailure1() {
+		Check.nonNull(null);
 	}
 
 	/**
-	 * Test {@link Check#nonNullA(Object, String)} in failure scenario.
+	 * Test {@link Check#nonNull(Object, String)} in failure scenario.
 	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testNonNullAFailure2() {
-		Check.nonNullA(null, CHECK_MESSAGE);
-	}
-
-	/**
-	 * Test {@link Check#nonNullS(Object)} in failure scenario.
-	 */
-	@Test(expected = IllegalStateException.class)
-	public void testNonNullSFailure1() {
-		Check.nonNullS(null);
-	}
-
-	/**
-	 * Test {@link Check#nonNullS(Object, String)} in failure scenario.
-	 */
-	@Test(expected = IllegalStateException.class)
-	public void testNonNullSFailure2() {
-		Check.nonNullS(null, CHECK_MESSAGE);
+	@Test(expected = NullPointerException.class)
+	public void testNonNullFailure2() {
+		Check.nonNull(null, CHECK_MESSAGE);
 	}
 
 	/**

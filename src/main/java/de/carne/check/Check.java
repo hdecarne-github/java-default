@@ -27,65 +27,34 @@ public final class Check {
 	}
 
 	/**
-	 * Check and ensure that an argument is not {@code null}.
+	 * Check and ensure that an object is not {@code null}.
 	 *
-	 * @param <T> The actual argument type.
-	 * @param a The argument to check.
-	 * @return The checked argument (never {@code null}).
-	 * @throws IllegalArgumentException if the submitted argument is {@code null}.
+	 * @param <T> The actual object type.
+	 * @param o The object to check.
+	 * @return The checked object (never {@code null}).
+	 * @throws NullPointerException if the submitted argument is {@code null}.
 	 */
-	public static <T> T nonNullA(@Nullable T a) throws IllegalArgumentException {
-		if (a == null) {
-			throw new IllegalArgumentException();
+	public static <T> T nonNull(@Nullable T o) throws NullPointerException {
+		if (o == null) {
+			throw new NullPointerException();
 		}
-		return a;
+		return o;
 	}
 
 	/**
-	 * Check and ensure that an argument is not {@code null}.
+	 * Check and ensure that an object is not {@code null}.
 	 *
-	 * @param <T> The actual argument type.
-	 * @param a The argument to check.
+	 * @param <T> The actual object type.
+	 * @param o The object to check.
 	 * @param message The message to issue if the check fails.
-	 * @return The checked argument (never {@code null}).
-	 * @throws IllegalArgumentException if the submitted argument is {@code null}.
+	 * @return The checked object (never {@code null}).
+	 * @throws NullPointerException if the submitted argument is {@code null}.
 	 */
-	public static <T> T nonNullA(@Nullable T a, String message) throws IllegalArgumentException {
-		if (a == null) {
-			throw new IllegalArgumentException(message);
+	public static <T> T nonNull(@Nullable T o, String message) throws NullPointerException {
+		if (o == null) {
+			throw new NullPointerException(message);
 		}
-		return a;
-	}
-
-	/**
-	 * Check and ensure that a specific state object is not {@code null}.
-	 *
-	 * @param <T> The actual state type.
-	 * @param s The state object to check.
-	 * @return The checked state object (never {@code null}).
-	 * @throws IllegalStateException if the state object is {@code null}.
-	 */
-	public static <T> T nonNullS(@Nullable T s) throws IllegalStateException {
-		if (s == null) {
-			throw new IllegalStateException();
-		}
-		return s;
-	}
-
-	/**
-	 * Check and ensure that a specific state object is not {@code null}.
-	 *
-	 * @param <T> The actual state type.
-	 * @param s The state object to check.
-	 * @param message The message to issue if the check fails.
-	 * @return The checked state object (never {@code null}).
-	 * @throws IllegalStateException if the state object is {@code null}.
-	 */
-	public static <T> T nonNullS(@Nullable T s, String message) throws IllegalStateException {
-		if (s == null) {
-			throw new IllegalStateException(message);
-		}
-		return s;
+		return o;
 	}
 
 	/**

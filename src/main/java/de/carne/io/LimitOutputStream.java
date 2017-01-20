@@ -48,7 +48,7 @@ public class LimitOutputStream<T extends OutputStream> extends OutputStream {
 	 * @param limit The limit to apply.
 	 */
 	public LimitOutputStream(T out, long limit) {
-		this.out = Check.nonNullA(out);
+		this.out = out;
 		this.limit = limit;
 	}
 
@@ -69,7 +69,7 @@ public class LimitOutputStream<T extends OutputStream> extends OutputStream {
 
 	@Override
 	public void write(@Nullable byte[] _b) throws IOException {
-		byte[] b = Check.nonNullA(_b);
+		byte[] b = Check.nonNull(_b);
 
 		this.out.write(b);
 		recordWrite(b.length);
@@ -77,7 +77,7 @@ public class LimitOutputStream<T extends OutputStream> extends OutputStream {
 
 	@Override
 	public void write(@Nullable byte[] _b, int off, int len) throws IOException {
-		byte[] b = Check.nonNullA(_b);
+		byte[] b = Check.nonNull(_b);
 
 		this.out.write(b, off, len);
 		recordWrite(len);

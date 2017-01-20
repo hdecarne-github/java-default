@@ -71,11 +71,12 @@ public class ApplicationURLStreamHandlerFactoryTest {
 		}
 
 		@Override
-		@Nullable
-		public URLStreamHandler createURLStreamHandler(@Nullable String requstedProtocol) {
+		public URLStreamHandler createURLStreamHandler(@Nullable String _requstedProtocol) {
+			String requstedProtocol = Check.nonNull(_requstedProtocol);
+
 			Assert.assertEquals(this.protocol, requstedProtocol);
 
-			return new TestURLStreamHandler(Check.nonNullA(requstedProtocol));
+			return new TestURLStreamHandler(requstedProtocol);
 		}
 	}
 

@@ -25,7 +25,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import de.carne.check.Check;
 import de.carne.check.NonNullByDefault;
 
 /**
@@ -50,8 +49,6 @@ public final class FileAttributes {
 	 * @return The determined default file attributes.
 	 */
 	public static FileAttribute<?>[] defaultUserDirectoryAttributes(Path directoryPath) {
-		assert directoryPath != null;
-
 		List<FileAttribute<?>> attributes = new ArrayList<>();
 		Set<String> supported = directoryPath.getFileSystem().supportedFileAttributeViews();
 
@@ -59,7 +56,7 @@ public final class FileAttributes {
 			attributes.add(PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ,
 					PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_EXECUTE)));
 		}
-		return Check.nonNullS(attributes.toArray(new FileAttribute<?>[attributes.size()]));
+		return attributes.toArray(new FileAttribute<?>[attributes.size()]);
 	}
 
 	/**
@@ -72,8 +69,6 @@ public final class FileAttributes {
 	 * @return The determined default file attributes.
 	 */
 	public static FileAttribute<?>[] defaultUserFileAttributes(Path filePath) {
-		assert filePath != null;
-
 		List<FileAttribute<?>> attributes = new ArrayList<>();
 		Set<String> supported = filePath.getFileSystem().supportedFileAttributeViews();
 
@@ -81,7 +76,7 @@ public final class FileAttributes {
 			attributes.add(PosixFilePermissions
 					.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)));
 		}
-		return Check.nonNullA(attributes.toArray(new FileAttribute<?>[attributes.size()]));
+		return attributes.toArray(new FileAttribute<?>[attributes.size()]);
 	}
 
 }

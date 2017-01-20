@@ -32,7 +32,7 @@ public class OS {
 	/**
 	 * OS name.
 	 */
-	public static final String OS_NAME = Check.nonNullS(System.getProperty("os.name"));
+	public static final String OS_NAME = Check.nonNull(System.getProperty("os.name"));
 
 	/**
 	 * Windows platform flag.

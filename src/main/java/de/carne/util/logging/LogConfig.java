@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.logging.LogManager;
 
-import de.carne.check.Check;
 import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 import de.carne.util.Exceptions;
@@ -35,7 +34,7 @@ import de.carne.util.Exceptions;
 @NonNullByDefault
 public final class LogConfig {
 
-	private static final String THIS_PACKAGE = Check.nonNullS(LogConfig.class.getPackage().getName());
+	private static final String THIS_PACKAGE = LogConfig.class.getPackage().getName();
 
 	static {
 		// Make sure our custom level class is loaded and the custom levels are

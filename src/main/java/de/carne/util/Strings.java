@@ -22,7 +22,6 @@ import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.function.Function;
 
-import de.carne.check.Check;
 import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 
@@ -109,7 +108,7 @@ public final class Strings {
 		if (tokenBuffer.length() > 0) {
 			split.add(tokenBuffer.toString());
 		}
-		return Check.nonNullS(split.toArray(new String[split.size()]));
+		return split.toArray(new String[split.size()]);
 	}
 
 	/**
@@ -167,7 +166,7 @@ public final class Strings {
 			}
 			buffer.append(converter.apply(object));
 		}
-		return Check.nonNullS(buffer.toString());
+		return buffer.toString();
 	}
 
 }

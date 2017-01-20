@@ -191,22 +191,22 @@ public class PrefsTest {
 		BooleanPreference preference = new BooleanPreference(root, "booleanPreference");
 
 		Assert.assertEquals(null, preference.get());
-		Assert.assertEquals(true, preference.getBoolean(true));
+		Assert.assertTrue(preference.getBoolean(true));
 
 		preference.putBoolean(true);
 
 		Assert.assertEquals(Boolean.TRUE, preference.get());
-		Assert.assertEquals(true, preference.getBoolean(false));
+		Assert.assertTrue(preference.getBoolean(false));
 
 		preference.put(Boolean.FALSE);
 
 		Assert.assertEquals(Boolean.FALSE, preference.get());
-		Assert.assertEquals(false, preference.getBoolean(true));
+		Assert.assertFalse(preference.getBoolean(true));
 
 		root.put(preference.key(), "xyz");
 
 		Assert.assertEquals(Boolean.FALSE, preference.get());
-		Assert.assertEquals(true, preference.getBoolean(true));
+		Assert.assertTrue(preference.getBoolean(true));
 	}
 
 	/**

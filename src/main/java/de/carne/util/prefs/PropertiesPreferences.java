@@ -24,15 +24,19 @@ import java.util.Set;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.BackingStoreException;
 
+import de.carne.check.Check;
 import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
 
 @NonNullByDefault
 class PropertiesPreferences extends AbstractPreferences {
 
 	private final PropertiesCache propertiesCache;
 
+	@Nullable
 	private Map<String, String> cachedValues = null;
 
+	@Nullable
 	private Map<String, PropertiesPreferences> cachedChildren = null;
 
 	PropertiesPreferences(Path propertiesPath) {
@@ -46,17 +50,17 @@ class PropertiesPreferences extends AbstractPreferences {
 	}
 
 	@Override
-	protected void putSpi(String key, String value) {
+	protected void putSpi(@Nullable String key, @Nullable String value) {
 		getCachedValues().put(key, value);
 	}
 
 	@Override
-	protected String getSpi(String key) {
+	protected String getSpi(@Nullable String key) {
 		return getCachedValues().get(key);
 	}
 
 	@Override
-	protected void removeSpi(String key) {
+	protected void removeSpi(@Nullable String key) {
 		getCachedValues().remove(key);
 	}
 
@@ -86,7 +90,8 @@ class PropertiesPreferences extends AbstractPreferences {
 	}
 
 	@Override
-	protected AbstractPreferences childSpi(String name) {
+	protected AbstractPreferences childSpi(@Nullable String _name) {
+		String name = Check.nonNull(_name);
 		Map<String, PropertiesPreferences> children = getCachedChildren();
 		PropertiesPreferences child = children.get(name);
 
@@ -114,17 +119,25 @@ class PropertiesPreferences extends AbstractPreferences {
 	}
 
 	private Map<String, String> getCachedValues() {
-		if (this.cachedValues == null) {
-			this.cachedValues = this.propertiesCache.getValues(this);
+		Map<String, String> values;
+
+		if (this.cachedValues != null) {
+			values = this.cachedValues;
+		} else {
+			values = this.cachedValues = this.propertiesCache.getValues(this);
 		}
-		return this.cachedValues;
+		return values;
 	}
 
 	private Map<String, PropertiesPreferences> getCachedChildren() {
-		if (this.cachedChildren == null) {
-			this.cachedChildren = this.propertiesCache.getChildren(this);
+		Map<String, PropertiesPreferences> children;
+
+		if (this.cachedChildren != null) {
+			children = this.cachedChildren;
+		} else {
+			children = this.cachedChildren = this.propertiesCache.getChildren(this);
 		}
-		return this.cachedChildren;
+		return children;
 	}
 
 	private Set<String> getChildrenNames() {

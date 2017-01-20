@@ -27,7 +27,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.carne.check.Check;
 import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 import de.carne.io.IOHelper;
@@ -45,7 +44,7 @@ public class LoggingTest {
 
 	private static final Log LOG = new Log();
 
-	private static final String LOG_MESSAGE = Check.nonNullS(LoggingTest.class.getSimpleName());
+	private static final String LOG_MESSAGE = LoggingTest.class.getSimpleName();
 
 	/**
 	 * Setup default log config.

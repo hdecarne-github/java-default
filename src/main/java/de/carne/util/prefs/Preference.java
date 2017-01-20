@@ -19,6 +19,7 @@ package de.carne.util.prefs;
 import java.util.prefs.Preferences;
 
 import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
 
 /**
  * Generic base class for preference access.
@@ -69,6 +70,7 @@ public abstract class Preference<T> {
 	 *
 	 * @return The found preference value, or {@code null} if the preference is undefined.
 	 */
+	@Nullable
 	public T get() {
 		return get(null);
 	}
@@ -79,7 +81,8 @@ public abstract class Preference<T> {
 	 * @param defaultValue The default preference value to return in case the preference is undefined.
 	 * @return The found preference value.
 	 */
-	public T get(T defaultValue) {
+	@Nullable
+	public T get(@Nullable T defaultValue) {
 		String valueString = this.preferences.get(this.key, null);
 
 		return (valueString != null ? toValue(valueString) : defaultValue);
@@ -90,7 +93,7 @@ public abstract class Preference<T> {
 	 *
 	 * @param value The value to set. If {@code null} the preference is removed.
 	 */
-	public void put(T value) {
+	public void put(@Nullable T value) {
 		if (value != null) {
 			this.preferences.put(this.key, fromValue(value));
 		} else {
@@ -111,6 +114,7 @@ public abstract class Preference<T> {
 	 * @param valueString The string to convert.
 	 * @return The converted preference value.
 	 */
+	@Nullable
 	protected abstract T toValue(String valueString);
 
 	/**

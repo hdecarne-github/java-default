@@ -28,6 +28,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
 import de.carne.util.PropertiesHelper;
 
 /**
@@ -107,8 +108,8 @@ public class LogMonitor extends Handler {
 	}
 
 	@Override
-	public synchronized void publish(LogRecord record) {
-		if (record.getLevel().intValue() >= this.level.intValue() && (this.threadIds.isEmpty()
+	public synchronized void publish(@Nullable LogRecord record) {
+		if (record != null && record.getLevel().intValue() >= this.level.intValue() && (this.threadIds.isEmpty()
 				|| this.threadIds.contains(Long.valueOf(record.getThreadID() & 0xffffffffl)))) {
 			if (this.buffer.size() < BUFFER_LIMIT) {
 				this.buffer.addLast(record);

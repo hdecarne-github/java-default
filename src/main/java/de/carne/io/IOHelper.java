@@ -39,7 +39,6 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import de.carne.check.Check;
 import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 import de.carne.util.PropertiesHelper;
@@ -82,7 +81,7 @@ public final class IOHelper {
 		try (LimitOutputStream<ByteArrayOutputStream> out = new LimitOutputStream<>(new ByteArrayOutputStream(),
 				limit)) {
 			copyStream(in, out);
-			bytes = Check.nonNullS(out.outputStream().toByteArray());
+			bytes = out.outputStream().toByteArray();
 		}
 		return bytes;
 	}
@@ -133,7 +132,7 @@ public final class IOHelper {
 		List<Path> collection;
 
 		try (Stream<Path> stream = Files.walk(start, options)) {
-			collection = Check.nonNullS(stream.filter(filter).collect(Collectors.toList()));
+			collection = stream.filter(filter).collect(Collectors.toList());
 		}
 		return collection;
 	}
@@ -145,7 +144,7 @@ public final class IOHelper {
 	 * @throws IOException if an I/O error occurs while deleting the directory tree.
 	 */
 	public static void deleteDirectoryTree(String directory) throws IOException {
-		deleteDirectoryTree(Check.nonNullS(Paths.get(directory)));
+		deleteDirectoryTree(Paths.get(directory));
 	}
 
 	/**
@@ -155,7 +154,7 @@ public final class IOHelper {
 	 * @throws IOException if an I/O error occurs while deleting the directory tree.
 	 */
 	public static void deleteDirectoryTree(File directory) throws IOException {
-		deleteDirectoryTree(Check.nonNullS(directory.toPath()));
+		deleteDirectoryTree(directory.toPath());
 	}
 
 	/**
@@ -165,12 +164,9 @@ public final class IOHelper {
 	 * @throws IOException if an I/O error occurs while deleting the directory tree.
 	 */
 	public static void deleteDirectoryTree(Path directory) throws IOException {
-		assert directory != null;
-
 		Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
 
 			@Override
-			@Nullable
 			public FileVisitResult visitFile(@Nullable Path file, @Nullable BasicFileAttributes attrs)
 					throws IOException {
 				Files.delete(file);
@@ -178,7 +174,6 @@ public final class IOHelper {
 			}
 
 			@Override
-			@Nullable
 			public FileVisitResult postVisitDirectory(@Nullable Path dir, @Nullable IOException exc)
 					throws IOException {
 				if (exc == null) {
@@ -203,7 +198,7 @@ public final class IOHelper {
 	 */
 	public static Path createTempFileFromResource(URL resource, @Nullable String prefix, @Nullable String suffix,
 			FileAttribute<?>... attrs) throws IOException {
-		return copyResourceToFile(resource, Check.nonNullS(Files.createTempFile(prefix, suffix, attrs)));
+		return copyResourceToFile(resource, Files.createTempFile(prefix, suffix, attrs));
 	}
 
 	/**
@@ -220,13 +215,13 @@ public final class IOHelper {
 	 */
 	public static Path createTempFileFromResource(URL resource, Path dir, String prefix, String suffix,
 			FileAttribute<?>... attrs) throws IOException {
-		return copyResourceToFile(resource, Check.nonNullS(Files.createTempFile(dir, prefix, suffix, attrs)));
+		return copyResourceToFile(resource, Files.createTempFile(dir, prefix, suffix, attrs));
 	}
 
 	private static Path copyResourceToFile(URL resource, Path file) throws IOException {
-		try (InputStream in = Check.nonNullS(resource.openStream());
-				OutputStream out = Check.nonNullS(
-						Files.newOutputStream(file, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING))) {
+		try (InputStream in = resource.openStream();
+				OutputStream out = Files.newOutputStream(file, StandardOpenOption.CREATE,
+						StandardOpenOption.TRUNCATE_EXISTING)) {
 			copyStream(in, out);
 		}
 		return file;
@@ -244,7 +239,7 @@ public final class IOHelper {
 	 */
 	public static Path createTempDirFromZIPResource(URL resource, @Nullable String prefix, FileAttribute<?>... attrs)
 			throws IOException {
-		return exportZIPResourceToDirectory(resource, Check.nonNullS(Files.createTempDirectory(prefix, attrs)));
+		return exportZIPResourceToDirectory(resource, Files.createTempDirectory(prefix, attrs));
 	}
 
 	/**
@@ -260,8 +255,7 @@ public final class IOHelper {
 	 */
 	public static Path createTempDirFromZIPResource(URL resource, Path dir, @Nullable String prefix,
 			FileAttribute<?>... attrs) throws IOException {
-		return exportZIPResourceToDirectory(resource, Check.nonNullS(Files.createTempDirectory(dir, prefix, attrs)),
-				attrs);
+		return exportZIPResourceToDirectory(resource, Files.createTempDirectory(dir, prefix, attrs), attrs);
 	}
 
 	private static Path exportZIPResourceToDirectory(URL resource, Path dir, FileAttribute<?>... attrs)
@@ -276,8 +270,7 @@ public final class IOHelper {
 					Files.createDirectories(entryPath, attrs);
 				} else {
 					Files.createDirectories(entryPath.getParent(), attrs);
-					try (OutputStream out = Check
-							.nonNullS(Files.newOutputStream(entryPath, StandardOpenOption.CREATE_NEW))) {
+					try (OutputStream out = Files.newOutputStream(entryPath, StandardOpenOption.CREATE_NEW)) {
 						copyStream(in, out);
 					}
 				}

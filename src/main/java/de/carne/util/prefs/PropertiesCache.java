@@ -30,6 +30,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
 import de.carne.nio.FileAttributes;
 import de.carne.util.logging.Log;
 
@@ -42,6 +43,7 @@ final class PropertiesCache {
 
 	private final Properties cache = new Properties();
 
+	@Nullable
 	private FileTime propertiesPathLastModifiedTime = null;
 
 	PropertiesCache(Path propertiesPath) {
@@ -86,8 +88,8 @@ final class PropertiesCache {
 		return children;
 	}
 
-	public synchronized void sync(PropertiesPreferences preferences, Map<String, String> values,
-			Set<String> childrenNames) {
+	public synchronized void sync(PropertiesPreferences preferences, @Nullable Map<String, String> modifiedValues,
+			@Nullable Set<String> modifiedChildrenNames) {
 		try {
 			initCache();
 
@@ -97,29 +99,34 @@ final class PropertiesCache {
 			while (cacheKeys.hasNext()) {
 				String cacheKey = cacheKeys.next().toString();
 
-				if (values != null) {
+				// Remove all value keys if we have modified values (that modified values will added afterwards)
+				if (modifiedValues != null) {
 					String key = determinePreferencesKey(absolutePreferencesPath, cacheKey);
 
 					if (key != null) {
 						cacheKeys.remove();
 					}
 				}
-				if (childrenNames != null) {
+
+				// Remove all outdated children if if have modified children names
+				if (modifiedChildrenNames != null) {
 					String childName = determinePreferencesChildName(absolutePreferencesPath, cacheKey);
 
-					if (childName != null && !childrenNames.contains(childName)) {
+					if (childName != null && !modifiedChildrenNames.contains(childName)) {
 						cacheKeys.remove();
 					}
 				}
 			}
-			if (values != null) {
-				for (Map.Entry<String, String> valueEntry : values.entrySet()) {
+			if (modifiedValues != null) {
+				for (Map.Entry<String, String> valueEntry : modifiedValues.entrySet()) {
 					String absoluteKey = absolutePreferencesPath + valueEntry.getKey();
 
 					this.cache.put(absoluteKey, valueEntry.getValue());
 				}
 			}
+
 			this.LOG.info("Writing preferences file ''{0}''...", this.propertiesPath);
+
 			try (OutputStream propertiesStream = Files.newOutputStream(this.propertiesPath)) {
 				this.cache.store(propertiesStream, null);
 			}
@@ -165,6 +172,7 @@ final class PropertiesCache {
 		return absolutePreferencesPath;
 	}
 
+	@Nullable
 	private String determinePreferencesKey(String absolutePreferencesPath, String cacheKey) {
 		String key = null;
 
@@ -176,6 +184,7 @@ final class PropertiesCache {
 		return key;
 	}
 
+	@Nullable
 	private String determinePreferencesChildName(String absolutePreferencesPath, String cacheKey) {
 		String key = null;
 

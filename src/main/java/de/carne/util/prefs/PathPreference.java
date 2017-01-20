@@ -25,6 +25,7 @@ import java.util.function.Predicate;
 import java.util.prefs.Preferences;
 
 import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
 import de.carne.util.Exceptions;
 
 /**
@@ -72,6 +73,7 @@ public class PathPreference extends Preference<Path> {
 	 *
 	 * @return The found preference value, or {@code null} if the preference is undefined.
 	 */
+	@Nullable
 	public File getValueAsFile() {
 		return getValueAsFile(null);
 	}
@@ -82,7 +84,8 @@ public class PathPreference extends Preference<Path> {
 	 * @param defaultValue The default preference value to return in case the preference is undefined.
 	 * @return The found preference value.
 	 */
-	public File getValueAsFile(File defaultValue) {
+	@Nullable
+	public File getValueAsFile(@Nullable File defaultValue) {
 		Path value = get();
 
 		return (value != null ? value.toFile() : defaultValue);
@@ -93,11 +96,12 @@ public class PathPreference extends Preference<Path> {
 	 *
 	 * @param value The value to set. If {@code null} the preference is removed.
 	 */
-	public void putValueFromFile(File value) {
+	public void putValueFromFile(@Nullable File value) {
 		put(value != null ? value.toPath() : null);
 	}
 
 	@Override
+	@Nullable
 	protected Path toValue(String valueString) {
 		Path value = null;
 
@@ -114,7 +118,8 @@ public class PathPreference extends Preference<Path> {
 		return value.toString();
 	}
 
-	private Path validatePath(Path path) {
+	@Nullable
+	private Path validatePath(@Nullable Path path) {
 		return (path == null || this.validator.test(path) ? path : null);
 	}
 

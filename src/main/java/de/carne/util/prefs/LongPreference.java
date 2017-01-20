@@ -19,6 +19,7 @@ package de.carne.util.prefs;
 import java.util.prefs.Preferences;
 
 import de.carne.check.NonNullByDefault;
+import de.carne.check.Nullable;
 import de.carne.util.Exceptions;
 
 /**
@@ -57,6 +58,7 @@ public class LongPreference extends Preference<Long> {
 	}
 
 	@Override
+	@Nullable
 	protected Long toValue(String valueString) {
 		Long value = null;
 

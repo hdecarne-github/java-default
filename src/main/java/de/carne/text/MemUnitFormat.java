@@ -49,8 +49,6 @@ public class MemUnitFormat extends NumberFormat {
 	 * @param numberFormat The {@link NumberFormat} to use for the actual number formatting and parsing.
 	 */
 	public MemUnitFormat(NumberFormat numberFormat) {
-		assert numberFormat != null;
-
 		this.numberFormat = numberFormat;
 	}
 
@@ -65,8 +63,7 @@ public class MemUnitFormat extends NumberFormat {
 				memUnitIndex++;
 			}
 		}
-		return Check
-				.nonNullS(this.numberFormat.format(normalizedNumber, toAppendTo, pos).append(MEM_UNITS[memUnitIndex]));
+		return this.numberFormat.format(normalizedNumber, toAppendTo, pos).append(MEM_UNITS[memUnitIndex]);
 	}
 
 	@Override
@@ -77,8 +74,8 @@ public class MemUnitFormat extends NumberFormat {
 	@Override
 	@Nullable
 	public Number parse(@Nullable String _source, @Nullable ParsePosition _parsePosition) {
-		String source = Check.nonNullA(_source);
-		ParsePosition parsePosition = Check.nonNullA(_parsePosition);
+		String source = Check.nonNull(_source);
+		ParsePosition parsePosition = Check.nonNull(_parsePosition);
 
 		int startIndex = parsePosition.getIndex();
 		Number number = this.numberFormat.parse(source, parsePosition);

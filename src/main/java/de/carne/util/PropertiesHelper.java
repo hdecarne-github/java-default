@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import de.carne.check.Check;
 import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 import de.carne.util.logging.Log;
@@ -111,7 +110,7 @@ public final class PropertiesHelper {
 	 * @return The system property value or the submitted default value if the system property is undefined.
 	 */
 	public static int getInt(Class<?> cls, String key, int def) {
-		return getInt(Check.nonNullS(System.getProperties()), systemPropertyKey(cls, key), def);
+		return getInt(System.getProperties(), systemPropertyKey(cls, key), def);
 	}
 
 	/**
@@ -140,7 +139,7 @@ public final class PropertiesHelper {
 	}
 
 	private static String systemPropertyKey(Class<?> cls, String key) {
-		return Check.nonNullS(cls.getPackage()).getName() + key;
+		return cls.getPackage().getName() + key;
 	}
 
 	private static int toInt(@Nullable String property, String key, int def) {

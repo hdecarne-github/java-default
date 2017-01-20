@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import de.carne.check.Check;
 import de.carne.check.NonNullByDefault;
 import de.carne.check.Nullable;
 import de.carne.util.Strings;
@@ -51,7 +50,7 @@ public final class CmdLine {
 	 * @param args The command line to evaluate.
 	 */
 	public CmdLine(String[] args) {
-		this.args = Check.nonNullS(Arrays.asList(args));
+		this.args = Arrays.asList(args);
 	}
 
 	/**
@@ -60,8 +59,6 @@ public final class CmdLine {
 	 * @param args The command line to evaluate.
 	 */
 	public CmdLine(Iterable<String> args) {
-		assert args != null;
-
 		this.args = args;
 	}
 
@@ -80,8 +77,6 @@ public final class CmdLine {
 				if (Strings.isEmpty(arg)) {
 					continue;
 				}
-
-				assert arg != null;
 
 				// Check if this argument is an option for a previously
 				// encountered

@@ -29,13 +29,11 @@ import java.util.function.Predicate;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.carne.check.Check;
 import de.carne.check.NonNullByDefault;
-import de.carne.check.Nullable;
 import de.carne.io.IOHelper;
+import de.carne.util.Exceptions;
 
 /**
  * Test {@link IOHelper} class.
@@ -45,18 +43,18 @@ public class IOHelperTest {
 
 	private static final String TEST_DIR_ZIP = "test.zip";
 
-	@Nullable
-	private static Path testDir = null;
+	private static final Path TEST_DIR;
 
-	/**
-	 * Test environment.
-	 *
-	 * @throws IOException if setup fails.
-	 */
-	@BeforeClass
-	public static void createTestFiles() throws IOException {
-		testDir = IOHelper.createTempDirFromZIPResource(Check.nonNullS(IOHelperTest.class.getResource(TEST_DIR_ZIP)),
-				Check.nonNullS(IOHelperTest.class.getSimpleName()));
+	static {
+		Path testDir;
+
+		try {
+			testDir = IOHelper.createTempDirFromZIPResource(IOHelperTest.class.getResource(TEST_DIR_ZIP),
+					IOHelperTest.class.getSimpleName());
+		} catch (IOException e) {
+			throw Exceptions.toRuntime(e);
+		}
+		TEST_DIR = testDir;
 	}
 
 	/**
@@ -66,10 +64,7 @@ public class IOHelperTest {
 	 */
 	@AfterClass
 	public static void deleteTestFiles() throws IOException {
-		if (testDir != null) {
-			IOHelper.deleteDirectoryTree(testDir);
-			testDir = null;
-		}
+		IOHelper.deleteDirectoryTree(TEST_DIR);
 	}
 
 	/**
@@ -79,13 +74,11 @@ public class IOHelperTest {
 	 */
 	@Test
 	public void testCollectDirectoryFiles() throws IOException {
-		Path start = Check.nonNullS(testDir);
-
-		Assert.assertEquals(5, IOHelper.collectDirectoryFiles(start).size());
+		Assert.assertEquals(5, IOHelper.collectDirectoryFiles(TEST_DIR).size());
 
 		Predicate<Path> filter = (p) -> "A.txt|B.txt|Z.txt".contains(p.getFileName().toString());
 
-		Assert.assertEquals(2, IOHelper.collectDirectoryFiles(start, filter).size());
+		Assert.assertEquals(2, IOHelper.collectDirectoryFiles(TEST_DIR, filter).size());
 	}
 
 	/**
@@ -95,18 +88,16 @@ public class IOHelperTest {
 	 */
 	@Test
 	public void testDeleteDirectoryTree() throws IOException {
-		Path directoryPath = IOHelper.createTempDirFromZIPResource(Check.nonNullS(getClass().getResource(TEST_DIR_ZIP)),
-				null);
+		Path directoryPath = IOHelper.createTempDirFromZIPResource(getClass().getResource(TEST_DIR_ZIP), null);
 
 		IOHelper.deleteDirectoryTree(directoryPath);
 
-		File directoryFile = Check.nonNullS(IOHelper
-				.createTempDirFromZIPResource(Check.nonNullS(getClass().getResource(TEST_DIR_ZIP)), null).toFile());
+		File directoryFile = IOHelper.createTempDirFromZIPResource(getClass().getResource(TEST_DIR_ZIP), null).toFile();
 
 		IOHelper.deleteDirectoryTree(directoryFile);
 
-		String directoryString = Check.nonNullS(IOHelper
-				.createTempDirFromZIPResource(Check.nonNullS(getClass().getResource(TEST_DIR_ZIP)), null).toString());
+		String directoryString = IOHelper.createTempDirFromZIPResource(getClass().getResource(TEST_DIR_ZIP), null)
+				.toString();
 
 		IOHelper.deleteDirectoryTree(directoryString);
 	}
@@ -177,7 +168,7 @@ public class IOHelperTest {
 	}
 
 	private URL getClassResource() {
-		return Check.nonNullS(getClass().getResource(getClass().getSimpleName() + ".class"));
+		return getClass().getResource(getClass().getSimpleName() + ".class");
 	}
 
 }
