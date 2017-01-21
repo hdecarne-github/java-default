@@ -42,18 +42,30 @@ public final class ObjectHolder<T> {
 	}
 
 	/**
+	 * Check whether the hold object has already been accessed via {#link {@link #get()} and hence been set.
+	 * 
+	 * @return {@code true} if the object has already been set.
+	 */
+	public boolean isSet() {
+		return this.object != null;
+	}
+
+	/**
 	 * Get the resource object managed by this class.
 	 * <p>
 	 * The resource object will be created the first time this function is invoked.
 	 *
 	 * @return The resource object.
 	 */
-	@Nullable
 	public synchronized T get() {
-		if (this.object == null) {
-			this.object = this.objectSupplier.get();
+		T t;
+
+		if (this.object != null) {
+			t = this.object;
+		} else {
+			t = this.object = this.objectSupplier.get();
 		}
-		return this.object;
+		return t;
 	}
 
 }

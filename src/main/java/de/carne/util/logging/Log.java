@@ -159,7 +159,7 @@ public final class Log {
 	 * @param msg The message to log.
 	 * @param parameters The message parameters to log.
 	 */
-	public void notice(Throwable thrown, String msg, Object... parameters) {
+	public void notice(@Nullable Throwable thrown, String msg, Object... parameters) {
 		log(LogLevel.LEVEL_NOTICE, thrown, msg, parameters);
 	}
 
@@ -189,7 +189,7 @@ public final class Log {
 	 * @param msg The message to log.
 	 * @param parameters The message parameters to log.
 	 */
-	public void error(Throwable thrown, String msg, Object... parameters) {
+	public void error(@Nullable Throwable thrown, String msg, Object... parameters) {
 		log(LogLevel.LEVEL_ERROR, thrown, msg, parameters);
 	}
 
@@ -219,7 +219,7 @@ public final class Log {
 	 * @param msg The message to log.
 	 * @param parameters The message parameters to log.
 	 */
-	public void warning(Throwable thrown, String msg, Object... parameters) {
+	public void warning(@Nullable Throwable thrown, String msg, Object... parameters) {
 		log(LogLevel.LEVEL_WARNING, thrown, msg, parameters);
 	}
 
@@ -249,7 +249,7 @@ public final class Log {
 	 * @param msg The message to log.
 	 * @param parameters The message parameters to log.
 	 */
-	public void info(Throwable thrown, String msg, Object... parameters) {
+	public void info(@Nullable Throwable thrown, String msg, Object... parameters) {
 		log(LogLevel.LEVEL_INFO, thrown, msg, parameters);
 	}
 
@@ -279,7 +279,7 @@ public final class Log {
 	 * @param msg The message to log.
 	 * @param parameters The message parameters to log.
 	 */
-	public void debug(Throwable thrown, String msg, Object... parameters) {
+	public void debug(@Nullable Throwable thrown, String msg, Object... parameters) {
 		log(LogLevel.LEVEL_DEBUG, thrown, msg, parameters);
 	}
 
@@ -309,7 +309,7 @@ public final class Log {
 	 * @param msg The message to log.
 	 * @param parameters The message parameters to log.
 	 */
-	public void trace(Throwable thrown, String msg, Object... parameters) {
+	public void trace(@Nullable Throwable thrown, String msg, Object... parameters) {
 		log(LogLevel.LEVEL_TRACE, thrown, msg, parameters);
 	}
 
