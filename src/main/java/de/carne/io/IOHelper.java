@@ -211,8 +211,8 @@ public final class IOHelper {
 	 * @throws IOException if an I/O error occurs.
 	 * @see Files#createTempFile(Path, String, String, FileAttribute...)
 	 */
-	public static Path createTempFileFromResource(URL resource, Path dir, String prefix, String suffix,
-			FileAttribute<?>... attrs) throws IOException {
+	public static Path createTempFileFromResource(URL resource, Path dir, @Nullable String prefix,
+			@Nullable String suffix, FileAttribute<?>... attrs) throws IOException {
 		return copyResourceToFile(resource, Files.createTempFile(dir, prefix, suffix, attrs));
 	}
 
