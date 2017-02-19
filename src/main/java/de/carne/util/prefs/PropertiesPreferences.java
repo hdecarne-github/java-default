@@ -117,22 +117,18 @@ class PropertiesPreferences extends AbstractPreferences {
 	}
 
 	private Map<String, String> getCachedValues() {
-		Map<String, String> values;
+		Map<String, String> values = this.cachedValues;
 
-		if (this.cachedValues != null) {
-			values = this.cachedValues;
-		} else {
+		if (values == null) {
 			values = this.cachedValues = this.propertiesCache.getValues(this);
 		}
 		return values;
 	}
 
 	private Map<String, PropertiesPreferences> getCachedChildren() {
-		Map<String, PropertiesPreferences> children;
+		Map<String, PropertiesPreferences> children = this.cachedChildren;
 
-		if (this.cachedChildren != null) {
-			children = this.cachedChildren;
-		} else {
+		if (children == null) {
 			children = this.cachedChildren = this.propertiesCache.getChildren(this);
 		}
 		return children;

@@ -21,51 +21,49 @@ import java.util.function.Supplier;
 import de.carne.check.Nullable;
 
 /**
- * Utility class used to manage lazy initialized resources.
+ * Utility class used to manage lazy initialized objects.
  *
- * @param <T> The resource object type.
+ * @param <T> The managed object type.
  */
-public final class ObjectHolder<T> {
+public final class Lazy<T> {
 
-	private final Supplier<T> objectSupplier;
+	private final Supplier<T> initializer;
 
 	@Nullable
-	private T object = null;
+	private T initializedObject = null;
 
 	/**
-	 * Construct {@code ObjectHolder}.
+	 * Construct {@code Lazy}.
 	 *
-	 * @param objectSupplier The {@link Supplier} to use for resource object creation.
+	 * @param initializer The {@link Supplier} to use for object initialization.
 	 */
-	public ObjectHolder(Supplier<T> objectSupplier) {
-		this.objectSupplier = objectSupplier;
+	public Lazy(Supplier<T> initializer) {
+		this.initializer = initializer;
 	}
 
 	/**
-	 * Check whether the hold object has already been accessed via {#link {@link #get()} and hence been set.
-	 * 
-	 * @return {@code true} if the object has already been set.
+	 * Check whether the hold object has already been initialized (by a call to {@link #get()}).
+	 *
+	 * @return {@code true} if the object has already been initialized.
 	 */
-	public boolean isSet() {
-		return this.object != null;
+	public synchronized boolean isInitialized() {
+		return this.initializedObject != null;
 	}
 
 	/**
-	 * Get the resource object managed by this class.
+	 * Get the hold object.
 	 * <p>
-	 * The resource object will be created the first time this function is invoked.
+	 * The object will be initialized the first time this function is invoked.
 	 *
-	 * @return The resource object.
+	 * @return The hold object.
 	 */
 	public synchronized T get() {
-		T t;
+		T object = this.initializedObject;
 
-		if (this.object != null) {
-			t = this.object;
-		} else {
-			t = this.object = this.objectSupplier.get();
+		if (object == null) {
+			object = this.initializedObject = this.initializer.get();
 		}
-		return t;
+		return object;
 	}
 
 }

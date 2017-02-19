@@ -19,22 +19,42 @@ package de.carne.test.util;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.carne.util.ObjectHolder;
+import de.carne.util.Exceptions;
+import de.carne.util.Late;
 
 /**
- * Test {@link ObjectHolder} class.
+ * Test {@link Late} class.
  */
-public class ObjectHolderTest {
+public class LateTest {
 
 	/**
-	 * Test {@link ObjectHolder} class functionality.
+	 * Test {@link Late} class functionality.
 	 */
 	@Test
-	public void testAboutInfo() {
-		ObjectHolder<ObjectHolderTest> holder = new ObjectHolder<>(() -> this);
+	public void testLazy() {
+		Late<Object> lateObject = new Late<>();
 
-		Assert.assertEquals(this, holder.get());
-		Assert.assertEquals(this, holder.get());
+		Assert.assertFalse(lateObject.isInitialized());
+
+		try {
+			lateObject.get();
+			Assert.fail();
+		} catch (IllegalStateException e) {
+			Exceptions.ignore(e);
+		}
+
+		Object object = lateObject.initialize(new Object());
+
+		Assert.assertTrue(lateObject.isInitialized());
+
+		try {
+			lateObject.get();
+		} catch (IllegalStateException e) {
+			Exceptions.ignore(e);
+			Assert.fail();
+		}
+
+		Assert.assertTrue(object == lateObject.get());
 	}
 
 }

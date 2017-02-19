@@ -104,13 +104,17 @@ public final class CmdLine {
 					continue;
 				}
 				// Must be an unnamed option
-				if (this.unnamedOptionAction != null) {
-					this.unnamedOptionAction.accept(arg);
+				CmdLineActionConsumer checkedUnnamedOptionAction = this.unnamedOptionAction;
+
+				if (checkedUnnamedOptionAction != null) {
+					checkedUnnamedOptionAction.accept(arg);
 					continue;
 				}
 				// We found no suitable action
-				if (this.unknownArgumentAction != null) {
-					this.unknownArgumentAction.accept(arg);
+				CmdLineActionConsumer checkedUnknownArgumentAction = this.unknownArgumentAction;
+
+				if (checkedUnknownArgumentAction != null) {
+					checkedUnknownArgumentAction.accept(arg);
 				}
 			}
 			if (pendingNamedOptionAction != null) {
