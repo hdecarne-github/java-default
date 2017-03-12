@@ -62,8 +62,6 @@ public class PropertiesPreferencesFactory implements PreferencesFactory {
 	 * @return The created {@link Preferences} object.
 	 */
 	public static Preferences customRoot(Path propertiesPath) {
-		assert propertiesPath != null;
-
 		return new PropertiesPreferences(propertiesPath);
 	}
 

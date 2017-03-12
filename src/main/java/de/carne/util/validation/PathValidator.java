@@ -41,9 +41,6 @@ public final class PathValidator {
 	 * @throws ValidationException if the input is invalid.
 	 */
 	public static Path isPath(String input, MessageFormatter message) throws ValidationException {
-		assert input != null;
-		assert message != null;
-
 		Path path;
 
 		try {
@@ -64,10 +61,6 @@ public final class PathValidator {
 	 * @throws ValidationException if the input is invalid.
 	 */
 	public static Path isPath(Path basePath, String input, MessageFormatter message) throws ValidationException {
-		assert basePath != null;
-		assert input != null;
-		assert message != null;
-
 		Path path;
 
 		try {

@@ -66,4 +66,21 @@ public final class Late<T> {
 		return object;
 	}
 
+	/**
+	 * Get the hold object if it has been initialized.
+	 *
+	 * @return The hold object or {@code null} if it has not yet been initialized.
+	 */
+	@Nullable
+	public synchronized T getIfInitialized() {
+		return this.initializedObject;
+	}
+
+	@Override
+	public String toString() {
+		T object = this.initializedObject;
+
+		return (object != null ? object.toString() : "<not initialized>");
+	}
+
 }

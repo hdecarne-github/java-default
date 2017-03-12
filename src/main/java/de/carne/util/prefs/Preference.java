@@ -38,9 +38,6 @@ public abstract class Preference<T> {
 	 * @param key The preference key.
 	 */
 	protected Preference(Preferences preferences, String key) {
-		assert preferences != null;
-		assert key != null;
-
 		this.preferences = preferences;
 		this.key = key;
 	}
@@ -70,7 +67,9 @@ public abstract class Preference<T> {
 	 */
 	@Nullable
 	public T get() {
-		return get(null);
+		String valueString = this.preferences.get(this.key, null);
+
+		return (valueString != null ? toValue(valueString) : null);
 	}
 
 	/**
@@ -79,11 +78,17 @@ public abstract class Preference<T> {
 	 * @param defaultValue The default preference value to return in case the preference is undefined.
 	 * @return The found preference value.
 	 */
-	@Nullable
-	public T get(@Nullable T defaultValue) {
+	public T get(T defaultValue) {
 		String valueString = this.preferences.get(this.key, null);
+		T value = null;
 
-		return (valueString != null ? toValue(valueString) : defaultValue);
+		if (valueString != null) {
+			value = toValue(valueString);
+		}
+		if (value == null) {
+			value = defaultValue;
+		}
+		return value;
 	}
 
 	/**

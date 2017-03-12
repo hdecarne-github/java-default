@@ -105,8 +105,6 @@ public final class Log {
 	 * @return {@code true} if this log is active for the submitted level.
 	 */
 	public boolean isLoggable(Level level) {
-		assert level != null;
-
 		return this.logger.isLoggable(level);
 	}
 
@@ -119,9 +117,6 @@ public final class Log {
 	 * @param parameters The message parameters to log.
 	 */
 	public void log(Level level, @Nullable Throwable thrown, String msg, Object... parameters) {
-		assert level != null;
-		assert msg != null;
-
 		if (this.logger.isLoggable(level)) {
 			LogRecord record = new LogRecord(level, msg);
 

@@ -57,8 +57,6 @@ public class LogBuffer extends Handler {
 	 */
 	@Nullable
 	public static LogBuffer getInstance(Logger logger) {
-		assert logger != null;
-
 		LogBuffer logBuffer = null;
 		Logger currentLogger = logger;
 
@@ -100,8 +98,6 @@ public class LogBuffer extends Handler {
 	 * @param handler The handler to add.
 	 */
 	public synchronized void addHandler(Handler handler) {
-		assert handler != null;
-
 		for (LogRecord record : this.buffer) {
 			handler.publish(record);
 		}
@@ -132,8 +128,6 @@ public class LogBuffer extends Handler {
 	 * @param handler The handler to remove.
 	 */
 	public synchronized void removeHandler(Handler handler) {
-		assert handler != null;
-
 		this.handlers.remove(handler);
 	}
 
@@ -187,8 +181,6 @@ public class LogBuffer extends Handler {
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public synchronized void exportTo(File file) throws IOException {
-		assert file != null;
-
 		try (Writer writer = new FileWriter(file, false)) {
 			LogLineFormatter formatter = new LogLineFormatter();
 

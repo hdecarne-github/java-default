@@ -149,8 +149,6 @@ public final class CmdLine {
 	 * @see CmdLineAction
 	 */
 	public CmdLineAction switchAction(Consumer<String> consumer) {
-		assert consumer != null;
-
 		CmdLineActionConsumer switchAction = new CmdLineActionConsumer(consumer);
 
 		this.switchActions.add(switchAction);
@@ -166,8 +164,6 @@ public final class CmdLine {
 	 * @see CmdLineAction
 	 */
 	public CmdLineAction namedOptionAction(BiConsumer<String, String> consumer) {
-		assert consumer != null;
-
 		CmdLineActionBiConsumer namedOptionAction = new CmdLineActionBiConsumer(consumer);
 
 		this.namedOptionActions.add(namedOptionAction);
@@ -180,8 +176,6 @@ public final class CmdLine {
 	 * @param consumer The consumer to be invoked with the option if this action matches during command line evaluation.
 	 */
 	public void unnamedOptionAction(Consumer<String> consumer) {
-		assert consumer != null;
-
 		this.unnamedOptionAction = new CmdLineActionConsumer(consumer);
 	}
 
@@ -192,8 +186,6 @@ public final class CmdLine {
 	 *        action.
 	 */
 	public void unknownArgument(Consumer<String> consumer) {
-		assert consumer != null;
-
 		this.unknownArgumentAction = new CmdLineActionConsumer(consumer);
 	}
 

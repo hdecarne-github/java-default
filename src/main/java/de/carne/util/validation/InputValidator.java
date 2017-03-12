@@ -40,8 +40,6 @@ public final class InputValidator {
 	 * @throws ValidationException if the condition is {@code false}.
 	 */
 	public static void isTrue(boolean condition, MessageFormatter message) throws ValidationException {
-		assert message != null;
-
 		if (!condition) {
 			throw new ValidationException(message.format());
 		}
@@ -57,8 +55,6 @@ public final class InputValidator {
 	 * @throws ValidationException if the input is invalid.
 	 */
 	public static <T> T notNull(@Nullable T input, MessageFormatter message) throws ValidationException {
-		assert message != null;
-
 		if (input == null) {
 			throw new ValidationException(message.format());
 		}
@@ -74,8 +70,6 @@ public final class InputValidator {
 	 * @throws ValidationException if the input is invalid.
 	 */
 	public static String notEmpty(@Nullable String input, MessageFormatter message) throws ValidationException {
-		assert message != null;
-
 		if (input == null || input.length() == 0) {
 			throw new ValidationException(message.format());
 		}
@@ -92,10 +86,6 @@ public final class InputValidator {
 	 * @throws ValidationException if the input is invalid.
 	 */
 	public static String[] matches(String input, Pattern pattern, MessageFormatter message) throws ValidationException {
-		assert input != null;
-		assert pattern != null;
-		assert message != null;
-
 		Matcher matcher = pattern.matcher(input);
 
 		if (!matcher.matches()) {

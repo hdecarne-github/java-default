@@ -274,7 +274,7 @@ public class PrefsTest {
 
 		preference.put(PROPERTIES_PATH);
 
-		Assert.assertEquals(PROPERTIES_PATH, preference.get(null));
+		Assert.assertEquals(PROPERTIES_PATH, preference.get());
 		Assert.assertEquals(PROPERTIES_PATH.toFile(), preference.getValueAsFile(null));
 
 		preference.putValueFromFile(PROPERTIES_PATH.getParent().resolve("unknown.dat").toFile());

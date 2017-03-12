@@ -112,16 +112,10 @@ public class IOHelperTest {
 		try {
 			try (InputStream in = Files.newInputStream(inPath);
 					OutputStream out = Files.newOutputStream(outPath, StandardOpenOption.CREATE)) {
-				assert in != null;
-				assert out != null;
-
 				IOHelper.copyStream(in, out);
 			}
 			try (InputStream expectedStream = Files.newInputStream(inPath);
 					InputStream actualStream = Files.newInputStream(outPath)) {
-				assert expectedStream != null;
-				assert actualStream != null;
-
 				byte[] expected = IOHelper.readBytes(expectedStream);
 				byte[] actual = IOHelper.readBytes(actualStream);
 
@@ -141,8 +135,6 @@ public class IOHelperTest {
 	@Test
 	public void testReadBytesAll() throws IOException {
 		try (InputStream in = getClassResource().openStream()) {
-			assert in != null;
-
 			byte[] bytes = IOHelper.readBytes(in);
 
 			Assert.assertTrue(bytes.length > 1);
@@ -157,8 +149,6 @@ public class IOHelperTest {
 	@Test(expected = InterruptedIOException.class)
 	public void testReadBytesLimit() throws IOException {
 		try (InputStream in = getClassResource().openStream()) {
-			assert in != null;
-
 			IOHelper.readBytes(in, 1);
 
 			Assert.fail();

@@ -177,8 +177,6 @@ public class LoggingTest {
 
 		File exportFile = Files.createTempFile(getClass().getSimpleName(), null).toFile();
 
-		assert exportFile != null;
-
 		try {
 			logBuffer.exportTo(exportFile);
 			Assert.assertTrue(exportFile.length() > 0);

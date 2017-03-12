@@ -77,8 +77,6 @@ public final class Exceptions {
 	 * @return The exception's stack trace.
 	 */
 	public static String getStackTrace(Throwable exception) {
-		assert exception != null;
-
 		String stackTrace = null;
 
 		try (StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw)) {

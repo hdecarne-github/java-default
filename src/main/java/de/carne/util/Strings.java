@@ -145,11 +145,6 @@ public final class Strings {
 	 * @return The joined string.
 	 */
 	public static <T> String join(Iterable<T> objects, Function<T, String> converter, String delimiter, int limit) {
-		assert objects != null;
-		assert converter != null;
-		assert delimiter != null;
-		assert limit > 0;
-
 		StringBuilder buffer = new StringBuilder();
 
 		for (T object : objects) {

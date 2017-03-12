@@ -66,4 +66,11 @@ public final class Lazy<T> {
 		return object;
 	}
 
+	@Override
+	public String toString() {
+		T object = this.initializedObject;
+
+		return (object != null ? object.toString() : "<not initialized>");
+	}
+
 }

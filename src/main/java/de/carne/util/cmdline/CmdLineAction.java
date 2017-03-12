@@ -47,17 +47,11 @@ public abstract class CmdLineAction {
 	 * @return The updated {@code CmdLineAction}.
 	 */
 	public CmdLineAction arg(String arg) {
-		assert arg != null;
-		assert (arg.length() == 2 && arg.charAt(0) == '-' && arg.charAt(1) != '-')
-				|| (arg.length() > 2 && arg.startsWith("--"));
-
 		this.args.add(arg);
 		return this;
 	}
 
 	boolean match(String arg) {
-		assert this.args.size() > 0;
-
 		return this.args.contains(arg);
 	}
 

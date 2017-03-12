@@ -60,8 +60,6 @@ public class LogMonitor extends Handler {
 	 * @see #excludeThread(Thread)
 	 */
 	public synchronized void includeThread(Thread thread) {
-		assert thread != null;
-
 		this.threadIds.add(thread.getId());
 	}
 
@@ -72,8 +70,6 @@ public class LogMonitor extends Handler {
 	 * @see #includeThread(Thread)
 	 */
 	public synchronized void excludeThread(Thread thread) {
-		assert thread != null;
-
 		this.threadIds.remove(thread.getId());
 	}
 
@@ -143,8 +139,6 @@ public class LogMonitor extends Handler {
 		 * @return This session.
 		 */
 		public Session includePackage(Package pkg) {
-			assert pkg != null;
-
 			return includeLogger(Logger.getLogger(pkg.getName()));
 		}
 
@@ -155,8 +149,6 @@ public class LogMonitor extends Handler {
 		 * @return This session.
 		 */
 		public Session includeLog(Log log) {
-			assert log != null;
-
 			return includeLogger(log.getLogger());
 		}
 
@@ -167,8 +159,6 @@ public class LogMonitor extends Handler {
 		 * @return This session.
 		 */
 		public synchronized Session includeLogger(Logger logger) {
-			assert logger != null;
-
 			this.loggers.add(logger);
 			logger.addHandler(LogMonitor.this);
 			return this;

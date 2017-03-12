@@ -34,7 +34,10 @@ public class LateTest {
 	public void testLazy() {
 		Late<Object> lateObject = new Late<>();
 
+		System.out.println(lateObject);
+
 		Assert.assertFalse(lateObject.isInitialized());
+		Assert.assertNull(lateObject.getIfInitialized());
 
 		try {
 			lateObject.get();
@@ -44,6 +47,8 @@ public class LateTest {
 		}
 
 		Object object = lateObject.initialize(new Object());
+
+		System.out.println(lateObject);
 
 		Assert.assertTrue(lateObject.isInitialized());
 
@@ -55,6 +60,7 @@ public class LateTest {
 		}
 
 		Assert.assertTrue(object == lateObject.get());
+		Assert.assertTrue(object == lateObject.getIfInitialized());
 	}
 
 }

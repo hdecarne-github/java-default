@@ -33,9 +33,13 @@ public class LazyTest {
 	public void testLazy() {
 		Lazy<Object> lazyObject = new Lazy<>(() -> new Object());
 
+		System.out.println(lazyObject);
+
 		Assert.assertFalse(lazyObject.isInitialized());
 
 		Object object = lazyObject.get();
+
+		System.out.println(lazyObject);
 
 		Assert.assertTrue(lazyObject.isInitialized());
 		Assert.assertTrue(object == lazyObject.get());
