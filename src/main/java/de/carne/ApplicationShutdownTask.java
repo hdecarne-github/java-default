@@ -33,9 +33,8 @@ public final class ApplicationShutdownTask {
 	static {
 		LOG.info("Registering shutdown hook...");
 
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			trigger();
-		}, ApplicationShutdownTask.class.getSimpleName()));
+		Runtime.getRuntime().addShutdownHook(
+				new Thread(ApplicationShutdownTask::trigger, ApplicationShutdownTask.class.getSimpleName()));
 	}
 
 	/**

@@ -62,7 +62,7 @@ public final class ApplicationLoader extends URLClassLoader {
 	private static final String RESOURCE_PROTOCOL = "resource";
 
 	static {
-		ApplicationURLStreamHandlerFactory.registerURLStreamHandlerFactory(RESOURCE_PROTOCOL, protocol -> {
+		ApplicationURLStreamHandlerFactory.registerURLStreamHandlerFactory(RESOURCE_PROTOCOL, (protocol) -> {
 			URLStreamHandler handler = null;
 
 			if (RESOURCE_PROTOCOL.equals(protocol)) {
@@ -215,7 +215,8 @@ public final class ApplicationLoader extends URLClassLoader {
 					logOut("Adding internal JARs to classpath...");
 				}
 
-				Iterator<JarEntry> jarEntries = codeJar.stream().filter(e -> e.getName().endsWith(".jar")).iterator();
+				Iterator<JarEntry> jarEntries = codeJar.stream().filter((entry) -> entry.getName().endsWith(".jar"))
+						.iterator();
 
 				while (jarEntries.hasNext()) {
 					String jarEntryName = jarEntries.next().getName();

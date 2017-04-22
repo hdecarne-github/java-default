@@ -81,4 +81,25 @@ public final class Check {
 		}
 	}
 
+	/**
+	 * Throw an exception to indicate that an unexpected execution state occurred.
+	 *
+	 * @return Nothing.
+	 * @throws IllegalStateException any time this function is called.
+	 */
+	public static <T> T fail() throws IllegalStateException {
+		throw new IllegalStateException();
+	}
+
+	/**
+	 * Throw an exception to indicate that an unexpected execution state occurred.
+	 *
+	 * @param message The message to issue if the check fails.
+	 * @return Nothing.
+	 * @throws IllegalStateException any time this function is called.
+	 */
+	public static <T> T fail(String message) throws IllegalStateException {
+		throw new IllegalStateException(message);
+	}
+
 }

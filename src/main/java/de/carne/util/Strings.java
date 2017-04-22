@@ -118,7 +118,7 @@ public final class Strings {
 	 * @return The joined string.
 	 */
 	public static <T> String join(Iterable<T> objects, String delimiter) {
-		return join(objects, (o) -> Objects.toString(o), delimiter, Integer.MAX_VALUE);
+		return join(objects, Objects::toString, delimiter, Integer.MAX_VALUE);
 	}
 
 	/**
@@ -131,7 +131,7 @@ public final class Strings {
 	 * @return The joined string.
 	 */
 	public static <T> String join(Iterable<T> objects, String delimiter, int limit) {
-		return join(objects, (o) -> Objects.toString(o), delimiter, limit);
+		return join(objects, Objects::toString, delimiter, limit);
 	}
 
 	/**

@@ -42,13 +42,13 @@ public class CmdLineTest {
 		List<String> out = new ArrayList<>();
 		CmdLine cmdLine = new CmdLine(in);
 
-		cmdLine.switchAction((arg) -> out.add(arg)).arg("--arg1").arg("-1");
+		cmdLine.switchAction(out::add).arg("--arg1").arg("-1");
 		cmdLine.namedOptionAction((arg, option) -> {
 			out.add(arg);
 			out.add(option);
 		}).arg("--arg1");
-		cmdLine.unnamedOptionAction((option) -> out.add(option));
-		cmdLine.unknownArgument((arg) -> out.add(arg));
+		cmdLine.unnamedOptionAction(out::add);
+		cmdLine.unknownArgument(out::add);
 		try {
 			cmdLine.eval();
 		} catch (CmdLineException e) {

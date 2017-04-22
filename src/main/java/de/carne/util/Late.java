@@ -29,13 +29,13 @@ public final class Late<T> {
 	private T initializedObject = null;
 
 	/**
-	 * Initialized the hold object.
+	 * Initialize the hold object.
 	 *
 	 * @param object The object to set.
 	 * @return The initialized object.
 	 * @throws IllegalStateException If the object has already been initialized.
 	 */
-	public synchronized T initialize(T object) throws IllegalStateException {
+	public synchronized T init(T object) throws IllegalStateException {
 		if (this.initializedObject != null) {
 			throw new IllegalStateException("Already initialized");
 		}
@@ -43,7 +43,7 @@ public final class Late<T> {
 	}
 
 	/**
-	 * Check whether the hold object has already been initialized (by call to {@link #initialize(Object)}).
+	 * Check whether the hold object has already been initialized (by call to {@link #init(Object)}).
 	 *
 	 * @return {@code true} if the object has already been initialized.
 	 */

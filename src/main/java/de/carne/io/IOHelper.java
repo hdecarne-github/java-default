@@ -113,7 +113,7 @@ public final class IOHelper {
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public static List<Path> collectDirectoryFiles(Path start, FileVisitOption... options) throws IOException {
-		return collectDirectoryFiles(start, (p) -> Files.isRegularFile(p), options);
+		return collectDirectoryFiles(start, Files::isRegularFile, options);
 	}
 
 	/**

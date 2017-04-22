@@ -31,7 +31,7 @@ public class LateTest {
 	 * Test {@link Late} class functionality.
 	 */
 	@Test
-	public void testLazy() {
+	public void testLate() {
 		Late<Object> lateObject = new Late<>();
 
 		System.out.println(lateObject);
@@ -46,7 +46,7 @@ public class LateTest {
 			Exceptions.ignore(e);
 		}
 
-		Object object = lateObject.initialize(new Object());
+		Object object = lateObject.init(new Object());
 
 		System.out.println(lateObject);
 

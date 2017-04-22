@@ -31,7 +31,7 @@ public class LazyTest {
 	 */
 	@Test
 	public void testLazy() {
-		Lazy<Object> lazyObject = new Lazy<>(() -> new Object());
+		Lazy<Object> lazyObject = new Lazy<>(Object::new);
 
 		System.out.println(lazyObject);
 

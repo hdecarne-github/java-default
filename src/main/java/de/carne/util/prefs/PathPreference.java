@@ -35,12 +35,12 @@ public class PathPreference extends Preference<Path> {
 	/**
 	 * {@link Files#isRegularFile(Path, java.nio.file.LinkOption...)} validator.
 	 */
-	public static final Predicate<Path> IS_REGULAR_FILE = (p) -> Files.isRegularFile(p);
+	public static final Predicate<Path> IS_REGULAR_FILE = Files::isRegularFile;
 
 	/**
 	 * {@link Files#isDirectory(Path, java.nio.file.LinkOption...)} validator.
 	 */
-	public static final Predicate<Path> IS_DIRECTORY = (p) -> Files.isDirectory(p);
+	public static final Predicate<Path> IS_DIRECTORY = Files::isDirectory;
 
 	private final Predicate<Path> validator;
 
