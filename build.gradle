@@ -4,9 +4,6 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'eclipse'
 
-// project.artifactId = project.name
-// archivesBaseName = project.name
-
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 

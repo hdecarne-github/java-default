@@ -12,5 +12,5 @@
 <listEntry value="uploadArchive"/>
 </listAttribute>
 <booleanAttribute key="use_gradle_distribution_from_import" value="true"/>
-<stringAttribute key="working_dir" value="${workspace_loc:/de.carne}"/>
+<stringAttribute key="working_dir" value="${workspace_loc:/java-default}"/>
 </launchConfiguration>
