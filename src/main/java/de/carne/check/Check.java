@@ -84,7 +84,8 @@ public final class Check {
 	/**
 	 * Throw an exception to indicate that an unexpected execution state occurred.
 	 *
-	 * @return Nothing.
+	 * @param <T> The generic return type.
+	 * @return Nothing (function never returns).
 	 * @throws IllegalStateException any time this function is called.
 	 */
 	public static <T> T fail() throws IllegalStateException {
@@ -94,8 +95,9 @@ public final class Check {
 	/**
 	 * Throw an exception to indicate that an unexpected execution state occurred.
 	 *
+	 * @param <T> The generic return type.
 	 * @param message The message to issue if the check fails.
-	 * @return Nothing.
+	 * @return Nothing (function never returns).
 	 * @throws IllegalStateException any time this function is called.
 	 */
 	public static <T> T fail(String message) throws IllegalStateException {
