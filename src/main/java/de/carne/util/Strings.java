@@ -83,6 +83,18 @@ public final class Strings {
 	}
 
 	/**
+	 * Make sure a {@link String} is trimmed and not {@code null}.
+	 * <p>
+	 * The empty string is returned if a {@code null} value is submitted.
+	 *
+	 * @param s The string to check and trim.
+	 * @return The trimmed string, or the empty if {@code null} was submitted.
+	 */
+	public static String safeSafeTrim(@Nullable String s) {
+		return (s != null ? s.trim() : "");
+	}
+
+	/**
 	 * Split a {@link String} into multiple sub strings.
 	 *
 	 * @param s The string to split.

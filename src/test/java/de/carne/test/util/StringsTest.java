@@ -45,6 +45,9 @@ public class StringsTest {
 		Assert.assertEquals(null, Strings.safeTrim(null));
 		Assert.assertEquals("", Strings.safeTrim(""));
 		Assert.assertEquals("", Strings.safeTrim(" "));
+		Assert.assertEquals("", Strings.safeSafeTrim(null));
+		Assert.assertEquals("", Strings.safeSafeTrim(""));
+		Assert.assertEquals("", Strings.safeSafeTrim(" "));
 		Assert.assertArrayEquals(new String[] { "1", "2", "3" }, Strings.split("1,2,3", ","));
 		Assert.assertEquals("1,2,3", Strings.join(Arrays.asList("1", "2", "3"), ","));
 		Assert.assertEquals("1,2,\u2026", Strings.join(Arrays.asList("1", "2", "3"), ",", 2));
