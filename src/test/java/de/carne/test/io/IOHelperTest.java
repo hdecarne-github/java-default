@@ -72,7 +72,7 @@ public class IOHelperTest {
 	 */
 	@Test
 	public void testCollectDirectoryFiles() throws IOException {
-		Assert.assertEquals(5, IOHelper.collectDirectoryFiles(TEST_DIR).size());
+		Assert.assertTrue(5 <= IOHelper.collectDirectoryFiles(TEST_DIR).size());
 
 		Predicate<Path> filter = (p) -> "A.txt|B.txt|Z.txt".contains(p.getFileName().toString());
 
@@ -157,6 +157,31 @@ public class IOHelperTest {
 
 	private URL getClassResource() {
 		return getClass().getResource(getClass().getSimpleName() + ".class");
+	}
+
+	/**
+	 * Test {@link IOHelper#createUniqueFile(Path, String)} function.
+	 *
+	 * @throws IOException if an error occurs.
+	 */
+	@Test
+	public void testCreateUniqueName() throws IOException {
+		String namePattern = "Unique%d.dat";
+		Path name1 = IOHelper.createUniqueFile(TEST_DIR, namePattern);
+		Path name2 = IOHelper.createUniqueFile(TEST_DIR, namePattern);
+
+		Assert.assertNotEquals(name1, name2);
+	}
+
+	/**
+	 * Test {@link IOHelper#createUniqueFile(Path, String)} function.
+	 *
+	 * @throws IOException if an error occurs.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateUniqueNameIllegalArgument() throws IOException {
+		IOHelper.createUniqueFile(TEST_DIR, "NonUnique.dat");
+		IOHelper.createUniqueFile(TEST_DIR, "NonUnique.dat");
 	}
 
 }

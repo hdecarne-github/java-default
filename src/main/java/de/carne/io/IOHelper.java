@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -40,6 +41,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import de.carne.check.Nullable;
+import de.carne.nio.FileAttributes;
+import de.carne.util.Exceptions;
 import de.carne.util.PropertiesHelper;
 
 /**
@@ -278,4 +281,34 @@ public final class IOHelper {
 		return dir;
 	}
 
+	/**
+	 * Create a file with an unique name.
+	 *
+	 * @param dir The directory where to create the file.
+	 * @param namePattern The name pattern to use for generating the possible file names.
+	 * @return The create file.
+	 * @throws IOException if an I/O error occurs.
+	 */
+	public static Path createUniqueFile(Path dir, String namePattern) throws IOException {
+		int nameIndex = 1;
+		Path lastTestName = null;
+		Path uniqueName = null;
+
+		while (uniqueName == null) {
+			Path testName = dir.resolve(String.format(namePattern, nameIndex));
+
+			if (testName.equals(lastTestName)) {
+				throw new IllegalArgumentException(namePattern);
+			}
+			lastTestName = testName;
+			try {
+				Files.createFile(testName, FileAttributes.defaultUserDirectoryAttributes(dir));
+				uniqueName = testName;
+			} catch (FileAlreadyExistsException e) {
+				Exceptions.ignore(e);
+				nameIndex++;
+			}
+		}
+		return uniqueName;
+	}
 }
