@@ -111,7 +111,6 @@ public final class ApplicationLoader extends URLClassLoader {
 	 * @param u The {@linkplain URL} to get the direct {@linkplain URL}.
 	 * @return The native resource {@linkplain URL} or {@code null} if the resource does not exist.
 	 */
-	@Nullable
 	public static URL getDirectURL(URL u) {
 		return (RESOURCE_PROTOCOL.equals(u.getProtocol()) ? ApplicationLoader.class.getResource(u.getFile()) : u);
 	}
