@@ -19,6 +19,7 @@ package de.carne.util.prefs;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
@@ -33,19 +34,21 @@ import de.carne.check.Nullable;
 import de.carne.nio.FileAttributes;
 import de.carne.util.logging.Log;
 
-final class PropertiesCache {
+abstract class PropertiesCache {
 
 	private final Log LOG = new Log();
-
-	private final Path propertiesPath;
 
 	private final Properties cache = new Properties();
 
 	@Nullable
-	private FileTime propertiesPathLastModifiedTime = null;
+	private FileTime propertiesLastModifiedTime = null;
 
-	PropertiesCache(Path propertiesPath) {
-		this.propertiesPath = propertiesPath;
+	public static PropertiesCache fromPath(Path propertiesPath) {
+		return new PathPropertiesCache(propertiesPath);
+	}
+
+	public static PropertiesCache fromUrl(URL propertiesUrl) {
+		return new URLPropertiesCache(propertiesUrl);
 	}
 
 	public synchronized Map<String, String> getValues(PropertiesPreferences preferences) {
@@ -86,8 +89,11 @@ final class PropertiesCache {
 		return children;
 	}
 
-	public synchronized void sync(PropertiesPreferences preferences, @Nullable Map<String, String> modifiedValues,
-			@Nullable Set<String> modifiedChildrenNames) {
+	public abstract void sync(PropertiesPreferences preferences, @Nullable Map<String, String> modifiedValues,
+			@Nullable Set<String> modifiedChildrenNames);
+
+	protected synchronized void syncPath(Path propertiesPath, PropertiesPreferences preferences,
+			@Nullable Map<String, String> modifiedValues, @Nullable Set<String> modifiedChildrenNames) {
 		try {
 			initCache();
 
@@ -123,41 +129,56 @@ final class PropertiesCache {
 				}
 			}
 
-			this.LOG.info("Writing preferences file ''{0}''...", this.propertiesPath);
+			this.LOG.info("Writing preferences file ''{0}''...", propertiesPath);
 
-			try (OutputStream propertiesStream = Files.newOutputStream(this.propertiesPath)) {
+			try (OutputStream propertiesStream = Files.newOutputStream(propertiesPath)) {
 				this.cache.store(propertiesStream, null);
 			}
-			this.propertiesPathLastModifiedTime = Files.getLastModifiedTime(this.propertiesPath);
+			this.propertiesLastModifiedTime = Files.getLastModifiedTime(propertiesPath);
 		} catch (IOException e) {
-			this.LOG.warning(e, "An error occurred while syncing preferences file ''{0}''", this.propertiesPath);
+			this.LOG.warning(e, "An error occurred while syncing preferences file ''{0}''", propertiesPath);
 		}
 	}
 
-	private void initCache() {
+	protected abstract void initCache();
+
+	protected void initCacheFromPath(Path propertiesPath) {
 		try {
-			if (!Files.exists(this.propertiesPath)) {
-				this.LOG.info("Creating preferences file ''{0}''...", this.propertiesPath);
-				Path propertiesDirectoryPath = this.propertiesPath.getParent();
+			if (!Files.exists(propertiesPath)) {
+				this.LOG.info("Creating preferences file ''{0}''...", propertiesPath);
+				Path propertiesDirectoryPath = propertiesPath.getParent();
 				Files.createDirectories(propertiesDirectoryPath,
 						FileAttributes.defaultUserDirectoryAttributes(propertiesDirectoryPath));
-				Files.createFile(this.propertiesPath, FileAttributes.defaultUserFileAttributes(this.propertiesPath));
-				this.propertiesPathLastModifiedTime = null;
+				Files.createFile(propertiesPath, FileAttributes.defaultUserFileAttributes(propertiesPath));
+				this.propertiesLastModifiedTime = null;
 			}
 
-			FileTime lastModifiedTime = Files.getLastModifiedTime(this.propertiesPath);
+			FileTime lastModifiedTime = Files.getLastModifiedTime(propertiesPath);
 
-			if (!Objects.equals(lastModifiedTime, this.propertiesPathLastModifiedTime)) {
-				this.LOG.debug("Re-loading preferences from file ''{0}''...", this.propertiesPath);
-				try (InputStream propertiesStream = Files.newInputStream(this.propertiesPath)) {
+			if (!Objects.equals(lastModifiedTime, this.propertiesLastModifiedTime)) {
+				this.LOG.debug("Re-loading preferences from file ''{0}''...", propertiesPath);
+				try (InputStream propertiesStream = Files.newInputStream(propertiesPath)) {
 					this.cache.clear();
 					this.cache.load(propertiesStream);
-					this.propertiesPathLastModifiedTime = lastModifiedTime;
+					this.propertiesLastModifiedTime = lastModifiedTime;
 				}
 			}
 		} catch (IOException e) {
 			this.LOG.warning(e, "An error occurred while initializing/reading preferences file ''{0}''",
-					this.propertiesPath);
+					propertiesPath);
+		}
+	}
+
+	protected void initCacheFromUrl(URL propertiesUrl) {
+		if (this.propertiesLastModifiedTime == null) {
+			this.LOG.debug("Loading preferences from URL ''{0}''...", propertiesUrl);
+			try (InputStream propertiesStream = propertiesUrl.openStream()) {
+				this.cache.clear();
+				this.cache.load(propertiesStream);
+				this.propertiesLastModifiedTime = FileTime.fromMillis(System.currentTimeMillis());
+			} catch (IOException e) {
+				this.LOG.warning(e, "An error occurred while reading preferences URL ''{0}''", propertiesUrl);
+			}
 		}
 	}
 
@@ -194,6 +215,48 @@ final class PropertiesCache {
 			}
 		}
 		return key;
+	}
+
+	private static class PathPropertiesCache extends PropertiesCache {
+
+		private final Path propertiesPath;
+
+		PathPropertiesCache(Path propertiesPath) {
+			this.propertiesPath = propertiesPath;
+		}
+
+		@Override
+		public void sync(PropertiesPreferences preferences, @Nullable Map<String, String> modifiedValues,
+				@Nullable Set<String> modifiedChildrenNames) {
+			syncPath(this.propertiesPath, preferences, modifiedValues, modifiedChildrenNames);
+		}
+
+		@Override
+		protected void initCache() {
+			initCacheFromPath(this.propertiesPath);
+		}
+
+	}
+
+	private static class URLPropertiesCache extends PropertiesCache {
+
+		private final URL propertiesUrl;
+
+		URLPropertiesCache(URL propertiesUrl) {
+			this.propertiesUrl = propertiesUrl;
+		}
+
+		@Override
+		public void sync(PropertiesPreferences preferences, @Nullable Map<String, String> modifiedValues,
+				@Nullable Set<String> modifiedChildrenNames) {
+			// Ignore
+		}
+
+		@Override
+		protected void initCache() {
+			initCacheFromUrl(this.propertiesUrl);
+		}
+
 	}
 
 }

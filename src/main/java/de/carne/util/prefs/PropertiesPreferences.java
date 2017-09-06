@@ -16,6 +16,7 @@
  */
 package de.carne.util.prefs;
 
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashSet;
@@ -37,14 +38,19 @@ class PropertiesPreferences extends AbstractPreferences {
 	@Nullable
 	private Map<String, PropertiesPreferences> cachedChildren = null;
 
-	PropertiesPreferences(Path propertiesPath) {
-		super(null, "");
-		this.propertiesCache = new PropertiesCache(propertiesPath);
-	}
-
 	PropertiesPreferences(PropertiesPreferences parent, String name) {
 		super(parent, name);
 		this.propertiesCache = parent.propertiesCache;
+	}
+
+	PropertiesPreferences(Path propertiesPath) {
+		super(null, "");
+		this.propertiesCache = PropertiesCache.fromPath(propertiesPath);
+	}
+
+	PropertiesPreferences(URL propertiesUrl) {
+		super(null, "");
+		this.propertiesCache = PropertiesCache.fromUrl(propertiesUrl);
 	}
 
 	@Override

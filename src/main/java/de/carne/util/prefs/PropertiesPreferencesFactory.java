@@ -17,6 +17,7 @@
 package de.carne.util.prefs;
 
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -63,6 +64,16 @@ public class PropertiesPreferencesFactory implements PreferencesFactory {
 	 */
 	public static Preferences customRoot(Path propertiesPath) {
 		return new PropertiesPreferences(propertiesPath);
+	}
+
+	/**
+	 * Create a read only {@link Preferences} object backed up by an {@code URL} resource.
+	 *
+	 * @param propertiesUrl The path to properties file to use as a preference store.
+	 * @return The created {@link Preferences} object.
+	 */
+	public static Preferences customRoot(URL propertiesUrl) {
+		return new PropertiesPreferences(propertiesUrl);
 	}
 
 	private static String getUserHome() {
