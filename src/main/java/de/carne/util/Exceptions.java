@@ -21,60 +21,54 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import de.carne.check.Nullable;
-import de.carne.util.logging.Log;
 
 /**
- * Utility class providing {@link Exception} related functions.
+ * Utility class providing {@link Exception} handling related functions.
  */
 public final class Exceptions {
-
-	private Exceptions() {
-		// Make sure this class is not instantiated from outside
-	}
-
-	private static final Log LOG = new Log();
 
 	/**
 	 * Make an {@link Exception} unchecked by wrapping it into a {@link RuntimeException}.
 	 *
-	 * @param exception The exception to make unchecked.
-	 * @return The created runtime exception.
+	 * @param exception The {@link Exception} to wrap.
+	 * @return The created {@link RuntimeException}.
 	 */
 	public static RuntimeException toRuntime(Throwable exception) {
-		return new RuntimeException(exception.getMessage(), exception);
+		return (exception instanceof RuntimeException ? (RuntimeException) exception
+				: new RuntimeException(exception.getLocalizedMessage(), exception));
 	}
 
 	/**
 	 * Ignore an {@link Exception}.
 	 * <p>
-	 * This function simply logs the exception using the trace log level.
+	 * This function logs the {@link Exception} using the trace log level and discards it.
 	 *
-	 * @param exception The exception to ignore (may be {@code null}).
+	 * @param exception The {@link Exception} to ignore (may be {@code null}).
 	 */
 	public static void ignore(@Nullable Throwable exception) {
 		if (exception != null) {
-			LOG.trace(exception, "Ignoring exception {0}", exception.getClass());
+			// LOG.trace(exception, "Ignoring exception {0}", exception.getClass());
 		}
 	}
 
 	/**
-	 * Warn about an {@link Exception} and discard it.
+	 * Warn about an {@link Exception}.
 	 * <p>
-	 * This function simply logs the exception using the warning log level.
+	 * This function logs the {@link Exception} using the warning log level and discards it.
 	 *
-	 * @param exception The exception to warn about (may be {@code null}).
+	 * @param exception The {@link Exception} to warn about (may be {@code null}).
 	 */
 	public static void warn(@Nullable Throwable exception) {
 		if (exception != null) {
-			LOG.trace(exception, "Ignoring exception {0}", exception.getClass());
+			// LOG.trace(exception, "Ignoring exception {0}", exception.getClass());
 		}
 	}
 
 	/**
 	 * Get an {@link Exception}'s stack trace.
 	 *
-	 * @param exception The exception to get the stack trace for.
-	 * @return The exception's stack trace.
+	 * @param exception The {@link Exception} to get the stack trace for.
+	 * @return The {@link Exception}'s stack trace.
 	 */
 	public static String getStackTrace(Throwable exception) {
 		String stackTrace = null;

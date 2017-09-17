@@ -1,110 +1,42 @@
-apply plugin: 'java'
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5")
+	}
+}
+
+apply plugin: 'java-library'
 apply plugin: 'jacoco'
-apply plugin: 'maven'
-apply plugin: 'signing'
+apply plugin: "org.sonarqube"
 apply plugin: 'eclipse'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
-	mavenLocal()
-	mavenCentral()
-	maven { url 'https://oss.sonatype.org/content/repositories/snapshots' } 
+	jcenter()
 }
 
 dependencies {
-	testCompile('junit:junit:4.12')
+	testImplementation("junit:junit:4.12")
 }
 
 jacocoTestReport {
 	reports {
-		xml.enabled true
-		xml.destination file("${buildDir}/reports/jacoco/coverage.xml")
+		xml.enabled false
 		html.enabled true
-		html.destination file("${buildDir}/reports/jacoco")
+		html.destination file("${buildDir}/reports/jacocoHtml")
 		csv.enabled false
 	}
 }
 
-task javadocJar(type: Jar) {
-	classifier = 'javadoc'
-	from javadoc
+sonarqube {
 }
-
-task sourcesJar(type: Jar) {
-	classifier = 'sources'
-	from sourceSets.main.allSource
-}
-
-artifacts {
-	archives javadocJar, sourcesJar
-}
-
-signing {
-	if (project.hasProperty('signing.keyId')) {
-		sign configurations.archives
-	}
-}
-
-uploadArchives {
-	repositories {
-		mavenDeployer {
-			beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-				authentication(userName: project.ext.properties.ossrhUsername, password: project.ext.properties.ossrhPassword)
-			}
-
-			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-				authentication(userName: project.ext.properties.ossrhUsername, password: project.ext.properties.ossrhPassword)
-			}
-			
-			pom.artifactId = project.name
-
-			pom.project {
-				name project.name
-				packaging 'jar'
-				description projectDescription
-				url projectUrl
-
-				scm {
-					connection projectScm
-					developerConnection projectScm
-					url projectScmUrl
-				}
-
-				licenses {
-					license {
-						name projectLicense
-						url projectLicenseUrl
-						distribution 'repo'
-					}
-				}
-
-				developers {
-					developer {
-						id developerId
-						name developerName
-						email developerEmail
-					}
-				}
-			}
-		}
-	}
-}
-
-import org.gradle.plugins.ide.eclipse.model.AccessRule
 
 eclipse {
 	classpath {
 		defaultOutputDir = file('eclipse-build')
-		file {
-			whenMerged {
-				def jre = entries.find { it.path.contains 'org.eclipse.jdt.launching.JRE_CONTAINER' }
-				
-				jre.accessRules.add(new AccessRule('0', 'javafx/**'))
-			}
-		}
 	}
 }

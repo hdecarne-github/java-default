@@ -16,6 +16,8 @@
  */
 package de.carne.test.util;
 
+import java.io.IOException;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,40 +29,56 @@ import de.carne.util.Exceptions;
 public class ExceptionsTest {
 
 	/**
-	 * Test {@link Exceptions#getStackTrace(Throwable)} function.
+	 * Test {@link Exceptions#toRuntime(Throwable)} with checked {@link Exception}.
 	 */
-	@Test
-	public void testStacktrace() {
-		String stacktrace = Exceptions.getStackTrace(new Throwable());
-
-		System.err.println(stacktrace);
-		Assert.assertTrue(stacktrace.startsWith(Throwable.class.getName()));
+	@Test(expected = RuntimeException.class)
+	public void testToRuntimeFromChecked() {
+		try {
+			throw new IOException();
+		} catch (Exception e) {
+			throw Exceptions.toRuntime(e);
+		}
 	}
 
 	/**
-	 * Test {@link Exceptions#ignore(Throwable)} function.
+	 * Test {@link Exceptions#toRuntime(Throwable)} with unchecked {@link Exception}.
+	 */
+	@Test(expected = IllegalStateException.class)
+	public void testToRuntimeFromUnchecked() {
+		try {
+			throw new IllegalStateException();
+		} catch (Exception e) {
+			throw Exceptions.toRuntime(e);
+		}
+	}
+
+	/**
+	 * Test {@link Exceptions#ignore(Throwable)}.
 	 */
 	@Test
 	public void testIgnore() {
-		Exceptions.ignore(new Throwable());
 		Exceptions.ignore(null);
+		Exceptions.ignore(new NullPointerException());
 	}
 
 	/**
-	 * Test {@link Exceptions#warn(Throwable)} function.
+	 * Test {@link Exceptions#warn(Throwable)}.
 	 */
 	@Test
 	public void testWarn() {
-		Exceptions.warn(new Throwable());
 		Exceptions.warn(null);
+		Exceptions.warn(new NullPointerException());
 	}
 
 	/**
-	 * Test {@link Exceptions#toRuntime(Throwable)} function.
+	 * Test {@link Exceptions#getStackTrace(Throwable)}.
 	 */
-	@Test(expected = RuntimeException.class)
-	public void testToRuntime() {
-		throw Exceptions.toRuntime(new Exception());
+	@Test
+	public void testGetStackTrace() {
+		String stackTrace = Exceptions.getStackTrace(new IOException());
+
+		System.err.println(stackTrace);
+		Assert.assertNotNull(stackTrace);
 	}
 
 }

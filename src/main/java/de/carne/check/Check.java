@@ -21,10 +21,6 @@ package de.carne.check;
  */
 public final class Check {
 
-	private Check() {
-		// Make sure this class is not instantiated from outside
-	}
-
 	/**
 	 * Check and ensure that an object is not {@code null}.
 	 *
@@ -33,7 +29,7 @@ public final class Check {
 	 * @return The checked object (never {@code null}).
 	 * @throws NullPointerException if the submitted argument is {@code null}.
 	 */
-	public static <T> T nonNull(@Nullable T o) throws NullPointerException {
+	public static <T> T notNull(@Nullable T o) throws NullPointerException {
 		if (o == null) {
 			throw new NullPointerException();
 		}
@@ -49,7 +45,7 @@ public final class Check {
 	 * @return The checked object (never {@code null}).
 	 * @throws NullPointerException if the submitted argument is {@code null}.
 	 */
-	public static <T> T nonNull(@Nullable T o, String message) throws NullPointerException {
+	public static <T> T notNull(@Nullable T o, String message) throws NullPointerException {
 		if (o == null) {
 			throw new NullPointerException(message);
 		}
@@ -62,7 +58,7 @@ public final class Check {
 	 * @param c The condition to check.
 	 * @throws IllegalStateException if the condition is not met.
 	 */
-	public static void condition(boolean c) throws IllegalStateException {
+	public static void isTrue(boolean c) throws IllegalStateException {
 		if (!c) {
 			throw new IllegalStateException();
 		}
@@ -75,7 +71,7 @@ public final class Check {
 	 * @param message The message to issue if the check fails.
 	 * @throws IllegalStateException if the condition is not met.
 	 */
-	public static void condition(boolean c, String message) throws IllegalStateException {
+	public static void isTrue(boolean c, String message) throws IllegalStateException {
 		if (!c) {
 			throw new IllegalStateException(message);
 		}

@@ -1,5 +1,0 @@
-de.carne.test.ApplicationLoaderTestMain
-enableTestMode
-java.util.logging.config.class = de.carne.util.logging.LogConfig
-java.util.prefs.PreferencesFactory = de.carne.util.prefs.PropertiesPreferencesFactory
-=
