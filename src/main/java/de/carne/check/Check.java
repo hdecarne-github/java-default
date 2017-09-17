@@ -21,45 +21,49 @@ package de.carne.check;
  */
 public final class Check {
 
-	/**
-	 * Check and ensure that an object is not {@code null}.
-	 *
-	 * @param <T> The actual object type.
-	 * @param o The object to check.
-	 * @return The checked object (never {@code null}).
-	 * @throws NullPointerException if the submitted argument is {@code null}.
-	 */
-	public static <T> T notNull(@Nullable T o) throws NullPointerException {
-		if (o == null) {
-			throw new NullPointerException();
-		}
-		return o;
+	private Check() {
+		// Prevent instantiation
 	}
 
 	/**
-	 * Check and ensure that an object is not {@code null}.
+	 * Check and ensure that an {@link Object} is not {@code null}.
 	 *
 	 * @param <T> The actual object type.
-	 * @param o The object to check.
-	 * @param message The message to issue if the check fails.
-	 * @return The checked object (never {@code null}).
+	 * @param object The {@link Object} to check.
+	 * @return The checked {@link Object} (never {@code null}).
 	 * @throws NullPointerException if the submitted argument is {@code null}.
 	 */
-	public static <T> T notNull(@Nullable T o, String message) throws NullPointerException {
-		if (o == null) {
+	public static <T> T notNull(@Nullable T object) {
+		if (object == null) {
+			throw new NullPointerException();
+		}
+		return object;
+	}
+
+	/**
+	 * Check and ensure that an {@link Object} is not {@code null}.
+	 *
+	 * @param <T> The actual object type.
+	 * @param object The {@link Object} to check.
+	 * @param message The message to issue if the check fails.
+	 * @return The checked {@link Object} (never {@code null}).
+	 * @throws NullPointerException if the submitted argument is {@code null}.
+	 */
+	public static <T> T notNull(@Nullable T object, String message) {
+		if (object == null) {
 			throw new NullPointerException(message);
 		}
-		return o;
+		return object;
 	}
 
 	/**
 	 * Check and ensure that a specific condition is met.
 	 *
-	 * @param c The condition to check.
+	 * @param condition The condition to check.
 	 * @throws IllegalStateException if the condition is not met.
 	 */
-	public static void isTrue(boolean c) throws IllegalStateException {
-		if (!c) {
+	public static void assertTrue(boolean condition) {
+		if (!condition) {
 			throw new IllegalStateException();
 		}
 	}
@@ -67,36 +71,36 @@ public final class Check {
 	/**
 	 * Check and ensure that a specific condition is met.
 	 *
-	 * @param c The condition to check.
+	 * @param condition The condition to check.
 	 * @param message The message to issue if the check fails.
 	 * @throws IllegalStateException if the condition is not met.
 	 */
-	public static void isTrue(boolean c, String message) throws IllegalStateException {
-		if (!c) {
+	public static void assertTrue(boolean condition, String message) {
+		if (!condition) {
 			throw new IllegalStateException(message);
 		}
 	}
 
 	/**
-	 * Throw an exception to indicate that an unexpected execution state occurred.
+	 * Throw an {@link IllegalStateException} to indicate that an unexpected execution state occurred.
 	 *
 	 * @param <T> The generic return type.
 	 * @return Nothing (function never returns).
 	 * @throws IllegalStateException any time this function is called.
 	 */
-	public static <T> T fail() throws IllegalStateException {
+	public static <T> T fail() {
 		throw new IllegalStateException();
 	}
 
 	/**
-	 * Throw an exception to indicate that an unexpected execution state occurred.
+	 * Throw an {@link IllegalStateException} to indicate that an unexpected execution state occurred.
 	 *
 	 * @param <T> The generic return type.
 	 * @param message The message to issue if the check fails.
 	 * @return Nothing (function never returns).
 	 * @throws IllegalStateException any time this function is called.
 	 */
-	public static <T> T fail(String message) throws IllegalStateException {
+	public static <T> T fail(String message) {
 		throw new IllegalStateException(message);
 	}
 

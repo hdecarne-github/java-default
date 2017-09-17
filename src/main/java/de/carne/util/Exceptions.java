@@ -27,6 +27,10 @@ import de.carne.check.Nullable;
  */
 public final class Exceptions {
 
+	private Exceptions() {
+		// Prevent instantiation
+	}
+
 	/**
 	 * Make an {@link Exception} unchecked by wrapping it into a {@link RuntimeException}.
 	 *
