@@ -1,4 +1,4 @@
-#### Common Java code shared between projects.
+### Common Java code shared between projects.
 
 [![Build Status](https://travis-ci.org/hdecarne/java-default.svg?branch=master)](https://travis-ci.org/hdecarne/java-default)
 [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=de.carne:java-default)](https://sonarcloud.io/dashboard/index/de.carne:java-default)
