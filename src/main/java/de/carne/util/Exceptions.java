@@ -21,11 +21,14 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import de.carne.check.Nullable;
+import de.carne.util.logging.Log;
 
 /**
  * Utility class providing {@link Exception} handling related functions.
  */
 public final class Exceptions {
+
+	private static final Log LOG = new Log();
 
 	private Exceptions() {
 		// Prevent instantiation
@@ -51,7 +54,7 @@ public final class Exceptions {
 	 */
 	public static void ignore(@Nullable Throwable exception) {
 		if (exception != null) {
-			// LOG.trace(exception, "Ignoring exception {0}", exception.getClass());
+			LOG.trace(exception, "Ignoring exception: {0}", exception.getClass().getName());
 		}
 	}
 
@@ -64,7 +67,7 @@ public final class Exceptions {
 	 */
 	public static void warn(@Nullable Throwable exception) {
 		if (exception != null) {
-			// LOG.trace(exception, "Ignoring exception {0}", exception.getClass());
+			LOG.warning(exception, "Ignoring exception: {0}", exception.getClass().getName());
 		}
 	}
 
