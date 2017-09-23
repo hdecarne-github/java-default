@@ -66,7 +66,8 @@ public final class Application {
 		URL configUrl = Application.class.getResource(configResource);
 
 		if (configUrl == null) {
-			throw new RuntimeException(error("Cannot find application config resource: %1$s", configResource));
+			throw new ApplicationInitializationException(
+					error("Cannot find application config resource: %1$s", configResource));
 		}
 
 		if (DEBUG) {
@@ -77,7 +78,7 @@ public final class Application {
 	}
 
 	// Application class loader setup
-	private static ClassLoader APPLICATION_CLASS_LOADER;
+	private static final ClassLoader APPLICATION_CLASS_LOADER;
 
 	static {
 		// The following execution setups are supported
@@ -106,7 +107,7 @@ public final class Application {
 
 				applicationClasspath = ApplicationClassLoader.assembleClasspath(applicationPath);
 			} else {
-				throw new RuntimeException(
+				throw new ApplicationInitializationException(
 						error("Unable to determine application classloader for protocol: %1$s", configUrlProtocol));
 			}
 
@@ -122,7 +123,7 @@ public final class Application {
 					: ClassLoader.getSystemClassLoader());
 			Thread.currentThread().setContextClassLoader(classLoader);
 		} catch (URISyntaxException | IOException e) {
-			throw new RuntimeException(e);
+			throw new ApplicationInitializationException(e);
 		}
 		APPLICATION_CLASS_LOADER = classLoader;
 	}
@@ -165,7 +166,7 @@ public final class Application {
 		} catch (Exception e) {
 			status = -1;
 			error("Application failed with exception:");
-			e.printStackTrace();
+			e.printStackTrace(System.err);
 		}
 		if (status != 0) {
 			System.exit(status);
@@ -200,32 +201,36 @@ public final class Application {
 			String propertyLine;
 
 			while ((propertyLine = configReader.readLine()) != null) {
-				int splitIndex = propertyLine.indexOf('=');
-				String propertyKey;
-				String propertyValue;
-
-				if (splitIndex < 0) {
-					propertyKey = propertyLine.trim();
-					propertyValue = Boolean.TRUE.toString();
-				} else if (splitIndex > 0) {
-					propertyKey = propertyLine.substring(0, splitIndex).trim();
-					propertyValue = propertyLine.substring(splitIndex + 1).trim();
-				} else {
-					propertyKey = "";
-					propertyValue = "";
-				}
-				if (propertyKey.length() > 0 && propertyValue.length() > 0) {
-					System.setProperty(propertyKey, propertyValue);
-
-					if (DEBUG) {
-						debug(" %1$s = %2$s", propertyKey, propertyValue);
-					}
-				} else {
-					error("Ignoring invalid system property line: %1$s", propertyLine);
-				}
+				evalConfigPropertyLine(propertyLine);
 			}
 		}
 		return mainClass;
+	}
+
+	private static void evalConfigPropertyLine(String propertyLine) {
+		int splitIndex = propertyLine.indexOf('=');
+		String propertyKey;
+		String propertyValue;
+
+		if (splitIndex < 0) {
+			propertyKey = propertyLine.trim();
+			propertyValue = Boolean.TRUE.toString();
+		} else if (splitIndex > 0) {
+			propertyKey = propertyLine.substring(0, splitIndex).trim();
+			propertyValue = propertyLine.substring(splitIndex + 1).trim();
+		} else {
+			propertyKey = "";
+			propertyValue = "";
+		}
+		if (propertyKey.length() > 0 && propertyValue.length() > 0) {
+			System.setProperty(propertyKey, propertyValue);
+
+			if (DEBUG) {
+				debug(" %1$s = %2$s", propertyKey, propertyValue);
+			}
+		} else {
+			error("Ignoring invalid system property line: %1$s", propertyLine);
+		}
 	}
 
 }

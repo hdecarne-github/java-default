@@ -30,6 +30,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Stream;
 
 import de.carne.check.Nullable;
 
@@ -49,16 +50,15 @@ final class ApplicationClassLoader extends URLClassLoader {
 	private static final String APPLICATION_PROTOCOL = "app";
 
 	static {
-		ApplicationURLStreamHandlerFactory.SINGLETON.register(APPLICATION_PROTOCOL,
-				(protocol) -> new URLStreamHandler() {
+		ApplicationURLStreamHandlerFactory.SINGLETON.register(APPLICATION_PROTOCOL, protocol -> new URLStreamHandler() {
 
-					@Override
-					@Nullable
-					protected URLConnection openConnection(@Nullable URL u) throws IOException {
-						return (u != null ? ApplicationClassLoader.openConnection(u) : null);
-					}
+			@Override
+			@Nullable
+			protected URLConnection openConnection(@Nullable URL u) throws IOException {
+				return (u != null ? ApplicationClassLoader.openConnection(u) : null);
+			}
 
-				});
+		});
 	}
 
 	static URLConnection openConnection(URL u) {
@@ -88,7 +88,7 @@ final class ApplicationClassLoader extends URLClassLoader {
 
 		jars.add(jarConnection.getJarFileURL());
 		try (JarFile jarFile = jarConnection.getJarFile()) {
-			jarFile.stream().filter((entry) -> entry.getName().endsWith(".jar"))
+			jarFile.stream().filter(entry -> entry.getName().endsWith(".jar"))
 					.map(ApplicationClassLoader::jarEntryToUrl).forEach(jars::add);
 		}
 		return jars.toArray(new URL[jars.size()]);
@@ -100,7 +100,7 @@ final class ApplicationClassLoader extends URLClassLoader {
 		try {
 			url = new URL("jar:" + entry.getName());
 		} catch (MalformedURLException e) {
-			throw new RuntimeException(e);
+			throw new ApplicationInitializationException(e);
 		}
 		return url;
 	}
@@ -109,8 +109,9 @@ final class ApplicationClassLoader extends URLClassLoader {
 		ArrayList<URL> jars = new ArrayList<>();
 
 		jars.add(pathToUrl(path));
-		Files.find(path, 0, (file, attributes) -> file.endsWith(".jar")).map(ApplicationClassLoader::pathToUrl)
-				.forEach(jars::add);
+		try (Stream<Path> files = Files.find(path, 0, (file, attributes) -> file.endsWith(".jar"))) {
+			files.map(ApplicationClassLoader::pathToUrl).forEach(jars::add);
+		}
 		return jars.toArray(new URL[jars.size()]);
 	}
 
@@ -120,7 +121,7 @@ final class ApplicationClassLoader extends URLClassLoader {
 		try {
 			url = path.toUri().toURL();
 		} catch (MalformedURLException e) {
-			throw new RuntimeException(e);
+			throw new ApplicationInitializationException(e);
 		}
 		return url;
 	}
