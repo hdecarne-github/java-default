@@ -50,9 +50,9 @@ public class ApplicationTest implements Main {
 	@Override
 	public int run(String[] args) {
 		Assert.assertArrayEquals(TEST_ARGS, args);
-		Assert.assertTrue(Boolean.getBoolean(ApplicationTest.class.getTypeName() + ".Property1"));
-		Assert.assertFalse(Boolean.getBoolean(ApplicationTest.class.getTypeName() + ".Property2"));
-		Assert.assertEquals("Any text...", System.getProperty(ApplicationTest.class.getTypeName() + ".Property3"));
+		Assert.assertTrue(Boolean.getBoolean(ApplicationTest.class.getName() + ".Property1"));
+		Assert.assertFalse(Boolean.getBoolean(ApplicationTest.class.getName() + ".Property2"));
+		Assert.assertEquals("Any text...", System.getProperty(ApplicationTest.class.getName() + ".Property3"));
 		return 0;
 	}
 

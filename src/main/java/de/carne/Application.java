@@ -60,8 +60,8 @@ public final class Application {
 	private static final URL APPLICATION_CONFIG_URL;
 
 	static {
-		String configResourceSuffix = System.getProperty(Application.class.getTypeName(), "").trim();
-		String configResource = "/META-INF/" + Application.class.getTypeName()
+		String configResourceSuffix = System.getProperty(Application.class.getName(), "").trim();
+		String configResource = "/META-INF/" + Application.class.getName()
 				+ (configResourceSuffix.length() > 0 ? "." + configResourceSuffix : configResourceSuffix);
 		URL configUrl = Application.class.getResource(configResource);
 
