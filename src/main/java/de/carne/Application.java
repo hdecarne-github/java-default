@@ -176,12 +176,12 @@ public final class Application {
 		}
 	}
 
-	private static Class<? extends Main> evalConfig() throws IOException, ClassNotFoundException {
+	private static Class<? extends ApplicationMain> evalConfig() throws IOException, ClassNotFoundException {
 		if (DEBUG) {
 			debug("Evaluating application config...");
 		}
 
-		Class<? extends Main> mainClass;
+		Class<? extends ApplicationMain> mainClass;
 
 		try (BufferedReader configReader = new BufferedReader(
 				new InputStreamReader(APPLICATION_CONFIG_URL.openStream()))) {
@@ -195,7 +195,7 @@ public final class Application {
 				debug("Main-Class = %1$s", mainClassName);
 			}
 
-			mainClass = Class.forName(mainClassName, true, APPLICATION_CLASS_LOADER).asSubclass(Main.class);
+			mainClass = Class.forName(mainClassName, true, APPLICATION_CLASS_LOADER).asSubclass(ApplicationMain.class);
 
 			if (DEBUG) {
 				debug("Applying system properties...");

@@ -21,12 +21,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.carne.Application;
-import de.carne.Main;
+import de.carne.ApplicationMain;
 
 /**
  * Test {@link Application} class.
  */
-public class ApplicationTest implements Main {
+public class ApplicationTest implements ApplicationMain {
 
 	/**
 	 * Setup the necessary system properties.

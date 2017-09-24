@@ -47,7 +47,7 @@ final class ApplicationClassLoader extends URLClassLoader {
 		ClassLoader.registerAsParallelCapable();
 	}
 
-	private static final String APPLICATION_PROTOCOL = "app";
+	private static final String APPLICATION_PROTOCOL = "application";
 
 	static {
 		ApplicationURLStreamHandlerFactory.SINGLETON.register(APPLICATION_PROTOCOL, protocol -> new URLStreamHandler() {
@@ -98,7 +98,7 @@ final class ApplicationClassLoader extends URLClassLoader {
 		URL url;
 
 		try {
-			url = new URL("jar:" + entry.getName());
+			url = new URL("jar:" + APPLICATION_PROTOCOL + ":/" + entry.getName() + "!/");
 		} catch (MalformedURLException e) {
 			throw new ApplicationInitializationException(e);
 		}
@@ -126,10 +126,30 @@ final class ApplicationClassLoader extends URLClassLoader {
 		return url;
 	}
 
+	// For classes named with the following prefixes we use the system class loader
+	private static final String[] SYSTEM_CLASS_PREFIXES = new String[] {
+
+			// All Application* classes from this package (as they have been loaded by it already)
+			Application.class.getName(),
+
+			// Logging classes (as JDK logging uses system class loader for that as well)
+			"de.carne.util.logging"
+
+	};
+
 	@Override
 	public Class<?> loadClass(@Nullable String name) throws ClassNotFoundException {
-		// TODO Auto-generated method stub
-		return super.loadClass(name);
+		Class<?> clazz = null;
+
+		if (name != null) {
+			for (String systemClassPrefix : SYSTEM_CLASS_PREFIXES) {
+				if (name.startsWith(systemClassPrefix)) {
+					clazz = getSystemClassLoader().loadClass(name);
+					break;
+				}
+			}
+		}
+		return (clazz != null ? clazz : super.loadClass(name));
 	}
 
 }

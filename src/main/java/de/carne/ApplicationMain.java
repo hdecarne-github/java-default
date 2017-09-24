@@ -19,11 +19,11 @@ package de.carne;
 /**
  * Application entry point.
  */
-public interface Main {
+public interface ApplicationMain {
 
 	/**
-	 * Run Application.
-	 * 
+	 * Run application.
+	 *
 	 * @param args Command line arguments.
 	 * @return Application exit status.
 	 */
