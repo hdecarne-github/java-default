@@ -26,12 +26,18 @@ import java.net.URL;
 import java.net.URLStreamHandlerFactory;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import de.carne.check.Nullable;
 
 /**
  * Generic main class responsible for bootstrapping of the actual application and taking care of proper class loader
  * setup depending on the execution context.
  */
 public final class Application {
+
+	private static final Logger LOGGER = Logger.getLogger(Application.class.getName());
 
 	private Application() {
 		// prevent instantiation
@@ -40,19 +46,17 @@ public final class Application {
 	// Early log support
 	private static final boolean DEBUG = Boolean.getBoolean(Application.class.getName() + ".DEBUG");
 
-	private static final String LOG_PREFIX = Application.class.getName() + ": ";
-
 	private static String debug(String format, Object... args) {
 		String msg = String.format(format, args);
 
-		System.out.println(LOG_PREFIX + msg);
+		LOGGER.fine(msg);
 		return msg;
 	}
 
-	private static String error(String format, Object... args) {
+	private static String error(@Nullable Throwable thrown, String format, Object... args) {
 		String msg = String.format(format, args);
 
-		System.err.println(LOG_PREFIX + msg);
+		LOGGER.log(Level.SEVERE, thrown, () -> msg);
 		return msg;
 	}
 
@@ -67,7 +71,7 @@ public final class Application {
 
 		if (configUrl == null) {
 			throw new ApplicationInitializationException(
-					error("Cannot find application config resource: %1$s", configResource));
+					error(null, "Cannot find application config resource: %1$s", configResource));
 		}
 
 		if (DEBUG) {
@@ -107,8 +111,8 @@ public final class Application {
 
 				applicationClasspath = ApplicationClassLoader.assembleClasspath(applicationPath);
 			} else {
-				throw new ApplicationInitializationException(
-						error("Unable to determine application classloader for protocol: %1$s", configUrlProtocol));
+				throw new ApplicationInitializationException(error(null,
+						"Unable to determine application classloader for protocol: %1$s", configUrlProtocol));
 			}
 
 			if (DEBUG) {
@@ -165,8 +169,7 @@ public final class Application {
 			}
 		} catch (Exception e) {
 			status = -1;
-			error("Application failed with exception:");
-			e.printStackTrace(System.err);
+			error(e, "Application failed with exception: {0}", e.getLocalizedMessage());
 		}
 		if (status != 0) {
 			System.exit(status);
@@ -185,7 +188,7 @@ public final class Application {
 			String mainClassName = configReader.readLine();
 
 			if (mainClassName == null) {
-				throw new EOFException(error("Application config is empty"));
+				throw new EOFException(error(null, "Application config is empty"));
 			}
 
 			if (DEBUG) {
@@ -198,10 +201,16 @@ public final class Application {
 				debug("Applying system properties...");
 			}
 
-			String propertyLine;
+			String configLine;
 
-			while ((propertyLine = configReader.readLine()) != null) {
-				evalConfigPropertyLine(propertyLine);
+			while ((configLine = configReader.readLine()) != null) {
+				String trimmedConfigLine = configLine.trim();
+
+				// Ignore empty lines as well as comments
+				if (trimmedConfigLine.length() == 0 && trimmedConfigLine.startsWith("#")) {
+					continue;
+				}
+				evalConfigPropertyLine(trimmedConfigLine);
 			}
 		}
 		return mainClass;
@@ -229,7 +238,7 @@ public final class Application {
 				debug(" %1$s = %2$s", propertyKey, propertyValue);
 			}
 		} else {
-			error("Ignoring invalid system property line: %1$s", propertyLine);
+			error(null, "Ignoring invalid system property line: %1$s", propertyLine);
 		}
 	}
 
