@@ -36,6 +36,7 @@ public class CmdLineException extends Exception {
 	 * @param arg The argument string causing this exception.
 	 */
 	public CmdLineException(CmdLineProcessor cmdLine, String arg) {
+		super("Unable to process command line '" + cmdLine + "' (processing failed at '" + arg + "')");
 		this.cmdLine = cmdLine.toString();
 		this.arg = arg;
 	}
@@ -51,7 +52,7 @@ public class CmdLineException extends Exception {
 
 	/**
 	 * Get the argument string causing the processing failure.
-	 * 
+	 *
 	 * @return The argument string causing the processing failure.
 	 */
 	public String arg() {
