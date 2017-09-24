@@ -28,35 +28,35 @@ public class LogLevel extends Level {
 	/**
 	 * Level Notice.
 	 */
-	public static final LogLevel LEVEL_NOTICE = new LogLevel("LEVEL_NOTICE", Level.OFF);
+	public static final LogLevel LEVEL_NOTICE = new LogLevel("LEVEL_NOTICE", Level.OFF.intValue() - 1);
 
 	/**
 	 * Level Error.
 	 */
-	public static final LogLevel LEVEL_ERROR = new LogLevel("LEVEL_ERROR", Level.SEVERE);
+	public static final LogLevel LEVEL_ERROR = new LogLevel("LEVEL_ERROR", Level.SEVERE.intValue());
 
 	/**
 	 * Level Warning.
 	 */
-	public static final LogLevel LEVEL_WARNING = new LogLevel("LEVEL_WARNING", Level.WARNING);
+	public static final LogLevel LEVEL_WARNING = new LogLevel("LEVEL_WARNING", Level.WARNING.intValue());
 
 	/**
 	 * Level Info.
 	 */
-	public static final LogLevel LEVEL_INFO = new LogLevel("LEVEL_INFO", Level.INFO);
+	public static final LogLevel LEVEL_INFO = new LogLevel("LEVEL_INFO", Level.INFO.intValue());
 
 	/**
 	 * Level Debug.
 	 */
-	public static final LogLevel LEVEL_DEBUG = new LogLevel("LEVEL_DEBUG", Level.FINE);
+	public static final LogLevel LEVEL_DEBUG = new LogLevel("LEVEL_DEBUG", Level.FINE.intValue());
 
 	/**
 	 * Level Trace.
 	 */
-	public static final LogLevel LEVEL_TRACE = new LogLevel("LEVEL_TRACE", Level.FINEST);
+	public static final LogLevel LEVEL_TRACE = new LogLevel("LEVEL_TRACE", Level.FINEST.intValue());
 
-	private LogLevel(String name, Level level) {
-		super(name, level.intValue());
+	private LogLevel(String name, int levelValue) {
+		super(name, levelValue);
 	}
 
 }
