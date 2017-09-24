@@ -87,10 +87,11 @@ final class ApplicationClassLoader extends URLClassLoader {
 		ArrayList<URL> jars = new ArrayList<>();
 
 		jars.add(jarConnection.getJarFileURL());
-		try (JarFile jarFile = jarConnection.getJarFile()) {
-			jarFile.stream().filter(entry -> entry.getName().endsWith(".jar"))
-					.map(ApplicationClassLoader::jarEntryToUrl).forEach(jars::add);
-		}
+
+		JarFile jarFile = jarConnection.getJarFile();
+
+		jarFile.stream().filter(entry -> entry.getName().endsWith(".jar")).map(ApplicationClassLoader::jarEntryToUrl)
+				.forEach(jars::add);
 		return jars.toArray(new URL[jars.size()]);
 	}
 
