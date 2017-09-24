@@ -26,14 +26,19 @@ import de.carne.util.ApplicationManifestInfo;
  */
 public class ApplicationManifestInfoTest {
 
+	// As defined in our test manifest
+	private static final String EXPECTED_APPLICATION_NAME = "Test Application";
+	private static final String EXPECTED_APPLICATION_VERSION = "1.0-test";
+	private static final String EXPECTED_APPLICATION_BUILD = "<undefined>";
+
 	/**
 	 * Test {@link ApplicationManifestInfo} attributes.
 	 */
 	@Test
 	public void testInfos() {
-		Assert.assertEquals("Test Application", ApplicationManifestInfo.APPLICATION_NAME);
-		Assert.assertEquals("1.0-test", ApplicationManifestInfo.APPLICATION_VERSION);
-		Assert.assertEquals("<undefined>", ApplicationManifestInfo.APPLICATION_BUILD);
+		Assert.assertEquals(EXPECTED_APPLICATION_NAME, ApplicationManifestInfo.APPLICATION_NAME);
+		Assert.assertEquals(EXPECTED_APPLICATION_VERSION, ApplicationManifestInfo.APPLICATION_VERSION);
+		Assert.assertEquals(EXPECTED_APPLICATION_BUILD, ApplicationManifestInfo.APPLICATION_BUILD);
 	}
 
 }

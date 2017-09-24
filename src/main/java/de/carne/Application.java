@@ -25,7 +25,6 @@ import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLStreamHandlerFactory;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.jar.Manifest;
@@ -120,7 +119,7 @@ public final class Application {
 
 				Path manifestPath = applicationPath.resolve("META-INF/MANIFEST.MF");
 
-				if (Files.exists(manifestPath)) {
+				if (manifestPath.toFile().exists()) {
 					URL manifestUrl = manifestPath.toUri().toURL();
 
 					try (InputStream manifestInputStream = manifestUrl.openStream()) {
