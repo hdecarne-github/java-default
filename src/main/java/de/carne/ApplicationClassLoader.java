@@ -72,7 +72,7 @@ final class ApplicationClassLoader extends URLClassLoader {
 			@Override
 			public InputStream getInputStream() throws IOException {
 				String resource = getURL().getFile();
-				InputStream resourceInputStream = getSystemResourceAsStream(resource);
+				InputStream resourceInputStream = ApplicationClassLoader.class.getResourceAsStream(resource);
 
 				if (resourceInputStream == null) {
 					throw new FileNotFoundException("Unknown resource: " + resource);
@@ -145,7 +145,7 @@ final class ApplicationClassLoader extends URLClassLoader {
 		if (name != null) {
 			for (String systemClassPrefix : SYSTEM_CLASS_PREFIXES) {
 				if (name.startsWith(systemClassPrefix)) {
-					clazz = getSystemClassLoader().loadClass(name);
+					clazz = ApplicationClassLoader.class.getClassLoader().loadClass(name);
 					break;
 				}
 			}
