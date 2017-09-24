@@ -19,13 +19,16 @@ package de.carne;
 import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLStreamHandlerFactory;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.jar.Manifest;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -81,8 +84,9 @@ public final class Application {
 		APPLICATION_CONFIG_URL = configUrl;
 	}
 
-	// Application class loader setup
+	// Application class loader and manifest setup
 	private static final ClassLoader APPLICATION_CLASS_LOADER;
+	private static final Manifest APPLICATION_MANIFEST;
 
 	static {
 		// The following execution setups are supported
@@ -93,6 +97,7 @@ public final class Application {
 		// In setup a) and b) we need our own class loader. In setup c) we use the current one.
 		// Which setup we are in is derived from the config url above.
 		ClassLoader classLoader;
+		Manifest manifest;
 
 		try {
 			if (DEBUG) {
@@ -101,15 +106,29 @@ public final class Application {
 
 			String configUrlProtocol = APPLICATION_CONFIG_URL.getProtocol();
 			URL[] applicationClasspath;
+			Manifest applicationManifest;
 
 			if ("jar".equals(configUrlProtocol)) {
 				JarURLConnection jarConnection = (JarURLConnection) APPLICATION_CONFIG_URL.openConnection();
 
 				applicationClasspath = ApplicationClassLoader.assembleClasspath(jarConnection);
+				applicationManifest = jarConnection.getManifest();
 			} else if ("file".equals(configUrlProtocol)) {
 				Path applicationPath = Paths.get(APPLICATION_CONFIG_URL.toURI()).getParent().getParent();
 
 				applicationClasspath = ApplicationClassLoader.assembleClasspath(applicationPath);
+
+				Path manifestPath = applicationPath.resolve("META-INF/MANIFEST.MF");
+
+				if (Files.exists(manifestPath)) {
+					URL manifestUrl = manifestPath.toUri().toURL();
+
+					try (InputStream manifestInputStream = manifestUrl.openStream()) {
+						applicationManifest = new Manifest(manifestInputStream);
+					}
+				} else {
+					applicationManifest = null;
+				}
 			} else {
 				throw new ApplicationInitializationException(error(null,
 						"Unable to determine application classloader for protocol: %1$s", configUrlProtocol));
@@ -126,10 +145,21 @@ public final class Application {
 			classLoader = (applicationClasspath.length > 1 ? new ApplicationClassLoader(applicationClasspath)
 					: ClassLoader.getSystemClassLoader());
 			Thread.currentThread().setContextClassLoader(classLoader);
+			manifest = (applicationManifest != null ? applicationManifest : new Manifest());
 		} catch (URISyntaxException | IOException e) {
 			throw new ApplicationInitializationException(e);
 		}
 		APPLICATION_CLASS_LOADER = classLoader;
+		APPLICATION_MANIFEST = manifest;
+	}
+
+	/**
+	 * Get application {@link Manifest}.
+	 *
+	 * @return The application {@link Manifest}.
+	 */
+	public static Manifest manifest() {
+		return new Manifest(APPLICATION_MANIFEST);
 	}
 
 	// Support for multiplexed URLStreamHandlerFactory setups
@@ -193,11 +223,6 @@ public final class Application {
 
 			if (DEBUG) {
 				debug("Main-Class = %1$s", mainClassName);
-			}
-
-			mainClass = Class.forName(mainClassName, true, APPLICATION_CLASS_LOADER).asSubclass(ApplicationMain.class);
-
-			if (DEBUG) {
 				debug("Applying system properties...");
 			}
 
@@ -212,6 +237,7 @@ public final class Application {
 				}
 				evalConfigPropertyLine(trimmedConfigLine);
 			}
+			mainClass = Class.forName(mainClassName, true, APPLICATION_CLASS_LOADER).asSubclass(ApplicationMain.class);
 		}
 		return mainClass;
 	}

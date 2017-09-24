@@ -1,0 +1,1 @@
+<empty application config to make tests work which reference Application class (without executing it's main function)>
