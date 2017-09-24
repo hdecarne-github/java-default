@@ -177,40 +177,14 @@ public final class Application {
 	}
 
 	// Application startup
+	private static final ApplicationMain APPLICATION_MAIN;
 
-	/**
-	 * Main entry point.
-	 *
-	 * @param args Command line arguments.
-	 */
-	public static void main(String[] args) {
-		if (DEBUG) {
-			debug("Invoking application...");
-		}
-
-		int status;
-
-		try {
-			status = evalConfig().newInstance().run(args);
-
-			if (DEBUG) {
-				debug("Application finished with status: %1$d", status);
-			}
-		} catch (Exception e) {
-			status = -1;
-			error(e, "Application failed with exception: {0}", e.getLocalizedMessage());
-		}
-		if (status != 0) {
-			System.exit(status);
-		}
-	}
-
-	private static Class<? extends ApplicationMain> evalConfig() throws IOException, ClassNotFoundException {
+	static {
 		if (DEBUG) {
 			debug("Evaluating application config...");
 		}
 
-		Class<? extends ApplicationMain> mainClass;
+		ApplicationMain main;
 
 		try (BufferedReader configReader = new BufferedReader(
 				new InputStreamReader(APPLICATION_CONFIG_URL.openStream()))) {
@@ -236,9 +210,15 @@ public final class Application {
 				}
 				evalConfigPropertyLine(trimmedConfigLine);
 			}
-			mainClass = Class.forName(mainClassName, true, APPLICATION_CLASS_LOADER).asSubclass(ApplicationMain.class);
+
+			Class<? extends ApplicationMain> mainClass = Class.forName(mainClassName, true, APPLICATION_CLASS_LOADER)
+					.asSubclass(ApplicationMain.class);
+
+			main = mainClass.newInstance();
+		} catch (IOException | ReflectiveOperationException e) {
+			throw new ApplicationInitializationException(e);
 		}
-		return mainClass;
+		APPLICATION_MAIN = main;
 	}
 
 	private static void evalConfigPropertyLine(String propertyLine) {
@@ -265,6 +245,43 @@ public final class Application {
 		} else {
 			error(null, "Ignoring invalid system property line: %1$s", propertyLine);
 		}
+	}
+
+	/**
+	 * Main entry point.
+	 *
+	 * @param args Command line arguments.
+	 */
+	public static void main(String[] args) {
+		if (DEBUG) {
+			debug("Invoking application...");
+		}
+
+		int status;
+
+		try {
+			status = APPLICATION_MAIN.run(args);
+
+			if (DEBUG) {
+				debug("Application finished with status: %1$d", status);
+			}
+		} catch (Exception e) {
+			status = -1;
+			error(e, "Application failed with exception: {0}", e.getLocalizedMessage());
+		}
+		if (status != 0) {
+			System.exit(status);
+		}
+	}
+
+	/**
+	 * Get the currently executing {@link ApplicationMain} class.
+	 *
+	 * @param clazz The actual type of the {@link ApplicationMain} class.
+	 * @return The currently executing {@link ApplicationMain} class.
+	 */
+	public static <T extends ApplicationMain> T getMain(Class<T> clazz) {
+		return clazz.cast(APPLICATION_MAIN);
 	}
 
 }

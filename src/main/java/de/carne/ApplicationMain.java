@@ -22,6 +22,13 @@ package de.carne;
 public interface ApplicationMain {
 
 	/**
+	 * Get application name.
+	 * 
+	 * @return The application's name.
+	 */
+	String name();
+
+	/**
 	 * Run application.
 	 *
 	 * @param args Command line arguments.

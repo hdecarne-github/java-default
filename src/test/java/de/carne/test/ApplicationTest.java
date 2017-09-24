@@ -48,7 +48,14 @@ public class ApplicationTest implements ApplicationMain {
 	}
 
 	@Override
+	public String name() {
+		return ApplicationTest.class.getSimpleName();
+	}
+
+	@Override
 	public int run(String[] args) {
+		Assert.assertEquals(name(), Application.getMain(getClass()).name());
+		Assert.assertEquals(this, Application.getMain(getClass()));
 		Assert.assertArrayEquals(TEST_ARGS, args);
 		Assert.assertTrue(Boolean.getBoolean(ApplicationTest.class.getName() + ".Property1"));
 		Assert.assertFalse(Boolean.getBoolean(ApplicationTest.class.getName() + ".Property2"));
