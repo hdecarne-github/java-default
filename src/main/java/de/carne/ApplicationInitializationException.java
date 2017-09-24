@@ -30,7 +30,6 @@ class ApplicationInitializationException extends RuntimeException {
 	 */
 	public ApplicationInitializationException(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
