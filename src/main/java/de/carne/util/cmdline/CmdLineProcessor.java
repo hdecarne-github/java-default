@@ -103,59 +103,92 @@ public final class CmdLineProcessor {
 	 * @see #onUnknownArg(Consumer)
 	 */
 	public void process() throws CmdLineException {
-		OptionCmdLineAction pendingOptionAction = null;
-		String pendingArg = null;
+		ProcessingContext context = new ProcessingContext();
 
 		for (String arg : this.args) {
+			if (!context.processPendingOptionAction(arg) && !context.processOptionAction(arg, this.optionActions)
+					&& !context.processSwitchAction(arg, this.switchActions)) {
+				// No action found so far. Invoke the corresponding default action.
+				Consumer<String> defaultAction = (isActionArg(arg) ? this.unknownAction : this.unnamedAction);
+
+				if (defaultAction != null) {
+					defaultAction.accept(arg);
+				} else {
+					throw new CmdLineException(this, arg);
+				}
+			}
+		}
+		context.verifyNoPendingOptionAction();
+	}
+
+	private class ProcessingContext {
+
+		@Nullable
+		private OptionCmdLineAction pendingOptionAction = null;
+		@Nullable
+		private String pendingArg = null;
+
+		ProcessingContext() {
+			// Nothing to do, just to make it accessible for out class
+		}
+
+		public boolean processPendingOptionAction(String option) throws CmdLineException {
 			// Check whether there is a pending named option waiting for completion.
 			// If this is the case, check and invoke the action.
-			if (pendingOptionAction != null && pendingArg != null) {
-				if (isActionArg(arg)) {
-					throw new CmdLineException(this, pendingArg);
-				}
-				pendingOptionAction.accept(pendingArg, arg);
-				pendingOptionAction = null;
-				pendingArg = null;
-				continue;
-			}
+			OptionCmdLineAction optionAction = this.pendingOptionAction;
+			String arg = this.pendingArg;
+			boolean processed = false;
 
+			if (optionAction != null && arg != null) {
+				if (isActionArg(option)) {
+					throw new CmdLineException(CmdLineProcessor.this, arg);
+				}
+				optionAction.accept(this.pendingArg, option);
+				this.pendingOptionAction = null;
+				this.pendingArg = null;
+				processed = true;
+			}
+			return processed;
+		}
+
+		public void verifyNoPendingOptionAction() throws CmdLineException {
+			OptionCmdLineAction optionAction = this.pendingOptionAction;
+			String arg = this.pendingArg;
+
+			if (optionAction != null && arg != null) {
+				throw new CmdLineException(CmdLineProcessor.this, arg);
+			}
+		}
+
+		public boolean processOptionAction(String arg, List<OptionCmdLineAction> actions) {
 			// Check whether the argument is a known option argument.
 			// If this is the case, remember it as pending and continue (processing will be done above).
-			Optional<OptionCmdLineAction> optOptionAction = this.optionActions.stream()
-					.filter(action -> action.contains(arg)).findFirst();
+			Optional<OptionCmdLineAction> optOptionAction = actions.stream().filter(action -> action.contains(arg))
+					.findFirst();
+			boolean processed = false;
 
 			if (optOptionAction.isPresent()) {
-				OptionCmdLineAction optionAction = optOptionAction.get();
-
-				pendingOptionAction = optionAction;
-				pendingArg = arg;
-				continue;
+				this.pendingOptionAction = optOptionAction.get();
+				this.pendingArg = arg;
+				processed = true;
 			}
+			return processed;
+		}
 
+		public boolean processSwitchAction(String arg, List<SwitchCmdLineAction> actions) {
 			// Check whether the argument is a known switch argument.
 			// If this is the case, invoke it.
-			Optional<SwitchCmdLineAction> optSwitchAction = this.switchActions.stream()
-					.filter(action -> action.contains(arg)).findFirst();
+			Optional<SwitchCmdLineAction> optSwitchAction = actions.stream().filter(action -> action.contains(arg))
+					.findFirst();
+			boolean processed = false;
 
 			if (optSwitchAction.isPresent()) {
-				SwitchCmdLineAction switchAction = optSwitchAction.get();
-
-				switchAction.accept(arg);
-				continue;
+				optSwitchAction.get().accept(arg);
+				processed = true;
 			}
-
-			// No action found so far. Invoke the corresponding default action.
-			Consumer<String> defaultAction = (isActionArg(arg) ? this.unknownAction : this.unnamedAction);
-
-			if (defaultAction != null) {
-				defaultAction.accept(arg);
-			} else {
-				throw new CmdLineException(this, arg);
-			}
+			return processed;
 		}
-		if (pendingOptionAction != null && pendingArg != null) {
-			throw new CmdLineException(this, pendingArg);
-		}
+
 	}
 
 	/**
