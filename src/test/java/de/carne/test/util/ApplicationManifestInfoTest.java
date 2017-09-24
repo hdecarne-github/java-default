@@ -17,6 +17,7 @@
 package de.carne.test.util;
 
 import org.junit.Assert;
+import org.junit.Test;
 
 import de.carne.util.ApplicationManifestInfo;
 
@@ -28,7 +29,7 @@ public class ApplicationManifestInfoTest {
 	/**
 	 * Test {@link ApplicationManifestInfo} attributes.
 	 */
-	// @Test
+	@Test
 	public void testInfos() {
 		// As defined in our test manifest
 		Assert.assertEquals("Test Application", getApplicationName());
