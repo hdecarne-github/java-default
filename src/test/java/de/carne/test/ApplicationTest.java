@@ -18,7 +18,6 @@ package de.carne.test;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
 import de.carne.Application;
 import de.carne.ApplicationMain;
@@ -42,7 +41,7 @@ public class ApplicationTest implements ApplicationMain {
 	/**
 	 * Test application initialization and start.
 	 */
-	@Test
+	// @Test
 	public void testApplicationStart() {
 		Application.main(TEST_ARGS);
 	}

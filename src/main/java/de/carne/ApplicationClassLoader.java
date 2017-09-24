@@ -145,7 +145,7 @@ final class ApplicationClassLoader extends URLClassLoader {
 		if (name != null) {
 			for (String systemClassPrefix : SYSTEM_CLASS_PREFIXES) {
 				if (name.startsWith(systemClassPrefix)) {
-					clazz = ApplicationClassLoader.class.getClassLoader().loadClass(name);
+					clazz = getClass().getClassLoader().loadClass(name);
 					break;
 				}
 			}
