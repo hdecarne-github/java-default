@@ -52,7 +52,6 @@ public final class Application {
 		String msg = String.format(format, args);
 
 		LOGGER.fine(msg);
-		System.err.println(msg);
 		return msg;
 	}
 
@@ -60,7 +59,6 @@ public final class Application {
 		String msg = String.format(format, args);
 
 		LOGGER.log(Level.SEVERE, thrown, () -> msg);
-		System.err.println(msg);
 		return msg;
 	}
 
@@ -143,7 +141,7 @@ public final class Application {
 				}
 			}
 
-			classLoader = (applicationClasspath.length > 1 ? new ApplicationClassLoader(applicationClasspath)
+			classLoader = (applicationClasspath.length > 1 && false ? new ApplicationClassLoader(applicationClasspath)
 					: ClassLoader.getSystemClassLoader());
 			Thread.currentThread().setContextClassLoader(classLoader);
 			manifest = (applicationManifest != null ? applicationManifest : new Manifest());
