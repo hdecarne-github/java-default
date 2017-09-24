@@ -141,8 +141,8 @@ public final class Application {
 				}
 			}
 
-			classLoader = (applicationClasspath.length > 1 && false ? new ApplicationClassLoader(applicationClasspath)
-					: ClassLoader.getSystemClassLoader());
+			classLoader = (applicationClasspath.length > 1 ? new ApplicationClassLoader(applicationClasspath)
+					: ApplicationClassLoader.class.getClassLoader());
 			Thread.currentThread().setContextClassLoader(classLoader);
 			manifest = (applicationManifest != null ? applicationManifest : new Manifest());
 		} catch (URISyntaxException | IOException e) {
