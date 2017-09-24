@@ -11,7 +11,7 @@ os:
   - linux
   
 script:
-  - ./gradlew -s build sonarqube
+  - ./gradlew -Dde.carne.Application.DEBUG=true build sonarqube
 
 notifications:
   email:
