@@ -17,6 +17,7 @@
 package de.carne.test.util;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.carne.util.ApplicationManifestInfo;
@@ -25,6 +26,15 @@ import de.carne.util.ApplicationManifestInfo;
  * Test {@link ApplicationManifestInfo} class.
  */
 public class ApplicationManifestInfoTest {
+
+	/**
+	 * Setup the necessary system properties.
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() {
+		System.setProperty("de.carne.Application", "test");
+		System.setProperty("de.carne.Application.DEBUG", "true");
+	}
 
 	/**
 	 * Test {@link ApplicationManifestInfo} attributes.

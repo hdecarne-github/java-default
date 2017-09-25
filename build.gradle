@@ -23,6 +23,11 @@ dependencies {
 	testImplementation("junit:junit:4.12")
 }
 
+test {
+	// Application test may leave VM in a non working state; hence restart on every test
+	forkEvery = 1
+}
+
 jacoco {
 	toolVersion = "0.7.9"
 }

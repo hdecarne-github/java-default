@@ -142,8 +142,7 @@ public final class Application {
 			}
 
 			classLoader = (applicationClasspath.length > 1 ? new ApplicationClassLoader(applicationClasspath)
-					: ApplicationClassLoader.class.getClassLoader());
-			Thread.currentThread().setContextClassLoader(classLoader);
+					: Application.class.getClassLoader());
 			manifest = (applicationManifest != null ? applicationManifest : new Manifest());
 		} catch (URISyntaxException | IOException e) {
 			throw new ApplicationInitializationException(e);
@@ -210,6 +209,8 @@ public final class Application {
 				}
 				evalConfigPropertyLine(trimmedConfigLine);
 			}
+
+			Thread.currentThread().setContextClassLoader(APPLICATION_CLASS_LOADER);
 
 			Class<? extends ApplicationMain> mainClass = Class.forName(mainClassName, true, APPLICATION_CLASS_LOADER)
 					.asSubclass(ApplicationMain.class);
