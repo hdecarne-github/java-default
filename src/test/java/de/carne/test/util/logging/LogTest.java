@@ -16,12 +16,15 @@
  */
 package de.carne.test.util.logging;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.carne.io.IOUtil;
 import de.carne.util.logging.Log;
 import de.carne.util.logging.Logs;
 
@@ -75,6 +78,16 @@ public class LogTest {
 		logTestMessages(log);
 		Logs.readConfig("logging-trace.properties");
 		Assert.assertTrue(log.isTraceLoggable());
+		logTestMessages(log);
+
+		File configFile = Files.createTempFile(getClass().getName(), ".properties").toFile();
+
+		configFile.deleteOnExit();
+		IOUtil.copyUrl(configFile, getClass().getResource("/logging-warning.properties"));
+
+		Logs.readConfig(configFile.getAbsolutePath());
+		Assert.assertTrue(log.isWarningLoggable());
+		Assert.assertFalse(log.isInfoLoggable());
 		logTestMessages(log);
 	}
 

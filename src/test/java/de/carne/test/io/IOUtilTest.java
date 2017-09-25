@@ -41,26 +41,24 @@ public class IOUtilTest {
 	public void testCopy() throws IOException {
 		File file = Files.createTempFile(getClass().getName(), ".tmp").toFile();
 
-		try {
-			ByteArrayOutputStream resourceDataOutputStream = new ByteArrayOutputStream();
+		file.deleteOnExit();
 
-			IOUtil.copyUrl(resourceDataOutputStream, getClass().getResource("data.bin"));
+		ByteArrayOutputStream resourceDataOutputStream = new ByteArrayOutputStream();
 
-			byte[] resourceData = resourceDataOutputStream.toByteArray();
-			ByteArrayInputStream resourceDataInputStream = new ByteArrayInputStream(resourceData);
+		IOUtil.copyUrl(resourceDataOutputStream, getClass().getResource("data.bin"));
 
-			IOUtil.copyStream(file, resourceDataInputStream);
+		byte[] resourceData = resourceDataOutputStream.toByteArray();
+		ByteArrayInputStream resourceDataInputStream = new ByteArrayInputStream(resourceData);
 
-			ByteArrayOutputStream fileDataOutputStream = new ByteArrayOutputStream();
+		IOUtil.copyStream(file, resourceDataInputStream);
 
-			IOUtil.copyFile(fileDataOutputStream, file);
+		ByteArrayOutputStream fileDataOutputStream = new ByteArrayOutputStream();
 
-			byte[] fileData = fileDataOutputStream.toByteArray();
+		IOUtil.copyFile(fileDataOutputStream, file);
 
-			Assert.assertArrayEquals(resourceData, fileData);
-		} finally {
-			file.delete();
-		}
+		byte[] fileData = fileDataOutputStream.toByteArray();
+
+		Assert.assertArrayEquals(resourceData, fileData);
 	}
 
 }
