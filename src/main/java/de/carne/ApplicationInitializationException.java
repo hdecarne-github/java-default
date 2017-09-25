@@ -41,14 +41,4 @@ public class ApplicationInitializationException extends RuntimeException {
 		super(cause.getLocalizedMessage(), cause);
 	}
 
-	/**
-	 * Construct {@link ApplicationInitializationException}.
-	 *
-	 * @param message The exception message.
-	 * @param cause The causing exception.
-	 */
-	public ApplicationInitializationException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
 }
