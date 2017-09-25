@@ -33,7 +33,7 @@ public class ApplicationFailureTest implements ApplicationMain {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		System.setProperty("de.carne.Application", "undefined");
+		System.setProperty("de.carne.Application", "invalid");
 		System.setProperty("de.carne.Application.DEBUG", "true");
 	}
 
