@@ -117,4 +117,59 @@ public class CmdLineProcessorTest {
 		cmdLine.process();
 	}
 
+	/**
+	 * Test setup failure (due to an invalid argument string).
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidArg1Failure() {
+		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(), new String[0]);
+
+		cmdLine.onOption((arg, option) -> {
+			Assert.fail();
+		}).arg("o");
+	}
+
+	/**
+	 * Test setup failure (due to an invalid argument string).
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidArg2Failure() {
+		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(), new String[0]);
+
+		cmdLine.onOption((arg, option) -> {
+			Assert.fail();
+		}).arg("---o");
+	}
+
+	/**
+	 * Test setup failure (due to an invalid short argument string).
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidShortArgFailure() {
+		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(), new String[0]);
+
+		cmdLine.onOption((arg, option) -> {
+			Assert.fail();
+		}).arg("-option");
+	}
+
+	/**
+	 * Test {@link CmdLineException}.
+	 */
+	@Test
+	public void testCmdLineException() {
+		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(),
+				Arrays.asList("--option", "--unexpected"));
+
+		cmdLine.onOption((arg, option) -> {
+			Assert.fail();
+		}).arg("--option");
+		try {
+			cmdLine.process();
+		} catch (CmdLineException e) {
+			Assert.assertEquals(cmdLine.toString(), e.cmdLine());
+			Assert.assertEquals("--option", e.arg());
+		}
+	}
+
 }
