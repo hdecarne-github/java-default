@@ -47,7 +47,6 @@ public class IOUtilTest {
 			IOUtil.copyUrl(resourceDataOutputStream, getClass().getResource("data.bin"));
 
 			byte[] resourceData = resourceDataOutputStream.toByteArray();
-
 			ByteArrayInputStream resourceDataInputStream = new ByteArrayInputStream(resourceData);
 
 			IOUtil.copyStream(file, resourceDataInputStream);
