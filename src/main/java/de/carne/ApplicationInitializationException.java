@@ -19,7 +19,7 @@ package de.carne;
 /**
  * Indicate an initialization error during application startup.
  */
-class ApplicationInitializationException extends RuntimeException {
+public class ApplicationInitializationException extends RuntimeException {
 
 	private static final long serialVersionUID = -3704497457703578647L;
 
