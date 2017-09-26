@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -141,6 +142,8 @@ public final class LogRecorder {
 
 		private final Queue<LogRecord> buffer = new ConcurrentLinkedQueue<>();
 
+		private final AtomicBoolean publishing = new AtomicBoolean();
+
 		Session(boolean currentThreadOnly) {
 			if (currentThreadOnly) {
 				Thread currentThread = Thread.currentThread();
@@ -195,8 +198,10 @@ public final class LogRecorder {
 
 		@Override
 		public void publish(@Nullable LogRecord record) {
-			if (record != null && testThread(Thread.currentThread()) && testRecord(record)) {
+			if (record != null && this.publishing.compareAndSet(false, true) && testThread(Thread.currentThread())
+					&& testRecord(record)) {
 				this.buffer.add(record);
+				this.publishing.set(false);
 			}
 		}
 
