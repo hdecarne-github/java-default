@@ -84,8 +84,7 @@ public final class LogRecorder {
 	 * @return The updated {@link LogRecorder}.
 	 */
 	public LogRecorder addLog(Log log) {
-		this.loggers.add(log.logger());
-		return this;
+		return addLogger(log.logger());
 	}
 
 	/**

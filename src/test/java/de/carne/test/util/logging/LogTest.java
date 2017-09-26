@@ -97,9 +97,12 @@ public class LogTest {
 	private void logTestMessages(Log log, int expectedRecordCount) {
 		LogRecorder recorder = new LogRecorder(LogLevel.LEVEL_TRACE);
 
+		recorder.includeRecord(record -> true);
 		recorder.addLog(log);
 
 		try (LogRecorder.Session session = recorder.start(true)) {
+			session.includeThread(thread -> true);
+
 			Exception thrown = new IllegalStateException();
 
 			log.trace("Trace message");
