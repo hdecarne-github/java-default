@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.channels.FileChannel;
 
 /**
  * Utility class providing I/O related functions.
@@ -33,7 +34,9 @@ public final class IOUtil {
 		// prevent instantiation
 	}
 
-	private static final int STREAM_IO_BUFFER_SIZE = 4096;
+	private static final int STREAM_IO_BUFFER_SIZE = 8192;
+
+	private static final int CHANNEL_IO_BUFFER_SIZE = 8192;
 
 	/**
 	 * Copy all bytes from one stream to another.
@@ -43,13 +46,37 @@ public final class IOUtil {
 	 * @return The number of copied bytes.
 	 * @throws IOException if an I/O error occurs.
 	 */
-	public static int copyStream(OutputStream dst, InputStream src) throws IOException {
-		return copyStreamStandard(dst, src);
+	public static long copyStream(OutputStream dst, InputStream src) throws IOException {
+		long copied;
+
+		if (dst instanceof FileOutputStream && src instanceof FileInputStream) {
+			try (FileChannel dstChannel = ((FileOutputStream) dst).getChannel();
+					FileChannel srcChannel = ((FileInputStream) src).getChannel()) {
+				copied = copyStreamChannel(dstChannel, srcChannel);
+			}
+		} else {
+			copied = copyStreamStandard(dst, src);
+		}
+		return copied;
 	}
 
-	private static int copyStreamStandard(OutputStream dst, InputStream src) throws IOException {
+	private static long copyStreamChannel(FileChannel dst, FileChannel src) throws IOException {
+		long position = 0;
+		long remaining = src.size();
+
+		while (remaining > 0) {
+			long transferred = dst.transferFrom(src, position, CHANNEL_IO_BUFFER_SIZE);
+
+			position += transferred;
+			remaining -= transferred;
+		}
+		dst.position(position);
+		return position;
+	}
+
+	private static long copyStreamStandard(OutputStream dst, InputStream src) throws IOException {
 		byte[] buffer = new byte[STREAM_IO_BUFFER_SIZE];
-		int copied = 0;
+		long copied = 0;
 		int read;
 
 		while ((read = src.read(buffer)) > 0) {
@@ -67,8 +94,8 @@ public final class IOUtil {
 	 * @return The number of copied bytes.
 	 * @throws IOException if an I/O error occurs.
 	 */
-	public static int copyStream(File dst, InputStream src) throws IOException {
-		int copied;
+	public static long copyStream(File dst, InputStream src) throws IOException {
+		long copied;
 
 		try (FileOutputStream dstStream = new FileOutputStream(dst)) {
 			copied = copyStream(dstStream, src);
@@ -84,8 +111,25 @@ public final class IOUtil {
 	 * @return The number of copied bytes.
 	 * @throws IOException if an I/O error occurs.
 	 */
-	public static int copyFile(OutputStream dst, File src) throws IOException {
-		int copied;
+	public static long copyFile(OutputStream dst, File src) throws IOException {
+		long copied;
+
+		try (FileInputStream srcStream = new FileInputStream(src)) {
+			copied = copyStream(dst, srcStream);
+		}
+		return copied;
+	}
+
+	/**
+	 * Copy all bytes from an {@link File} to a {@link File}.
+	 *
+	 * @param dst The {@link File} to copy to.
+	 * @param src The {@link File} to copy from.
+	 * @return The number of copied bytes.
+	 * @throws IOException if an I/O error occurs.
+	 */
+	public static long copyFile(File dst, File src) throws IOException {
+		long copied;
 
 		try (FileInputStream srcStream = new FileInputStream(src)) {
 			copied = copyStream(dst, srcStream);
@@ -101,8 +145,8 @@ public final class IOUtil {
 	 * @return The number of copied bytes.
 	 * @throws IOException if an I/O error occurs.
 	 */
-	public static int copyUrl(OutputStream dst, URL src) throws IOException {
-		int copied;
+	public static long copyUrl(OutputStream dst, URL src) throws IOException {
+		long copied;
 
 		try (InputStream srcStream = src.openStream()) {
 			copied = copyStream(dst, srcStream);
@@ -118,8 +162,8 @@ public final class IOUtil {
 	 * @return The number of copied bytes.
 	 * @throws IOException if an I/O error occurs.
 	 */
-	public static int copyUrl(File dst, URL src) throws IOException {
-		int copied;
+	public static long copyUrl(File dst, URL src) throws IOException {
+		long copied;
 
 		try (InputStream srcStream = src.openStream()) {
 			copied = copyStream(dst, srcStream);

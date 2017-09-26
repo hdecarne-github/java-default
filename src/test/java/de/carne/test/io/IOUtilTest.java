@@ -39,9 +39,11 @@ public class IOUtilTest {
 	 */
 	@Test
 	public void testCopy() throws IOException {
-		File file = Files.createTempFile(getClass().getName(), ".tmp").toFile();
+		File file1 = Files.createTempFile(getClass().getName(), ".tmp").toFile();
+		File file2 = Files.createTempFile(getClass().getName(), ".tmp").toFile();
 
-		file.deleteOnExit();
+		file1.deleteOnExit();
+		file2.deleteOnExit();
 
 		ByteArrayOutputStream resourceDataOutputStream = new ByteArrayOutputStream();
 
@@ -50,11 +52,12 @@ public class IOUtilTest {
 		byte[] resourceData = resourceDataOutputStream.toByteArray();
 		ByteArrayInputStream resourceDataInputStream = new ByteArrayInputStream(resourceData);
 
-		IOUtil.copyStream(file, resourceDataInputStream);
+		IOUtil.copyStream(file1, resourceDataInputStream);
+		IOUtil.copyFile(file2, file1);
 
 		ByteArrayOutputStream fileDataOutputStream = new ByteArrayOutputStream();
 
-		IOUtil.copyFile(fileDataOutputStream, file);
+		IOUtil.copyFile(fileDataOutputStream, file2);
 
 		byte[] fileData = fileDataOutputStream.toByteArray();
 
