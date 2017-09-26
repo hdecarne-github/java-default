@@ -26,6 +26,8 @@ import org.junit.Test;
 
 import de.carne.io.IOUtil;
 import de.carne.util.logging.Log;
+import de.carne.util.logging.LogLevel;
+import de.carne.util.logging.LogRecorder;
 import de.carne.util.logging.Logs;
 
 /**
@@ -59,53 +61,61 @@ public class LogTest {
 		Logs.readConfig("logging-notice.properties");
 		Assert.assertTrue(log.isNoticeLoggable());
 		Assert.assertFalse(log.isErrorLoggable());
-		logTestMessages(log);
+		logTestMessages(log, 2);
 		Logs.readConfig("logging-error.properties");
 		Assert.assertTrue(log.isErrorLoggable());
 		Assert.assertFalse(log.isWarningLoggable());
-		logTestMessages(log);
+		logTestMessages(log, 4);
 		Logs.readConfig("logging-warning.properties");
 		Assert.assertTrue(log.isWarningLoggable());
 		Assert.assertFalse(log.isInfoLoggable());
-		logTestMessages(log);
+		logTestMessages(log, 6);
 		Logs.readConfig("logging-info.properties");
 		Assert.assertTrue(log.isInfoLoggable());
 		Assert.assertFalse(log.isDebugLoggable());
-		logTestMessages(log);
+		logTestMessages(log, 8);
 		Logs.readConfig("logging-debug.properties");
 		Assert.assertTrue(log.isDebugLoggable());
 		Assert.assertFalse(log.isTraceLoggable());
-		logTestMessages(log);
+		logTestMessages(log, 10);
 		Logs.readConfig("logging-trace.properties");
 		Assert.assertTrue(log.isTraceLoggable());
-		logTestMessages(log);
+		logTestMessages(log, 12);
 
 		File configFile = Files.createTempFile(getClass().getName(), ".properties").toFile();
 
 		configFile.deleteOnExit();
+
 		IOUtil.copyUrl(configFile, getClass().getResource("/logging-warning.properties"));
 
 		Logs.readConfig(configFile.getAbsolutePath());
 		Assert.assertTrue(log.isWarningLoggable());
 		Assert.assertFalse(log.isInfoLoggable());
-		logTestMessages(log);
+		logTestMessages(log, 6);
 	}
 
-	private void logTestMessages(Log log) {
-		Exception thrown = new IllegalStateException();
+	private void logTestMessages(Log log, int expectedRecordCount) {
+		LogRecorder recorder = new LogRecorder(LogLevel.LEVEL_TRACE);
 
-		log.trace("Trace message");
-		log.trace(thrown, "Trace message (with exception)");
-		log.debug("Debug message");
-		log.debug(thrown, "Debug message (with exception)");
-		log.info("Info message");
-		log.info(thrown, "Info message (with exception)");
-		log.warning("Warning message");
-		log.warning(thrown, "Warning message (with exception)");
-		log.error("Error message");
-		log.error(thrown, "Error message (with exception)");
-		log.notice("Notice message");
-		log.notice(thrown, "Notice message (with exception)");
+		recorder.addLog(log);
+
+		try (LogRecorder.Session session = recorder.start(true)) {
+			Exception thrown = new IllegalStateException();
+
+			log.trace("Trace message");
+			log.trace(thrown, "Trace message (with exception)");
+			log.debug("Debug message");
+			log.debug(thrown, "Debug message (with exception)");
+			log.info("Info message");
+			log.info(thrown, "Info message (with exception)");
+			log.warning("Warning message");
+			log.warning(thrown, "Warning message (with exception)");
+			log.error("Error message");
+			log.error(thrown, "Error message (with exception)");
+			log.notice("Notice message");
+			log.notice(thrown, "Notice message (with exception)");
+			Assert.assertEquals(expectedRecordCount, session.getRecords().size());
+		}
 	}
 
 	/**
