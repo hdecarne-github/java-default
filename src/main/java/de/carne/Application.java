@@ -278,6 +278,7 @@ public final class Application {
 	/**
 	 * Get the currently executing {@link ApplicationMain} class.
 	 *
+	 * @param <T> The actual main class to retrieve.
 	 * @param clazz The actual type of the {@link ApplicationMain} class.
 	 * @return The currently executing {@link ApplicationMain} class.
 	 */
