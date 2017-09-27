@@ -15,6 +15,10 @@ apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'eclipse'
 
+def property(name) {
+	return (project.hasProperty(name) ? project.property(name) : 'undefined')
+}
+
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -94,18 +98,18 @@ publishing {
 }
 
 bintray {
-	user = bintrayUser
-	key = bintrayKey
+	user = property('bintrayUser')
+	key = property('bintrayKey')
 	publications = [ 'BintrayPublication' ]
 	pkg {
-		repo = bintrayRepo
+		repo = property('bintrayRepo')
 		name = project.name
 		licenses = [ projectLicenseId ]
 		vcsUrl = projectScmUrl
 		version {
 			gpg {
 				sign = true
-				passphrase = bintrayGpgPassphrase
+				passphrase = property('bintrayGpgPassphrase')
             }
 		}
 	}
