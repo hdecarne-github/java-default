@@ -31,6 +31,7 @@ public class LazyTest {
 	/**
 	 * Test valid {@link Supplier} and access.
 	 */
+	@Test
 	public void testValidSupplierAccess() {
 		Supplier<LazyTest> initializer = new Supplier<LazyTest>() {
 

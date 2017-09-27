@@ -29,6 +29,7 @@ public class LateTest {
 	/**
 	 * Test initialized access.
 	 */
+	@Test
 	public void testInitializedAccess() {
 		Late<LateTest> late = new Late<>();
 

@@ -20,7 +20,7 @@ import de.carne.check.Nullable;
 
 /**
  * Utility class used to handle late initialized objects in a {@code null}-safe way.
- * 
+ *
  * @param <T> The actual object type.
  */
 public class Late<T> {
@@ -35,7 +35,8 @@ public class Late<T> {
 	 * @return The set object.
 	 */
 	public synchronized T set(T object) {
-		return this.object = object;
+		this.object = object;
+		return object;
 	}
 
 	/**
