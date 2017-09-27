@@ -16,6 +16,8 @@
  */
 package de.carne.test;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.function.Supplier;
 
 import org.junit.Assert;
@@ -70,6 +72,14 @@ public class ApplicationTest implements ApplicationMain {
 
 			Assert.assertEquals(externalSupplierClassName, externalSupplier.get().toString());
 		} catch (ReflectiveOperationException e) {
+			Assert.fail(e.getLocalizedMessage());
+		}
+
+		String resourceName = "/" + (getClass().getPackage().getName().replace('.', '/')) + "/ExternalResource.txt";
+
+		try (InputStream resourceStream = getClass().getResourceAsStream(resourceName)) {
+			Assert.assertNotNull(resourceStream);
+		} catch (IOException e) {
 			Assert.fail(e.getLocalizedMessage());
 		}
 		return 0;
