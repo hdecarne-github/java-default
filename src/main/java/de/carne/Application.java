@@ -104,18 +104,19 @@ public final class Application {
 			}
 
 			String configUrlProtocol = APPLICATION_CONFIG_URL.getProtocol();
+			ClassLoader bootstrapLoader = Application.class.getClassLoader();
 			URL[] applicationClasspath;
 			Manifest applicationManifest;
 
 			if ("jar".equals(configUrlProtocol)) {
 				JarURLConnection jarConnection = (JarURLConnection) APPLICATION_CONFIG_URL.openConnection();
 
-				applicationClasspath = ApplicationClassLoader.assembleClasspath(jarConnection);
+				applicationClasspath = ApplicationClassLoader.assembleClasspath(bootstrapLoader, jarConnection);
 				applicationManifest = jarConnection.getManifest();
 			} else if ("file".equals(configUrlProtocol)) {
 				Path applicationPath = Paths.get(APPLICATION_CONFIG_URL.toURI()).getParent().getParent();
 
-				applicationClasspath = ApplicationClassLoader.assembleClasspath(applicationPath);
+				applicationClasspath = ApplicationClassLoader.assembleClasspath(bootstrapLoader, applicationPath);
 
 				Path manifestPath = applicationPath.resolve("META-INF/MANIFEST.MF");
 
@@ -141,7 +142,8 @@ public final class Application {
 				}
 			}
 
-			classLoader = (applicationClasspath.length > 1 ? new ApplicationClassLoader(applicationClasspath)
+			classLoader = (applicationClasspath.length > 1
+					? new ApplicationClassLoader(bootstrapLoader, applicationClasspath)
 					: Application.class.getClassLoader());
 			manifest = (applicationManifest != null ? applicationManifest : new Manifest());
 		} catch (URISyntaxException | IOException e) {

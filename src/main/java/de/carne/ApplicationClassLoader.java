@@ -28,6 +28,7 @@ import java.net.URLStreamHandler;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Stream;
@@ -39,8 +40,11 @@ import de.carne.check.Nullable;
  */
 final class ApplicationClassLoader extends URLClassLoader {
 
-	ApplicationClassLoader(URL[] urls) {
+	private final ClassLoader bootstrapLoader;
+
+	ApplicationClassLoader(ClassLoader bootstrapLoader, URL[] urls) {
 		super(urls, null);
+		this.bootstrapLoader = bootstrapLoader;
 	}
 
 	static {
@@ -83,16 +87,20 @@ final class ApplicationClassLoader extends URLClassLoader {
 		};
 	}
 
-	static URL[] assembleClasspath(JarURLConnection jarConnection) throws IOException {
-		ArrayList<URL> jars = new ArrayList<>();
+	static URL[] assembleClasspath(ClassLoader bootstrapLoader, JarURLConnection jarConnection) throws IOException {
+		ArrayList<URL> urls = new ArrayList<>();
 
-		jars.add(jarConnection.getJarFileURL());
+		if (bootstrapLoader instanceof URLClassLoader) {
+			urls.addAll(Arrays.asList(((URLClassLoader) bootstrapLoader).getURLs()));
+		} else {
+			urls.add(jarConnection.getJarFileURL());
+		}
 
 		JarFile jarFile = jarConnection.getJarFile();
 
 		jarFile.stream().filter(entry -> entry.getName().endsWith(".jar")).map(ApplicationClassLoader::jarEntryToUrl)
-				.forEach(jars::add);
-		return jars.toArray(new URL[jars.size()]);
+				.forEach(urls::add);
+		return urls.toArray(new URL[urls.size()]);
 	}
 
 	private static URL jarEntryToUrl(JarEntry entry) {
@@ -106,14 +114,18 @@ final class ApplicationClassLoader extends URLClassLoader {
 		return url;
 	}
 
-	static URL[] assembleClasspath(Path path) throws IOException {
-		ArrayList<URL> jars = new ArrayList<>();
+	static URL[] assembleClasspath(ClassLoader bootstrapLoader, Path path) throws IOException {
+		ArrayList<URL> urls = new ArrayList<>();
 
-		jars.add(pathToUrl(path));
-		try (Stream<Path> files = Files.find(path, 0, (file, attributes) -> file.endsWith(".jar"))) {
-			files.map(ApplicationClassLoader::pathToUrl).forEach(jars::add);
+		if (bootstrapLoader instanceof URLClassLoader) {
+			urls.addAll(Arrays.asList(((URLClassLoader) bootstrapLoader).getURLs()));
+		} else {
+			urls.add(pathToUrl(path));
 		}
-		return jars.toArray(new URL[jars.size()]);
+		try (Stream<Path> files = Files.find(path, 0, (file, attributes) -> file.endsWith(".jar"))) {
+			files.map(ApplicationClassLoader::pathToUrl).forEach(urls::add);
+		}
+		return urls.toArray(new URL[urls.size()]);
 	}
 
 	private static URL pathToUrl(Path path) {
@@ -145,7 +157,7 @@ final class ApplicationClassLoader extends URLClassLoader {
 		if (name != null) {
 			for (String systemClassPrefix : SYSTEM_CLASS_PREFIXES) {
 				if (name.startsWith(systemClassPrefix)) {
-					clazz = Application.class.getClassLoader().loadClass(name);
+					clazz = this.bootstrapLoader.loadClass(name);
 					break;
 				}
 			}
