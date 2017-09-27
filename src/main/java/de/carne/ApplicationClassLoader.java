@@ -27,6 +27,7 @@ import java.net.URLConnection;
 import java.net.URLStreamHandler;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.jar.JarEntry;
@@ -122,7 +123,10 @@ final class ApplicationClassLoader extends URLClassLoader {
 		} else {
 			urls.add(pathToUrl(path));
 		}
-		try (Stream<Path> files = Files.find(path, 0, (file, attributes) -> file.endsWith(".jar"))) {
+
+		PathMatcher jarMatcher = path.getFileSystem().getPathMatcher("glob:**.jar");
+
+		try (Stream<Path> files = Files.find(path, 1, (file, attributes) -> jarMatcher.matches(file))) {
 			files.map(ApplicationClassLoader::pathToUrl).forEach(urls::add);
 		}
 		return urls.toArray(new URL[urls.size()]);

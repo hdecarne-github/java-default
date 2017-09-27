@@ -16,6 +16,8 @@
  */
 package de.carne.test;
 
+import java.util.function.Supplier;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -60,6 +62,16 @@ public class ApplicationTest implements ApplicationMain {
 		Assert.assertTrue(Boolean.getBoolean(ApplicationTest.class.getName() + ".Property1"));
 		Assert.assertFalse(Boolean.getBoolean(ApplicationTest.class.getName() + ".Property2"));
 		Assert.assertEquals("Any text...", System.getProperty(ApplicationTest.class.getName() + ".Property3"));
+
+		try {
+			String externalSupplierClassName = getClass().getPackage().getName() + ".ExternalStringSupplier";
+			Supplier<?> externalSupplier = Class.forName(externalSupplierClassName).asSubclass(Supplier.class)
+					.newInstance();
+
+			Assert.assertEquals(externalSupplierClassName, externalSupplier.get().toString());
+		} catch (ReflectiveOperationException e) {
+			Assert.fail(e.getLocalizedMessage());
+		}
 		return 0;
 	}
 
