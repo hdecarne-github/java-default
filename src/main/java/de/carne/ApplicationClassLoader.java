@@ -136,7 +136,7 @@ final class ApplicationClassLoader extends URLClassLoader {
 		URL url;
 
 		try {
-			url = path.toUri().toURL();
+			url = new URL("jar:" + APPLICATION_PROTOCOL + ":/" + path.getFileName() + "!/");
 		} catch (MalformedURLException e) {
 			throw new ApplicationInitializationException(e);
 		}
