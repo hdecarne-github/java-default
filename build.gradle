@@ -62,9 +62,6 @@ task javadocJar(type: Jar) {
 }
 
 def pomConfig = {
-	description projectDescription
-	name project.name
-	url projectUrl
 	licenses {
 		license {
 			name projectLicense
@@ -91,7 +88,12 @@ publishing {
 			artifact sourceJar
 			artifact javadocJar
 			pom.withXml {
-				asNode().children().last() + pomConfig
+				def root = asNode()
+				
+                root.appendNode('description', projectDescription)
+                root.appendNode('name', project.name)
+                root.appendNode('url', projectUrl)
+                root.children().last() + pomConfig
 			}
 		}
 	}
