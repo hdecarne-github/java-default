@@ -41,18 +41,17 @@ import de.carne.check.Nullable;
  */
 final class ApplicationClassLoader extends URLClassLoader {
 
-	private final ClassLoader bootstrapLoader;
-
-	ApplicationClassLoader(ClassLoader bootstrapLoader, URL[] urls) {
+	ApplicationClassLoader(URL[] urls) {
 		super(urls, null);
-		this.bootstrapLoader = bootstrapLoader;
 	}
 
 	static {
 		ClassLoader.registerAsParallelCapable();
 	}
 
-	private static final String APPLICATION_PROTOCOL = "application";
+	static final ClassLoader BOOTSTRAP_LOADER = ApplicationClassLoader.class.getClassLoader();
+
+	private static final String APPLICATION_PROTOCOL = "app";
 
 	static {
 		ApplicationURLStreamHandlerFactory.SINGLETON.register(APPLICATION_PROTOCOL, protocol -> new URLStreamHandler() {
@@ -77,7 +76,7 @@ final class ApplicationClassLoader extends URLClassLoader {
 			@Override
 			public InputStream getInputStream() throws IOException {
 				String resource = getURL().getFile();
-				InputStream resourceInputStream = ApplicationClassLoader.class.getResourceAsStream(resource);
+				InputStream resourceInputStream = BOOTSTRAP_LOADER.getResourceAsStream(resource);
 
 				if (resourceInputStream == null) {
 					throw new FileNotFoundException("Unknown resource: " + resource);
@@ -88,11 +87,11 @@ final class ApplicationClassLoader extends URLClassLoader {
 		};
 	}
 
-	static URL[] assembleClasspath(ClassLoader bootstrapLoader, JarURLConnection jarConnection) throws IOException {
+	static URL[] assembleClasspath(JarURLConnection jarConnection) throws IOException {
 		ArrayList<URL> urls = new ArrayList<>();
 
-		if (bootstrapLoader instanceof URLClassLoader) {
-			urls.addAll(Arrays.asList(((URLClassLoader) bootstrapLoader).getURLs()));
+		if (BOOTSTRAP_LOADER instanceof URLClassLoader) {
+			urls.addAll(Arrays.asList(((URLClassLoader) BOOTSTRAP_LOADER).getURLs()));
 		} else {
 			urls.add(jarConnection.getJarFileURL());
 		}
@@ -108,18 +107,18 @@ final class ApplicationClassLoader extends URLClassLoader {
 		URL url;
 
 		try {
-			url = new URL("jar:" + APPLICATION_PROTOCOL + ":/" + entry.getName() + "!/");
+			url = new URL("jar:" + APPLICATION_PROTOCOL + ":" + entry.getName() + "!/");
 		} catch (MalformedURLException e) {
 			throw new ApplicationInitializationException(e);
 		}
 		return url;
 	}
 
-	static URL[] assembleClasspath(ClassLoader bootstrapLoader, Path path) throws IOException {
+	static URL[] assembleClasspath(Path path) throws IOException {
 		ArrayList<URL> urls = new ArrayList<>();
 
-		if (bootstrapLoader instanceof URLClassLoader) {
-			urls.addAll(Arrays.asList(((URLClassLoader) bootstrapLoader).getURLs()));
+		if (BOOTSTRAP_LOADER instanceof URLClassLoader) {
+			urls.addAll(Arrays.asList(((URLClassLoader) BOOTSTRAP_LOADER).getURLs()));
 		} else {
 			urls.add(pathToUrl(path));
 		}
@@ -136,7 +135,7 @@ final class ApplicationClassLoader extends URLClassLoader {
 		URL url;
 
 		try {
-			url = new URL("jar:" + APPLICATION_PROTOCOL + ":/" + path.getFileName() + "!/");
+			url = new URL("jar:" + APPLICATION_PROTOCOL + ":" + path.getFileName() + "!/");
 		} catch (MalformedURLException e) {
 			throw new ApplicationInitializationException(e);
 		}
@@ -161,7 +160,7 @@ final class ApplicationClassLoader extends URLClassLoader {
 		if (name != null) {
 			for (String systemClassPrefix : SYSTEM_CLASS_PREFIXES) {
 				if (name.startsWith(systemClassPrefix)) {
-					clazz = this.bootstrapLoader.loadClass(name);
+					clazz = BOOTSTRAP_LOADER.loadClass(name);
 					break;
 				}
 			}
