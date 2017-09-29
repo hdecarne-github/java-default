@@ -17,6 +17,8 @@ apply plugin: "com.jfrog.artifactory"
 apply plugin: "com.jfrog.bintray"
 apply plugin: "eclipse"
 
+def snapshotVersion = project.version.endsWith("-SNAPSHOT")
+
 def resolveProperty(propertyName, envName) {
 	def resolved = (project.hasProperty(propertyName) ? project.property(propertyName) : System.getenv(envName));
 	
@@ -104,22 +106,22 @@ artifactory {
 	contextUrl = "https://oss.jfrog.org/artifactory"
 	publish {
 		repository {
-			repoKey = (project.version.endsWith("-SNAPSHOT") ? "oss-snapshot-local" : "oss-release-local")
+			repoKey = (snapshotVersion ? "oss-snapshot-local" : "oss-release-local")
 			username = project.resolveProperty("artifactory_user", "ARTIFACTORY_USER")
 			password = project.resolveProperty("artifactory_password", "ARTIFACTORY_PASSWORD")
 			maven = true
 		}
 		defaults {
 			publications("Bintray")
-			publishArtifacts = true
 		}
 	}
 	resolve {
-		repoKey = (project.version.endsWith("-SNAPSHOT") ? "libs-snapshot" : "libs-release")
+		repoKey = (snapshotVersion ? "libs-snapshot" : "libs-release")
 		username = project.resolveProperty("artifactory_user", "ARTIFACTORY_USER")
 		password = project.resolveProperty("artifactory_password", "ARTIFACTORY_PASSWORD")
 		maven = true
 	}
+	clientConfig.setIncludeEnvVars(false)
 }
 
 bintray {
