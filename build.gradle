@@ -21,7 +21,7 @@ def resolveProperty(propertyName, envName) {
 	def resolved = (project.hasProperty(propertyName) ? project.property(propertyName) : System.getenv(envName));
 	
 	if(resolved == null) {
-		throw new GradleException("Missing property/environment variable: '${propertyName}'/'${environmentName}")
+		throw new GradleException("Missing property/environment variable: '${propertyName}'/'${envName}")
 	} 
 	return resolved; 
 }
