@@ -228,7 +228,7 @@ public class LogBuffer extends Handler {
 	}
 
 	@Override
-	public synchronized void close() throws SecurityException {
+	public synchronized void close() {
 		this.handlers.forEach(Handler::close);
 		this.handlers.clear();
 	}

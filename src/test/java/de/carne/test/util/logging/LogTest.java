@@ -165,9 +165,11 @@ public class LogTest {
 
 		Assert.assertEquals(6, counter1.getPublishCount());
 
+		LogBuffer.removeHandler(log, counter2);
 		LogBuffer.flush(log);
 
 		Assert.assertEquals(1, counter1.getFlushCount());
+		Assert.assertEquals(0, counter2.getFlushCount());
 
 		LogBuffer.flush(log);
 
@@ -217,7 +219,7 @@ public class LogTest {
 		}
 
 		@Override
-		public void close() throws SecurityException {
+		public void close() {
 			this.closeCount++;
 		}
 
