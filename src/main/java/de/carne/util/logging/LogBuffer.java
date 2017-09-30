@@ -26,6 +26,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import de.carne.check.Nullable;
+import de.carne.util.SystemProperties;
 
 /**
  * {@linkplain Handler} implementation used to buffer {@linkplain LogRecord}s (e.g. to access log messages issued during
@@ -38,7 +39,7 @@ public class LogBuffer extends Handler {
 	 * <p>
 	 * If the limit is reached the oldest records are automatically discarded.
 	 */
-	public static final int LIMIT = 1000;
+	public static final int LIMIT = Math.max(1, SystemProperties.intValue(LogBuffer.class.getName() + ".LIMIT", 1000));
 
 	private final Queue<LogRecord> buffer = new ArrayDeque<>();
 

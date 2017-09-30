@@ -24,6 +24,7 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.carne.check.Check;
@@ -39,6 +40,14 @@ import de.carne.util.logging.Logs;
  * Test {@linkplain Log} class.
  */
 public class LogTest {
+
+	/**
+	 * Setup the necessary system properties.
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() {
+		System.setProperty(LogBuffer.class.getName() + ".LIMIT", "5");
+	}
 
 	/**
 	 * Test logger names.
@@ -163,7 +172,7 @@ public class LogTest {
 
 		LogBuffer.addHandler(log, counter2);
 
-		Assert.assertEquals(6, counter1.getPublishCount());
+		Assert.assertEquals(5, counter2.getPublishCount());
 
 		LogBuffer.removeHandler(log, counter2);
 		LogBuffer.flush(log);
