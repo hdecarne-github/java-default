@@ -25,7 +25,7 @@ import de.carne.util.cmdline.CmdLineException;
 import de.carne.util.cmdline.CmdLineProcessor;
 
 /**
- * Test {@link CmdLineProcessor} class.
+ * Test {@linkplain CmdLineProcessor} class.
  */
 public class CmdLineProcessorTest {
 
@@ -154,7 +154,7 @@ public class CmdLineProcessorTest {
 	}
 
 	/**
-	 * Test {@link CmdLineException}.
+	 * Test {@linkplain CmdLineException}.
 	 */
 	@Test
 	public void testCmdLineException() {

@@ -24,7 +24,7 @@ public class ApplicationInitializationException extends RuntimeException {
 	private static final long serialVersionUID = -3704497457703578647L;
 
 	/**
-	 * Construct {@link ApplicationInitializationException}.
+	 * Construct {@linkplain ApplicationInitializationException}.
 	 *
 	 * @param message The exception message.
 	 */
@@ -33,7 +33,7 @@ public class ApplicationInitializationException extends RuntimeException {
 	}
 
 	/**
-	 * Construct {@link ApplicationInitializationException}.
+	 * Construct {@linkplain ApplicationInitializationException}.
 	 *
 	 * @param cause The causing exception.
 	 */

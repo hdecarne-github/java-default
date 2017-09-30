@@ -26,7 +26,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * This element's sub-elements are assumed to be never {@code null} ({@link NonNull}).
+ * This element's sub-elements are assumed to be never {@code null} ({@linkplain NonNull}).
  */
 @Documented
 @Retention(CLASS)

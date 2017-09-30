@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 import de.carne.check.Nullable;
 
 /**
- * This class is used to record {@link LogRecord}s in a selective manner (e.g. to display detailed results of long
+ * This class is used to record {@linkplain LogRecord}s in a selective manner (e.g. to display detailed results of long
  * running operations).
  */
 public final class LogRecorder {
@@ -43,22 +43,22 @@ public final class LogRecorder {
 	private final List<Logger> loggers = new ArrayList<>();
 
 	/**
-	 * Construct {@link LogRecorder}.
+	 * Construct {@linkplain LogRecorder}.
 	 *
-	 * @param level The {@link Level} to use for {@link LogRecord} filtering (all {@link LogRecord}s below this level
-	 *        are ignored).
+	 * @param level The {@linkplain Level} to use for {@linkplain LogRecord} filtering (all {@linkplain LogRecord}s
+	 *        below this level are ignored).
 	 */
 	public LogRecorder(Level level) {
 		excludeRecord(record -> record.getLevel().intValue() < level.intValue());
 	}
 
 	/**
-	 * Add an include {@link Predicate} to the recorder.
+	 * Add an include {@linkplain Predicate} to the recorder.
 	 * <p>
-	 * To be recorded an issued {@link LogRecord} must match at least one of the include {@link Predicate}s.
+	 * To be recorded an issued {@linkplain LogRecord} must match at least one of the include {@linkplain Predicate}s.
 	 *
-	 * @param include The include {@link Predicate} to apply.
-	 * @return The updated {@link LogRecorder}.
+	 * @param include The include {@linkplain Predicate} to apply.
+	 * @return The updated {@linkplain LogRecorder}.
 	 */
 	public LogRecorder includeRecord(Predicate<LogRecord> include) {
 		this.includeRecords.add(include);
@@ -66,12 +66,12 @@ public final class LogRecorder {
 	}
 
 	/**
-	 * Add an exclude {@link Predicate} to the recorder.
+	 * Add an exclude {@linkplain Predicate} to the recorder.
 	 * <p>
-	 * To be recorded an issued {@link LogRecord} must not match any of the exclude {@link Predicate}s.
+	 * To be recorded an issued {@linkplain LogRecord} must not match any of the exclude {@linkplain Predicate}s.
 	 *
-	 * @param exclude The exclude {@link Predicate} to apply.
-	 * @return The updated {@link LogRecorder}.
+	 * @param exclude The exclude {@linkplain Predicate} to apply.
+	 * @return The updated {@linkplain LogRecorder}.
 	 */
 	public LogRecorder excludeRecord(Predicate<LogRecord> exclude) {
 		this.excludeRecords.add(exclude);
@@ -79,20 +79,20 @@ public final class LogRecorder {
 	}
 
 	/**
-	 * Add a {@link Log} instance to the {@link LogRecorder} for recording.
+	 * Add a {@linkplain Log} instance to the {@linkplain LogRecorder} for recording.
 	 *
-	 * @param log The {@link Log} instance to add to the recording.
-	 * @return The updated {@link LogRecorder}.
+	 * @param log The {@linkplain Log} instance to add to the recording.
+	 * @return The updated {@linkplain LogRecorder}.
 	 */
 	public LogRecorder addLog(Log log) {
 		return addLogger(log.logger());
 	}
 
 	/**
-	 * Add a {@link Logger} instance to the {@link LogRecorder} for recording.
+	 * Add a {@linkplain Logger} instance to the {@linkplain LogRecorder} for recording.
 	 *
-	 * @param logger The {@link Logger} instance to add to the recording.
-	 * @return The updated {@link LogRecorder}.
+	 * @param logger The {@linkplain Logger} instance to add to the recording.
+	 * @return The updated {@linkplain LogRecorder}.
 	 */
 	public LogRecorder addLogger(Logger logger) {
 		this.loggers.add(logger);
@@ -100,17 +100,18 @@ public final class LogRecorder {
 	}
 
 	/**
-	 * Start the recording {@link Session}.
+	 * Start the recording {@linkplain Session}.
 	 * <p>
-	 * After this method has been invoked the {@link LogRecorder} collects all {@link LogRecord}s that
+	 * After this method has been invoked the {@linkplain LogRecorder} collects all {@linkplain LogRecord}s that
 	 * <ul>
 	 * <li>issued via one of the added loggers</li>
 	 * <li>match the setup filtering</li>
 	 * </ul>
-	 * until the {@link Session}'s {@link Session#close()} method is called.
+	 * until the {@linkplain Session}'s {@linkplain Session#close()} method is called.
 	 *
-	 * @param currentThreadOnly Whether to include only {@link LogRecord}s issued by the current {@link Thread}.
-	 * @return The started {@link Session}.
+	 * @param currentThreadOnly Whether to include only {@linkplain LogRecord}s issued by the current
+	 *        {@linkplain Thread}.
+	 * @return The started {@linkplain Session}.
 	 */
 	public Session start(boolean currentThreadOnly) {
 		return new Session(currentThreadOnly);
@@ -154,13 +155,13 @@ public final class LogRecorder {
 		}
 
 		/**
-		 * Add an include {@link Predicate} to the session.
+		 * Add an include {@linkplain Predicate} to the session.
 		 * <p>
-		 * To be recorded an issued {@link LogRecord}'s thread must match at least one of the include
-		 * {@link Predicate}s.
+		 * To be recorded an issued {@linkplain LogRecord}'s thread must match at least one of the include
+		 * {@linkplain Predicate}s.
 		 *
-		 * @param include The include {@link Predicate} to apply.
-		 * @return The updated {@link Session}.
+		 * @param include The include {@linkplain Predicate} to apply.
+		 * @return The updated {@linkplain Session}.
 		 */
 		public Session includeThread(Predicate<Thread> include) {
 			this.includeThreads.add(include);
@@ -168,12 +169,13 @@ public final class LogRecorder {
 		}
 
 		/**
-		 * Add an exclude {@link Predicate} to the {@link Session}.
+		 * Add an exclude {@linkplain Predicate} to the {@linkplain Session}.
 		 * <p>
-		 * To be recorded an issued {@link LogRecord}'s thread must not match any of the exclude {@link Predicate}s.
+		 * To be recorded an issued {@linkplain LogRecord}'s thread must not match any of the exclude
+		 * {@linkplain Predicate}s.
 		 *
-		 * @param exclude The exclude {@link Predicate} to apply.
-		 * @return The updated {@link Session}.
+		 * @param exclude The exclude {@linkplain Predicate} to apply.
+		 * @return The updated {@linkplain Session}.
 		 */
 		public Session excludeThread(Predicate<Thread> exclude) {
 			this.excludeThreads.add(exclude);
@@ -181,9 +183,9 @@ public final class LogRecorder {
 		}
 
 		/**
-		 * Get the {@link LogRecord}s that have been recorded by this {@link Session} so far.
+		 * Get the {@linkplain LogRecord}s that have been recorded by this {@linkplain Session} so far.
 		 *
-		 * @return The recorded {@link LogRecord}s.
+		 * @return The recorded {@linkplain LogRecord}s.
 		 */
 		public Collection<LogRecord> getRecords() {
 			return Collections.unmodifiableCollection(this.buffer);

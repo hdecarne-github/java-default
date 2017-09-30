@@ -17,7 +17,7 @@
 package de.carne.util.cmdline;
 
 /**
- * This {@link Exception} indicates an error during command line processing.
+ * This {@linkplain Exception} indicates an error during command line processing.
  *
  * @see CmdLineProcessor
  */
@@ -30,9 +30,9 @@ public class CmdLineException extends Exception {
 	private final String arg;
 
 	/**
-	 * Construct {@link CmdLineException}.
+	 * Construct {@linkplain CmdLineException}.
 	 *
-	 * @param cmdLine The {@link CmdLineProcessor} throwing this exception.
+	 * @param cmdLine The {@linkplain CmdLineProcessor} throwing this exception.
 	 * @param arg The argument string causing this exception.
 	 */
 	public CmdLineException(CmdLineProcessor cmdLine, String arg) {

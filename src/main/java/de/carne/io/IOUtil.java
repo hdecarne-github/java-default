@@ -41,8 +41,8 @@ public final class IOUtil {
 	/**
 	 * Copy all bytes from one stream to another.
 	 *
-	 * @param dst The {@link OutputStream} to copy to.
-	 * @param src The {@link InputStream} to copy from.
+	 * @param dst The {@linkplain OutputStream} to copy to.
+	 * @param src The {@linkplain InputStream} to copy from.
 	 * @return The number of copied bytes.
 	 * @throws IOException if an I/O error occurs.
 	 */
@@ -87,10 +87,10 @@ public final class IOUtil {
 	}
 
 	/**
-	 * Copy all bytes from an {@link InputStream} to a {@link File}.
+	 * Copy all bytes from an {@linkplain InputStream} to a {@linkplain File}.
 	 *
-	 * @param dst The {@link File} to copy to.
-	 * @param src The {@link InputStream} to copy from.
+	 * @param dst The {@linkplain File} to copy to.
+	 * @param src The {@linkplain InputStream} to copy from.
 	 * @return The number of copied bytes.
 	 * @throws IOException if an I/O error occurs.
 	 */
@@ -104,10 +104,10 @@ public final class IOUtil {
 	}
 
 	/**
-	 * Copy all bytes from an {@link File} to an {@link OutputStream}.
+	 * Copy all bytes from an {@linkplain File} to an {@linkplain OutputStream}.
 	 *
-	 * @param dst The {@link OutputStream} to copy to.
-	 * @param src The {@link File} to copy from.
+	 * @param dst The {@linkplain OutputStream} to copy to.
+	 * @param src The {@linkplain File} to copy from.
 	 * @return The number of copied bytes.
 	 * @throws IOException if an I/O error occurs.
 	 */
@@ -121,10 +121,10 @@ public final class IOUtil {
 	}
 
 	/**
-	 * Copy all bytes from an {@link File} to a {@link File}.
+	 * Copy all bytes from an {@linkplain File} to a {@linkplain File}.
 	 *
-	 * @param dst The {@link File} to copy to.
-	 * @param src The {@link File} to copy from.
+	 * @param dst The {@linkplain File} to copy to.
+	 * @param src The {@linkplain File} to copy from.
 	 * @return The number of copied bytes.
 	 * @throws IOException if an I/O error occurs.
 	 */
@@ -138,10 +138,10 @@ public final class IOUtil {
 	}
 
 	/**
-	 * Copy all bytes from an {@link URL} to an {@link OutputStream}.
+	 * Copy all bytes from an {@linkplain URL} to an {@linkplain OutputStream}.
 	 *
-	 * @param dst The {@link OutputStream} to copy to.
-	 * @param src The {@link URL} to copy from.
+	 * @param dst The {@linkplain OutputStream} to copy to.
+	 * @param src The {@linkplain URL} to copy from.
 	 * @return The number of copied bytes.
 	 * @throws IOException if an I/O error occurs.
 	 */
@@ -155,10 +155,10 @@ public final class IOUtil {
 	}
 
 	/**
-	 * Copy all bytes from an {@link URL} to a {@link File}.
+	 * Copy all bytes from an {@linkplain URL} to a {@linkplain File}.
 	 *
-	 * @param dst The {@link File} to copy to.
-	 * @param src The {@link URL} to copy from.
+	 * @param dst The {@linkplain File} to copy to.
+	 * @param src The {@linkplain URL} to copy from.
 	 * @return The number of copied bytes.
 	 * @throws IOException if an I/O error occurs.
 	 */

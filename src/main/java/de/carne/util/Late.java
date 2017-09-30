@@ -42,7 +42,7 @@ public class Late<T> {
 	/**
 	 * Get the object.
 	 * <p>
-	 * If the object has not yet been set/initialized an {@link IllegalStateException} will be thrown.
+	 * If the object has not yet been set/initialized an {@linkplain IllegalStateException} will be thrown.
 	 *
 	 * @return The object.
 	 */

@@ -22,12 +22,12 @@ import org.junit.Test;
 import de.carne.check.Check;
 
 /**
- * Test {@link Check} class.
+ * Test {@linkplain Check} class.
  */
 public class CheckTest {
 
 	/**
-	 * Check {@link Check#notNull(Object)} with non {@code null} argument.
+	 * Check {@linkplain Check#notNull(Object)} with non {@code null} argument.
 	 */
 	@Test
 	public void checkNotNullPassed() {
@@ -35,7 +35,7 @@ public class CheckTest {
 	}
 
 	/**
-	 * Check {@link Check#notNull(Object, String)} with non {@code null} argument.
+	 * Check {@linkplain Check#notNull(Object, String)} with non {@code null} argument.
 	 */
 	@Test
 	public void checkNotNullMessagePassed() {
@@ -43,7 +43,7 @@ public class CheckTest {
 	}
 
 	/**
-	 * Check {@link Check#notNull(Object)} with {@code null} argument.
+	 * Check {@linkplain Check#notNull(Object)} with {@code null} argument.
 	 */
 	@Test(expected = NullPointerException.class)
 	public void checkNotNullFailed() {
@@ -51,7 +51,7 @@ public class CheckTest {
 	}
 
 	/**
-	 * Check {@link Check#notNull(Object, String)} with {@code null} argument.
+	 * Check {@linkplain Check#notNull(Object, String)} with {@code null} argument.
 	 */
 	@Test(expected = NullPointerException.class)
 	public void checkNotNullMessageFailed() {
@@ -59,7 +59,7 @@ public class CheckTest {
 	}
 
 	/**
-	 * Check {@link Check#assertTrue(boolean)} with {@code true} argument.
+	 * Check {@linkplain Check#assertTrue(boolean)} with {@code true} argument.
 	 */
 	@Test
 	public void checkAssertTruePassed() {
@@ -67,7 +67,7 @@ public class CheckTest {
 	}
 
 	/**
-	 * Check {@link Check#assertTrue(boolean, String)} with {@code true} argument.
+	 * Check {@linkplain Check#assertTrue(boolean, String)} with {@code true} argument.
 	 */
 	@Test
 	public void checkAssertTrueMessagePassed() {
@@ -75,7 +75,7 @@ public class CheckTest {
 	}
 
 	/**
-	 * Check {@link Check#assertTrue(boolean)} with {@code false} argument.
+	 * Check {@linkplain Check#assertTrue(boolean)} with {@code false} argument.
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void checkAssertTrueFailed() {
@@ -83,7 +83,7 @@ public class CheckTest {
 	}
 
 	/**
-	 * Check {@link Check#assertTrue(boolean, String)} with {@code false} argument.
+	 * Check {@linkplain Check#assertTrue(boolean, String)} with {@code false} argument.
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void checkAssertTrueMessageFailed() {
@@ -91,7 +91,7 @@ public class CheckTest {
 	}
 
 	/**
-	 * Check {@link Check#fail()}.
+	 * Check {@linkplain Check#fail()}.
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void checkFail() {
@@ -99,7 +99,7 @@ public class CheckTest {
 	}
 
 	/**
-	 * Check {@link Check#fail(String)}.
+	 * Check {@linkplain Check#fail(String)}.
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void checkFailMessage() {

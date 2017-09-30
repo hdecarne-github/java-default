@@ -28,7 +28,7 @@ import de.carne.Application;
 import de.carne.ApplicationMain;
 
 /**
- * Test {@link Application} class.
+ * Test {@linkplain Application} class.
  */
 public class ApplicationTest implements ApplicationMain {
 

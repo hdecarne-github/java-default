@@ -24,12 +24,12 @@ import org.junit.Test;
 import de.carne.util.Lazy;
 
 /**
- * Test {@link Lazy} class.
+ * Test {@linkplain Lazy} class.
  */
 public class LazyTest {
 
 	/**
-	 * Test valid {@link Supplier} and access.
+	 * Test valid {@linkplain Supplier} and access.
 	 */
 	@Test
 	public void testValidSupplierAccess() {
@@ -54,7 +54,7 @@ public class LazyTest {
 	}
 
 	/**
-	 * Test invalid {@link Supplier} and access.
+	 * Test invalid {@linkplain Supplier} and access.
 	 */
 	@Test(expected = NullPointerException.class)
 	public void testInvalidSupplierAccess() {

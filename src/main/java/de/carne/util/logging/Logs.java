@@ -25,7 +25,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
- * Utility class providing {@link Log} related functions.
+ * Utility class providing {@linkplain Log} related functions.
  */
 public final class Logs {
 
@@ -56,7 +56,7 @@ public final class Logs {
 	public static final String CONFIG_DEBUG = "logging-debug.properties";
 
 	/**
-	 * Read and apply {@link LogManager} configuration.
+	 * Read and apply {@linkplain LogManager} configuration.
 	 *
 	 * @param config The name of the configuration to read.
 	 * @throws IOException if an I/O error occurs while reading the configuration.

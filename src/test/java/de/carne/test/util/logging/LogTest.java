@@ -31,7 +31,7 @@ import de.carne.util.logging.LogRecorder;
 import de.carne.util.logging.Logs;
 
 /**
- * Test {@link Log} class.
+ * Test {@linkplain Log} class.
  */
 public class LogTest {
 
@@ -50,7 +50,7 @@ public class LogTest {
 	}
 
 	/**
-	 * Test {@link Logs#readConfig(String)} with valid configs.
+	 * Test {@linkplain Logs#readConfig(String)} with valid configs.
 	 *
 	 * @throws IOException if an I/O error occurs.
 	 */
@@ -122,7 +122,7 @@ public class LogTest {
 	}
 
 	/**
-	 * Test {@link Logs#readConfig(String)} with non-existent config.
+	 * Test {@linkplain Logs#readConfig(String)} with non-existent config.
 	 *
 	 * @throws IOException if an I/O error occurs.
 	 */

@@ -22,7 +22,7 @@ import org.junit.Test;
 import de.carne.util.Late;
 
 /**
- * Test {@link Late} class.
+ * Test {@linkplain Late} class.
  */
 public class LateTest {
 

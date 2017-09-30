@@ -33,12 +33,12 @@ import de.carne.check.Nullable;
  * <p>
  * Actions can be added to define how the encountered arguments are processed. The following action types are supported:
  * <ul>
- * <li>switch (e.g. {@code --switch} or {@code -s}; see {@link #onSwitch(Consumer)})</li>
- * <li>option (e.g. {@code --option value} or {@code -o value}; see {@link #onOption(BiConsumer)})</li>
- * <li>unnamed (e.g. {@code file.txt)}; see {@link #onUnnamedOption(Consumer)})</li>
- * <li>unknown (default processing; see {@link #onUnknownArg(Consumer)})
+ * <li>switch (e.g. {@code --switch} or {@code -s}; see {@linkplain #onSwitch(Consumer)})</li>
+ * <li>option (e.g. {@code --option value} or {@code -o value}; see {@linkplain #onOption(BiConsumer)})</li>
+ * <li>unnamed (e.g. {@code file.txt)}; see {@linkplain #onUnnamedOption(Consumer)})</li>
+ * <li>unknown (default processing; see {@linkplain #onUnknownArg(Consumer)})
  * </ul>
- * Invoking the {@link #process()} function processes all arguments and invokes the corresponding actions.
+ * Invoking the {@linkplain #process()} function processes all arguments and invokes the corresponding actions.
  */
 public final class CmdLineProcessor {
 
@@ -59,10 +59,10 @@ public final class CmdLineProcessor {
 	private Consumer<String> unknownAction = null;
 
 	/**
-	 * Construct {@link CmdLineProcessor}.
+	 * Construct {@linkplain CmdLineProcessor}.
 	 *
-	 * @param cmd The command executing the command line (used by {@link #toString()} to build a complete command line
-	 *        string).
+	 * @param cmd The command executing the command line (used by {@linkplain #toString()} to build a complete command
+	 *        line string).
 	 * @param args The command line to process.
 	 */
 	public CmdLineProcessor(String cmd, String[] args) {
@@ -70,7 +70,7 @@ public final class CmdLineProcessor {
 	}
 
 	/**
-	 * Construct {@link CmdLineProcessor}.
+	 * Construct {@linkplain CmdLineProcessor}.
 	 *
 	 * @param cmd The command executing the command line.
 	 * @param args The command line to process.
@@ -192,10 +192,10 @@ public final class CmdLineProcessor {
 	}
 
 	/**
-	 * Add a {@link CmdLineAction} for switch argument ({@code e.g. --switch}) processing.
+	 * Add a {@linkplain CmdLineAction} for switch argument ({@code e.g. --switch}) processing.
 	 *
-	 * @param action The {@link Consumer} to invoke with the argument string.
-	 * @return The created {@link CmdLineAction}.
+	 * @param action The {@linkplain Consumer} to invoke with the argument string.
+	 * @return The created {@linkplain CmdLineAction}.
 	 */
 	public CmdLineAction onSwitch(Consumer<String> action) {
 		SwitchCmdLineAction switchAction = new SwitchCmdLineAction(action);
@@ -205,10 +205,10 @@ public final class CmdLineProcessor {
 	}
 
 	/**
-	 * Add a {@link CmdLineAction} for option argument ({@code e.g. --option value}) processing.
+	 * Add a {@linkplain CmdLineAction} for option argument ({@code e.g. --option value}) processing.
 	 *
-	 * @param action The {@link BiConsumer} to invoke with the argument and option string.
-	 * @return The created {@link CmdLineAction}.
+	 * @param action The {@linkplain BiConsumer} to invoke with the argument and option string.
+	 * @return The created {@linkplain CmdLineAction}.
 	 */
 	public CmdLineAction onOption(BiConsumer<String, String> action) {
 		OptionCmdLineAction optionAction = new OptionCmdLineAction(action);
@@ -223,7 +223,7 @@ public final class CmdLineProcessor {
 	 * If no action is defined for unnamed options the command line processing will fail in case an unnamed option is
 	 * encountered.
 	 *
-	 * @param action The {@link Consumer} to invoke with the option string.
+	 * @param action The {@linkplain Consumer} to invoke with the option string.
 	 */
 	public void onUnnamedOption(Consumer<String> action) {
 		this.unnamedAction = action;
@@ -235,7 +235,7 @@ public final class CmdLineProcessor {
 	 * If no action is defined for unknown arguments the command line processing will fail in case an unknown arguments
 	 * is encountered.
 	 *
-	 * @param action The {@link Consumer} to invoke with the argument string.
+	 * @param action The {@linkplain Consumer} to invoke with the argument string.
 	 */
 	public void onUnknownArg(Consumer<String> action) {
 		this.unknownAction = action;

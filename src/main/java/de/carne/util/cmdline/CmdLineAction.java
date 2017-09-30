@@ -33,10 +33,10 @@ public abstract class CmdLineAction {
 	private final Set<String> args = new HashSet<>();
 
 	/**
-	 * Add an argument string that should be trigger this {@link CmdLineAction}.
+	 * Add an argument string that should be trigger this {@linkplain CmdLineAction}.
 	 *
-	 * @param arg The argument string to be associated with this {@link CmdLineAction}.
-	 * @return The updated {@link CmdLineAction}.
+	 * @param arg The argument string to be associated with this {@linkplain CmdLineAction}.
+	 * @return The updated {@linkplain CmdLineAction}.
 	 */
 	public CmdLineAction arg(String arg) {
 		if (!CmdLineProcessor.isActionArg(arg)) {
@@ -47,10 +47,10 @@ public abstract class CmdLineAction {
 	}
 
 	/**
-	 * Check whether the submitted argument string is a trigger for this {@link CmdLineAction}.
+	 * Check whether the submitted argument string is a trigger for this {@linkplain CmdLineAction}.
 	 *
 	 * @param arg The argument string to check.
-	 * @return {@code true} if the argument string is associated with this {@link CmdLineAction}.
+	 * @return {@code true} if the argument string is associated with this {@linkplain CmdLineAction}.
 	 * @see #arg(String)
 	 */
 	public boolean contains(String arg) {

@@ -37,7 +37,7 @@ import java.util.stream.Stream;
 import de.carne.check.Nullable;
 
 /**
- * {@link URLClassLoader} capable of loading class from nested jar files.
+ * {@linkplain URLClassLoader} capable of loading class from nested jar files.
  */
 final class ApplicationClassLoader extends URLClassLoader {
 

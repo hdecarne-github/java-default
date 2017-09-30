@@ -24,12 +24,12 @@ import org.junit.Test;
 import de.carne.util.Exceptions;
 
 /**
- * Test {@link Exceptions} class.
+ * Test {@linkplain Exceptions} class.
  */
 public class ExceptionsTest {
 
 	/**
-	 * Test {@link Exceptions#toRuntime(Throwable)} with checked {@link Exception}.
+	 * Test {@linkplain Exceptions#toRuntime(Throwable)} with checked {@linkplain Exception}.
 	 */
 	@Test(expected = RuntimeException.class)
 	public void testToRuntimeFromChecked() {
@@ -41,7 +41,7 @@ public class ExceptionsTest {
 	}
 
 	/**
-	 * Test {@link Exceptions#toRuntime(Throwable)} with unchecked {@link Exception}.
+	 * Test {@linkplain Exceptions#toRuntime(Throwable)} with unchecked {@linkplain Exception}.
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void testToRuntimeFromUnchecked() {
@@ -53,7 +53,7 @@ public class ExceptionsTest {
 	}
 
 	/**
-	 * Test {@link Exceptions#ignore(Throwable)}.
+	 * Test {@linkplain Exceptions#ignore(Throwable)}.
 	 */
 	@Test
 	public void testIgnore() {
@@ -62,7 +62,7 @@ public class ExceptionsTest {
 	}
 
 	/**
-	 * Test {@link Exceptions#warn(Throwable)}.
+	 * Test {@linkplain Exceptions#warn(Throwable)}.
 	 */
 	@Test
 	public void testWarn() {
@@ -71,7 +71,7 @@ public class ExceptionsTest {
 	}
 
 	/**
-	 * Test {@link Exceptions#getStackTrace(Throwable)}.
+	 * Test {@linkplain Exceptions#getStackTrace(Throwable)}.
 	 */
 	@Test
 	public void testGetStackTrace() {

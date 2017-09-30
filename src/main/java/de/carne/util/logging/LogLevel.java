@@ -19,7 +19,7 @@ package de.carne.util.logging;
 import java.util.logging.Level;
 
 /**
- * Custom {@link Level} class for the log levels used by class {@link Log}.
+ * Custom {@linkplain Level} class for the log levels used by class {@linkplain Log}.
  */
 public class LogLevel extends Level {
 

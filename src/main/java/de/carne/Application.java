@@ -152,9 +152,9 @@ public final class Application {
 	}
 
 	/**
-	 * Get application {@link Manifest}.
+	 * Get application {@linkplain Manifest}.
 	 *
-	 * @return The application {@link Manifest}.
+	 * @return The application {@linkplain Manifest}.
 	 */
 	public static Manifest manifest() {
 		return new Manifest(APPLICATION_MANIFEST);
@@ -163,12 +163,12 @@ public final class Application {
 	// Support for multiplexed URLStreamHandlerFactory setups
 
 	/**
-	 * Register {@link URLStreamHandlerFactory}
+	 * Register {@linkplain URLStreamHandlerFactory}
 	 *
-	 * @param protocol The {@link URL} protocol handled by this {@link URLStreamHandlerFactory}.
-	 * @param factory The {@link URLStreamHandlerFactory} to register.
-	 * @return The previously registered {@link URLStreamHandlerFactory} or {@code null} if none has been registered so
-	 *         far.
+	 * @param protocol The {@linkplain URL} protocol handled by this {@linkplain URLStreamHandlerFactory}.
+	 * @param factory The {@linkplain URLStreamHandlerFactory} to register.
+	 * @return The previously registered {@linkplain URLStreamHandlerFactory} or {@code null} if none has been
+	 *         registered so far.
 	 */
 	public static URLStreamHandlerFactory registerURLStreamHandlerFactory(String protocol,
 			URLStreamHandlerFactory factory) {
@@ -276,11 +276,11 @@ public final class Application {
 	}
 
 	/**
-	 * Get the currently executing {@link ApplicationMain} class.
+	 * Get the currently executing {@linkplain ApplicationMain} class.
 	 *
 	 * @param <T> The actual main class to retrieve.
-	 * @param clazz The actual type of the {@link ApplicationMain} class.
-	 * @return The currently executing {@link ApplicationMain} class.
+	 * @param clazz The actual type of the {@linkplain ApplicationMain} class.
+	 * @return The currently executing {@linkplain ApplicationMain} class.
 	 */
 	public static <T extends ApplicationMain> T getMain(Class<T> clazz) {
 		return clazz.cast(APPLICATION_MAIN);

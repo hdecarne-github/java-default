@@ -28,12 +28,12 @@ import org.junit.Test;
 import de.carne.io.IOUtil;
 
 /**
- * Test {@link IOUtil} class.
+ * Test {@linkplain IOUtil} class.
  */
 public class IOUtilTest {
 
 	/**
-	 * Test {@link IOUtil} copy functions.
+	 * Test {@linkplain IOUtil} copy functions.
 	 *
 	 * @throws IOException if an I/O error occurs.
 	 */

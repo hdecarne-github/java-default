@@ -34,9 +34,9 @@ public class Lazy<T> {
 	private T object = null;
 
 	/**
-	 * Construct {@link Lazy}.
+	 * Construct {@linkplain Lazy}.
 	 *
-	 * @param initializer The {@link Supplier} to use for object initialization.
+	 * @param initializer The {@linkplain Supplier} to use for object initialization.
 	 */
 	public Lazy(Supplier<T> initializer) {
 		this.initializer = initializer;

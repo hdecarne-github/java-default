@@ -23,7 +23,7 @@ import org.junit.Test;
 import de.carne.util.ApplicationManifestInfo;
 
 /**
- * Test {@link ApplicationManifestInfo} class.
+ * Test {@linkplain ApplicationManifestInfo} class.
  */
 public class ApplicationManifestInfoTest {
 
@@ -37,7 +37,7 @@ public class ApplicationManifestInfoTest {
 	}
 
 	/**
-	 * Test {@link ApplicationManifestInfo} attributes.
+	 * Test {@linkplain ApplicationManifestInfo} attributes.
 	 */
 	@Test
 	public void testInfos() {

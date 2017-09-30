@@ -24,7 +24,7 @@ import de.carne.check.Nullable;
 import de.carne.util.logging.Log;
 
 /**
- * Utility class providing {@link Exception} handling related functions.
+ * Utility class providing {@linkplain Exception} handling related functions.
  */
 public final class Exceptions {
 
@@ -35,10 +35,10 @@ public final class Exceptions {
 	}
 
 	/**
-	 * Make an {@link Exception} unchecked by wrapping it into a {@link RuntimeException}.
+	 * Make an {@linkplain Exception} unchecked by wrapping it into a {@linkplain RuntimeException}.
 	 *
-	 * @param exception The {@link Exception} to wrap.
-	 * @return The created {@link RuntimeException}.
+	 * @param exception The {@linkplain Exception} to wrap.
+	 * @return The created {@linkplain RuntimeException}.
 	 */
 	public static RuntimeException toRuntime(Throwable exception) {
 		return (exception instanceof RuntimeException ? (RuntimeException) exception
@@ -46,11 +46,11 @@ public final class Exceptions {
 	}
 
 	/**
-	 * Ignore an {@link Exception}.
+	 * Ignore an {@linkplain Exception}.
 	 * <p>
-	 * This function logs the {@link Exception} using the trace log level and discards it.
+	 * This function logs the {@linkplain Exception} using the trace log level and discards it.
 	 *
-	 * @param exception The {@link Exception} to ignore (may be {@code null}).
+	 * @param exception The {@linkplain Exception} to ignore (may be {@code null}).
 	 */
 	public static void ignore(@Nullable Throwable exception) {
 		if (exception != null) {
@@ -59,11 +59,11 @@ public final class Exceptions {
 	}
 
 	/**
-	 * Warn about an {@link Exception}.
+	 * Warn about an {@linkplain Exception}.
 	 * <p>
-	 * This function logs the {@link Exception} using the warning log level and discards it.
+	 * This function logs the {@linkplain Exception} using the warning log level and discards it.
 	 *
-	 * @param exception The {@link Exception} to warn about (may be {@code null}).
+	 * @param exception The {@linkplain Exception} to warn about (may be {@code null}).
 	 */
 	public static void warn(@Nullable Throwable exception) {
 		if (exception != null) {
@@ -72,10 +72,10 @@ public final class Exceptions {
 	}
 
 	/**
-	 * Get an {@link Exception}'s stack trace.
+	 * Get an {@linkplain Exception}'s stack trace.
 	 *
-	 * @param exception The {@link Exception} to get the stack trace for.
-	 * @return The {@link Exception}'s stack trace.
+	 * @param exception The {@linkplain Exception} to get the stack trace for.
+	 * @return The {@linkplain Exception}'s stack trace.
 	 */
 	public static String getStackTrace(Throwable exception) {
 		String stackTrace = null;

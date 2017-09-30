@@ -26,11 +26,11 @@ public final class Check {
 	}
 
 	/**
-	 * Check and ensure that an {@link Object} is not {@code null}.
+	 * Check and ensure that an {@linkplain Object} is not {@code null}.
 	 *
 	 * @param <T> The actual object type.
-	 * @param object The {@link Object} to check.
-	 * @return The checked {@link Object} (never {@code null}).
+	 * @param object The {@linkplain Object} to check.
+	 * @return The checked {@linkplain Object} (never {@code null}).
 	 * @throws NullPointerException if the submitted argument is {@code null}.
 	 */
 	public static <T> T notNull(@Nullable T object) {
@@ -41,12 +41,12 @@ public final class Check {
 	}
 
 	/**
-	 * Check and ensure that an {@link Object} is not {@code null}.
+	 * Check and ensure that an {@linkplain Object} is not {@code null}.
 	 *
 	 * @param <T> The actual object type.
-	 * @param object The {@link Object} to check.
+	 * @param object The {@linkplain Object} to check.
 	 * @param message The message to issue if the check fails.
-	 * @return The checked {@link Object} (never {@code null}).
+	 * @return The checked {@linkplain Object} (never {@code null}).
 	 * @throws NullPointerException if the submitted argument is {@code null}.
 	 */
 	public static <T> T notNull(@Nullable T object, String message) {
@@ -82,7 +82,7 @@ public final class Check {
 	}
 
 	/**
-	 * Throw an {@link IllegalStateException} to indicate that an unexpected execution state occurred.
+	 * Throw an {@linkplain IllegalStateException} to indicate that an unexpected execution state occurred.
 	 *
 	 * @param <T> The generic return type.
 	 * @return Nothing (function never returns).
@@ -93,7 +93,7 @@ public final class Check {
 	}
 
 	/**
-	 * Throw an {@link IllegalStateException} to indicate that an unexpected execution state occurred.
+	 * Throw an {@linkplain IllegalStateException} to indicate that an unexpected execution state occurred.
 	 *
 	 * @param <T> The generic return type.
 	 * @param message The message to issue if the check fails.
