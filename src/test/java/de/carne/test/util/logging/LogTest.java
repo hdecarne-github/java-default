@@ -20,12 +20,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.carne.check.Check;
+import de.carne.check.Nullable;
 import de.carne.io.IOUtil;
 import de.carne.util.logging.Log;
+import de.carne.util.logging.LogBuffer;
 import de.carne.util.logging.LogLevel;
 import de.carne.util.logging.LogRecorder;
 import de.carne.util.logging.Logs;
@@ -50,7 +55,7 @@ public class LogTest {
 	}
 
 	/**
-	 * Test {@linkplain Logs#readConfig(String)} with valid configs.
+	 * Test {@linkplain Logs#readConfig(String)} with valid configs as well as the {@linkplain LogRecorder}.
 	 *
 	 * @throws IOException if an I/O error occurs.
 	 */
@@ -129,6 +134,93 @@ public class LogTest {
 	@Test(expected = FileNotFoundException.class)
 	public void testLogConfigFailure() throws IOException {
 		Logs.readConfig("logging-unknown.properties");
+	}
+
+	/**
+	 * Test {@linkplain LogBuffer}.
+	 */
+	@Test
+	public void testLogBuffer() {
+		Log log = new Log();
+
+		Assert.assertNotNull(LogBuffer.get(log));
+
+		LogBuffer.flush(log);
+
+		LogCounter counter1 = new LogCounter();
+
+		LogBuffer.addHandler(log, counter1);
+
+		Assert.assertEquals(0, counter1.getPublishCount());
+		Assert.assertEquals(0, counter1.getFlushCount());
+		Assert.assertEquals(0, counter1.getCloseCount());
+
+		logTestMessages(log, 6);
+
+		Assert.assertEquals(6, counter1.getPublishCount());
+
+		LogCounter counter2 = new LogCounter();
+
+		LogBuffer.addHandler(log, counter2);
+
+		Assert.assertEquals(6, counter1.getPublishCount());
+
+		LogBuffer.flush(log);
+
+		Assert.assertEquals(1, counter1.getFlushCount());
+
+		LogBuffer.flush(log);
+
+		Assert.assertEquals(2, counter1.getFlushCount());
+
+		Check.notNull(LogBuffer.get(log)).close();
+
+		Assert.assertEquals(1, counter1.getCloseCount());
+
+		Check.notNull(LogBuffer.get(log)).close();
+
+		Assert.assertEquals(1, counter1.getCloseCount());
+	}
+
+	private class LogCounter extends Handler {
+
+		private int publishCount = 0;
+
+		private int flushCount = 0;
+
+		private int closeCount = 0;
+
+		LogCounter() {
+			// Just to make this class accessible to the outer class
+		}
+
+		public int getPublishCount() {
+			return this.publishCount;
+		}
+
+		public int getFlushCount() {
+			return this.flushCount;
+		}
+
+		public int getCloseCount() {
+			return this.closeCount;
+		}
+
+		@Override
+		public void publish(@Nullable LogRecord record) {
+			this.publishCount++;
+		}
+
+		@Override
+		public void flush() {
+			this.flushCount++;
+		}
+
+		@Override
+		public void close() throws SecurityException {
+			this.closeCount++;
+		}
+
 	}
 
 }

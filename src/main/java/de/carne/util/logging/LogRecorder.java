@@ -143,7 +143,7 @@ public final class LogRecorder {
 
 		private final Queue<LogRecord> buffer = new ConcurrentLinkedQueue<>();
 
-		private final AtomicBoolean publishing = new AtomicBoolean();
+		private final AtomicBoolean locked = new AtomicBoolean();
 
 		Session(boolean currentThreadOnly) {
 			if (currentThreadOnly) {
@@ -200,10 +200,10 @@ public final class LogRecorder {
 
 		@Override
 		public void publish(@Nullable LogRecord record) {
-			if (record != null && this.publishing.compareAndSet(false, true) && testThread(Thread.currentThread())
+			if (record != null && this.locked.compareAndSet(false, true) && testThread(Thread.currentThread())
 					&& testRecord(record)) {
 				this.buffer.add(record);
-				this.publishing.set(false);
+				this.locked.set(false);
 			}
 		}
 
