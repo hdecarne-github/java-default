@@ -1,3 +1,16 @@
+// Build helpers
+def snapshotBuild = project.version.endsWith("-SNAPSHOT")
+
+def resolveProperty(propertyName, envName) {
+	def resolved = (project.hasProperty(propertyName) ? project.property(propertyName) : System.getenv(envName));
+	
+	if(resolved == null) {
+		throw new GradleException("Missing property/environment variable: '${propertyName}'/'${envName}")
+	} 
+	return resolved; 
+}
+
+// Build script
 buildscript {
 	repositories {
 		jcenter()
@@ -9,6 +22,7 @@ buildscript {
 	}
 }
 
+// Project
 apply plugin: "java-library"
 apply plugin: "jacoco"
 apply plugin: "org.sonarqube"
@@ -17,22 +31,15 @@ apply plugin: "com.jfrog.artifactory"
 apply plugin: "com.jfrog.bintray"
 apply plugin: "eclipse"
 
-def snapshotVersion = project.version.endsWith("-SNAPSHOT")
-
-def resolveProperty(propertyName, envName) {
-	def resolved = (project.hasProperty(propertyName) ? project.property(propertyName) : System.getenv(envName));
-	
-	if(resolved == null) {
-		throw new GradleException("Missing property/environment variable: '${propertyName}'/'${envName}")
-	} 
-	return resolved; 
-}
-
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
 	jcenter()
+	if(snapshotBuild) {
+		mavenLocal()
+		maven { url "https://oss.jfrog.org/libs-snapshot/" }
+	}
 }
 
 dependencies {
@@ -106,7 +113,7 @@ artifactory {
 	contextUrl = "https://oss.jfrog.org/artifactory"
 	publish {
 		repository {
-			repoKey = (snapshotVersion ? "oss-snapshot-local" : "oss-release-local")
+			repoKey = (snapshotBuild ? "oss-snapshot-local" : "oss-release-local")
 			username = project.resolveProperty("artifactory_user", "ARTIFACTORY_USER")
 			password = project.resolveProperty("artifactory_password", "ARTIFACTORY_PASSWORD")
 			maven = true
@@ -116,7 +123,7 @@ artifactory {
 		}
 	}
 	resolve {
-		repoKey = (snapshotVersion ? "libs-snapshot" : "libs-release")
+		repoKey = (snapshotBuild ? "libs-snapshot" : "libs-release")
 		username = project.resolveProperty("artifactory_user", "ARTIFACTORY_USER")
 		password = project.resolveProperty("artifactory_password", "ARTIFACTORY_PASSWORD")
 		maven = true
