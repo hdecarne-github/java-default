@@ -241,6 +241,15 @@ public final class CmdLineProcessor {
 		this.unknownAction = action;
 	}
 
+	/**
+	 * Pre-defined IGNORE action to ignore specific arguments.
+	 * 
+	 * @param arg The ignored argument.
+	 */
+	public static void IGNORE(String arg) {
+		// Nothing to do
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
