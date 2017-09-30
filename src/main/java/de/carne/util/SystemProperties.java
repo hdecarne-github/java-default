@@ -23,7 +23,7 @@ import de.carne.util.logging.Log;
  */
 public final class SystemProperties {
 
-	private final static Log LOG = new Log();
+	private static final Log LOG = new Log();
 
 	private SystemProperties() {
 		// Prevent instantiation
