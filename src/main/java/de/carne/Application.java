@@ -268,7 +268,7 @@ public final class Application {
 			}
 		} catch (Exception e) {
 			status = -1;
-			error(e, "Application failed with exception: {0}", e.getLocalizedMessage());
+			error(e, "Application failed with exception: %1$s", e.getClass().getTypeName());
 		}
 		if (status != 0) {
 			System.exit(status);
