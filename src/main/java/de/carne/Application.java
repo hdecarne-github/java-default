@@ -84,6 +84,8 @@ public final class Application {
 	}
 
 	// Application class loader and manifest setup
+	private static final boolean USE_LAUNCHER_CLASS_LOADER = Boolean
+			.getBoolean(Application.class.getName() + ".USE_LAUNCHER_CLASS_LOADER");
 	private static final ClassLoader APPLICATION_CLASS_LOADER;
 	private static final Manifest APPLICATION_MANIFEST;
 
@@ -141,7 +143,8 @@ public final class Application {
 				}
 			}
 
-			classLoader = (applicationClasspath.length > 1 ? new ApplicationClassLoader(applicationClasspath)
+			classLoader = (!USE_LAUNCHER_CLASS_LOADER && applicationClasspath.length > 1
+					? new ApplicationClassLoader(applicationClasspath)
 					: Application.class.getClassLoader());
 			manifest = (applicationManifest != null ? applicationManifest : new Manifest());
 		} catch (URISyntaxException | IOException e) {
