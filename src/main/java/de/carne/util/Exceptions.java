@@ -24,7 +24,7 @@ import de.carne.check.Nullable;
 import de.carne.util.logging.Log;
 
 /**
- * Utility class providing {@linkplain Exception} handling related functions.
+ * Utility class providing {@linkplain Exception}/{@linkplain Throwable} handling related functions.
  */
 public final class Exceptions {
 
@@ -35,9 +35,9 @@ public final class Exceptions {
 	}
 
 	/**
-	 * Make an {@linkplain Exception} unchecked by wrapping it into a {@linkplain RuntimeException}.
+	 * Make an {@linkplain Throwable} unchecked by wrapping it into a {@linkplain RuntimeException}.
 	 *
-	 * @param exception The {@linkplain Exception} to wrap.
+	 * @param exception The {@linkplain Throwable} to wrap.
 	 * @return The created {@linkplain RuntimeException}.
 	 */
 	public static RuntimeException toRuntime(Throwable exception) {
@@ -46,36 +46,36 @@ public final class Exceptions {
 	}
 
 	/**
-	 * Ignore an {@linkplain Exception}.
+	 * Ignore an {@linkplain Throwable}.
 	 * <p>
-	 * This function logs the {@linkplain Exception} using the trace log level and discards it.
+	 * This function logs the {@linkplain Throwable} using the trace log level and discards it.
 	 *
-	 * @param exception The {@linkplain Exception} to ignore (may be {@code null}).
+	 * @param exception The {@linkplain Throwable} to ignore (may be {@code null}).
 	 */
 	public static void ignore(@Nullable Throwable exception) {
 		if (exception != null) {
-			LOG.trace(exception, "Ignoring exception: {0}", exception.getClass().getName());
+			LOG.trace(exception, "Ignoring exception: {0}", exception.getClass().getTypeName());
 		}
 	}
 
 	/**
-	 * Warn about an {@linkplain Exception}.
+	 * Warn about an {@linkplain Throwable}.
 	 * <p>
-	 * This function logs the {@linkplain Exception} using the warning log level and discards it.
+	 * This function logs the {@linkplain Throwable} using the warning log level and discards it.
 	 *
-	 * @param exception The {@linkplain Exception} to warn about (may be {@code null}).
+	 * @param exception The {@linkplain Throwable} to warn about (may be {@code null}).
 	 */
 	public static void warn(@Nullable Throwable exception) {
 		if (exception != null) {
-			LOG.warning(exception, "Ignoring exception: {0}", exception.getClass().getName());
+			LOG.warning(exception, "Ignoring exception: {0}", exception.getClass().getTypeName());
 		}
 	}
 
 	/**
-	 * Get an {@linkplain Exception}'s stack trace.
+	 * Get an {@linkplain Throwable}'s stack trace.
 	 *
-	 * @param exception The {@linkplain Exception} to get the stack trace for.
-	 * @return The {@linkplain Exception}'s stack trace.
+	 * @param exception The {@linkplain Throwable} to get the stack trace for.
+	 * @return The {@linkplain Throwable}'s stack trace.
 	 */
 	public static String getStackTrace(Throwable exception) {
 		String stackTrace = null;
@@ -88,6 +88,24 @@ public final class Exceptions {
 			warn(e);
 		}
 		return (stackTrace != null ? stackTrace : "<no stack trace>");
+	}
+
+	/**
+	 * Determine the best textual representation of an {@linkplain Throwable}.
+	 *
+	 * @param e The {@linkplain Throwable} to get the textual representation for.
+	 * @return The {@linkplain Throwable}'s message or it's type (if no message is available).
+	 */
+	public static String toString(Throwable e) {
+		String string = e.getLocalizedMessage();
+
+		if (Strings.isEmpty(string)) {
+			string = e.getMessage();
+			if (Strings.isEmpty(string)) {
+				string = e.getClass().getTypeName();
+			}
+		}
+		return string;
 	}
 
 }

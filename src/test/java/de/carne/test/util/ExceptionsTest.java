@@ -81,4 +81,19 @@ public class ExceptionsTest {
 		Assert.assertNotNull(stackTrace);
 	}
 
+	/**
+	 * Test {@linkplain Exceptions#toString(Throwable)}.
+	 */
+	@Test
+	public void testToString() {
+		Throwable noMessageException = new IOException();
+
+		Assert.assertEquals(noMessageException.getClass().getTypeName(), Exceptions.toString(noMessageException));
+
+		String message = "An error occurred";
+		Throwable messageException = new IOException(message);
+
+		Assert.assertEquals(message, Exceptions.toString(messageException));
+	}
+
 }
