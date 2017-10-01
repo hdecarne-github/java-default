@@ -42,6 +42,7 @@ public final class Threads {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
 			Exceptions.ignore(e);
+			Thread.currentThread().interrupt();
 			interrupted = true;
 		}
 		return interrupted;
