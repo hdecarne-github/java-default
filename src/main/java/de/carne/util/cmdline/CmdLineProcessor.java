@@ -242,11 +242,11 @@ public final class CmdLineProcessor {
 	}
 
 	/**
-	 * Pre-defined IGNORE action to ignore specific arguments.
-	 * 
+	 * Pre-defined ignore action to ignore specific arguments.
+	 *
 	 * @param arg The ignored argument.
 	 */
-	public static void IGNORE(String arg) {
+	public static void ignore(String arg) {
 		// Nothing to do
 	}
 
