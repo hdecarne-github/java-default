@@ -17,7 +17,7 @@
 package de.carne;
 
 /**
- * Indicate an initialization error during application startup.
+ * Indicates an initialization error during application startup.
  */
 public class ApplicationInitializationException extends RuntimeException {
 
