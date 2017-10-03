@@ -21,7 +21,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.logging.Handler;
+import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.XMLFormatter;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -30,6 +33,7 @@ import org.junit.Test;
 import de.carne.check.Check;
 import de.carne.check.Nullable;
 import de.carne.io.IOUtil;
+import de.carne.util.logging.LocalizedFilter;
 import de.carne.util.logging.Log;
 import de.carne.util.logging.LogBuffer;
 import de.carne.util.logging.LogLevel;
@@ -37,7 +41,7 @@ import de.carne.util.logging.LogRecorder;
 import de.carne.util.logging.Logs;
 
 /**
- * Test {@linkplain Log} class.
+ * Test {@linkplain Log} and {@linkplain Logs} class.
  */
 public class LogTest {
 
@@ -147,9 +151,13 @@ public class LogTest {
 
 	/**
 	 * Test {@linkplain LogBuffer}.
+	 *
+	 * @throws IOException if an I/O error occurs.
 	 */
 	@Test
-	public void testLogBuffer() {
+	public void testLogBuffer() throws IOException {
+		Logs.readConfig(Logs.CONFIG_DEFAULT);
+
 		Log log = new Log();
 
 		Assert.assertNotNull(LogBuffer.get(log));
@@ -232,6 +240,35 @@ public class LogTest {
 			this.closeCount++;
 		}
 
+	}
+
+	/**
+	 * Test {@linkplain LogManager} properties access.
+	 *
+	 * @throws IOException if an I/O error occurs.
+	 */
+	@Test
+	public void testLogManagerProperties() throws IOException {
+		Logs.readConfig(Logs.CONFIG_DEFAULT);
+
+		LogManager manager = LogManager.getLogManager();
+		String propertyBase = getClass().getName();
+
+		Assert.assertTrue(Logs.getBooleanProperty(manager, propertyBase + ".booleanTrue", false));
+		Assert.assertFalse(Logs.getBooleanProperty(manager, propertyBase + ".booleanFalse", true));
+		Assert.assertTrue(Logs.getBooleanProperty(manager, propertyBase + ".booleanUnknown", true));
+
+		Assert.assertEquals(LogLevel.LEVEL_DEBUG,
+				Logs.getLevelProperty(manager, propertyBase + ".levelDebug", LogLevel.LEVEL_ERROR));
+		Assert.assertEquals(LogLevel.LEVEL_WARNING,
+				Logs.getLevelProperty(manager, propertyBase + ".levelWarning", LogLevel.LEVEL_ERROR));
+		Assert.assertEquals(LogLevel.LEVEL_ERROR,
+				Logs.getLevelProperty(manager, propertyBase + ".levelUnknown", LogLevel.LEVEL_ERROR));
+
+		Assert.assertTrue(Logs.getFilterProperty(manager, propertyBase + ".filter", null) instanceof LocalizedFilter);
+
+		Assert.assertTrue(Logs.getFormatterProperty(manager, propertyBase + ".formatter",
+				new SimpleFormatter()) instanceof XMLFormatter);
 	}
 
 }

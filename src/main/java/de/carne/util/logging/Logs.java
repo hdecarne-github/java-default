@@ -104,7 +104,7 @@ public final class Logs {
 		boolean propertyValue = defaultValue;
 
 		if (property != null) {
-			propertyValue = Boolean.parseBoolean(name.trim());
+			propertyValue = Boolean.parseBoolean(property.trim());
 		}
 		return propertyValue;
 	}

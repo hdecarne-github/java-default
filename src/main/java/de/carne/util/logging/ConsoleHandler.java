@@ -37,8 +37,9 @@ public class ConsoleHandler extends StreamHandler {
 	private final boolean consoleOnly;
 
 	/**
-	 *
+	 * Construct {@linkplain ConsoleHandler}.
 	 */
+	@SuppressWarnings("squid:S106")
 	public ConsoleHandler() {
 		LogManager manager = LogManager.getLogManager();
 		String propertyBase = getClass().getName();
