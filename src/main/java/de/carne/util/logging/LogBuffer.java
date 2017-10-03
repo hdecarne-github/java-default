@@ -219,19 +219,17 @@ public class LogBuffer extends Handler {
 
 	@Override
 	public void publish(@Nullable LogRecord record) {
-		if (isLoggable(record)) {
-			if (record != null && this.locked.compareAndSet(false, true)) {
-				try {
-					synchronized (this) {
-						while (this.buffer.size() >= LIMIT) {
-							this.buffer.remove();
-						}
-						this.buffer.add(record);
-						this.handlers.forEach(handler -> handler.publish(record));
+		if (record != null && isLoggable(record) && this.locked.compareAndSet(false, true)) {
+			try {
+				synchronized (this) {
+					while (this.buffer.size() >= LIMIT) {
+						this.buffer.remove();
 					}
-				} finally {
-					this.locked.set(false);
+					this.buffer.add(record);
+					this.handlers.forEach(handler -> handler.publish(record));
 				}
+			} finally {
+				this.locked.set(false);
 			}
 		}
 	}
