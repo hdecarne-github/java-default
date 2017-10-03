@@ -16,28 +16,42 @@
  */
 package de.carne.test.util.logging;
 
+import java.io.IOException;
+
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.carne.util.logging.LocalizedFilter;
 import de.carne.util.logging.Log;
+import de.carne.util.logging.LogBuffer;
+import de.carne.util.logging.Logs;
 
 /**
- * Test {@linkplain Log} class.
+ * Test {@linkplain LocalizedFilter} class.
  */
-public class LogTest {
+public class LocalizedFilterTest {
 
 	/**
-	 * Test logger names.
+	 * Test {@linkplain LocalizedFilter}.
+	 *
+	 * @throws IOException if an I/O error occurs.
 	 */
 	@Test
-	public void testLogNames() {
-		Log defaultLog = new Log();
+	public void testLogConfigSuccess() throws IOException {
+		Logs.readConfig("logging-localized.properties");
 
-		Assert.assertEquals(getClass().getName(), defaultLog.logger().getName());
+		Log localizedLog = new Log(getClass().getName());
+		Log standardLog = new Log(LogTest.class);
+		LogRecordCounter counter = new LogRecordCounter();
 
-		Log customLog = new Log(Object.class);
+		LogBuffer.addHandler(standardLog, counter);
+		LoggingTests.logTestMessages(localizedLog, 6);
 
-		Assert.assertEquals(Object.class.getName(), customLog.logger().getName());
+		Assert.assertEquals(6, counter.getPublishCount());
+
+		LoggingTests.logTestMessages(standardLog, 6);
+
+		Assert.assertEquals(6, counter.getPublishCount());
 	}
 
 }

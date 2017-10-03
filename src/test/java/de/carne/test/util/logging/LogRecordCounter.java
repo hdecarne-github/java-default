@@ -16,28 +16,51 @@
  */
 package de.carne.test.util.logging;
 
-import org.junit.Assert;
-import org.junit.Test;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
-import de.carne.util.logging.Log;
+import de.carne.check.Nullable;
 
 /**
- * Test {@linkplain Log} class.
+ * Test helper class used for log message counting.
  */
-public class LogTest {
+class LogRecordCounter extends Handler {
 
-	/**
-	 * Test logger names.
-	 */
-	@Test
-	public void testLogNames() {
-		Log defaultLog = new Log();
+	private int publishCount = 0;
 
-		Assert.assertEquals(getClass().getName(), defaultLog.logger().getName());
+	private int flushCount = 0;
 
-		Log customLog = new Log(Object.class);
+	private int closeCount = 0;
 
-		Assert.assertEquals(Object.class.getName(), customLog.logger().getName());
+	LogRecordCounter() {
+		// Just to make this class accessible to the outer class
+	}
+
+	public int getPublishCount() {
+		return this.publishCount;
+	}
+
+	public int getFlushCount() {
+		return this.flushCount;
+	}
+
+	public int getCloseCount() {
+		return this.closeCount;
+	}
+
+	@Override
+	public void publish(@Nullable LogRecord record) {
+		this.publishCount++;
+	}
+
+	@Override
+	public void flush() {
+		this.flushCount++;
+	}
+
+	@Override
+	public void close() {
+		this.closeCount++;
 	}
 
 }
