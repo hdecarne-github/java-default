@@ -20,9 +20,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Filter;
+import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+
+import de.carne.check.Nullable;
+import de.carne.util.Exceptions;
 
 /**
  * Utility class providing {@linkplain Log} related functions.
@@ -84,6 +89,93 @@ public final class Logs {
 			}
 		}
 		return configInputStream;
+	}
+
+	/**
+	 * Get a {@code boolean} property from a {@linkplain LogManager}'s current configuration.
+	 *
+	 * @param manager The {@linkplain LogManager} to get the configuration from.
+	 * @param name The property name to evaluate.
+	 * @param defaultValue The the default value to return in case the property is undefined.
+	 * @return The defined value or the default value if the property is undefined.
+	 */
+	public static boolean getBooleanProperty(LogManager manager, String name, boolean defaultValue) {
+		String property = manager.getProperty(name);
+		boolean propertyValue = defaultValue;
+
+		if (property != null) {
+			propertyValue = Boolean.parseBoolean(name.trim());
+		}
+		return propertyValue;
+	}
+
+	/**
+	 * Get a {@linkplain Level} property from a {@linkplain LogManager}'s current configuration.
+	 *
+	 * @param manager The {@linkplain LogManager} to get the configuration from.
+	 * @param name The property name to evaluate.
+	 * @param defaultValue The the default value to return in case the property is undefined.
+	 * @return The defined value or the default value if the property is undefined.
+	 */
+	public static Level getLevelProperty(LogManager manager, String name, LogLevel defaultValue) {
+		String property = manager.getProperty(name);
+		Level propertyValue = defaultValue;
+
+		if (property != null) {
+			try {
+				propertyValue = Level.parse(property.trim());
+			} catch (Exception e) {
+				Exceptions.ignore(e);
+			}
+		}
+		return propertyValue;
+	}
+
+	/**
+	 * Get a {@linkplain Filter} property from a {@linkplain LogManager}'s current configuration.
+	 *
+	 * @param manager The {@linkplain LogManager} to get the configuration from.
+	 * @param name The property name to evaluate.
+	 * @param defaultValue The the default value to return in case the property is undefined.
+	 * @return The defined value or the default value if the property is undefined.
+	 */
+	@Nullable
+	public static Filter getFilterProperty(LogManager manager, String name, @Nullable Filter defaultValue) {
+		String property = manager.getProperty(name);
+		Filter propertyValue = defaultValue;
+
+		if (property != null) {
+			try {
+				propertyValue = Thread.currentThread().getContextClassLoader().loadClass(property.trim())
+						.asSubclass(Filter.class).newInstance();
+			} catch (Exception e) {
+				Exceptions.ignore(e);
+			}
+		}
+		return propertyValue;
+	}
+
+	/**
+	 * Get a {@linkplain Formatter} property from a {@linkplain LogManager}'s current configuration.
+	 *
+	 * @param manager The {@linkplain LogManager} to get the configuration from.
+	 * @param name The property name to evaluate.
+	 * @param defaultValue The the default value to return in case the property is undefined.
+	 * @return The defined value or the default value if the property is undefined.
+	 */
+	public static Formatter getFormatterProperty(LogManager manager, String name, Formatter defaultValue) {
+		String property = manager.getProperty(name);
+		Formatter propertyValue = defaultValue;
+
+		if (property != null) {
+			try {
+				propertyValue = Thread.currentThread().getContextClassLoader().loadClass(property.trim())
+						.asSubclass(Formatter.class).newInstance();
+			} catch (Exception e) {
+				Exceptions.ignore(e);
+			}
+		}
+		return propertyValue;
 	}
 
 }

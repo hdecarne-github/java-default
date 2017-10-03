@@ -22,6 +22,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Handler;
+import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
@@ -46,6 +47,17 @@ public class LogBuffer extends Handler {
 	private final Set<Handler> handlers = new HashSet<>();
 
 	private final AtomicBoolean locked = new AtomicBoolean();
+
+	/**
+	 * Construct {@linkplain LogBuffer}.
+	 */
+	public LogBuffer() {
+		LogManager manager = LogManager.getLogManager();
+		String propertyBase = getClass().getName();
+
+		setLevel(Logs.getLevelProperty(manager, propertyBase + ".level", LogLevel.LEVEL_WARNING));
+		setFilter(Logs.getFilterProperty(manager, propertyBase + ".filter", null));
+	}
 
 	/**
 	 * Get the {@linkplain LogBuffer} attached to the submitted {@linkplain Log} (if any).
