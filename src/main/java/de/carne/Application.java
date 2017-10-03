@@ -27,8 +27,11 @@ import java.net.URL;
 import java.net.URLStreamHandlerFactory;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Enumeration;
 import java.util.jar.Manifest;
+import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import de.carne.check.Nullable;
@@ -39,13 +42,12 @@ import de.carne.check.Nullable;
  */
 public final class Application {
 
-	private static final Logger LOGGER = Logger.getLogger(Application.class.getName());
-
 	private Application() {
 		// prevent instantiation
 	}
 
 	// Early log support
+	private static final Logger LOGGER = Logger.getLogger(Application.class.getName());
 	private static final boolean DEBUG = Boolean.getBoolean(Application.class.getName() + ".DEBUG");
 
 	private static String debug(String format, Object... args) {
@@ -60,6 +62,26 @@ public final class Application {
 
 		LOGGER.log(Level.SEVERE, thrown, () -> msg);
 		return msg;
+	}
+
+	private static void flushLogs() {
+		try {
+			LogManager manager = LogManager.getLogManager();
+			Enumeration<String> loggerNames = manager.getLoggerNames();
+
+			while (loggerNames.hasMoreElements()) {
+				String loggerName = loggerNames.nextElement();
+				Logger logger = manager.getLogger(loggerName);
+
+				if (logger != null) {
+					for (Handler handler : logger.getHandlers()) {
+						handler.flush();
+					}
+				}
+			}
+		} catch (Exception e) {
+			error(e, "Log flushing failed with exception: %1$s", e.getClass().getTypeName());
+		}
 	}
 
 	// Application config resource setup
@@ -270,9 +292,10 @@ public final class Application {
 				debug("Application finished with status: %1$d", status);
 			}
 		} catch (Exception e) {
-			status = -1;
 			error(e, "Application failed with exception: %1$s", e.getClass().getTypeName());
+			status = -1;
 		}
+		flushLogs();
 		if (status != 0) {
 			System.exit(status);
 		}
