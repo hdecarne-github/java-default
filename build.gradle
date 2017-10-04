@@ -1,3 +1,13 @@
+// Plugins
+plugins {
+	id "java-library"
+	id "jacoco"
+	id "maven-publish"
+	id "eclipse"
+	id "org.sonarqube" version "2.5"
+	id "com.jfrog.artifactory" version "4.5.2" 
+	id "com.jfrog.bintray" version "1.7.3"
+}
 // Build helpers
 def snapshotBuild = project.version.endsWith("-SNAPSHOT")
 
@@ -8,18 +18,6 @@ def resolveProperty(propertyName, envName) {
 		throw new GradleException("Missing property/environment variable: '${propertyName}'/'${envName}")
 	} 
 	return resolved; 
-}
-
-// Build script
-buildscript {
-	repositories {
-		jcenter()
-	}
-	dependencies {
-		classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5")
-		classpath("org.jfrog.buildinfo:build-info-extractor-gradle:4.5.2")
-		classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3")
-	}
 }
 
 // Project
