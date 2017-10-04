@@ -21,23 +21,11 @@ def resolveProperty(propertyName, envName) {
 }
 
 // Project
-apply plugin: "java-library"
-apply plugin: "jacoco"
-apply plugin: "org.sonarqube"
-apply plugin: "maven-publish"
-apply plugin: "com.jfrog.artifactory"
-apply plugin: "com.jfrog.bintray"
-apply plugin: "eclipse"
-
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
 	jcenter()
-	if(snapshotBuild) {
-		mavenLocal()
-		maven { url "https://oss.jfrog.org/libs-snapshot/" }
-	}
 }
 
 dependencies {
