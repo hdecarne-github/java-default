@@ -16,6 +16,8 @@
  */
 package de.carne.util;
 
+import java.util.function.Supplier;
+
 import de.carne.check.Nullable;
 
 /**
@@ -23,7 +25,7 @@ import de.carne.check.Nullable;
  *
  * @param <T> The actual object type.
  */
-public class Late<T> {
+public class Late<T> implements Supplier<T> {
 
 	@Nullable
 	private T object = null;
@@ -46,6 +48,7 @@ public class Late<T> {
 	 *
 	 * @return The object.
 	 */
+	@Override
 	public synchronized T get() {
 		T checkedObject = this.object;
 

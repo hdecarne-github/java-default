@@ -26,7 +26,7 @@ import de.carne.check.Nullable;
  *
  * @param <T> The actual object type.
  */
-public class Lazy<T> {
+public class Lazy<T> implements Supplier<T> {
 
 	private final Supplier<T> initializer;
 
@@ -49,6 +49,7 @@ public class Lazy<T> {
 	 *
 	 * @return The object.
 	 */
+	@Override
 	public synchronized T get() {
 		T checkedObject = this.object;
 
