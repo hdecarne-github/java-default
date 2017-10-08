@@ -52,8 +52,8 @@ public class SystemPropertiesTest {
 	@Test
 	public void testBooleans() {
 		Assert.assertFalse(SystemProperties.booleanValue(KEY_UNDEFINED));
-		Assert.assertFalse(SystemProperties.booleanValue(KEY_UNDEFINED, false));
-		Assert.assertTrue(SystemProperties.booleanValue(KEY_UNDEFINED, true));
+		Assert.assertTrue(SystemProperties.booleanValue(KEY_BOOLEAN_TRUE, false));
+		Assert.assertFalse(SystemProperties.booleanValue(KEY_BOOLEAN_FALSE, true));
 	}
 
 	/**
