@@ -106,11 +106,6 @@ artifactory {
 		}
 		defaults {
 			publications("Bintray")
-			properties = [
-				"bintray.package": project.name,
-				"bintray.version": project.version,
-				"bintray.repo": "${project.resolveProperty("bintrayUser", "BINTRAY_USER")}/maven"
-			]
 		}
 	}
 	resolve {
