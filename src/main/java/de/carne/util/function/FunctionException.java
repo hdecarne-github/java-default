@@ -24,7 +24,9 @@ public class FunctionException extends RuntimeException {
 	private static final long serialVersionUID = 126730001007643670L;
 
 	/**
-	 * @param cause
+	 * Construct {@linkplain FunctionException}.
+	 *
+	 * @param cause The exception to wrap.
 	 */
 	public FunctionException(Exception cause) {
 		super(cause);
@@ -33,6 +35,7 @@ public class FunctionException extends RuntimeException {
 	/**
 	 * Get the wrapped exception for re-throwing.
 	 *
+	 * @param <T> The wrapped excption's type.
 	 * @param exceptionType The wrapped exception type.
 	 * @return The wrapped exception.
 	 */
