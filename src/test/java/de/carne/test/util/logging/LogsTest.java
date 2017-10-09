@@ -25,9 +25,11 @@ import java.util.logging.SimpleFormatter;
 import java.util.logging.XMLFormatter;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.carne.io.IOUtil;
+import de.carne.util.logging.Config;
 import de.carne.util.logging.LocalizedFilter;
 import de.carne.util.logging.Log;
 import de.carne.util.logging.LogLevel;
@@ -40,6 +42,14 @@ import de.carne.util.logging.Logs;
 public class LogsTest {
 
 	/**
+	 * Setup the necessary system properties.
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() {
+		System.setProperty("java.util.logging.config.class", Config.class.getName());
+	}
+
+	/**
 	 * Test {@linkplain Logs#readConfig(String)} with valid configs as well as the {@linkplain LogRecorder}.
 	 *
 	 * @throws IOException if an I/O error occurs.
@@ -48,6 +58,9 @@ public class LogsTest {
 	public void testLogConfigSuccess() throws IOException {
 		Log log = new Log();
 
+		Assert.assertTrue(log.isWarningLoggable());
+		Assert.assertFalse(log.isInfoLoggable());
+		LoggingTests.logTestMessages(log, 6);
 		Logs.readConfig("logging-notice.properties");
 		Assert.assertTrue(log.isNoticeLoggable());
 		Assert.assertFalse(log.isErrorLoggable());

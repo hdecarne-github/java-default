@@ -24,7 +24,6 @@ import java.util.logging.Filter;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 import de.carne.check.Nullable;
 import de.carne.util.Exceptions;
@@ -33,8 +32,6 @@ import de.carne.util.Exceptions;
  * Utility class providing {@linkplain Log} related functions.
  */
 public final class Logs {
-
-	private static final Logger LOGGER = Logger.getLogger(Logs.class.getName());
 
 	// Touch our custom level class to make sure the level names are registered
 	static {
@@ -77,15 +74,13 @@ public final class Logs {
 
 		try {
 			configInputStream = new FileInputStream(config);
-		} catch (FileNotFoundException e) {
-			LOGGER.log(Level.FINE, e, () -> "Unable to load logging config from file: " + config);
+		} catch (@SuppressWarnings("unused") FileNotFoundException e) {
 			configInputStream = null;
 		}
 		if (configInputStream == null) {
 			configInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(config);
 			if (configInputStream == null) {
-				LOGGER.warning(() -> "Unable to load logging config from resource: " + config);
-				throw new FileNotFoundException("Unable to load logging config: " + config);
+				throw new FileNotFoundException("Unable to open logging config: " + config);
 			}
 		}
 		return configInputStream;
