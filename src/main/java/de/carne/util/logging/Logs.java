@@ -20,13 +20,19 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Filter;
 import java.util.logging.Formatter;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import de.carne.check.Nullable;
 import de.carne.util.Exceptions;
+import de.carne.util.ShutdownHooks;
 
 /**
  * Utility class providing {@linkplain Log} related functions.
@@ -36,6 +42,26 @@ public final class Logs {
 	// Touch our custom level class to make sure the level names are registered
 	static {
 		LogLevel.LEVEL_NOTICE.getName();
+	}
+
+	// Flush any remaining log messages on VM shutdown
+	static {
+		ShutdownHooks.add(() -> {
+			LogManager manager = LogManager.getLogManager();
+			Enumeration<String> loggerNames = manager.getLoggerNames();
+			Set<Handler> handlers = new HashSet<>();
+
+			while (loggerNames.hasMoreElements()) {
+				String loggerName = loggerNames.nextElement();
+				Logger logger = manager.getLogger(loggerName);
+
+				for (Handler handler : logger.getHandlers()) {
+					if (handlers.add(handler)) {
+						handler.flush();
+					}
+				}
+			}
+		});
 	}
 
 	private Logs() {
