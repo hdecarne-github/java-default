@@ -37,6 +37,9 @@ public class ShutdownHooksTest {
 		ShutdownHooks.add(() -> {
 			LOG.notice("Shutdown hook invoked");
 		});
+		ShutdownHooks.add(() -> {
+			throw new IllegalStateException();
+		});
 	}
 
 }
