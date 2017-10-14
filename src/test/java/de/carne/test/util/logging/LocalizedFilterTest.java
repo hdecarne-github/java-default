@@ -37,21 +37,26 @@ public class LocalizedFilterTest {
 	 * @throws IOException if an I/O error occurs.
 	 */
 	@Test
-	public void testLogConfigSuccess() throws IOException {
+	public void testLocalizedFilter() throws IOException {
 		Logs.readConfig("logging-localized.properties");
 
-		Log localizedLog = new Log(getClass().getName());
 		Log standardLog = new Log(LogTest.class);
+		Log localizedLog1 = new Log(getClass().getName());
+		Log localizedLog2 = new Log(LogsTest.class, getClass().getName());
 		LogRecordCounter counter = new LogRecordCounter();
 
 		LogBuffer.addHandler(standardLog, counter);
-		LoggingTests.logTestMessages(localizedLog, 6);
+		LoggingTests.logTestMessages(localizedLog1, 6);
 
 		Assert.assertEquals(6, counter.getPublishCount());
+
+		LoggingTests.logTestMessages(localizedLog2, 6);
+
+		Assert.assertEquals(12, counter.getPublishCount());
 
 		LoggingTests.logTestMessages(standardLog, 6);
 
-		Assert.assertEquals(6, counter.getPublishCount());
+		Assert.assertEquals(12, counter.getPublishCount());
 	}
 
 }

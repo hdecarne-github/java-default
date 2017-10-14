@@ -142,4 +142,12 @@ public class LogsTest {
 				new SimpleFormatter()) instanceof SimpleFormatter);
 	}
 
+	/**
+	 * Test {@linkplain Logs#flush()} function.
+	 */
+	@Test
+	public void testFlush() {
+		Logs.flush();
+	}
+
 }
