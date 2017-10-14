@@ -122,6 +122,7 @@ public class LogsTest {
 		Assert.assertTrue(Logs.getBooleanProperty(manager, propertyBase + ".booleanTrue", false));
 		Assert.assertFalse(Logs.getBooleanProperty(manager, propertyBase + ".booleanFalse", true));
 		Assert.assertTrue(Logs.getBooleanProperty(manager, propertyBase + ".booleanUnknown", true));
+		Assert.assertFalse(Logs.getBooleanProperty(manager, propertyBase + ".invalid", true));
 
 		Assert.assertEquals(LogLevel.LEVEL_DEBUG,
 				Logs.getLevelProperty(manager, propertyBase + ".levelDebug", LogLevel.LEVEL_ERROR));
@@ -129,11 +130,16 @@ public class LogsTest {
 				Logs.getLevelProperty(manager, propertyBase + ".levelWarning", LogLevel.LEVEL_ERROR));
 		Assert.assertEquals(LogLevel.LEVEL_ERROR,
 				Logs.getLevelProperty(manager, propertyBase + ".levelUnknown", LogLevel.LEVEL_ERROR));
+		Assert.assertEquals(LogLevel.LEVEL_DEBUG,
+				Logs.getLevelProperty(manager, propertyBase + ".invalid", LogLevel.LEVEL_DEBUG));
 
 		Assert.assertTrue(Logs.getFilterProperty(manager, propertyBase + ".filter", null) instanceof LocalizedFilter);
+		Assert.assertNull(Logs.getFilterProperty(manager, propertyBase + ".invalid", null));
 
 		Assert.assertTrue(Logs.getFormatterProperty(manager, propertyBase + ".formatter",
 				new SimpleFormatter()) instanceof XMLFormatter);
+		Assert.assertTrue(Logs.getFormatterProperty(manager, propertyBase + ".invalid",
+				new SimpleFormatter()) instanceof SimpleFormatter);
 	}
 
 }
