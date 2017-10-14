@@ -39,17 +39,32 @@ public class FilePreferencesFactory implements PreferencesFactory {
 
 	@Override
 	public Preferences systemRoot() {
-		Path storeFile = resolveStoreHomeFile("user.conf");
-
-		return FilePreferencesStore.fromFile(storeFile).root();
+		return FilePreferencesStore.fromFile(systemRootFile()).root();
 	}
 
 	@Override
 	public Preferences userRoot() {
-		String systemName = getSystemName();
-		Path storeFile = resolveStoreHomeFile("system." + systemName + ".conf");
+		return FilePreferencesStore.fromFile(userRootFile()).root();
+	}
 
-		return FilePreferencesStore.fromFile(storeFile).root();
+	/**
+	 * Get the file path used to store system preferences.
+	 * 
+	 * @return The file path used to store system preferences.
+	 */
+	public static Path systemRootFile() {
+		String systemName = getSystemName();
+
+		return resolveStoreHomeFile("system." + systemName + ".conf");
+	}
+
+	/**
+	 * Get the file path used to store user preferences.
+	 * 
+	 * @return The file path used to store user preferences.
+	 */
+	public static Path userRootFile() {
+		return resolveStoreHomeFile("user.conf");
 	}
 
 	/**

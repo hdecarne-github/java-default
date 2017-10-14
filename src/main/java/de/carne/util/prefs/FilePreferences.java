@@ -94,7 +94,7 @@ class FilePreferences extends AbstractPreferences {
 
 	@Override
 	public void flush() throws BackingStoreException {
-		this.store.sync();
+		this.store.flush();
 	}
 
 }
