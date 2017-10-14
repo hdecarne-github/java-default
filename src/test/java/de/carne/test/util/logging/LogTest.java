@@ -34,10 +34,12 @@ public class LogTest {
 		Log defaultLog = new Log();
 
 		Assert.assertEquals(getClass().getName(), defaultLog.logger().getName());
+		Assert.assertEquals(getClass().getName(), defaultLog.toString());
 
 		Log customLog = new Log(Object.class);
 
 		Assert.assertEquals(Object.class.getName(), customLog.logger().getName());
+		Assert.assertEquals(Object.class.getName(), customLog.toString());
 	}
 
 }
