@@ -85,8 +85,7 @@ public final class Application {
 	}
 
 	// Application class loader and manifest setup
-	private static final boolean USE_LAUNCHER_CLASS_LOADER = Boolean
-			.getBoolean(Application.class.getName() + ".USE_LAUNCHER_CLASS_LOADER");
+	private static final boolean TEST_MODE = Boolean.getBoolean(Application.class.getName() + ".TEST_MODE");
 	private static final ClassLoader APPLICATION_CLASS_LOADER;
 	private static final Manifest APPLICATION_MANIFEST;
 
@@ -144,7 +143,7 @@ public final class Application {
 				}
 			}
 
-			classLoader = (!USE_LAUNCHER_CLASS_LOADER && applicationClasspath.length > 1
+			classLoader = (!TEST_MODE && applicationClasspath.length > 1
 					? new ApplicationClassLoader(applicationClasspath)
 					: Application.class.getClassLoader());
 			manifest = (applicationManifest != null ? applicationManifest : new Manifest());
@@ -274,7 +273,7 @@ public final class Application {
 			error(e, "Application failed with exception: %1$s", e.getClass().getTypeName());
 			status = -1;
 		}
-		if (status != 0) {
+		if (!TEST_MODE && status != 0) {
 			System.exit(status);
 		}
 	}
