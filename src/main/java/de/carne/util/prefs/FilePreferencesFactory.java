@@ -49,7 +49,7 @@ public class FilePreferencesFactory implements PreferencesFactory {
 
 	/**
 	 * Get the file path used to store system preferences.
-	 * 
+	 *
 	 * @return The file path used to store system preferences.
 	 */
 	public static Path systemRootFile() {
@@ -60,7 +60,7 @@ public class FilePreferencesFactory implements PreferencesFactory {
 
 	/**
 	 * Get the file path used to store user preferences.
-	 * 
+	 *
 	 * @return The file path used to store user preferences.
 	 */
 	public static Path userRootFile() {
@@ -103,6 +103,13 @@ public class FilePreferencesFactory implements PreferencesFactory {
 	 */
 	public static Preferences customRoot(Properties data) {
 		return FilePreferencesStore.fromData(data).root();
+	}
+
+	/**
+	 * Flush any opened {@linkplain FilePreferences} to the backing store.
+	 */
+	public static void flush() {
+		FilePreferencesStore.flushFileStores();
 	}
 
 	private static Path resolveStoreHomeFile(String name) {

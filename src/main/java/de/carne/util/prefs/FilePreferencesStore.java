@@ -64,14 +64,14 @@ abstract class FilePreferencesStore {
 
 		synchronized (FILE_STORES) {
 			if (FILE_STORES.isEmpty()) {
-				ShutdownHooks.add(FilePreferencesStore::syncFileStores);
+				ShutdownHooks.add(FilePreferencesStore::flushFileStores);
 			}
 			FILE_STORES.add(fileStore);
 		}
 		return fileStore;
 	}
 
-	private static void syncFileStores() {
+	public static void flushFileStores() {
 		LOG.info("Syncing any file store changes...");
 		synchronized (FILE_STORES) {
 			for (FileStore fileStore : FILE_STORES) {

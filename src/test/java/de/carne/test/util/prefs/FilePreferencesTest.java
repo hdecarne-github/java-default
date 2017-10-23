@@ -83,6 +83,7 @@ public class FilePreferencesTest {
 		verifyPrefs(customPrefs2, customPrefs1);
 		customPrefs1.flush();
 		verifyPrefs(customPrefs2, customPrefs1);
+		FilePreferencesFactory.flush();
 	}
 
 	/**
@@ -114,6 +115,7 @@ public class FilePreferencesTest {
 		Preferences userPrefs3 = FilePreferencesFactory.customRoot(FilePreferencesFactory.userRootFile());
 
 		verifyPrefs(referencePrefs, userPrefs3);
+		FilePreferencesFactory.flush();
 	}
 
 	/**
@@ -145,6 +147,7 @@ public class FilePreferencesTest {
 		Preferences userPrefs3 = FilePreferencesFactory.customRoot(FilePreferencesFactory.userRootFile().toFile());
 
 		verifyPrefs(referencePrefs, userPrefs3);
+		FilePreferencesFactory.flush();
 	}
 
 	private Properties loadData() throws IOException {
