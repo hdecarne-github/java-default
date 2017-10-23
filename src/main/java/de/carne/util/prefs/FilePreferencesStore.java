@@ -72,7 +72,7 @@ abstract class FilePreferencesStore {
 	}
 
 	public static void flushFileStores() {
-		LOG.info("Syncing any file store changes...");
+		LOG.info("Flushing all opended file stores...");
 		synchronized (FILE_STORES) {
 			for (FileStore fileStore : FILE_STORES) {
 				try {
@@ -148,6 +148,7 @@ abstract class FilePreferencesStore {
 	}
 
 	public synchronized void sync() throws BackingStoreException {
+		LOG.info("Syncing preferences store ''{0}''...", this);
 		try {
 			this.cachedData = syncData(this.changeLog);
 		} catch (IOException e) {
@@ -158,6 +159,7 @@ abstract class FilePreferencesStore {
 
 	public synchronized void flush() throws BackingStoreException {
 		if (!this.changeLog.isEmpty()) {
+			LOG.info("FLushing preferences store ''{0}''...", this);
 			try {
 				syncData(this.changeLog);
 			} catch (IOException e) {
