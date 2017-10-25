@@ -18,6 +18,9 @@ package de.carne.test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLStreamHandler;
 import java.util.function.Supplier;
 
 import org.junit.Assert;
@@ -26,6 +29,7 @@ import org.junit.Test;
 
 import de.carne.Application;
 import de.carne.ApplicationMain;
+import de.carne.check.Nullable;
 
 /**
  * Test {@linkplain Application} class.
@@ -58,13 +62,17 @@ public class ApplicationTest implements ApplicationMain {
 
 	@Override
 	public int run(String[] args) {
+		// Application access
 		Assert.assertEquals(name(), Application.getMain(getClass()).name());
 		Assert.assertEquals(this, Application.getMain(getClass()));
+		// Command line handling
 		Assert.assertArrayEquals(TEST_ARGS, args);
+		// Property handling
 		Assert.assertTrue(Boolean.getBoolean(ApplicationTest.class.getName() + ".Property1"));
 		Assert.assertFalse(Boolean.getBoolean(ApplicationTest.class.getName() + ".Property2"));
 		Assert.assertEquals("Any text...", System.getProperty(ApplicationTest.class.getName() + ".Property3"));
 
+		// Class loading
 		try {
 			String externalSupplierClassName = getClass().getPackage().getName() + ".ExternalStringSupplier";
 			Supplier<?> externalSupplier = Class.forName(externalSupplierClassName).asSubclass(Supplier.class)
@@ -79,6 +87,24 @@ public class ApplicationTest implements ApplicationMain {
 
 		try (InputStream resourceStream = getClass().getResourceAsStream(resourceName)) {
 			Assert.assertNotNull(resourceStream);
+		} catch (IOException e) {
+			Assert.fail(e.getLocalizedMessage());
+		}
+
+		// URL Factory support
+		Application.registerURLStreamHandlerFactory("test", (@Nullable String protocol) -> new URLStreamHandler() {
+
+			@Override
+			protected URLConnection openConnection(@Nullable URL u) throws IOException {
+				return ApplicationTest.class.getResource(ApplicationTest.class.getSimpleName() + ".class")
+						.openConnection();
+			}
+		});
+
+		try {
+			URL testUrl = new URL("test", "", "any");
+
+			Assert.assertNotNull(testUrl.openConnection());
 		} catch (IOException e) {
 			Assert.fail(e.getLocalizedMessage());
 		}

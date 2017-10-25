@@ -27,82 +27,82 @@ import de.carne.check.Check;
 public class CheckTest {
 
 	/**
-	 * Check {@linkplain Check#notNull(Object)} with non {@code null} argument.
+	 * Test {@linkplain Check#notNull(Object)} with non {@code null} argument.
 	 */
 	@Test
-	public void checkNotNullPassed() {
+	public void testCheckNotNullPassed() {
 		Assert.assertNotNull(Check.notNull(this));
 	}
 
 	/**
-	 * Check {@linkplain Check#notNull(Object, String)} with non {@code null} argument.
+	 * Test {@linkplain Check#notNull(Object, String)} with non {@code null} argument.
 	 */
 	@Test
-	public void checkNotNullMessagePassed() {
+	public void testCheckNotNullMessagePassed() {
 		Assert.assertNotNull(Check.notNull(this, getClass().getSimpleName()));
 	}
 
 	/**
-	 * Check {@linkplain Check#notNull(Object)} with {@code null} argument.
+	 * Test {@linkplain Check#notNull(Object)} with {@code null} argument.
 	 */
 	@Test(expected = NullPointerException.class)
-	public void checkNotNullFailed() {
+	public void testCheckNotNullFailed() {
 		Check.notNull(null);
 	}
 
 	/**
-	 * Check {@linkplain Check#notNull(Object, String)} with {@code null} argument.
+	 * Test {@linkplain Check#notNull(Object, String)} with {@code null} argument.
 	 */
 	@Test(expected = NullPointerException.class)
-	public void checkNotNullMessageFailed() {
+	public void testCheckNotNullMessageFailed() {
 		Check.notNull(null, getClass().getSimpleName());
 	}
 
 	/**
-	 * Check {@linkplain Check#assertTrue(boolean)} with {@code true} argument.
+	 * Test {@linkplain Check#assertTrue(boolean)} with {@code true} argument.
 	 */
 	@Test
-	public void checkAssertTruePassed() {
+	public void testCheckAssertTruePassed() {
 		Check.assertTrue(true);
 	}
 
 	/**
-	 * Check {@linkplain Check#assertTrue(boolean, String)} with {@code true} argument.
+	 * Test {@linkplain Check#assertTrue(boolean, String)} with {@code true} argument.
 	 */
 	@Test
-	public void checkAssertTrueMessagePassed() {
+	public void testCheckAssertTrueMessagePassed() {
 		Check.assertTrue(true, getClass().getSimpleName());
 	}
 
 	/**
-	 * Check {@linkplain Check#assertTrue(boolean)} with {@code false} argument.
+	 * Test {@linkplain Check#assertTrue(boolean)} with {@code false} argument.
 	 */
 	@Test(expected = IllegalStateException.class)
-	public void checkAssertTrueFailed() {
+	public void testCheckAssertTrueFailed() {
 		Check.assertTrue(false);
 	}
 
 	/**
-	 * Check {@linkplain Check#assertTrue(boolean, String)} with {@code false} argument.
+	 * Test {@linkplain Check#assertTrue(boolean, String)} with {@code false} argument.
 	 */
 	@Test(expected = IllegalStateException.class)
-	public void checkAssertTrueMessageFailed() {
+	public void testCheckAssertTrueMessageFailed() {
 		Check.assertTrue(false, getClass().getSimpleName());
 	}
 
 	/**
-	 * Check {@linkplain Check#fail()}.
+	 * Test {@linkplain Check#fail()}.
 	 */
 	@Test(expected = IllegalStateException.class)
-	public void checkFail() {
+	public void testCheckFail() {
 		Check.fail();
 	}
 
 	/**
-	 * Check {@linkplain Check#fail(String)}.
+	 * Test {@linkplain Check#fail(String)}.
 	 */
 	@Test(expected = IllegalStateException.class)
-	public void checkFailMessage() {
+	public void testCheckFailMessage() {
 		Check.fail(getClass().getSimpleName());
 	}
 
