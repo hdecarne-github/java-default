@@ -5,8 +5,8 @@ plugins {
 	id "maven-publish"
 	id "eclipse"
 	id "org.sonarqube" version "2.6.1"
-	id "com.jfrog.artifactory" version "4.5.2" 
-	id "com.jfrog.bintray" version "1.7.3"
+	id "com.jfrog.artifactory" version "4.5.4" 
+	id "com.jfrog.bintray" version "1.8.0"
 }
 // Build helpers
 def snapshotBuild = project.version.endsWith("-SNAPSHOT")
