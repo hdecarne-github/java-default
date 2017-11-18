@@ -246,6 +246,7 @@ public final class CmdLineProcessor {
 	 *
 	 * @param arg The ignored argument.
 	 */
+	@SuppressWarnings("squid:S1172")
 	public static void ignore(String arg) {
 		// Nothing to do
 	}
