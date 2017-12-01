@@ -57,11 +57,27 @@ public class StringsTest {
 	 */
 	@Test
 	public void testEncodeDecodeFunctions() {
-		String decoded = "\0\u0001\b\t\n\f\ra";
-		String encoded = "\\0\\u0001\\b\\t\\n\\f\\ra";
+		String decoded = "\\\0\u08af\b\t\n\f\ra";
+		String encoded = "\\\\\\0\\u08AF\\b\\t\\n\\f\\ra";
 
 		Assert.assertEquals(encoded, Strings.encode(decoded));
 		Assert.assertEquals(decoded, Strings.decode(encoded));
+	}
+
+	/**
+	 * Test decode failure due to invalid quoted character.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testDecodeFailure1() {
+		Strings.decode("\\?");
+	}
+
+	/**
+	 * Test decode failure due to invalid encoded character.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testDecodeFailure2() {
+		Strings.decode("\\uXXXXXx");
 	}
 
 }
