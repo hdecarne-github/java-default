@@ -52,4 +52,16 @@ public class StringsTest {
 		Assert.assertEquals("test", Strings.safeTrim("test"));
 	}
 
+	/**
+	 * Test encode/decode functions.
+	 */
+	@Test
+	public void testEncodeDecodeFunctions() {
+		String decoded = "\0\u0001\b\t\n\f\ra";
+		String encoded = "\\0\\u0001\\b\\t\\n\\f\\ra";
+
+		Assert.assertEquals(encoded, Strings.encode(decoded));
+		Assert.assertEquals(decoded, Strings.decode(encoded));
+	}
+
 }

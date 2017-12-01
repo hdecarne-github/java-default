@@ -71,4 +71,149 @@ public final class Strings {
 		return (s != null ? s.trim() : "");
 	}
 
+	private static char[] hexCharsUpper = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D',
+			'E', 'F' };
+
+	/**
+	 * Encode a {@linkplain CharSequence} to a pure ASCII representation by quoting non printable characters.
+	 *
+	 * @param chars The {@linkplain CharSequence} to encode.
+	 * @return The encoded characters.
+	 */
+	public static String encode(CharSequence chars) {
+		StringBuilder buffer = new StringBuilder();
+
+		chars.chars().forEach(c -> {
+			if (32 <= c && c <= 126) {
+				buffer.append((char) c);
+			} else {
+				switch (c) {
+				case 0:
+					buffer.append("\\0");
+					break;
+				case 8:
+					buffer.append("\\b");
+					break;
+				case 9:
+					buffer.append("\\t");
+					break;
+				case 10:
+					buffer.append("\\n");
+					break;
+				case 12:
+					buffer.append("\\f");
+					break;
+				case 13:
+					buffer.append("\\r");
+					break;
+				default:
+					buffer.append("\\u").append(hexCharsUpper[(c >> 12) & 0xf])
+							.append(hexCharsUpper[(c >> 8) & 0xf]).append(hexCharsUpper[(c >> 4) & 0xf])
+							.append(hexCharsUpper[c & 0xf]);
+				}
+			}
+		});
+		return buffer.toString();
+	}
+
+	/**
+	 * Decode a {@linkplain CharSequence} previously encoded via {@linkplain #encode(CharSequence)}.
+	 *
+	 * @param chars The {@linkplain CharSequence} to decode.
+	 * @return The decoded characters.
+	 */
+	public static String decode(CharSequence chars) {
+		CharDecoder decoder = new CharDecoder();
+
+		chars.chars().forEach(decoder::decode);
+		return decoder.getDecoded();
+	}
+
+	private static class CharDecoder {
+
+		private final StringBuilder buffer = new StringBuilder();
+		private boolean quoted = false;
+		private int encodeIndex = 0;
+		private int decodedC = 0;
+
+		CharDecoder() {
+			// To make it accessible to the outer class
+		}
+
+		public void decode(int c) {
+			if (!this.quoted) {
+				decodeUnquoted(c);
+			} else if (this.encodeIndex == 0) {
+				decodeQuoted(c);
+			} else {
+				decodeQuotedEncoded(c);
+			}
+		}
+
+		private void decodeUnquoted(int c) {
+			if (c != '\\') {
+				this.buffer.append((char) c);
+			} else {
+				this.quoted = true;
+			}
+		}
+
+		private void decodeQuoted(int c) {
+			if (c != 'u') {
+				this.quoted = false;
+				switch (c) {
+				case '\\':
+					this.buffer.append('\\');
+					break;
+				case '0':
+					this.buffer.append('\0');
+					break;
+				case 'b':
+					this.buffer.append('\b');
+					break;
+				case 't':
+					this.buffer.append('\t');
+					break;
+				case 'n':
+					this.buffer.append('\n');
+					break;
+				case 'f':
+					this.buffer.append('\f');
+					break;
+				case 'r':
+					this.buffer.append('\r');
+					break;
+				default:
+					throw new IllegalArgumentException("Unexpected quoted character: " + ((char) c));
+				}
+			} else {
+				this.encodeIndex = 1;
+				this.decodedC = 0;
+			}
+		}
+
+		private void decodeQuotedEncoded(int c) {
+			this.encodeIndex = (this.encodeIndex + 1) % 5;
+			this.quoted = this.encodeIndex != 0;
+			this.decodedC <<= 4;
+			if ('0' <= c && c <= '9') {
+				this.decodedC |= c - '0';
+			} else if ('a' <= c && c <= 'f') {
+				this.decodedC |= c - 'a';
+			} else if ('A' <= c && c <= 'F') {
+				this.decodedC |= c - 'A';
+			} else {
+				throw new IllegalArgumentException("Unexpected encoded character: " + ((char) c));
+			}
+			if (!this.quoted) {
+				this.buffer.append((char) this.decodedC);
+			}
+		}
+
+		public String getDecoded() {
+			return this.buffer.toString();
+		}
+
+	}
+
 }
