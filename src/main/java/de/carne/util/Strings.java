@@ -162,35 +162,31 @@ public final class Strings {
 		private void decodeQuoted(int c) {
 			if (c != 'u') {
 				this.quoted = false;
-
-				char unquotedC;
-
 				switch (c) {
 				case '\\':
-					unquotedC = '\\';
+					this.buffer.append('\\');
 					break;
 				case '0':
-					unquotedC = '\0';
+					this.buffer.append('\0');
 					break;
 				case 'b':
-					unquotedC = '\b';
+					this.buffer.append('\b');
 					break;
 				case 't':
-					unquotedC = '\t';
+					this.buffer.append('\t');
 					break;
 				case 'n':
-					unquotedC = '\n';
+					this.buffer.append('\n');
 					break;
 				case 'f':
-					unquotedC = '\f';
+					this.buffer.append('\f');
 					break;
 				case 'r':
-					unquotedC = '\r';
+					this.buffer.append('\r');
 					break;
 				default:
 					throw new IllegalArgumentException("Unexpected quoted character: " + ((char) c));
 				}
-				this.buffer.append(unquotedC);
 			} else {
 				this.encodeIndex = 1;
 				this.decodedC = 0;
