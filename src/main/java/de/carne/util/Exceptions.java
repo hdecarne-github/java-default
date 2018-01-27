@@ -35,7 +35,7 @@ public final class Exceptions {
 	}
 
 	/**
-	 * Make an {@linkplain Throwable} unchecked by wrapping it into a {@linkplain RuntimeException}.
+	 * Make a {@linkplain Throwable} unchecked by wrapping it into a {@linkplain RuntimeException}.
 	 *
 	 * @param exception The {@linkplain Throwable} to wrap.
 	 * @return The created {@linkplain RuntimeException}.
@@ -46,7 +46,7 @@ public final class Exceptions {
 	}
 
 	/**
-	 * Ignore an {@linkplain Throwable}.
+	 * Ignore a {@linkplain Throwable}.
 	 * <p>
 	 * This function logs the {@linkplain Throwable} using the trace log level and discards it.
 	 *
@@ -59,7 +59,22 @@ public final class Exceptions {
 	}
 
 	/**
-	 * Warn about an {@linkplain Throwable}.
+	 * Suppress a {@linkplain Throwable}.
+	 * <p>
+	 * This function logs the {@linkplain Throwable} using the trace log level and discards it.
+	 *
+	 * @param exception The {@linkplain Throwable} to ignore (may be {@code null}).
+	 * @param first The first (outer) {@linkplain Throwable} suppressing the one above.
+	 */
+	public static void suppress(@Nullable Throwable exception, Throwable first) {
+		if (exception != null) {
+			LOG.trace(exception, "Suppressed exception: {0}", exception.getClass().getTypeName());
+			first.addSuppressed(exception);
+		}
+	}
+
+	/**
+	 * Warn about a {@linkplain Throwable}.
 	 * <p>
 	 * This function logs the {@linkplain Throwable} using the warning log level and discards it.
 	 *
@@ -72,7 +87,7 @@ public final class Exceptions {
 	}
 
 	/**
-	 * Get an {@linkplain Throwable}'s stack trace.
+	 * Get a {@linkplain Throwable}'s stack trace.
 	 *
 	 * @param exception The {@linkplain Throwable} to get the stack trace for.
 	 * @return The {@linkplain Throwable}'s stack trace.
@@ -91,7 +106,7 @@ public final class Exceptions {
 	}
 
 	/**
-	 * Determine the best textual representation of an {@linkplain Throwable}.
+	 * Determine the best textual representation of a {@linkplain Throwable}.
 	 *
 	 * @param e The {@linkplain Throwable} to get the textual representation for.
 	 * @return The {@linkplain Throwable}'s message or it's type (if no message is available).
