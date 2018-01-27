@@ -120,7 +120,7 @@ final class ApplicationClassLoader extends URLClassLoader {
 		if (BOOTSTRAP_LOADER instanceof URLClassLoader) {
 			urls.addAll(Arrays.asList(((URLClassLoader) BOOTSTRAP_LOADER).getURLs()));
 		} else {
-			urls.add(pathToUrl(path));
+			urls.add(path.toUri().toURL());
 		}
 
 		PathMatcher jarMatcher = path.getFileSystem().getPathMatcher("glob:**.jar");
