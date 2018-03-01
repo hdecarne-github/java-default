@@ -33,6 +33,8 @@ public class SystemPropertiesTest {
 	private static final String KEY_BOOLEAN_FALSE = "sysprop.boolean.false";
 	private static final String KEY_INT_0 = "sysprop.int.zero";
 	private static final String KEY_INT_42 = "sysprop.int.42";
+	private static final String KEY_LONG_0 = "sysprop.long.zero";
+	private static final String KEY_LONG_42 = "sysprop.long.42";
 
 	/**
 	 * Setup the necessary system properties.
@@ -44,6 +46,8 @@ public class SystemPropertiesTest {
 		System.setProperty(KEY_BOOLEAN_FALSE, Boolean.FALSE.toString());
 		System.setProperty(KEY_INT_0, "0");
 		System.setProperty(KEY_INT_42, "42");
+		System.setProperty(KEY_LONG_0, "0");
+		System.setProperty(KEY_LONG_42, "42");
 	}
 
 	/**
@@ -67,6 +71,19 @@ public class SystemPropertiesTest {
 		Assert.assertEquals(1, SystemProperties.intValue(KEY_UNDEFINED, 1));
 		Assert.assertEquals(0, SystemProperties.intValue(KEY_INT_0, -1));
 		Assert.assertEquals(42, SystemProperties.intValue(KEY_INT_42, -1));
+	}
+
+	/**
+	 * Test long access functions.
+	 */
+	@Test
+	public void testLongs() {
+		Assert.assertEquals(0l, SystemProperties.longValue(KEY_UNDEFINED));
+		Assert.assertEquals(0l, SystemProperties.longValue(KEY_BOOLEAN_TRUE));
+		Assert.assertEquals(0l, SystemProperties.longValue(KEY_UNDEFINED, 0));
+		Assert.assertEquals(1l, SystemProperties.longValue(KEY_UNDEFINED, 1));
+		Assert.assertEquals(0l, SystemProperties.longValue(KEY_LONG_0, -1));
+		Assert.assertEquals(42l, SystemProperties.longValue(KEY_LONG_42, -1));
 	}
 
 }

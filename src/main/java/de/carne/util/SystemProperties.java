@@ -87,4 +87,35 @@ public final class SystemProperties {
 		return intValue;
 	}
 
+	/**
+	 * Get {@code long} system property value.
+	 *
+	 * @param key The property key to retrieve.
+	 * @return The property value or {@code 0} if the property is not defined.
+	 */
+	public static long longValue(String key) {
+		return longValue(key, 0);
+	}
+
+	/**
+	 * Get {@code long} system property value.
+	 *
+	 * @param key The property key to retrieve.
+	 * @param defaultValue The default value to return in case the property is not defined.
+	 * @return The property value or the submitted default value if the property is not defined.
+	 */
+	public static long longValue(String key, long defaultValue) {
+		String value = System.getProperty(key);
+		long longValue = defaultValue;
+
+		if (value != null) {
+			try {
+				longValue = Long.parseLong(value);
+			} catch (NumberFormatException e) {
+				LOG.warning(e, "Ignoring invalid long system propert: ''{0}'' = ''{1}''", key, value);
+			}
+		}
+		return longValue;
+	}
+
 }
