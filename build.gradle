@@ -26,6 +26,10 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
 	jcenter()
+	maven { url "https://oss.jfrog.org/libs-release/" }
+	if(snapshotBuild) {
+		maven { url "https://oss.jfrog.org/libs-snapshot/" }
+	}
 }
 
 dependencies {
