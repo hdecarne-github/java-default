@@ -20,7 +20,6 @@ import java.util.function.Supplier;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
-import de.carne.Application;
 import de.carne.check.Nullable;
 
 /**
@@ -50,7 +49,8 @@ public final class ApplicationManifestInfo {
 	private static final String UNDEFINED_ATTRIBUTE = "<undefined>";
 
 	static {
-		Manifest manifest = Application.manifest();
+		// TODO: Re-work Manifest access
+		Manifest manifest = new Manifest();
 		Attributes mainAttributes = manifest.getMainAttributes();
 
 		APPLICATION_NAME = getAttributeValue(mainAttributes, "X-Application-Name", () -> UNDEFINED_ATTRIBUTE);
