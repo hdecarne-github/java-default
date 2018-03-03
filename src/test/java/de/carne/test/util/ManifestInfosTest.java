@@ -17,27 +17,17 @@
 package de.carne.test.util;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.carne.util.ApplicationManifestInfo;
+import de.carne.util.ManifestInfos;
 
 /**
- * Test {@linkplain ApplicationManifestInfo} class.
+ * Test {@linkplain ManifestInfos} class.
  */
-public class ApplicationManifestInfoTest {
+public class ManifestInfosTest {
 
 	/**
-	 * Setup the necessary system properties.
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() {
-		System.setProperty("de.carne.Application", "test");
-		System.setProperty("de.carne.Application.DEBUG", "true");
-	}
-
-	/**
-	 * Test {@linkplain ApplicationManifestInfo} attributes.
+	 * Test {@linkplain ManifestInfos} attributes.
 	 */
 	@Test
 	public void testInfos() {
@@ -50,17 +40,17 @@ public class ApplicationManifestInfoTest {
 
 	// wrap in function to keep Sonar happy
 	private static String getApplicationName() {
-		return ApplicationManifestInfo.APPLICATION_NAME;
+		return ManifestInfos.APPLICATION_NAME;
 	}
 
 	// wrap in function to keep Sonar happy
 	private static String getApplicationVersion() {
-		return ApplicationManifestInfo.APPLICATION_VERSION;
+		return ManifestInfos.APPLICATION_VERSION;
 	}
 
 	// wrap in function to keep Sonar happy
 	private static String getApplicationBuild() {
-		return ApplicationManifestInfo.APPLICATION_BUILD;
+		return ManifestInfos.APPLICATION_BUILD;
 	}
 
 }
