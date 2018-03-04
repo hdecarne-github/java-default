@@ -29,10 +29,6 @@ class CheckTest {
 	@Test
 	void testCheckNotNullPassed() {
 		Assertions.assertNotNull(Check.notNull(this));
-	}
-
-	@Test
-	void testCheckNotNullMessagePassed() {
 		Assertions.assertNotNull(Check.notNull(this, getClass().getSimpleName()));
 	}
 
@@ -41,22 +37,30 @@ class CheckTest {
 		Assertions.assertThrows(NullPointerException.class, () -> {
 			Check.notNull(null);
 		});
-	}
-
-	@Test
-	void testCheckNotNullMessageFailed() {
 		Assertions.assertThrows(NullPointerException.class, () -> {
 			Check.notNull(null, getClass().getSimpleName());
 		});
 	}
 
 	@Test
-	void testCheckAssertTruePassed() {
-		Check.assertTrue(true);
+	void testCheckIsInstancePassed() {
+		Assertions.assertEquals(this, Check.isInstanceOf(this, CheckTest.class));
+		Assertions.assertEquals(this, Check.isInstanceOf(this, CheckTest.class, getClass().getSimpleName()));
 	}
 
 	@Test
-	void testCheckAssertTrueMessagePassed() {
+	void testCheckIsInstanceFailed() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Check.isInstanceOf(this, String.class);
+		});
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Check.isInstanceOf(this, String.class, getClass().getSimpleName());
+		});
+	}
+
+	@Test
+	void testCheckAssertTruePassed() {
+		Check.assertTrue(true);
 		Check.assertTrue(true, getClass().getSimpleName());
 	}
 
@@ -65,10 +69,6 @@ class CheckTest {
 		Assertions.assertThrows(IllegalStateException.class, () -> {
 			Check.assertTrue(false);
 		});
-	}
-
-	@Test
-	void testCheckAssertTrueMessageFailed() {
 		Assertions.assertThrows(IllegalStateException.class, () -> {
 			Check.assertTrue(false, getClass().getSimpleName());
 		});
@@ -77,10 +77,6 @@ class CheckTest {
 	@Test
 	void testCheckFail() {
 		Assertions.assertThrows(IllegalStateException.class, () -> Check.fail());
-	}
-
-	@Test
-	void testCheckFailMessage() {
 		Assertions.assertThrows(IllegalStateException.class, () -> {
 			Check.fail(getClass().getSimpleName());
 		});

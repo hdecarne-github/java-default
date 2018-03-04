@@ -57,6 +57,43 @@ public final class Check {
 	}
 
 	/**
+	 * Check and ensure that an {@linkplain Object} is an instance of a specific type.
+	 *
+	 * @param <T> The type to ensure.
+	 * @param object The {@linkplain Object} to check.
+	 * @param type The type to ensure.
+	 * @return The checked {@linkplain Object} (casted to the checked type}).
+	 * @throws IllegalArgumentException if the submitted argument is not an instance of the given type.
+	 */
+	public static <T> T isInstanceOf(Object object, Class<T> type) {
+		if (!type.isAssignableFrom(object.getClass())) {
+			throw new IllegalArgumentException();
+		}
+		return type.cast(object);
+	}
+
+	/**
+	 * Check and ensure that an {@linkplain Object} is an instance of a specific type.
+	 * <p>
+	 * In case the check fails the {@linkplain String#format(String, Object...)} function is used to format the
+	 * exception message.
+	 *
+	 * @param <T> The type to ensure.
+	 * @param object The {@linkplain Object} to check.
+	 * @param type The type to ensure.
+	 * @param format The format of the message to issue if the check fails.
+	 * @param args The arguments to use for message formatting.
+	 * @return The checked {@linkplain Object} (casted to the checked type}).
+	 * @throws IllegalArgumentException if the submitted argument is not an instance of the given type.
+	 */
+	public static <T> T isInstanceOf(Object object, Class<T> type, String format, Object... args) {
+		if (!type.isAssignableFrom(object.getClass())) {
+			throw new IllegalArgumentException(String.format(format, args));
+		}
+		return type.cast(object);
+	}
+
+	/**
 	 * Check and ensure that a specific condition is met.
 	 *
 	 * @param condition The condition to check.
