@@ -31,8 +31,8 @@ public final class Threads {
 	 * In addition to {@linkplain Thread#sleep(long)} this function automatically handles possible
 	 * {@linkplain InterruptedException}s by handling and discarding the exception.
 	 *
-	 * @param millis The sleep timeout.
-	 * @return {@code true} if the sleep operation was interrupted.
+	 * @param millis the sleep timeout.
+	 * @return {@code true} if the sleep operation was not interrupted.
 	 * @see Thread#sleep(long)
 	 */
 	public static boolean sleep(long millis) {
@@ -45,7 +45,7 @@ public final class Threads {
 			Thread.currentThread().interrupt();
 			interrupted = true;
 		}
-		return interrupted;
+		return !interrupted;
 	}
 
 }

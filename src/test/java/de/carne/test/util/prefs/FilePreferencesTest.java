@@ -18,50 +18,65 @@ package de.carne.test.util.prefs;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Properties;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
+import de.carne.check.Nullable;
+import de.carne.util.Late;
 import de.carne.util.prefs.FilePreferencesFactory;
 
 /**
  * Test {@linkplain FilePreferencesFactory} class.
  */
-public class FilePreferencesTest {
+class FilePreferencesTest {
 
-	/**
-	 * Temporary HOME folder for config file creation.
-	 */
-	@ClassRule
-	public static final TemporaryFolder HOME = new TemporaryFolder();
+	private static final Late<Path> TEMP_PATH = new Late<>();
 
-	/**
-	 * Setup the necessary system properties.
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() {
+	@BeforeAll
+	static void setUpSystemPropertiesAndTempPath() throws IOException {
+		TEMP_PATH.set(Files.createTempDirectory(FilePreferencesTest.class.getName()));
 		System.setProperty("java.util.prefs.PreferencesFactory", FilePreferencesFactory.class.getName());
-		System.setProperty("de.carne.util.prefs.FilePreferences", HOME.getRoot().getAbsolutePath());
+		System.setProperty("de.carne.util.prefs.FilePreferences", TEMP_PATH.get().toString());
 	}
 
-	/**
-	 * Test custom {@linkplain Preferences} access.
-	 *
-	 * @throws IOException if an I/ error occurs.
-	 * @throws BackingStoreException if a backing store error occurs.
-	 */
+	@AfterAll
+	static void cleanUpTempPath() throws IOException {
+		Files.walkFileTree(TEMP_PATH.get(), new SimpleFileVisitor<Path>() {
+
+			@Override
+			public FileVisitResult visitFile(@Nullable Path file, @Nullable BasicFileAttributes attrs)
+					throws IOException {
+				Files.delete(file);
+				return FileVisitResult.CONTINUE;
+			}
+
+			@Override
+			public FileVisitResult postVisitDirectory(@Nullable Path dir, @Nullable IOException exc)
+					throws IOException {
+				Files.delete(dir);
+				return FileVisitResult.CONTINUE;
+			}
+
+		});
+	}
+
 	@Test
-	public void testCustomPreferences() throws IOException, BackingStoreException {
+	void testCustomPreferences() throws IOException, BackingStoreException {
 		Preferences customPrefs1 = FilePreferencesFactory.customRoot(loadData());
 
-		Assert.assertEquals(1, customPrefs1.keys().length);
-		Assert.assertEquals(2, customPrefs1.childrenNames().length);
+		Assertions.assertEquals(1, customPrefs1.keys().length);
+		Assertions.assertEquals(2, customPrefs1.childrenNames().length);
 
 		for (String key : customPrefs1.keys()) {
 			customPrefs1.remove(key);
@@ -70,8 +85,8 @@ public class FilePreferencesTest {
 			customPrefs1.node(childrenName).removeNode();
 		}
 
-		Assert.assertEquals(0, customPrefs1.keys().length);
-		Assert.assertEquals(0, customPrefs1.childrenNames().length);
+		Assertions.assertEquals(0, customPrefs1.keys().length);
+		Assertions.assertEquals(0, customPrefs1.childrenNames().length);
 
 		Preferences customPrefs2 = FilePreferencesFactory.customRoot(loadData());
 
@@ -86,19 +101,13 @@ public class FilePreferencesTest {
 		FilePreferencesFactory.flush();
 	}
 
-	/**
-	 * Test user {@linkplain Preferences} access.
-	 *
-	 * @throws IOException if an I/ error occurs.
-	 * @throws BackingStoreException if a backing store error occurs.
-	 */
 	@Test
-	public void testUserPreferences() throws IOException, BackingStoreException {
+	void testUserPreferences() throws IOException, BackingStoreException {
 		Preferences referencePrefs = FilePreferencesFactory.customRoot(loadData());
 		Preferences userPrefs1 = Preferences.userRoot();
 
-		Assert.assertEquals(0, userPrefs1.keys().length);
-		Assert.assertEquals(0, userPrefs1.childrenNames().length);
+		Assertions.assertEquals(0, userPrefs1.keys().length);
+		Assertions.assertEquals(0, userPrefs1.childrenNames().length);
 
 		copyPrefs(referencePrefs, userPrefs1);
 		verifyPrefs(referencePrefs, userPrefs1);
@@ -118,19 +127,13 @@ public class FilePreferencesTest {
 		FilePreferencesFactory.flush();
 	}
 
-	/**
-	 * Test system {@linkplain Preferences} access.
-	 *
-	 * @throws IOException if an I/ error occurs.
-	 * @throws BackingStoreException if a backing store error occurs.
-	 */
 	@Test
-	public void testSystemPreferences() throws IOException, BackingStoreException {
+	void testSystemPreferences() throws IOException, BackingStoreException {
 		Preferences referencePrefs = FilePreferencesFactory.customRoot(loadData());
 		Preferences systemPrefs1 = Preferences.systemRoot();
 
-		Assert.assertEquals(0, systemPrefs1.keys().length);
-		Assert.assertEquals(0, systemPrefs1.childrenNames().length);
+		Assertions.assertEquals(0, systemPrefs1.keys().length);
+		Assertions.assertEquals(0, systemPrefs1.childrenNames().length);
 
 		copyPrefs(referencePrefs, systemPrefs1);
 		verifyPrefs(referencePrefs, systemPrefs1);
@@ -172,11 +175,11 @@ public class FilePreferencesTest {
 	}
 
 	private void verifyPrefs(Preferences expected, Preferences actual) throws BackingStoreException {
-		Assert.assertEquals(expected.keys().length, actual.keys().length);
+		Assertions.assertEquals(expected.keys().length, actual.keys().length);
 		for (String key : expected.keys()) {
-			Assert.assertEquals(expected.get(key, null), actual.get(key, key));
+			Assertions.assertEquals(expected.get(key, null), actual.get(key, key));
 		}
-		Assert.assertEquals(expected.childrenNames().length, actual.childrenNames().length);
+		Assertions.assertEquals(expected.childrenNames().length, actual.childrenNames().length);
 		for (String childrenName : expected.childrenNames()) {
 			Preferences subExpected = expected.node(childrenName);
 			Preferences subActual = actual.node(childrenName);

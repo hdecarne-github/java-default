@@ -18,9 +18,9 @@ package de.carne.test.util.logging;
 
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import de.carne.check.Check;
 import de.carne.util.logging.Log;
@@ -30,28 +30,20 @@ import de.carne.util.logging.Logs;
 /**
  * Test {@linkplain LogBuffer} class.
  */
-public class LogBufferTest {
+class LogBufferTest {
 
-	/**
-	 * Setup the necessary system properties.
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() {
+	@BeforeAll
+	static void setUpSystemProperties() {
 		System.setProperty(LogBuffer.class.getName() + ".LIMIT", "5");
 	}
 
-	/**
-	 * Test {@linkplain LogBuffer}.
-	 *
-	 * @throws IOException if an I/O error occurs.
-	 */
 	@Test
-	public void testLogBuffer() throws IOException {
+	void testLogBuffer() throws IOException {
 		Logs.readConfig(Logs.CONFIG_DEFAULT);
 
 		Log log = new Log();
 
-		Assert.assertNotNull(LogBuffer.get(log));
+		Assertions.assertNotNull(LogBuffer.get(log));
 
 		LogBuffer.flush(log);
 
@@ -59,37 +51,37 @@ public class LogBufferTest {
 
 		LogBuffer.addHandler(log, counter1);
 
-		Assert.assertEquals(0, counter1.getPublishCount());
-		Assert.assertEquals(0, counter1.getFlushCount());
-		Assert.assertEquals(0, counter1.getCloseCount());
+		Assertions.assertEquals(0, counter1.getPublishCount());
+		Assertions.assertEquals(0, counter1.getFlushCount());
+		Assertions.assertEquals(0, counter1.getCloseCount());
 
 		LoggingTests.logTestMessages(log, 6);
 
-		Assert.assertEquals(6, counter1.getPublishCount());
+		Assertions.assertEquals(6, counter1.getPublishCount());
 
 		LogRecordCounter counter2 = new LogRecordCounter();
 
 		LogBuffer.addHandler(log, counter2);
 
-		Assert.assertEquals(5, counter2.getPublishCount());
+		Assertions.assertEquals(5, counter2.getPublishCount());
 
 		LogBuffer.removeHandler(log, counter2);
 		LogBuffer.flush(log);
 
-		Assert.assertEquals(1, counter1.getFlushCount());
-		Assert.assertEquals(0, counter2.getFlushCount());
+		Assertions.assertEquals(1, counter1.getFlushCount());
+		Assertions.assertEquals(0, counter2.getFlushCount());
 
 		LogBuffer.flush(log);
 
-		Assert.assertEquals(2, counter1.getFlushCount());
+		Assertions.assertEquals(2, counter1.getFlushCount());
 
 		Check.notNull(LogBuffer.get(log)).close();
 
-		Assert.assertEquals(1, counter1.getCloseCount());
+		Assertions.assertEquals(1, counter1.getCloseCount());
 
 		Check.notNull(LogBuffer.get(log)).close();
 
-		Assert.assertEquals(1, counter1.getCloseCount());
+		Assertions.assertEquals(1, counter1.getCloseCount());
 	}
 
 }

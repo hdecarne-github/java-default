@@ -16,7 +16,7 @@
  */
 package de.carne.test.util.logging;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import de.carne.util.logging.Log;
 import de.carne.util.logging.LogLevel;
@@ -54,7 +54,7 @@ class LoggingTests {
 			log.error(thrown, "Error message (with exception)");
 			log.notice("Notice message");
 			log.notice(thrown, "Notice message (with exception)");
-			Assert.assertEquals(expectedRecordCount, session.getRecords().size());
+			Assertions.assertEquals(expectedRecordCount, session.getRecords().size());
 		}
 	}
 

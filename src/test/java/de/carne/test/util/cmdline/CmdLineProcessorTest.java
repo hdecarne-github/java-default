@@ -18,8 +18,8 @@ package de.carne.test.util.cmdline;
 
 import java.util.Arrays;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.util.cmdline.CmdLineException;
 import de.carne.util.cmdline.CmdLineProcessor;
@@ -27,148 +27,113 @@ import de.carne.util.cmdline.CmdLineProcessor;
 /**
  * Test {@linkplain CmdLineProcessor} class.
  */
-public class CmdLineProcessorTest {
+class CmdLineProcessorTest {
 
-	/**
-	 * Test successful processing.
-	 *
-	 * @throws CmdLineException if the command line is invalid.
-	 */
 	@Test
-	public void testProcessingSuccess() throws CmdLineException {
+	void testProcessingSuccess() throws CmdLineException {
 		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(),
 				Arrays.asList("--switch", "-s", "--option", "option", "-o", "option", "--unknown", "unnamed"));
 
 		cmdLine.onSwitch(arg -> {
-			Assert.assertEquals("--switch", arg);
+			Assertions.assertEquals("--switch", arg);
 		}).arg("--switch");
 		cmdLine.onSwitch(arg -> {
-			Assert.assertEquals("-s", arg);
+			Assertions.assertEquals("-s", arg);
 		}).arg("-s");
 		cmdLine.onOption((arg, option) -> {
-			Assert.assertEquals("--option", arg);
-			Assert.assertEquals("option", option);
+			Assertions.assertEquals("--option", arg);
+			Assertions.assertEquals("option", option);
 		}).arg("--option");
 		cmdLine.onOption((arg, option) -> {
-			Assert.assertEquals("-o", arg);
-			Assert.assertEquals("option", option);
+			Assertions.assertEquals("-o", arg);
+			Assertions.assertEquals("option", option);
 		}).arg("-o");
 		cmdLine.onUnknownArg(option -> {
-			Assert.assertEquals("--unknown", option);
+			Assertions.assertEquals("--unknown", option);
 		});
 		cmdLine.onUnnamedOption(option -> {
-			Assert.assertEquals("unnamed", option);
+			Assertions.assertEquals("unnamed", option);
 		});
 		cmdLine.process();
 	}
 
-	/**
-	 * Test processing failure (due to unknown argument).
-	 *
-	 * @throws CmdLineException if the command line is invalid.
-	 */
-	@Test(expected = CmdLineException.class)
-	public void testUnknownArgumentFailure() throws CmdLineException {
+	@Test
+	void testUnknownArgumentFailure() {
 		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(), Arrays.asList("--switch"));
 
-		cmdLine.process();
+		Assertions.assertThrows(CmdLineException.class, () -> {
+			cmdLine.process();
+		});
 	}
 
-	/**
-	 * Test processing failure (due to unnamed option).
-	 *
-	 * @throws CmdLineException if the command line is invalid.
-	 */
-	@Test(expected = CmdLineException.class)
-	public void testUnnamedOptionFailure() throws CmdLineException {
+	@Test
+	void testUnnamedOptionFailure() {
 		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(), Arrays.asList("--switch"));
 
-		cmdLine.process();
+		Assertions.assertThrows(CmdLineException.class, () -> {
+			cmdLine.process();
+		});
 	}
 
-	/**
-	 * Test processing failure (due to missing option).
-	 *
-	 * @throws CmdLineException if the command line is invalid.
-	 */
-	@Test(expected = CmdLineException.class)
-	public void testMissingOptionFailure() throws CmdLineException {
+	@Test
+	void testMissingOptionFailure() {
 		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(), Arrays.asList("--option"));
 
 		cmdLine.onOption((arg, option) -> {
-			Assert.fail();
+			Assertions.fail("Unexpected invokation");
 		}).arg("--option");
-		cmdLine.process();
+		Assertions.assertThrows(CmdLineException.class, () -> {
+			cmdLine.process();
+		});
 	}
 
-	/**
-	 * Test processing failure (due to invalid option).
-	 *
-	 * @throws CmdLineException if the command line is invalid.
-	 */
-	@Test(expected = CmdLineException.class)
-	public void testInvalidOptionFailure() throws CmdLineException {
-		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(),
-				Arrays.asList("--option", "--unexpected"));
-
-		cmdLine.onOption((arg, option) -> {
-			Assert.fail();
-		}).arg("--option");
-		cmdLine.process();
-	}
-
-	/**
-	 * Test setup failure (due to an invalid argument string).
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testInvalidArg1Failure() {
-		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(), new String[0]);
-
-		cmdLine.onOption((arg, option) -> {
-			Assert.fail();
-		}).arg("o");
-	}
-
-	/**
-	 * Test setup failure (due to an invalid argument string).
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testInvalidArg2Failure() {
-		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(), new String[0]);
-
-		cmdLine.onOption((arg, option) -> {
-			Assert.fail();
-		}).arg("---o");
-	}
-
-	/**
-	 * Test setup failure (due to an invalid short argument string).
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testInvalidShortArgFailure() {
-		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(), new String[0]);
-
-		cmdLine.onOption((arg, option) -> {
-			Assert.fail();
-		}).arg("-option");
-	}
-
-	/**
-	 * Test {@linkplain CmdLineException}.
-	 */
 	@Test
-	public void testCmdLineException() {
+	void testInvalidOptionFailure() {
 		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(),
 				Arrays.asList("--option", "--unexpected"));
 
 		cmdLine.onOption((arg, option) -> {
-			Assert.fail();
+			Assertions.fail("Unexpected invokation");
+		}).arg("--option");
+		Assertions.assertThrows(CmdLineException.class, () -> {
+			cmdLine.process();
+		});
+	}
+
+	@Test
+	void testInvalidArgFailure() {
+		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(), new String[0]);
+
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			cmdLine.onOption((arg, option) -> {
+				Assertions.fail("Unexpected invokation");
+			}).arg("o");
+		});
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			cmdLine.onOption((arg, option) -> {
+				Assertions.fail("Unexpected invokation");
+			}).arg("---o");
+		});
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			cmdLine.onOption((arg, option) -> {
+				Assertions.fail("Unexpected invokation");
+			}).arg("-option");
+		});
+	}
+
+	@Test
+	void testCmdLineException() {
+		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(),
+				Arrays.asList("--option", "--unexpected"));
+
+		cmdLine.onOption((arg, option) -> {
+			Assertions.fail("Unexpected invokation");
 		}).arg("--option");
 		try {
 			cmdLine.process();
 		} catch (CmdLineException e) {
-			Assert.assertEquals(cmdLine.toString(), e.cmdLine());
-			Assert.assertEquals("--option", e.arg());
+			Assertions.assertEquals(cmdLine.toString(), e.cmdLine());
+			Assertions.assertEquals("--option", e.arg());
 		}
 	}
 

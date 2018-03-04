@@ -16,29 +16,23 @@
  */
 package de.carne.test.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import de.carne.util.Exceptions;
 import de.carne.util.ShutdownHooks;
 import de.carne.util.logging.Log;
 
 /**
  * Test {@linkplain ShutdownHooks} class.
  */
-public class ShutdownHooksTest {
+class ShutdownHooksTest {
 
 	private static final Log LOG = new Log();
 
-	/**
-	 * Test {@linkplain Exceptions#toRuntime(Throwable)} with checked {@linkplain Exception}.
-	 */
 	@Test
-	public void testToRuntimeFromChecked() {
+	void testToRuntimeFromChecked() {
+		// We only check whether add does not fail (actual invokation cannot be tested as it happens after VM shutdown)
 		ShutdownHooks.add(() -> {
 			LOG.notice("Shutdown hook invoked");
-		});
-		ShutdownHooks.add(() -> {
-			throw new IllegalStateException();
 		});
 	}
 

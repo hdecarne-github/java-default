@@ -16,68 +16,53 @@
  */
 package de.carne.test.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.util.Strings;
 
 /**
  * Test {@linkplain Strings} class.
  */
-public class StringsTest {
+class StringsTest {
 
-	/**
-	 * Test empty-checks.
-	 */
 	@Test
-	public void testEmptyChecks() {
-		Assert.assertTrue(Strings.isEmpty(null));
-		Assert.assertTrue(Strings.isEmpty(""));
-		Assert.assertFalse(Strings.isEmpty(" "));
-		Assert.assertFalse(Strings.notEmpty(null));
-		Assert.assertFalse(Strings.notEmpty(""));
-		Assert.assertTrue(Strings.notEmpty(" "));
+	void testEmptyChecks() {
+		Assertions.assertTrue(Strings.isEmpty(null));
+		Assertions.assertTrue(Strings.isEmpty(""));
+		Assertions.assertFalse(Strings.isEmpty(" "));
+		Assertions.assertFalse(Strings.notEmpty(null));
+		Assertions.assertFalse(Strings.notEmpty(""));
+		Assertions.assertTrue(Strings.notEmpty(" "));
 	}
 
-	/**
-	 * Test safe-functions.
-	 */
 	@Test
-	public void testSafeFunctions() {
-		Assert.assertEquals("", Strings.safe(null));
-		Assert.assertEquals(" ", Strings.safe(" "));
-		Assert.assertEquals("", Strings.safeTrim(null));
-		Assert.assertEquals("", Strings.safeTrim(""));
-		Assert.assertEquals("", Strings.safeTrim(" "));
-		Assert.assertEquals("test", Strings.safeTrim("test"));
+	void testSafeFunctions() {
+		Assertions.assertEquals("", Strings.safe(null));
+		Assertions.assertEquals(" ", Strings.safe(" "));
+		Assertions.assertEquals("", Strings.safeTrim(null));
+		Assertions.assertEquals("", Strings.safeTrim(""));
+		Assertions.assertEquals("", Strings.safeTrim(" "));
+		Assertions.assertEquals("test", Strings.safeTrim("test"));
 	}
 
-	/**
-	 * Test encode/decode functions.
-	 */
 	@Test
-	public void testEncodeDecodeFunctions() {
+	void testEncodeDecodeFunctions() {
 		String decoded = "\\\0\u08af\b\t\n\f\ra";
 		String encoded = "\\\\\\0\\u08AF\\b\\t\\n\\f\\ra";
 
-		Assert.assertEquals(encoded, Strings.encode(decoded));
-		Assert.assertEquals(decoded, Strings.decode(encoded));
+		Assertions.assertEquals(encoded, Strings.encode(decoded));
+		Assertions.assertEquals(decoded, Strings.decode(encoded));
 	}
 
-	/**
-	 * Test decode failure due to invalid quoted character.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testDecodeFailure1() {
-		Strings.decode("\\?");
-	}
-
-	/**
-	 * Test decode failure due to invalid encoded character.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testDecodeFailure2() {
-		Strings.decode("\\uXXXXXx");
+	@Test
+	void testDecodeFailure() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Strings.decode("\\?");
+		});
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Strings.decode("\\uXXXXXx");
+		});
 	}
 
 }

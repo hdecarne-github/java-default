@@ -16,8 +16,8 @@
  */
 package de.carne.test.util.logging;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.util.logging.Config;
 import de.carne.util.logging.Log;
@@ -25,27 +25,35 @@ import de.carne.util.logging.Log;
 /**
  * Test {@linkplain Config} class.
  */
-public class ConfigTest {
+class ConfigTest {
 
-	/**
-	 * Test {@linkplain Config} with a valid and an invalid config file.
-	 */
 	@Test
-	public void testConfig() {
+	void testConfig() {
 		Log log = new Log();
 
+		// Check for default settings
+		new Config();
+
+		Assertions.assertFalse(log.isTraceLoggable());
+
+		LoggingTests.logTestMessages(log, 6);
+
+		// Check for trace settings
 		System.setProperty(Config.class.getName(), "logging-trace.properties");
 
 		new Config();
 
-		Assert.assertTrue(log.isTraceLoggable());
+		Assertions.assertTrue(log.isTraceLoggable());
+
 		LoggingTests.logTestMessages(log, 12);
 
+		// Check for (unchanged) trace settings
 		System.setProperty(Config.class.getName(), "logging-unknown.properties");
 
 		new Config();
 
-		Assert.assertTrue(log.isTraceLoggable());
+		Assertions.assertTrue(log.isTraceLoggable());
+
 		LoggingTests.logTestMessages(log, 12);
 	}
 

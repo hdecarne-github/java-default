@@ -18,51 +18,48 @@ package de.carne.test.util;
 
 import java.util.function.Supplier;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.util.Lazy;
 
 /**
  * Test {@linkplain Lazy} class.
  */
-public class LazyTest {
+class LazyTest {
 
-	/**
-	 * Test valid {@linkplain Supplier} and access.
-	 */
 	@Test
-	public void testValidSupplierAccess() {
+	void testValidSupplierAccess() {
 		Supplier<LazyTest> initializer = new Supplier<LazyTest>() {
 
 			private boolean initialized = false;
 
 			@Override
 			public LazyTest get() {
-				Assert.assertFalse(this.initialized);
+				Assertions.assertFalse(this.initialized);
 				this.initialized = true;
 				return LazyTest.this;
 			}
 
 		};
+
 		Lazy<LazyTest> lazy = new Lazy<>(initializer);
 
-		Assert.assertEquals("<not initialized>", lazy.toString());
-		Assert.assertEquals(this, lazy.get());
-		Assert.assertEquals(this, lazy.get());
-		Assert.assertEquals(toString(), lazy.toString());
+		Assertions.assertEquals("<not initialized>", lazy.toString());
+		Assertions.assertEquals(this, lazy.get());
+		Assertions.assertEquals(this, lazy.get());
+		Assertions.assertEquals(toString(), lazy.toString());
 	}
 
-	/**
-	 * Test invalid {@linkplain Supplier} and access.
-	 */
-	@Test(expected = NullPointerException.class)
-	public void testInvalidSupplierAccess() {
+	@Test
+	void testInvalidSupplierAccess() {
 		Supplier<LazyTest> initializer = () -> null;
 		Lazy<LazyTest> lazy = new Lazy<>(initializer);
 
-		Assert.assertEquals("<not initialized>", lazy.toString());
-		Assert.assertEquals(this, lazy.get());
+		Assertions.assertEquals("<not initialized>", lazy.toString());
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			lazy.get();
+		});
 	}
 
 	@Override

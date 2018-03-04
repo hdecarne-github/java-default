@@ -22,29 +22,26 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.io.IOUtil;
 
 /**
  * Test {@linkplain IOUtil} class.
  */
-public class IOUtilTest {
+class IOUtilTest {
 
-	/**
-	 * Test {@linkplain IOUtil} copy functions.
-	 *
-	 * @throws IOException if an I/O error occurs.
-	 */
 	@Test
-	public void testCopy() throws IOException {
+	void testCopy() throws IOException {
+		// Prepare files
 		File file1 = Files.createTempFile(getClass().getName(), ".tmp").toFile();
 		File file2 = Files.createTempFile(getClass().getName(), ".tmp").toFile();
 
 		file1.deleteOnExit();
 		file2.deleteOnExit();
 
+		// Test copy operations
 		ByteArrayOutputStream resourceDataOutputStream = new ByteArrayOutputStream();
 
 		IOUtil.copyUrl(resourceDataOutputStream, getClass().getResource("data.bin"));
@@ -61,7 +58,7 @@ public class IOUtilTest {
 
 		byte[] fileData = fileDataOutputStream.toByteArray();
 
-		Assert.assertArrayEquals(resourceData, fileData);
+		Assertions.assertArrayEquals(resourceData, fileData);
 	}
 
 }

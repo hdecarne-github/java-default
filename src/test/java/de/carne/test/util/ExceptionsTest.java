@@ -18,91 +18,74 @@ package de.carne.test.util;
 
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.util.Exceptions;
 
 /**
  * Test {@linkplain Exceptions} class.
  */
-public class ExceptionsTest {
+class ExceptionsTest {
 
-	/**
-	 * Test {@linkplain Exceptions#toRuntime(Throwable)} with checked {@linkplain Exception}.
-	 */
-	@Test(expected = RuntimeException.class)
-	public void testToRuntimeFromChecked() {
-		try {
-			throw new IOException();
-		} catch (Exception e) {
-			throw Exceptions.toRuntime(e);
-		}
-	}
-
-	/**
-	 * Test {@linkplain Exceptions#toRuntime(Throwable)} with unchecked {@linkplain Exception}.
-	 */
-	@Test(expected = IllegalStateException.class)
-	public void testToRuntimeFromUnchecked() {
-		try {
-			throw new IllegalStateException();
-		} catch (Exception e) {
-			throw Exceptions.toRuntime(e);
-		}
-	}
-
-	/**
-	 * Test {@linkplain Exceptions#ignore(Throwable)}.
-	 */
 	@Test
-	public void testIgnore() {
+	void testToRuntimeFromChecked() {
+		Assertions.assertThrows(RuntimeException.class, () -> {
+			try {
+				throw new IOException();
+			} catch (Exception e) {
+				throw Exceptions.toRuntime(e);
+			}
+		});
+	}
+
+	@Test
+	void testToRuntimeFromUnchecked() {
+		Assertions.assertThrows(IllegalStateException.class, () -> {
+			try {
+				throw new IllegalStateException();
+			} catch (Exception e) {
+				throw Exceptions.toRuntime(e);
+			}
+		});
+	}
+
+	@Test
+	void testIgnore() {
 		Exceptions.ignore(null);
 		Exceptions.ignore(new NullPointerException());
 	}
 
-	/**
-	 * Test {@linkplain Exceptions#suppress(Throwable, Throwable)}.
-	 */
 	@Test
-	public void testSuppress() {
+	void testSuppress() {
 		Exceptions.suppress(null, new NullPointerException());
 		Exceptions.suppress(new IllegalArgumentException(), new NullPointerException());
 	}
 
-	/**
-	 * Test {@linkplain Exceptions#warn(Throwable)}.
-	 */
 	@Test
-	public void testWarn() {
+	void testWarn() {
 		Exceptions.warn(null);
 		Exceptions.warn(new NullPointerException());
 	}
 
-	/**
-	 * Test {@linkplain Exceptions#getStackTrace(Throwable)}.
-	 */
 	@Test
-	public void testGetStackTrace() {
+	void testGetStackTrace() {
 		String stackTrace = Exceptions.getStackTrace(new IOException());
 
 		System.err.println(stackTrace);
-		Assert.assertNotNull(stackTrace);
+		Assertions.assertNotNull(stackTrace);
 	}
 
-	/**
-	 * Test {@linkplain Exceptions#toString(Throwable)}.
-	 */
 	@Test
-	public void testToString() {
+	void testToString() {
 		Throwable noMessageException = new IOException();
 
-		Assert.assertEquals(noMessageException.getClass().getTypeName(), Exceptions.toString(noMessageException));
+		Assertions.assertEquals(noMessageException.getClass().getTypeName(), Exceptions.toString(noMessageException));
 
 		String message = "An error occurred";
 		Throwable messageException = new IOException(message);
 
-		Assert.assertEquals(message, Exceptions.toString(messageException));
+		Assertions.assertEquals(message, Exceptions.toString(messageException));
 	}
 
 }

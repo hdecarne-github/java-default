@@ -16,26 +16,23 @@
  */
 package de.carne.test.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.util.ManifestInfos;
 
 /**
  * Test {@linkplain ManifestInfos} class.
  */
-public class ManifestInfosTest {
+class ManifestInfosTest {
 
-	/**
-	 * Test {@linkplain ManifestInfos} attributes.
-	 */
 	@Test
-	public void testInfos() {
+	void testInfos() {
 		// As defined in our test manifest
-		Assert.assertEquals("Test Application", getApplicationName());
-		Assert.assertEquals("1.0-test", getApplicationVersion());
+		Assertions.assertEquals("Test Application", getApplicationName());
+		Assertions.assertEquals("1.0-test", getApplicationVersion());
 		// As undefined in our test manifest
-		Assert.assertEquals("<undefined>", getApplicationBuild());
+		Assertions.assertEquals("<undefined>", getApplicationBuild());
 	}
 
 	// wrap in function to keep Sonar happy

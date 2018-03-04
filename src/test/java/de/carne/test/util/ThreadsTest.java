@@ -16,32 +16,29 @@
  */
 package de.carne.test.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.util.Threads;
 
 /**
  * Test {@linkplain Threads} class.
  */
-public class ThreadsTest {
+class ThreadsTest {
 
-	/**
-	 * Test {@linkplain Threads#sleep(long)}.
-	 *
-	 * @throws InterruptedException
-	 */
 	@Test
-	public void testSleep() throws InterruptedException {
-		Assert.assertFalse(Threads.sleep(250));
+	void testSleep() throws InterruptedException {
+		// Sleep through
+		Assertions.assertTrue(Threads.sleep(250));
 
+		// Interrupt sleept
 		Thread sleepThread = new Thread(() -> {
 			Thread currentThread = Thread.currentThread();
 
 			synchronized (currentThread) {
 				currentThread.notifyAll();
 			}
-			Assert.assertTrue(Threads.sleep(1000));
+			Assertions.assertFalse(Threads.sleep(1000));
 			synchronized (currentThread) {
 				currentThread.notifyAll();
 			}

@@ -18,8 +18,8 @@ package de.carne.test.util.logging;
 
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.util.logging.LocalizedFilter;
 import de.carne.util.logging.Log;
@@ -29,15 +29,10 @@ import de.carne.util.logging.Logs;
 /**
  * Test {@linkplain LocalizedFilter} class.
  */
-public class LocalizedFilterTest {
+class LocalizedFilterTest {
 
-	/**
-	 * Test {@linkplain LocalizedFilter}.
-	 *
-	 * @throws IOException if an I/O error occurs.
-	 */
 	@Test
-	public void testLocalizedFilter() throws IOException {
+	void testLocalizedFilter() throws IOException {
 		Logs.readConfig("logging-localized.properties");
 
 		Log standardLog = new Log(LogTest.class);
@@ -48,15 +43,15 @@ public class LocalizedFilterTest {
 		LogBuffer.addHandler(standardLog, counter);
 		LoggingTests.logTestMessages(localizedLog1, 6);
 
-		Assert.assertEquals(6, counter.getPublishCount());
+		Assertions.assertEquals(6, counter.getPublishCount());
 
 		LoggingTests.logTestMessages(localizedLog2, 6);
 
-		Assert.assertEquals(12, counter.getPublishCount());
+		Assertions.assertEquals(12, counter.getPublishCount());
 
 		LoggingTests.logTestMessages(standardLog, 6);
 
-		Assert.assertEquals(12, counter.getPublishCount());
+		Assertions.assertEquals(12, counter.getPublishCount());
 	}
 
 }

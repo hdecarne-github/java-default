@@ -16,16 +16,16 @@
  */
 package de.carne.test.util;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import de.carne.util.SystemProperties;
 
 /**
  * Test {@linkplain SystemProperties} class.
  */
-public class SystemPropertiesTest {
+class SystemPropertiesTest {
 
 	private static final String KEY_UNDEFINED = "sysprop.undefined";
 	private static final String KEY_EMPTY = "sysprop.empty";
@@ -36,11 +36,8 @@ public class SystemPropertiesTest {
 	private static final String KEY_LONG_0 = "sysprop.long.zero";
 	private static final String KEY_LONG_42 = "sysprop.long.42";
 
-	/**
-	 * Setup the necessary system properties.
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() {
+	@BeforeAll
+	static void setUpSystemProperties() {
 		System.setProperty(KEY_EMPTY, "");
 		System.setProperty(KEY_BOOLEAN_TRUE, Boolean.TRUE.toString());
 		System.setProperty(KEY_BOOLEAN_FALSE, Boolean.FALSE.toString());
@@ -50,40 +47,31 @@ public class SystemPropertiesTest {
 		System.setProperty(KEY_LONG_42, "42");
 	}
 
-	/**
-	 * Test boolean access functions.
-	 */
 	@Test
-	public void testBooleans() {
-		Assert.assertFalse(SystemProperties.booleanValue(KEY_UNDEFINED));
-		Assert.assertTrue(SystemProperties.booleanValue(KEY_BOOLEAN_TRUE, false));
-		Assert.assertFalse(SystemProperties.booleanValue(KEY_BOOLEAN_FALSE, true));
+	void testBooleans() {
+		Assertions.assertFalse(SystemProperties.booleanValue(KEY_UNDEFINED));
+		Assertions.assertTrue(SystemProperties.booleanValue(KEY_BOOLEAN_TRUE, false));
+		Assertions.assertFalse(SystemProperties.booleanValue(KEY_BOOLEAN_FALSE, true));
 	}
 
-	/**
-	 * Test int access functions.
-	 */
 	@Test
-	public void testInts() {
-		Assert.assertEquals(0, SystemProperties.intValue(KEY_UNDEFINED));
-		Assert.assertEquals(0, SystemProperties.intValue(KEY_BOOLEAN_TRUE));
-		Assert.assertEquals(0, SystemProperties.intValue(KEY_UNDEFINED, 0));
-		Assert.assertEquals(1, SystemProperties.intValue(KEY_UNDEFINED, 1));
-		Assert.assertEquals(0, SystemProperties.intValue(KEY_INT_0, -1));
-		Assert.assertEquals(42, SystemProperties.intValue(KEY_INT_42, -1));
+	void testInts() {
+		Assertions.assertEquals(0, SystemProperties.intValue(KEY_UNDEFINED));
+		Assertions.assertEquals(0, SystemProperties.intValue(KEY_BOOLEAN_TRUE));
+		Assertions.assertEquals(0, SystemProperties.intValue(KEY_UNDEFINED, 0));
+		Assertions.assertEquals(1, SystemProperties.intValue(KEY_UNDEFINED, 1));
+		Assertions.assertEquals(0, SystemProperties.intValue(KEY_INT_0, -1));
+		Assertions.assertEquals(42, SystemProperties.intValue(KEY_INT_42, -1));
 	}
 
-	/**
-	 * Test long access functions.
-	 */
 	@Test
-	public void testLongs() {
-		Assert.assertEquals(0l, SystemProperties.longValue(KEY_UNDEFINED));
-		Assert.assertEquals(0l, SystemProperties.longValue(KEY_BOOLEAN_TRUE));
-		Assert.assertEquals(0l, SystemProperties.longValue(KEY_UNDEFINED, 0));
-		Assert.assertEquals(1l, SystemProperties.longValue(KEY_UNDEFINED, 1));
-		Assert.assertEquals(0l, SystemProperties.longValue(KEY_LONG_0, -1));
-		Assert.assertEquals(42l, SystemProperties.longValue(KEY_LONG_42, -1));
+	void testLongs() {
+		Assertions.assertEquals(0l, SystemProperties.longValue(KEY_UNDEFINED));
+		Assertions.assertEquals(0l, SystemProperties.longValue(KEY_BOOLEAN_TRUE));
+		Assertions.assertEquals(0l, SystemProperties.longValue(KEY_UNDEFINED, 0));
+		Assertions.assertEquals(1l, SystemProperties.longValue(KEY_UNDEFINED, 1));
+		Assertions.assertEquals(0l, SystemProperties.longValue(KEY_LONG_0, -1));
+		Assertions.assertEquals(42l, SystemProperties.longValue(KEY_LONG_42, -1));
 	}
 
 }

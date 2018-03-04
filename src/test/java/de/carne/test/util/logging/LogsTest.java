@@ -24,65 +24,56 @@ import java.util.logging.LogManager;
 import java.util.logging.SimpleFormatter;
 import java.util.logging.XMLFormatter;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import de.carne.io.IOUtil;
 import de.carne.util.logging.Config;
 import de.carne.util.logging.LocalizedFilter;
 import de.carne.util.logging.Log;
 import de.carne.util.logging.LogLevel;
-import de.carne.util.logging.LogRecorder;
 import de.carne.util.logging.Logs;
 
 /**
  * Test {@linkplain Logs} class.
  */
-public class LogsTest {
+class LogsTest {
 
-	/**
-	 * Setup the necessary system properties.
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() {
+	@BeforeAll
+	static void setUpSystemProperties() {
 		System.setProperty("java.util.logging.config.class", Config.class.getName());
 	}
 
-	/**
-	 * Test {@linkplain Logs#readConfig(String)} with valid configs as well as the {@linkplain LogRecorder}.
-	 *
-	 * @throws IOException if an I/O error occurs.
-	 */
 	@Test
-	public void testLogConfigSuccess() throws IOException {
+	void testLogConfigSuccess() throws IOException {
 		Log log = new Log();
 
-		Assert.assertTrue(log.isWarningLoggable());
-		Assert.assertFalse(log.isInfoLoggable());
+		Assertions.assertTrue(log.isWarningLoggable());
+		Assertions.assertFalse(log.isInfoLoggable());
 		LoggingTests.logTestMessages(log, 6);
 		Logs.readConfig("logging-notice.properties");
-		Assert.assertTrue(log.isNoticeLoggable());
-		Assert.assertFalse(log.isErrorLoggable());
+		Assertions.assertTrue(log.isNoticeLoggable());
+		Assertions.assertFalse(log.isErrorLoggable());
 		LoggingTests.logTestMessages(log, 2);
 		Logs.readConfig("logging-error.properties");
-		Assert.assertTrue(log.isErrorLoggable());
-		Assert.assertFalse(log.isWarningLoggable());
+		Assertions.assertTrue(log.isErrorLoggable());
+		Assertions.assertFalse(log.isWarningLoggable());
 		LoggingTests.logTestMessages(log, 4);
 		Logs.readConfig("logging-warning.properties");
-		Assert.assertTrue(log.isWarningLoggable());
-		Assert.assertFalse(log.isInfoLoggable());
+		Assertions.assertTrue(log.isWarningLoggable());
+		Assertions.assertFalse(log.isInfoLoggable());
 		LoggingTests.logTestMessages(log, 6);
 		Logs.readConfig("logging-info.properties");
-		Assert.assertTrue(log.isInfoLoggable());
-		Assert.assertFalse(log.isDebugLoggable());
+		Assertions.assertTrue(log.isInfoLoggable());
+		Assertions.assertFalse(log.isDebugLoggable());
 		LoggingTests.logTestMessages(log, 8);
 		Logs.readConfig("logging-debug.properties");
-		Assert.assertTrue(log.isDebugLoggable());
-		Assert.assertFalse(log.isTraceLoggable());
+		Assertions.assertTrue(log.isDebugLoggable());
+		Assertions.assertFalse(log.isTraceLoggable());
 		LoggingTests.logTestMessages(log, 10);
 		Logs.readConfig("logging-trace.properties");
-		Assert.assertTrue(log.isTraceLoggable());
+		Assertions.assertTrue(log.isTraceLoggable());
 		LoggingTests.logTestMessages(log, 12);
 
 		File configFile = Files.createTempFile(getClass().getName(), ".properties").toFile();
@@ -92,61 +83,51 @@ public class LogsTest {
 		IOUtil.copyUrl(configFile, getClass().getResource("/logging-warning.properties"));
 
 		Logs.readConfig(configFile.getAbsolutePath());
-		Assert.assertTrue(log.isWarningLoggable());
-		Assert.assertFalse(log.isInfoLoggable());
+		Assertions.assertTrue(log.isWarningLoggable());
+		Assertions.assertFalse(log.isInfoLoggable());
 		LoggingTests.logTestMessages(log, 6);
 	}
 
-	/**
-	 * Test {@linkplain Logs#readConfig(String)} with non-existent config.
-	 *
-	 * @throws IOException if an I/O error occurs.
-	 */
-	@Test(expected = FileNotFoundException.class)
-	public void testLogConfigFailure() throws IOException {
-		Logs.readConfig("logging-unknown.properties");
+	@Test
+	void testLogConfigFailure() {
+		Assertions.assertThrows(FileNotFoundException.class, () -> {
+			Logs.readConfig("logging-unknown.properties");
+		});
 	}
 
-	/**
-	 * Test {@linkplain LogManager} properties access.
-	 *
-	 * @throws IOException if an I/O error occurs.
-	 */
 	@Test
-	public void testLogManagerProperties() throws IOException {
+	void testLogManagerProperties() throws IOException {
 		Logs.readConfig(Logs.CONFIG_DEFAULT);
 
 		LogManager manager = LogManager.getLogManager();
 		String propertyBase = getClass().getName();
 
-		Assert.assertTrue(Logs.getBooleanProperty(manager, propertyBase + ".booleanTrue", false));
-		Assert.assertFalse(Logs.getBooleanProperty(manager, propertyBase + ".booleanFalse", true));
-		Assert.assertTrue(Logs.getBooleanProperty(manager, propertyBase + ".booleanUnknown", true));
-		Assert.assertFalse(Logs.getBooleanProperty(manager, propertyBase + ".invalid", true));
+		Assertions.assertTrue(Logs.getBooleanProperty(manager, propertyBase + ".booleanTrue", false));
+		Assertions.assertFalse(Logs.getBooleanProperty(manager, propertyBase + ".booleanFalse", true));
+		Assertions.assertTrue(Logs.getBooleanProperty(manager, propertyBase + ".booleanUnknown", true));
+		Assertions.assertFalse(Logs.getBooleanProperty(manager, propertyBase + ".invalid", true));
 
-		Assert.assertEquals(LogLevel.LEVEL_DEBUG,
+		Assertions.assertEquals(LogLevel.LEVEL_DEBUG,
 				Logs.getLevelProperty(manager, propertyBase + ".levelDebug", LogLevel.LEVEL_ERROR));
-		Assert.assertEquals(LogLevel.LEVEL_WARNING,
+		Assertions.assertEquals(LogLevel.LEVEL_WARNING,
 				Logs.getLevelProperty(manager, propertyBase + ".levelWarning", LogLevel.LEVEL_ERROR));
-		Assert.assertEquals(LogLevel.LEVEL_ERROR,
+		Assertions.assertEquals(LogLevel.LEVEL_ERROR,
 				Logs.getLevelProperty(manager, propertyBase + ".levelUnknown", LogLevel.LEVEL_ERROR));
-		Assert.assertEquals(LogLevel.LEVEL_DEBUG,
+		Assertions.assertEquals(LogLevel.LEVEL_DEBUG,
 				Logs.getLevelProperty(manager, propertyBase + ".invalid", LogLevel.LEVEL_DEBUG));
 
-		Assert.assertTrue(Logs.getFilterProperty(manager, propertyBase + ".filter", null) instanceof LocalizedFilter);
-		Assert.assertNull(Logs.getFilterProperty(manager, propertyBase + ".invalid", null));
+		Assertions
+				.assertTrue(Logs.getFilterProperty(manager, propertyBase + ".filter", null) instanceof LocalizedFilter);
+		Assertions.assertNull(Logs.getFilterProperty(manager, propertyBase + ".invalid", null));
 
-		Assert.assertTrue(Logs.getFormatterProperty(manager, propertyBase + ".formatter",
+		Assertions.assertTrue(Logs.getFormatterProperty(manager, propertyBase + ".formatter",
 				new SimpleFormatter()) instanceof XMLFormatter);
-		Assert.assertTrue(Logs.getFormatterProperty(manager, propertyBase + ".invalid",
+		Assertions.assertTrue(Logs.getFormatterProperty(manager, propertyBase + ".invalid",
 				new SimpleFormatter()) instanceof SimpleFormatter);
 	}
 
-	/**
-	 * Test {@linkplain Logs#flush()} function.
-	 */
 	@Test
-	public void testFlush() {
+	void testFlush() {
 		Logs.flush();
 	}
 

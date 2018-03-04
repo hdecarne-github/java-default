@@ -16,30 +16,27 @@
  */
 package de.carne.test.util.logging;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.util.logging.Log;
 
 /**
  * Test {@linkplain Log} class.
  */
-public class LogTest {
+class LogTest {
 
-	/**
-	 * Test logger names.
-	 */
 	@Test
-	public void testLogNames() {
+	void testLogNames() {
 		Log defaultLog = new Log();
 
-		Assert.assertEquals(getClass().getName(), defaultLog.logger().getName());
-		Assert.assertEquals(getClass().getName(), defaultLog.toString());
+		Assertions.assertEquals(getClass().getName(), defaultLog.logger().getName());
+		Assertions.assertEquals(getClass().getName(), defaultLog.toString());
 
 		Log customLog = new Log(Object.class);
 
-		Assert.assertEquals(Object.class.getName(), customLog.logger().getName());
-		Assert.assertEquals(Object.class.getName(), customLog.toString());
+		Assertions.assertEquals(Object.class.getName(), customLog.logger().getName());
+		Assertions.assertEquals(Object.class.getName(), customLog.toString());
 	}
 
 }

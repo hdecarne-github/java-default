@@ -16,41 +16,36 @@
  */
 package de.carne.test.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.util.Late;
 
 /**
  * Test {@linkplain Late} class.
  */
-public class LateTest {
+class LateTest {
 
-	/**
-	 * Test initialized access.
-	 */
 	@Test
-	public void testInitializedAccess() {
+	void testInitializedAccess() {
 		Late<LateTest> late = new Late<>();
 
-		Assert.assertEquals("<not initialized>", late.toString());
+		Assertions.assertEquals("<not initialized>", late.toString());
 
 		late.set(this);
 
-		Assert.assertEquals(this, late.get());
-		Assert.assertEquals(toString(), late.toString());
+		Assertions.assertEquals(this, late.get());
+		Assertions.assertEquals(toString(), late.toString());
 	}
 
-	/**
-	 * Test uninitialized access.
-	 */
-	@Test(expected = IllegalStateException.class)
-	public void testInvalidAccess() {
+	@Test
+	void testInvalidAccess() {
 		Late<LateTest> late = new Late<>();
 
-		Assert.assertEquals("<not initialized>", late.toString());
-
-		late.get();
+		Assertions.assertEquals("<not initialized>", late.toString());
+		Assertions.assertThrows(IllegalStateException.class, () -> {
+			late.get();
+		});
 	}
 
 	@Override

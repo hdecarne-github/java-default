@@ -19,33 +19,31 @@ package de.carne.test.util.function;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.util.function.FunctionException;
 
 /**
  * Test {@linkplain FunctionException} class.
  */
-public class FunctionExceptionTest {
+class FunctionExceptionTest {
 
-	/**
-	 * Test {@linkplain FunctionException#rethrow(Class)}.
-	 * 
-	 * @throws IOException if test succeeds.
-	 */
-	@Test(expected = IOException.class)
-	public void testRethrow() throws IOException {
-		try {
-			Arrays.asList("An exception occurred").stream().forEach(message -> {
-				try {
-					throw new IOException(message);
-				} catch (IOException e) {
-					throw new FunctionException(e);
-				}
-			});
-		} catch (FunctionException e) {
-			throw e.rethrow(IOException.class);
-		}
+	@Test
+	void testRethrow() {
+		Assertions.assertThrows(IOException.class, () -> {
+			try {
+				Arrays.asList("An exception occurred").stream().forEach(message -> {
+					try {
+						throw new IOException(message);
+					} catch (IOException e) {
+						throw new FunctionException(e);
+					}
+				});
+			} catch (FunctionException e) {
+				throw e.rethrow(IOException.class);
+			}
+		});
 	}
 
 }
