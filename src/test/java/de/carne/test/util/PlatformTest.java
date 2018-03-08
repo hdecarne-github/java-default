@@ -31,9 +31,8 @@ class PlatformTest {
 		System.out.println("OS_ARCH: " + Platform.SYSTEM_OS_ARCH);
 		System.out.println("OS_NAME: " + Platform.SYSTEM_OS_NAME);
 		System.out.println("OS_VERSION: " + Platform.SYSTEM_OS_VERSION);
-		System.out.println("SWT_TOOLKIT: " + Platform.SWT_TOOLKIT);
 
-		boolean[] osFlags = new boolean[] { Platform.IS_LINUX, Platform.IS_MAC_OS, Platform.IS_WINDOWS };
+		boolean[] osFlags = new boolean[] { Platform.IS_LINUX, Platform.IS_MACOS, Platform.IS_WINDOWS };
 		int matchIndex = -1;
 
 		for (int osFlagIndex = 0; osFlagIndex < osFlags.length; osFlagIndex++) {

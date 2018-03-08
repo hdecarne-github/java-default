@@ -50,40 +50,11 @@ public final class Platform {
 	/**
 	 * Operating System: macOS
 	 */
-	public static final boolean IS_MAC_OS = SYSTEM_OS_NAME.startsWith("Mac OS X");
+	public static final boolean IS_MACOS = SYSTEM_OS_NAME.startsWith("Mac OS X");
 
 	/**
-	 * Operating System: WINDOWS
+	 * Operating System: Windows
 	 */
 	public static final boolean IS_WINDOWS = SYSTEM_OS_NAME.startsWith("Windows");
-
-	/**
-	 * Name of the SWT toolkit to use (as guessed from the OS information).
-	 */
-	public static final String SWT_TOOLKIT = determineSwtToolkit();
-
-	private static String determineSwtToolkit() {
-		StringBuilder toolkit = new StringBuilder();
-
-		if (IS_LINUX) {
-			toolkit.append("gtk-linux");
-		} else if (IS_MAC_OS) {
-			toolkit.append("cocoa-macosx");
-		} else if (IS_WINDOWS) {
-			toolkit.append("win32-win32");
-		} else {
-			// Do not fail low-level in case of unknown toolkit
-			toolkit.append("unknown-unknown");
-		}
-		if ("x86".equals(SYSTEM_OS_ARCH) || "x86_32".equals(SYSTEM_OS_ARCH)) {
-			toolkit.append("-x86");
-		} else if ("x86_64".equals(SYSTEM_OS_ARCH)) {
-			toolkit.append("-x86_64");
-		} else {
-			// Do not fail low-level in case of unknown toolkit
-			toolkit.append("uknown");
-		}
-		return toolkit.toString();
-	}
 
 }
