@@ -129,7 +129,10 @@ public class FilePreferencesFactory implements PreferencesFactory {
 		String systemName;
 
 		try {
-			systemName = InetAddress.getLocalHost().getHostName();
+			String hostname = InetAddress.getLocalHost().getHostName();
+			int domainIndex = hostname.indexOf('.');
+
+			systemName = (domainIndex > 0 ? hostname.substring(0, domainIndex) : hostname);
 		} catch (UnknownHostException e) {
 			Exceptions.ignore(e);
 			systemName = "localhost";
