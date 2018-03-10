@@ -34,14 +34,16 @@ class LateTest {
 
 		late.set(this);
 
-		Assertions.assertEquals(this, late.get());
+		Assertions.assertTrue(late.toOptional().isPresent());
 		Assertions.assertEquals(toString(), late.toString());
+		Assertions.assertEquals(this, late.get());
 	}
 
 	@Test
 	void testInvalidAccess() {
 		Late<LateTest> late = new Late<>();
 
+		Assertions.assertFalse(late.toOptional().isPresent());
 		Assertions.assertEquals("<not initialized>", late.toString());
 		Assertions.assertThrows(IllegalStateException.class, () -> {
 			late.get();

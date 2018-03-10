@@ -16,6 +16,7 @@
  */
 package de.carne.util;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import de.carne.check.Nullable;
@@ -31,10 +32,10 @@ public class Late<T> implements Supplier<T> {
 	private T object = null;
 
 	/**
-	 * Set/initialize the object.
+	 * Sets/initializes the object.
 	 *
-	 * @param object The object to set.
-	 * @return The set object.
+	 * @param object the object to set.
+	 * @return the set object.
 	 */
 	public synchronized T set(T object) {
 		this.object = object;
@@ -42,11 +43,11 @@ public class Late<T> implements Supplier<T> {
 	}
 
 	/**
-	 * Get the object.
+	 * Gets the object.
 	 * <p>
 	 * If the object has not yet been set/initialized an {@linkplain IllegalStateException} will be thrown.
 	 *
-	 * @return The object.
+	 * @return the object.
 	 */
 	@Override
 	public synchronized T get() {
@@ -56,6 +57,15 @@ public class Late<T> implements Supplier<T> {
 			throw new IllegalStateException("Not initialized");
 		}
 		return checkedObject;
+	}
+
+	/**
+	 * Wraps the object in an {@linkplain Optional}.
+	 *
+	 * @return the {@linkplain Optional} wrapped object.
+	 */
+	public Optional<T> toOptional() {
+		return Optional.ofNullable(this.object);
 	}
 
 	@Override

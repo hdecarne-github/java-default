@@ -45,8 +45,10 @@ class LazyTest {
 
 		Lazy<LazyTest> lazy = new Lazy<>(initializer);
 
+		Assertions.assertFalse(lazy.toOptional().isPresent());
 		Assertions.assertEquals("<not initialized>", lazy.toString());
 		Assertions.assertEquals(this, lazy.get());
+		Assertions.assertTrue(lazy.toOptional().isPresent());
 		Assertions.assertEquals(this, lazy.get());
 		Assertions.assertEquals(toString(), lazy.toString());
 	}
@@ -56,6 +58,7 @@ class LazyTest {
 		Supplier<LazyTest> initializer = () -> null;
 		Lazy<LazyTest> lazy = new Lazy<>(initializer);
 
+		Assertions.assertFalse(lazy.toOptional().isPresent());
 		Assertions.assertEquals("<not initialized>", lazy.toString());
 		Assertions.assertThrows(NullPointerException.class, () -> {
 			lazy.get();

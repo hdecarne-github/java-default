@@ -16,6 +16,7 @@
  */
 package de.carne.util;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import de.carne.check.Check;
@@ -57,6 +58,15 @@ public class Lazy<T> implements Supplier<T> {
 			checkedObject = this.object = Check.notNull(this.initializer.get());
 		}
 		return checkedObject;
+	}
+
+	/**
+	 * Wraps the object in an {@linkplain Optional}.
+	 *
+	 * @return the {@linkplain Optional} wrapped object.
+	 */
+	public Optional<T> toOptional() {
+		return Optional.ofNullable(this.object);
 	}
 
 	@Override
