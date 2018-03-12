@@ -113,15 +113,19 @@ public final class Exceptions {
 	 * @return The {@linkplain Throwable}'s message or it's type (if no message is available).
 	 */
 	public static String toString(Throwable e) {
-		String string = e.getLocalizedMessage();
+		StringBuilder buffer = new StringBuilder();
 
-		if (Strings.isEmpty(string)) {
-			string = e.getMessage();
-			if (Strings.isEmpty(string)) {
-				string = e.getClass().getTypeName();
-			}
+		buffer.append(e.getClass().getName());
+
+		String message = e.getLocalizedMessage();
+
+		if (Strings.isEmpty(message)) {
+			message = e.getMessage();
 		}
-		return string;
+		if (!Strings.isEmpty(message)) {
+			buffer.append(": ").append(message);
+		}
+		return buffer.toString();
 	}
 
 }

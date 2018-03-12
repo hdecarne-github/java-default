@@ -80,12 +80,13 @@ class ExceptionsTest {
 	void testToString() {
 		Throwable noMessageException = new IOException();
 
-		Assertions.assertEquals(noMessageException.getClass().getTypeName(), Exceptions.toString(noMessageException));
+		Assertions.assertEquals(noMessageException.getClass().getName(), Exceptions.toString(noMessageException));
 
 		String message = "An error occurred";
 		Throwable messageException = new IOException(message);
 
-		Assertions.assertEquals(message, Exceptions.toString(messageException));
+		Assertions.assertEquals(messageException.getClass().getName() + ": " + message,
+				Exceptions.toString(messageException));
 	}
 
 }
