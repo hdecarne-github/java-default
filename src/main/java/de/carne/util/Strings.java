@@ -54,7 +54,7 @@ public final class Strings {
 	/**
 	 * Makes sure a {@linkplain String} is not {@code null}.
 	 *
-	 * @param s the {@linkplain String} to secure.
+	 * @param s the {@linkplain String} to check.
 	 * @return the submitted {@linkplain String} or {@code ""} if {@code null} was submitted.
 	 */
 	public static String safe(@Nullable String s) {
@@ -64,11 +64,22 @@ public final class Strings {
 	/**
 	 * Makes sure a {@linkplain String} is not {@code null} and trimmed.
 	 *
-	 * @param s the {@linkplain String} to secure.
+	 * @param s the {@linkplain String} to trim.
 	 * @return the submitted {@linkplain String} in trimmed form or {@code ""} if {@code null} was submitted.
 	 */
 	public static String safeTrim(@Nullable String s) {
 		return (s != null ? s.trim() : "");
+	}
+
+	/**
+	 * Makes sure a {@linkplain String} is either {@code null} or trimmed.
+	 *
+	 * @param s the {@linkplain String} to trim.
+	 * @return the submitted {@linkplain String} in trimmed form or {@code null} if {@code null} was submitted.
+	 */
+	@Nullable
+	public static String trim(@Nullable String s) {
+		return (s != null ? s.trim() : s);
 	}
 
 	private static char[] hexCharsUpper = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',

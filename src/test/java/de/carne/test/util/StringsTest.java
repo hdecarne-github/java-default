@@ -27,7 +27,7 @@ import de.carne.util.Strings;
 class StringsTest {
 
 	@Test
-	void testEmptyChecks() {
+	void testIsEmpty() {
 		Assertions.assertTrue(Strings.isEmpty(null));
 		Assertions.assertTrue(Strings.isEmpty(""));
 		Assertions.assertFalse(Strings.isEmpty(" "));
@@ -37,13 +37,25 @@ class StringsTest {
 	}
 
 	@Test
-	void testSafeFunctions() {
+	void testSafe() {
 		Assertions.assertEquals("", Strings.safe(null));
 		Assertions.assertEquals(" ", Strings.safe(" "));
+	}
+
+	@Test
+	void testSafeTrim() {
 		Assertions.assertEquals("", Strings.safeTrim(null));
 		Assertions.assertEquals("", Strings.safeTrim(""));
 		Assertions.assertEquals("", Strings.safeTrim(" "));
 		Assertions.assertEquals("test", Strings.safeTrim("test"));
+	}
+
+	@Test
+	void testTrim() {
+		Assertions.assertEquals(null, Strings.trim(null));
+		Assertions.assertEquals("", Strings.trim(""));
+		Assertions.assertEquals("", Strings.trim(" "));
+		Assertions.assertEquals("test", Strings.trim("test"));
 	}
 
 	@Test
