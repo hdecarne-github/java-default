@@ -28,11 +28,11 @@ public final class Strings {
 	}
 
 	/**
-	 * Check whether a {@linkplain String} is empty.
+	 * Checks whether a {@linkplain String} is empty.
 	 * <p>
 	 * A {@linkplain String} is considered empty if it is either {@code null} or of length {@code 0}.
 	 *
-	 * @param s The {@linkplain String} to check.
+	 * @param s the {@linkplain String} to check.
 	 * @return {@code true} if the string is empty.
 	 */
 	public static boolean isEmpty(@Nullable String s) {
@@ -40,11 +40,11 @@ public final class Strings {
 	}
 
 	/**
-	 * Check whether a {@linkplain String} is not empty.
+	 * Checks whether a {@linkplain String} is not empty.
 	 * <p>
 	 * A {@linkplain String} is considered empty if it is either {@code null} or of length {@code 0}.
 	 *
-	 * @param s The {@linkplain String} to check.
+	 * @param s the {@linkplain String} to check.
 	 * @return {@code true} if the string is not empty.
 	 */
 	public static boolean notEmpty(@Nullable String s) {
@@ -52,20 +52,20 @@ public final class Strings {
 	}
 
 	/**
-	 * Make sure a {@linkplain String} is not {@code null}.
+	 * Makes sure a {@linkplain String} is not {@code null}.
 	 *
-	 * @param s The {@linkplain String} to secure.
-	 * @return The submitted {@linkplain String} or {@code ""} if {@code null} was submitted.
+	 * @param s the {@linkplain String} to secure.
+	 * @return the submitted {@linkplain String} or {@code ""} if {@code null} was submitted.
 	 */
 	public static String safe(@Nullable String s) {
 		return (s != null ? s : "");
 	}
 
 	/**
-	 * Make sure a {@linkplain String} is not {@code null} and trimmed.
+	 * Makes sure a {@linkplain String} is not {@code null} and trimmed.
 	 *
-	 * @param s The {@linkplain String} to secure.
-	 * @return The submitted {@linkplain String} in trimmred form or {@code ""} if {@code null} was submitted.
+	 * @param s the {@linkplain String} to secure.
+	 * @return the submitted {@linkplain String} in trimmed form or {@code ""} if {@code null} was submitted.
 	 */
 	public static String safeTrim(@Nullable String s) {
 		return (s != null ? s.trim() : "");
@@ -75,10 +75,10 @@ public final class Strings {
 			'F' };
 
 	/**
-	 * Encode a {@linkplain CharSequence} to a pure ASCII representation by quoting non printable characters.
+	 * Encodes a {@linkplain CharSequence} to a pure ASCII representation by quoting non printable characters.
 	 *
-	 * @param chars The {@linkplain CharSequence} to encode.
-	 * @return The encoded characters.
+	 * @param chars the {@linkplain CharSequence} to encode.
+	 * @return the encoded characters.
 	 */
 	public static String encode(CharSequence chars) {
 		StringBuilder buffer = new StringBuilder();
@@ -118,10 +118,10 @@ public final class Strings {
 	}
 
 	/**
-	 * Decode a {@linkplain CharSequence} previously encoded via {@linkplain #encode(CharSequence)}.
+	 * Decodes a {@linkplain CharSequence} previously encoded via {@linkplain #encode(CharSequence)}.
 	 *
-	 * @param chars The {@linkplain CharSequence} to decode.
-	 * @return The decoded characters.
+	 * @param chars the {@linkplain CharSequence} to decode.
+	 * @return the decoded characters.
 	 */
 	public static String decode(CharSequence chars) {
 		CharDecoder decoder = new CharDecoder();
