@@ -121,23 +121,21 @@ public final class Check {
 	/**
 	 * Throw an {@linkplain IllegalStateException} to indicate that an unexpected execution state occurred.
 	 *
-	 * @param <T> The generic return type.
 	 * @return Nothing (function never returns).
 	 * @throws IllegalStateException any time this function is called.
 	 */
-	public static <T> T fail() {
+	public static IllegalStateException fail() {
 		throw new IllegalStateException();
 	}
 
 	/**
 	 * Throw an {@linkplain IllegalStateException} to indicate that an unexpected execution state occurred.
 	 *
-	 * @param <T> The generic return type.
 	 * @param message The message to issue if the check fails.
 	 * @return Nothing (function never returns).
 	 * @throws IllegalStateException any time this function is called.
 	 */
-	public static <T> T fail(String message) {
+	public static IllegalStateException fail(String message) {
 		throw new IllegalStateException(message);
 	}
 
