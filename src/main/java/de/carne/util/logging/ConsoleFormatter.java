@@ -89,6 +89,7 @@ public class ConsoleFormatter extends Formatter {
 			buffer.append(record.getLoggerName());
 			buffer.append(": ");
 			buffer.append(record.getMessage());
+			buffer.append(System.lineSeparator());
 			formatThrown(buffer, record.getThrown());
 		}
 		return buffer.toString();
@@ -135,8 +136,6 @@ public class ConsoleFormatter extends Formatter {
 
 	private StringBuilder formatThrown(StringBuilder buffer, @Nullable Throwable thrown) {
 		if (thrown != null) {
-			buffer.append(System.lineSeparator());
-
 			thrown.printStackTrace(new PrintWriter(new Writer() {
 
 				@Override
