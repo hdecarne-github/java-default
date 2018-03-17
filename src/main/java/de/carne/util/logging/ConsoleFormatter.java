@@ -47,6 +47,7 @@ public class ConsoleFormatter extends Formatter {
 	private final String levelStyleWarning;
 	private final String levelStyleError;
 	private final String levelStyleNotice;
+	private final String exceptionStyle;
 
 	/**
 	 * Constructs new {@linkplain ConsoleFormatter} instance.
@@ -71,6 +72,8 @@ public class ConsoleFormatter extends Formatter {
 				+ Logs.getStringProperty(manager, propertyBase + ".levelStyleError", "91m");
 		this.levelStyleNotice = ANSI_STYLE_PREFIX
 				+ Logs.getStringProperty(manager, propertyBase + ".levelStyleNotice", "32m");
+		this.exceptionStyle = ANSI_STYLE_PREFIX
+				+ Logs.getStringProperty(manager, propertyBase + ".exceptionStyle", "37m");
 	}
 
 	private static boolean enableAnsiOutputDefault() {
@@ -126,16 +129,19 @@ public class ConsoleFormatter extends Formatter {
 		}
 		if (this.enableAnsiOutput) {
 			buffer.append(levelStyle);
-			buffer.append(levelString);
+		}
+		buffer.append(levelString);
+		if (this.enableAnsiOutput) {
 			buffer.append(ANSI_RESET);
-		} else {
-			buffer.append(levelString);
 		}
 		return buffer;
 	}
 
 	private StringBuilder formatThrown(StringBuilder buffer, @Nullable Throwable thrown) {
 		if (thrown != null) {
+			if (this.enableAnsiOutput) {
+				buffer.append(this.exceptionStyle);
+			}
 			thrown.printStackTrace(new PrintWriter(new Writer() {
 
 				@Override
@@ -154,6 +160,9 @@ public class ConsoleFormatter extends Formatter {
 				}
 
 			}));
+			if (this.enableAnsiOutput) {
+				buffer.append(ANSI_RESET);
+			}
 		}
 		return buffer;
 	}
