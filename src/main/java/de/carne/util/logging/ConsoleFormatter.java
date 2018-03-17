@@ -91,7 +91,7 @@ public class ConsoleFormatter extends Formatter {
 			buffer.append(' ');
 			buffer.append(record.getLoggerName());
 			buffer.append(": ");
-			buffer.append(record.getMessage());
+			buffer.append(formatMessage(record));
 			buffer.append(System.lineSeparator());
 			formatThrown(buffer, record.getThrown());
 		}
