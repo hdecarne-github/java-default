@@ -38,6 +38,9 @@ public class Late<T> implements Supplier<T> {
 	 * @return the set object.
 	 */
 	public synchronized T set(T object) {
+		if (this.object != null) {
+			throw new IllegalStateException("Already initialized");
+		}
 		this.object = object;
 		return object;
 	}
