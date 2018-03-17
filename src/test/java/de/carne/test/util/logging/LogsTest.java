@@ -102,6 +102,9 @@ class LogsTest {
 		LogManager manager = LogManager.getLogManager();
 		String propertyBase = getClass().getName();
 
+		Assertions.assertEquals("Invalid", Logs.getStringProperty(manager, propertyBase + ".invalid", ""));
+		Assertions.assertEquals("Unknown", Logs.getStringProperty(manager, propertyBase + ".unnown", "Unknown"));
+
 		Assertions.assertTrue(Logs.getBooleanProperty(manager, propertyBase + ".booleanTrue", false));
 		Assertions.assertFalse(Logs.getBooleanProperty(manager, propertyBase + ".booleanFalse", true));
 		Assertions.assertTrue(Logs.getBooleanProperty(manager, propertyBase + ".booleanUnknown", true));
