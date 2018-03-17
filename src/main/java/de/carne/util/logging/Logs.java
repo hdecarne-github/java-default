@@ -59,9 +59,11 @@ public final class Logs {
 			String loggerName = loggerNames.nextElement();
 			Logger logger = manager.getLogger(loggerName);
 
-			for (Handler handler : logger.getHandlers()) {
-				if (handlers.add(handler)) {
-					handler.flush();
+			if (logger != null) {
+				for (Handler handler : logger.getHandlers()) {
+					if (handlers.add(handler)) {
+						handler.flush();
+					}
 				}
 			}
 		}
