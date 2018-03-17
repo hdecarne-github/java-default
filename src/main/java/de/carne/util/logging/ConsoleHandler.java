@@ -24,10 +24,9 @@ import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;
 
 import de.carne.check.Nullable;
-import de.carne.util.Platform;
 
 /**
- * An enhanced console handler which makes use of the {@linkplain Console} class.
+ * A {@linkplain java.util.logging.Handler} which makes use of the {@linkplain Console} class.
  * <p>
  * If the current VM has a {@linkplain Console} attached any log messages issued to this handler will be written to this
  * console. If the current VM has no {@linkplain Console} attached the behavior depends on the handler's
@@ -36,15 +35,7 @@ import de.carne.util.Platform;
  */
 public class ConsoleHandler extends StreamHandler {
 
-	private static final String ANSI_SEQ_NOTICE = "\033[1;37m";
-	private static final String ANSI_SEQ_ERROR = "\033[0;31m";
-	private static final String ANSI_SEQ_WARNING = "\033[0;33m";
-	private static final String ANSI_SEQ_INFO = "\033[0;37m";
-	private static final String ANSI_SEQ_DEBUG = "\033[2;37m";
-	private static final String ANSI_SEQ_RESET = "\033[0m";
-
 	private final boolean consoleOnly;
-	private final boolean enableAnsiOutput;
 
 	/**
 	 * Construct {@linkplain ConsoleHandler}.
@@ -55,8 +46,6 @@ public class ConsoleHandler extends StreamHandler {
 		String propertyBase = getClass().getName();
 
 		this.consoleOnly = Logs.getBooleanProperty(manager, propertyBase + ".consoleOnly", false);
-		this.enableAnsiOutput = Logs.getBooleanProperty(manager, propertyBase + ".enableAnsiOutput", true)
-				&& isAnsiOutputSupported();
 		setOutputStream(System.out);
 	}
 
@@ -86,13 +75,7 @@ public class ConsoleHandler extends StreamHandler {
 			PrintWriter writer = console.writer();
 
 			try {
-				if (this.enableAnsiOutput) {
-					writer.write(level2AnsiSeq(record.getLevel().intValue()));
-				}
 				writer.write(message);
-				if (this.enableAnsiOutput) {
-					writer.write(ANSI_SEQ_RESET);
-				}
 				if (flush) {
 					writer.flush();
 				}
@@ -100,23 +83,6 @@ public class ConsoleHandler extends StreamHandler {
 				reportError(null, e, ErrorManager.WRITE_FAILURE);
 			}
 		}
-	}
-
-	private String level2AnsiSeq(int levelValue) {
-		String ansiSeq;
-
-		if (levelValue >= LogLevel.LEVEL_NOTICE.intValue()) {
-			ansiSeq = ANSI_SEQ_NOTICE;
-		} else if (levelValue >= LogLevel.LEVEL_ERROR.intValue()) {
-			ansiSeq = ANSI_SEQ_ERROR;
-		} else if (levelValue >= LogLevel.LEVEL_WARNING.intValue()) {
-			ansiSeq = ANSI_SEQ_WARNING;
-		} else if (levelValue >= LogLevel.LEVEL_INFO.intValue()) {
-			ansiSeq = ANSI_SEQ_INFO;
-		} else {
-			ansiSeq = ANSI_SEQ_DEBUG;
-		}
-		return ansiSeq;
 	}
 
 	@Override
@@ -137,10 +103,6 @@ public class ConsoleHandler extends StreamHandler {
 	@Override
 	public synchronized void close() {
 		flush();
-	}
-
-	private static boolean isAnsiOutputSupported() {
-		return (Platform.IS_LINUX || Platform.IS_MACOS);
 	}
 
 }

@@ -48,7 +48,7 @@ public final class Logs {
 	}
 
 	/**
-	 * FLush all currently configured {@linkplain Handler} instance (e.g. during application exit).
+	 * FLushs all currently configured {@linkplain Handler} instance (e.g. during application exit).
 	 */
 	public static void flush() {
 		LogManager manager = LogManager.getLogManager();
@@ -85,9 +85,9 @@ public final class Logs {
 	public static final String CONFIG_DEBUG = "logging-debug.properties";
 
 	/**
-	 * Read and apply {@linkplain LogManager} configuration.
+	 * Reads and applies a {@linkplain LogManager} configuration.
 	 *
-	 * @param config The name of the configuration to read.
+	 * @param config the name of the configuration to read.
 	 * @throws IOException if an I/O error occurs while reading the configuration.
 	 */
 	public static void readConfig(String config) throws IOException {
@@ -114,12 +114,26 @@ public final class Logs {
 	}
 
 	/**
-	 * Get a {@code boolean} property from a {@linkplain LogManager}'s current configuration.
+	 * Gets a {@code String} property from a {@linkplain LogManager}'s current configuration.
 	 *
-	 * @param manager The {@linkplain LogManager} to get the configuration from.
-	 * @param name The property name to evaluate.
-	 * @param defaultValue The the default value to return in case the property is undefined.
-	 * @return The defined value or the default value if the property is undefined.
+	 * @param manager the {@linkplain LogManager} to get the configuration from.
+	 * @param name the property name to evaluate.
+	 * @param defaultValue the the default value to return in case the property is undefined.
+	 * @return the defined value or the default value if the property is undefined.
+	 */
+	public static String getStringProperty(LogManager manager, String name, String defaultValue) {
+		String property = manager.getProperty(name);
+
+		return (property != null ? property : defaultValue);
+	}
+
+	/**
+	 * Gets a {@code boolean} property from a {@linkplain LogManager}'s current configuration.
+	 *
+	 * @param manager the {@linkplain LogManager} to get the configuration from.
+	 * @param name the property name to evaluate.
+	 * @param defaultValue the the default value to return in case the property is undefined.
+	 * @return the defined value or the default value if the property is undefined.
 	 */
 	public static boolean getBooleanProperty(LogManager manager, String name, boolean defaultValue) {
 		String property = manager.getProperty(name);
@@ -132,12 +146,12 @@ public final class Logs {
 	}
 
 	/**
-	 * Get a {@linkplain Level} property from a {@linkplain LogManager}'s current configuration.
+	 * Gets a {@linkplain Level} property from a {@linkplain LogManager}'s current configuration.
 	 *
-	 * @param manager The {@linkplain LogManager} to get the configuration from.
-	 * @param name The property name to evaluate.
-	 * @param defaultValue The the default value to return in case the property is undefined.
-	 * @return The defined value or the default value if the property is undefined.
+	 * @param manager the {@linkplain LogManager} to get the configuration from.
+	 * @param name the property name to evaluate.
+	 * @param defaultValue the the default value to return in case the property is undefined.
+	 * @return the defined value or the default value if the property is undefined.
 	 */
 	public static Level getLevelProperty(LogManager manager, String name, LogLevel defaultValue) {
 		String property = manager.getProperty(name);
@@ -154,12 +168,12 @@ public final class Logs {
 	}
 
 	/**
-	 * Get a {@linkplain Filter} property from a {@linkplain LogManager}'s current configuration.
+	 * Gets a {@linkplain Filter} property from a {@linkplain LogManager}'s current configuration.
 	 *
-	 * @param manager The {@linkplain LogManager} to get the configuration from.
-	 * @param name The property name to evaluate.
-	 * @param defaultValue The the default value to return in case the property is undefined.
-	 * @return The defined value or the default value if the property is undefined.
+	 * @param manager the {@linkplain LogManager} to get the configuration from.
+	 * @param name the property name to evaluate.
+	 * @param defaultValue the the default value to return in case the property is undefined.
+	 * @return the defined value or the default value if the property is undefined.
 	 */
 	@Nullable
 	public static Filter getFilterProperty(LogManager manager, String name, @Nullable Filter defaultValue) {
@@ -178,12 +192,12 @@ public final class Logs {
 	}
 
 	/**
-	 * Get a {@linkplain Formatter} property from a {@linkplain LogManager}'s current configuration.
+	 * Gets a {@linkplain Formatter} property from a {@linkplain LogManager}'s current configuration.
 	 *
-	 * @param manager The {@linkplain LogManager} to get the configuration from.
-	 * @param name The property name to evaluate.
-	 * @param defaultValue The the default value to return in case the property is undefined.
-	 * @return The defined value or the default value if the property is undefined.
+	 * @param manager the {@linkplain LogManager} to get the configuration from.
+	 * @param name the property name to evaluate.
+	 * @param defaultValue the the default value to return in case the property is undefined.
+	 * @return the defined value or the default value if the property is undefined.
 	 */
 	public static Formatter getFormatterProperty(LogManager manager, String name, Formatter defaultValue) {
 		String property = manager.getProperty(name);
