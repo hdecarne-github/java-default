@@ -16,6 +16,9 @@
  */
 package de.carne.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.carne.check.Nullable;
 
 /**
@@ -80,6 +83,33 @@ public final class Strings {
 	@Nullable
 	public static String trim(@Nullable String s) {
 		return (s != null ? s.trim() : s);
+	}
+
+	/**
+	 * Splits a {@linkplain String} according to a given delimiter.
+	 *
+	 * @param s the {@linkplain String} to split.
+	 * @param delim the delimiter character to split at.
+	 * @param all whether to split at all occurrences of the delimiter character ({@code true}) or only at the first one
+	 *        ({@code false}).
+	 * @return the splitted sub-strings. The actual number of sub-strings depends on the actual occurrences of the
+	 *         delimiter character as well as the {@code all} flag:
+	 */
+	public static String[] split(String s, char delim, boolean all) {
+		List<String> splits = new ArrayList<>();
+		int splitIndex = -1;
+
+		while (true) {
+			int nextSplitIndex = (splitIndex == -1 || all ? s.indexOf(delim, splitIndex + 1) : -1);
+
+			if (nextSplitIndex < 0) {
+				splits.add(s.substring(splitIndex + 1));
+				break;
+			}
+			splits.add(s.substring(splitIndex + 1, nextSplitIndex));
+			splitIndex = nextSplitIndex;
+		}
+		return splits.toArray(new String[splits.size()]);
 	}
 
 	private static char[] hexCharsUpper = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',

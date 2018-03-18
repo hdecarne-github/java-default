@@ -59,6 +59,15 @@ class StringsTest {
 	}
 
 	@Test
+	void testSplit() {
+		Assertions.assertArrayEquals(new String[] { "l", "m=r" }, Strings.split("l=m=r", '=', false));
+		Assertions.assertArrayEquals(new String[] { "l", "m", "r" }, Strings.split("l=m=r", '=', true));
+		Assertions.assertArrayEquals(new String[] { "l" }, Strings.split("l", '=', true));
+		Assertions.assertArrayEquals(new String[] { "", "l" }, Strings.split("=l", '=', true));
+		Assertions.assertArrayEquals(new String[] { "l", "" }, Strings.split("l=", '=', true));
+	}
+
+	@Test
 	void testEncodeDecodeFunctions() {
 		String decoded = "\\\0\u08af\b\t\n\f\ra";
 		String encoded = "\\\\\\0\\u08AF\\b\\t\\n\\f\\ra";
