@@ -31,7 +31,7 @@ public final class Debug {
 	 * @return the calling method's name.
 	 */
 	public static String getCaller() {
-		StackTraceElement stes[] = new Exception().getStackTrace();
+		StackTraceElement[] stes = new Exception().getStackTrace();
 		String caller;
 
 		if (stes.length > 2) {
