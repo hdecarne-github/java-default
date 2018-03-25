@@ -41,7 +41,7 @@ class DebugTest {
 	void testFormatUsedMemory() {
 		String usedMemory = Debug.formatUsedMemory();
 
-		Assertions.assertTrue(Pattern.matches("\\d*\\.*\\d+ \\w+", usedMemory), "Unexpected: " + usedMemory);
+		Assertions.assertTrue(Pattern.matches("\\d*.*\\d+ \\w+", usedMemory), "Unexpected: " + usedMemory);
 	}
 
 }
