@@ -59,22 +59,6 @@ public final class Exceptions {
 	}
 
 	/**
-	 * Suppress a {@linkplain Throwable}.
-	 * <p>
-	 * This function attaches {@linkplain Throwable} as a suppressed exception and logs it using the trace log level.
-	 *
-	 * @param exception The {@linkplain Throwable} to suppress (may be {@code null}).
-	 * @param first The first (outer) {@linkplain Throwable} suppressing the one above.
-	 * @see Throwable#addSuppressed(Throwable)
-	 */
-	public static void suppress(@Nullable Throwable exception, Throwable first) {
-		if (exception != null) {
-			LOG.trace(exception, "Suppressed exception: {0}", exception.getClass().getTypeName());
-			first.addSuppressed(exception);
-		}
-	}
-
-	/**
 	 * Warn about a {@linkplain Throwable}.
 	 * <p>
 	 * This function logs the {@linkplain Throwable} using the warning log level and discards it.

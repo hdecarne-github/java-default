@@ -57,12 +57,6 @@ class ExceptionsTest {
 	}
 
 	@Test
-	void testSuppress() {
-		Exceptions.suppress(null, new NullPointerException());
-		Exceptions.suppress(new IllegalArgumentException(), new NullPointerException());
-	}
-
-	@Test
 	void testWarn() {
 		Exceptions.warn(null);
 		Exceptions.warn(new NullPointerException());
