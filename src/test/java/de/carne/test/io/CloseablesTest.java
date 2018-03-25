@@ -53,6 +53,14 @@ class CloseablesTest {
 
 		Assertions.assertEquals(0, outerException.getSuppressed().length);
 
+		Closeables.safeClose(outerException, null);
+
+		Assertions.assertEquals(0, outerException.getSuppressed().length);
+
+		Closeables.safeClose(outerException, this);
+
+		Assertions.assertEquals(0, outerException.getSuppressed().length);
+
 		Closeables.safeClose(outerException, FAILING_CLOSEABLE);
 
 		Assertions.assertEquals(1, outerException.getSuppressed().length);
