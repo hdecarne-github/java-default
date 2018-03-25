@@ -44,7 +44,7 @@ test {
 	forkEvery = 1
 	testLogging {
 		events "failed"
-		exceptionFormat "short"
+		exceptionFormat "full"
 	}
 }
 
