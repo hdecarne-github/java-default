@@ -16,6 +16,8 @@
  */
 package de.carne.test.util;
 
+import java.util.regex.Pattern;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +35,11 @@ class DebugTest {
 
 	private String callee() {
 		return Debug.getCaller();
+	}
+
+	@Test
+	void testFormatUsedMemory() {
+		Assertions.assertTrue(Pattern.matches("\\d*\\.*\\d+ \\w+", Debug.formatUsedMemory()));
 	}
 
 }
