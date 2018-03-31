@@ -137,6 +137,56 @@ public class LogBuffer extends Handler {
 	}
 
 	/**
+	 * Gets a previously registered {@linkplain Handler} of a specific type. If the submitted {@linkplain Log} has no
+	 * {@linkplain LogBuffer} attached the call is ignored.
+	 *
+	 * @param <T> the actual type of the requested {@linkplain Handler}.
+	 * @param log the {@linkplain Log} identifying the {@linkplain LogBuffer} to search.
+	 * @param handlerType the type of {@linkplain Handler} to get.
+	 * @return the found {@linkplain Handler} or {@code null}.
+	 */
+	@Nullable
+	public static <T extends Handler> T getHandler(Log log, Class<T> handlerType) {
+		return getHandler(log.logger(), handlerType);
+	}
+
+	/**
+	 * Gets a previously registered {@linkplain Handler} of a specific type. If the submitted {@linkplain Logger} has no
+	 * {@linkplain LogBuffer} attached the call is ignored.
+	 *
+	 * @param <T> the actual type of the requested {@linkplain Handler}.
+	 * @param logger the {@linkplain Logger} identifying the {@linkplain LogBuffer} to search.
+	 * @param handlerType the type of {@linkplain Handler} to get.
+	 * @return the found {@linkplain Handler} or {@code null}.
+	 */
+	@Nullable
+	public static <T extends Handler> T getHandler(Logger logger, Class<T> handlerType) {
+		LogBuffer logBuffer = get(logger);
+
+		return (logBuffer != null ? logBuffer.getHandler(handlerType) : null);
+	}
+
+	/**
+	 * Gets a previously registered {@linkplain Handler} of a specific type.
+	 *
+	 * @param <T> the actual type of the requested {@linkplain Handler}.
+	 * @param handlerType the type of {@linkplain Handler} to get.
+	 * @return the found {@linkplain Handler} or {@code null}.
+	 */
+	@Nullable
+	public synchronized <T extends Handler> T getHandler(Class<T> handlerType) {
+		T found = null;
+
+		for (Handler handler : this.handlers) {
+			if (handler.getClass().equals(handlerType)) {
+				found = handlerType.cast(handler);
+				break;
+			}
+		}
+		return found;
+	}
+
+	/**
 	 * Removes a previously added {@linkplain Handler} from this {@linkplain LogBuffer} instance.
 	 * <p>
 	 * If the submitted {@linkplain Log} has no {@linkplain LogBuffer} attached the call is ignored.

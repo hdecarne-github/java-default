@@ -43,7 +43,11 @@ class LogBufferTest {
 
 		LogRecordCounter counter1 = new LogRecordCounter();
 
+		Assertions.assertNull(LogBuffer.getHandler(log, LogRecordCounter.class));
+
 		LogBuffer.addHandler(log, counter1, true);
+
+		Assertions.assertEquals(counter1, LogBuffer.getHandler(log, LogRecordCounter.class));
 
 		Assertions.assertEquals(0, counter1.getPublishCount());
 		Assertions.assertEquals(0, counter1.getFlushCount());
