@@ -29,33 +29,35 @@ import java.util.logging.Logger;
 import de.carne.check.Nullable;
 
 /**
- * {@linkplain Handler} implementation used to buffer {@linkplain LogRecord}s (e.g. to access log messages issued during
- * application startup).
+ * {@linkplain Handler} implementation used to add/remove {@linkplain Handler} instances programmatically during
+ * application runtime. This class keeps a buffer of published {@linkplain LogRecord}s to make them available to added
+ * {@linkplain Handler} instances (e.g. to display log messages issued during application startup in UI).
  */
 public class LogBuffer extends Handler {
 
 	private final int limit;
-	private final Queue<LogRecord> buffer = new ArrayDeque<>();
+	private final Queue<LogRecord> buffer;
 	private final Set<Handler> handlers = new HashSet<>();
 	private final AtomicBoolean locked = new AtomicBoolean();
 
 	/**
-	 * Construct {@linkplain LogBuffer}.
+	 * Constructs a new {@linkplain LogBuffer} instance.
 	 */
 	public LogBuffer() {
 		LogManager manager = LogManager.getLogManager();
 		String propertyBase = getClass().getName();
 
 		this.limit = Logs.getIntProperty(manager, propertyBase + ".limit", 1000);
+		this.buffer = new ArrayDeque<>(this.limit);
 		setLevel(Logs.getLevelProperty(manager, propertyBase + ".level", LogLevel.LEVEL_WARNING));
 		setFilter(Logs.getFilterProperty(manager, propertyBase + ".filter", null));
 	}
 
 	/**
-	 * Get the {@linkplain LogBuffer} attached to the submitted {@linkplain Log} (if any).
+	 * Gets the {@linkplain LogBuffer} attached to the submitted {@linkplain Log} (if any).
 	 *
-	 * @param log The {@linkplain Log} to get the {@linkplain LogBuffer} for.
-	 * @return The found {@linkplain LogBuffer} or {@code null} if none has been configured.
+	 * @param log the {@linkplain Log} to get the {@linkplain LogBuffer} for.
+	 * @return the found {@linkplain LogBuffer} or {@code null} if none has been configured.
 	 */
 	@Nullable
 	public static LogBuffer get(Log log) {
@@ -63,10 +65,10 @@ public class LogBuffer extends Handler {
 	}
 
 	/**
-	 * Get the {@linkplain LogBuffer} attached to the submitted {@linkplain Logger} (if any).
+	 * Gets the {@linkplain LogBuffer} attached to the submitted {@linkplain Logger} (if any).
 	 *
-	 * @param logger The {@linkplain Logger} to get the {@linkplain LogBuffer} for.
-	 * @return The found {@linkplain LogBuffer} or {@code null} if none has been configured.
+	 * @param logger the {@linkplain Logger} to get the {@linkplain LogBuffer} for.
+	 * @return the found {@linkplain LogBuffer} or {@code null} if none has been configured.
 	 */
 	@Nullable
 	public static LogBuffer get(Logger logger) {
@@ -86,45 +88,48 @@ public class LogBuffer extends Handler {
 	}
 
 	/**
-	 * Add a {@linkplain Handler} to a {@linkplain LogBuffer} for {@linkplain LogRecord} consuming.
+	 * Adds a {@linkplain Handler} to this {@linkplain LogBuffer} instance for {@linkplain LogRecord} consuming.
 	 * <p>
 	 * If the submitted {@linkplain Log} has no {@linkplain LogBuffer} attached the call is ignored.
 	 *
-	 * @param log The {@linkplain Log} identifying the {@linkplain LogBuffer} to add to.
-	 * @param handler The {@linkplain Handler} to add.
+	 * @param log the {@linkplain Log} identifying the {@linkplain LogBuffer} to add to.
+	 * @param handler the {@linkplain Handler} to add.
+	 * @param republishBuffer whether to republish buffered {@linkplain LogRecord}s to the {@linkplain Handler}.
 	 * @see #get(Log)
-	 * @see #addHandler(Handler)
+	 * @see #addHandler(Handler, boolean)
 	 */
-	public static void addHandler(Log log, Handler handler) {
-		addHandler(log.logger(), handler);
+	public static void addHandler(Log log, Handler handler, boolean republishBuffer) {
+		addHandler(log.logger(), handler, republishBuffer);
 	}
 
 	/**
-	 * Add a {@linkplain Handler} to a {@linkplain LogBuffer} for {@linkplain LogRecord} consuming.
+	 * Adds a {@linkplain Handler} to this {@linkplain LogBuffer} instance for {@linkplain LogRecord} consuming.
 	 * <p>
 	 * If the submitted {@linkplain Logger} has no {@linkplain LogBuffer} attached the call is ignored.
 	 *
-	 * @param logger The {@linkplain Logger} identifying the {@linkplain LogBuffer} to add to.
-	 * @param handler The {@linkplain Handler} to add.
+	 * @param logger the {@linkplain Logger} identifying the {@linkplain LogBuffer} to add to.
+	 * @param handler the {@linkplain Handler} to add.
+	 * @param republishBuffer whether to republish buffered {@linkplain LogRecord}s to the {@linkplain Handler}.
 	 * @see #get(Logger)
-	 * @see #addHandler(Handler)
+	 * @see #addHandler(Handler, boolean)
 	 */
-	public static void addHandler(Logger logger, Handler handler) {
+	public static void addHandler(Logger logger, Handler handler, boolean republishBuffer) {
 		LogBuffer logBuffer = get(logger);
 
 		if (logBuffer != null) {
-			logBuffer.addHandler(handler);
+			logBuffer.addHandler(handler, republishBuffer);
 		}
 	}
 
 	/**
-	 * Add a {@linkplain Handler} to the {@linkplain LogBuffer} for {@linkplain LogRecord} consuming.
+	 * Adds a {@linkplain Handler} to this {@linkplain LogBuffer} instance for {@linkplain LogRecord} consuming.
 	 * <p>
 	 * Any already buffered {@linkplain LogRecord} is sent to the {@linkplain Handler} during this operation.
 	 *
-	 * @param handler The {@linkplain Handler} to add.
+	 * @param handler the {@linkplain Handler} to add.
+	 * @param republishBuffer whether to republish buffered {@linkplain LogRecord}s to the {@linkplain Handler}.
 	 */
-	public synchronized void addHandler(Handler handler) {
+	public synchronized void addHandler(Handler handler, boolean republishBuffer) {
 		for (LogRecord record : this.buffer) {
 			handler.publish(record);
 		}
@@ -132,13 +137,13 @@ public class LogBuffer extends Handler {
 	}
 
 	/**
-	 * Remove a previously added {@linkplain Handler} from a {@linkplain LogBuffer}.
+	 * Removes a previously added {@linkplain Handler} from this {@linkplain LogBuffer} instance.
 	 * <p>
 	 * If the submitted {@linkplain Log} has no {@linkplain LogBuffer} attached the call is ignored.
 	 *
-	 * @param log The {@linkplain Log} identifying the {@linkplain LogBuffer} to remove from.
-	 * @param handler The {@linkplain Handler} to remove.
-	 * @see #addHandler(Log, Handler)
+	 * @param log the {@linkplain Log} identifying the {@linkplain LogBuffer} to remove from.
+	 * @param handler the {@linkplain Handler} to remove.
+	 * @see #addHandler(Log, Handler, boolean)
 	 * @see #get(Log)
 	 * @see #removeHandler(Handler)
 	 */
@@ -147,13 +152,13 @@ public class LogBuffer extends Handler {
 	}
 
 	/**
-	 * Remove a previously added {@linkplain Handler} from a {@linkplain LogBuffer}.
+	 * Removes a previously added {@linkplain Handler} from this {@linkplain LogBuffer} instance.
 	 * <p>
 	 * If the submitted {@linkplain Logger} has no {@linkplain LogBuffer} attached the call is ignored.
 	 *
-	 * @param logger The {@linkplain Logger} identifying the {@linkplain LogBuffer} to remove from.
-	 * @param handler The {@linkplain Handler} to remove.
-	 * @see #addHandler(Logger, Handler)
+	 * @param logger the {@linkplain Logger} identifying the {@linkplain LogBuffer} to remove from.
+	 * @param handler the {@linkplain Handler} to remove.
+	 * @see #addHandler(Logger, Handler, boolean)
 	 * @see #get(Logger)
 	 * @see #removeHandler(Handler)
 	 */
@@ -166,19 +171,19 @@ public class LogBuffer extends Handler {
 	}
 
 	/**
-	 * Remove a previously added {@linkplain Handler} from the {@linkplain LogBuffer}.
+	 * Removes a previously added {@linkplain Handler} from this {@linkplain LogBuffer} instance.
 	 * <p>
 	 * After removal the {@linkplain Handler} will no longer receive any {@linkplain LogRecord}s.
 	 *
-	 * @param handler The {@linkplain Handler} to remove.
-	 * @see #addHandler(Handler)
+	 * @param handler the {@linkplain Handler} to remove.
+	 * @see #addHandler(Handler, boolean)
 	 */
 	public synchronized void removeHandler(Handler handler) {
 		this.handlers.remove(handler);
 	}
 
 	/**
-	 * Perform a flush operation on a {@linkplain LogBuffer}.
+	 * Performs a flush operation on this {@linkplain LogBuffer} instance.
 	 * <p>
 	 * The flush request is forwarded to any currently registered {@linkplain Handler} and any buffered
 	 * {@linkplain LogRecord} will be discarded. If the submitted {@linkplain Logger} has no {@linkplain LogBuffer}
@@ -192,13 +197,13 @@ public class LogBuffer extends Handler {
 	}
 
 	/**
-	 * Perform a flush operation on a {@linkplain LogBuffer}.
+	 * Performs a flush operation on this {@linkplain LogBuffer} instance.
 	 * <p>
 	 * The flush request is forwarded to any currently registered {@linkplain Handler} and any buffered
 	 * {@linkplain LogRecord} will be discarded. If the submitted {@linkplain Logger} has no {@linkplain LogBuffer}
 	 * attached the call is ignored.
 	 *
-	 * @param logger The {@linkplain Logger} identifying the {@linkplain LogBuffer} to flush.
+	 * @param logger the {@linkplain Logger} identifying the {@linkplain LogBuffer} to flush.
 	 * @see #get(Logger)
 	 */
 	public static void flush(Logger logger) {

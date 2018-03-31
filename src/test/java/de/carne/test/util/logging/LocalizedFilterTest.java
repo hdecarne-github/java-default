@@ -40,7 +40,7 @@ class LocalizedFilterTest {
 		Log localizedLog2 = new Log(LogsTest.class, getClass().getName());
 		LogRecordCounter counter = new LogRecordCounter();
 
-		LogBuffer.addHandler(standardLog, counter);
+		LogBuffer.addHandler(standardLog, counter, true);
 		LoggingTests.logTestMessages(localizedLog1, 6);
 
 		Assertions.assertEquals(6, counter.getPublishCount());
