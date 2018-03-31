@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.ErrorManager;
 import java.util.logging.Filter;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
@@ -68,6 +69,11 @@ public final class Logs {
 			}
 		}
 	}
+
+	/**
+	 * Default {@linkplain ErrorManager} instance to use for error reporting.
+	 */
+	public static final ErrorManager DEFAULT_ERROR_MANAGER = new ErrorManager();
 
 	/**
 	 * Standard name for default logging config.
@@ -128,6 +134,28 @@ public final class Logs {
 	}
 
 	/**
+	 * Gets a {@code int} property from a {@linkplain LogManager}'s current configuration.
+	 *
+	 * @param manager the {@linkplain LogManager} to get the configuration from.
+	 * @param name the property name to evaluate.
+	 * @param defaultValue the the default value to return in case the property is undefined.
+	 * @return the defined value or the default value if the property is undefined.
+	 */
+	public static int getIntProperty(LogManager manager, String name, int defaultValue) {
+		String property = manager.getProperty(name);
+		int propertyValue = defaultValue;
+
+		if (property != null) {
+			try {
+				propertyValue = Integer.parseInt(property);
+			} catch (NumberFormatException e) {
+				DEFAULT_ERROR_MANAGER.error("Invalid int property " + name, e, ErrorManager.GENERIC_FAILURE);
+			}
+		}
+		return propertyValue;
+	}
+
+	/**
 	 * Gets a {@code boolean} property from a {@linkplain LogManager}'s current configuration.
 	 *
 	 * @param manager the {@linkplain LogManager} to get the configuration from.
@@ -183,7 +211,7 @@ public final class Logs {
 		if (property != null) {
 			try {
 				propertyValue = Thread.currentThread().getContextClassLoader().loadClass(property.trim())
-						.asSubclass(Filter.class).newInstance();
+						.asSubclass(Filter.class).getConstructor().newInstance();
 			} catch (Exception e) {
 				Exceptions.ignore(e);
 			}
@@ -206,7 +234,7 @@ public final class Logs {
 		if (property != null) {
 			try {
 				propertyValue = Thread.currentThread().getContextClassLoader().loadClass(property.trim())
-						.asSubclass(Formatter.class).newInstance();
+						.asSubclass(Formatter.class).getConstructor().newInstance();
 			} catch (Exception e) {
 				Exceptions.ignore(e);
 			}

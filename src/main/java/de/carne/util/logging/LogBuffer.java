@@ -27,7 +27,6 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import de.carne.check.Nullable;
-import de.carne.util.SystemProperties;
 
 /**
  * {@linkplain Handler} implementation used to buffer {@linkplain LogRecord}s (e.g. to access log messages issued during
@@ -35,17 +34,9 @@ import de.carne.util.SystemProperties;
  */
 public class LogBuffer extends Handler {
 
-	/**
-	 * The maximum number of {@linkplain LogRecord}s stored in the buffer.
-	 * <p>
-	 * If the limit is reached the oldest records are automatically discarded.
-	 */
-	public static final int LIMIT = Math.max(1, SystemProperties.intValue(LogBuffer.class.getName() + ".LIMIT", 1000));
-
+	private final int limit;
 	private final Queue<LogRecord> buffer = new ArrayDeque<>();
-
 	private final Set<Handler> handlers = new HashSet<>();
-
 	private final AtomicBoolean locked = new AtomicBoolean();
 
 	/**
@@ -55,6 +46,7 @@ public class LogBuffer extends Handler {
 		LogManager manager = LogManager.getLogManager();
 		String propertyBase = getClass().getName();
 
+		this.limit = Logs.getIntProperty(manager, propertyBase + ".limit", 1000);
 		setLevel(Logs.getLevelProperty(manager, propertyBase + ".level", LogLevel.LEVEL_WARNING));
 		setFilter(Logs.getFilterProperty(manager, propertyBase + ".filter", null));
 	}
@@ -222,7 +214,7 @@ public class LogBuffer extends Handler {
 		if (record != null && isLoggable(record) && this.locked.compareAndSet(false, true)) {
 			try {
 				synchronized (this) {
-					while (this.buffer.size() >= LIMIT) {
+					while (this.buffer.size() >= this.limit) {
 						this.buffer.remove();
 					}
 					this.buffer.add(record);

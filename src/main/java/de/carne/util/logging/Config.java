@@ -28,7 +28,7 @@ import java.util.logging.ErrorManager;
 public final class Config {
 
 	/**
-	 * Construct {@linkplain Config} and apply default logging configuration.
+	 * Constructs a {@linkplain Config} instance and applies default logging configuration.
 	 */
 	public Config() {
 		String config = System.getProperty(getClass().getName(), Logs.CONFIG_DEFAULT);
@@ -36,7 +36,8 @@ public final class Config {
 		try {
 			Logs.readConfig(config);
 		} catch (IOException e) {
-			new ErrorManager().error("Failed to read logging config: " + config, e, ErrorManager.GENERIC_FAILURE);
+			Logs.DEFAULT_ERROR_MANAGER.error("Failed to read logging config: " + config, e,
+					ErrorManager.GENERIC_FAILURE);
 		}
 	}
 

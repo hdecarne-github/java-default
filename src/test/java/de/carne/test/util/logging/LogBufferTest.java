@@ -19,7 +19,6 @@ package de.carne.test.util.logging;
 import java.io.IOException;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.carne.check.Check;
@@ -31,11 +30,6 @@ import de.carne.util.logging.Logs;
  * Test {@linkplain LogBuffer} class.
  */
 class LogBufferTest {
-
-	@BeforeAll
-	static void setUpSystemProperties() {
-		System.setProperty(LogBuffer.class.getName() + ".LIMIT", "5");
-	}
 
 	@Test
 	void testLogBuffer() throws IOException {
