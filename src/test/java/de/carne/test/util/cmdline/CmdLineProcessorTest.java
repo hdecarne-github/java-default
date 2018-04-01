@@ -90,11 +90,20 @@ class CmdLineProcessorTest {
 	@Test
 	void testInvalidOptionFailure() {
 		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(),
-				Arrays.asList("--option", "--unexpected"));
+				Arrays.asList("--option", "--errornous"));
 
 		cmdLine.onOption((arg, option) -> {
 			Assertions.fail("Unexpected invokation");
 		}).arg("--option");
+
+		Assertions.assertThrows(CmdLineException.class, () -> {
+			cmdLine.process();
+		});
+
+		cmdLine.onOption((arg, option) -> {
+			throw new IllegalArgumentException();
+		}).arg("--errornous");
+
 		Assertions.assertThrows(CmdLineException.class, () -> {
 			cmdLine.process();
 		});

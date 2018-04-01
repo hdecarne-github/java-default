@@ -30,30 +30,47 @@ public class CmdLineException extends Exception {
 	private final String arg;
 
 	/**
-	 * Construct {@linkplain CmdLineException}.
+	 * Construct a new {@linkplain CmdLineException} instance.
 	 *
-	 * @param cmdLine The {@linkplain CmdLineProcessor} throwing this exception.
-	 * @param arg The argument string causing this exception.
+	 * @param cmdLine the {@linkplain CmdLineProcessor} throwing this exception.
+	 * @param arg the argument string causing this exception.
 	 */
 	public CmdLineException(CmdLineProcessor cmdLine, String arg) {
-		super("Unable to process command line '" + cmdLine + "' (processing failed at '" + arg + "')");
+		super(exceptionMessage(cmdLine, arg));
 		this.cmdLine = cmdLine.toString();
 		this.arg = arg;
 	}
 
 	/**
-	 * Get the command line string for which the processing failed.
+	 * Construct a new {@linkplain CmdLineException} instance.
 	 *
-	 * @return The command line string for which the processing failed.
+	 * @param cmdLine the {@linkplain CmdLineProcessor} throwing this exception.
+	 * @param arg the argument string causing this exception.
+	 * @param cause the causing exception.
+	 */
+	public CmdLineException(CmdLineProcessor cmdLine, String arg, Throwable cause) {
+		super(exceptionMessage(cmdLine, arg), cause);
+		this.cmdLine = cmdLine.toString();
+		this.arg = arg;
+	}
+
+	private static String exceptionMessage(CmdLineProcessor cmdLine, String arg) {
+		return "Unable to process command line '" + cmdLine + "' (processing failed at '" + arg + "')";
+	}
+
+	/**
+	 * Gets the command line string for which the processing failed.
+	 *
+	 * @return the command line string for which the processing failed.
 	 */
 	public String cmdLine() {
 		return this.cmdLine;
 	}
 
 	/**
-	 * Get the argument string causing the processing failure.
+	 * Gets the argument string causing the processing failure.
 	 *
-	 * @return The argument string causing the processing failure.
+	 * @return the argument string causing the processing failure.
 	 */
 	public String arg() {
 		return this.arg;

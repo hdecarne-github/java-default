@@ -112,7 +112,11 @@ public final class CmdLineProcessor {
 				Consumer<String> defaultAction = (isActionArg(arg) ? this.unknownAction : this.unnamedAction);
 
 				if (defaultAction != null) {
-					defaultAction.accept(arg);
+					try {
+						defaultAction.accept(arg);
+					} catch (RuntimeException e) {
+						throw new CmdLineException(this, arg, e);
+					}
 				} else {
 					throw new CmdLineException(this, arg);
 				}
@@ -143,7 +147,12 @@ public final class CmdLineProcessor {
 				if (isActionArg(option)) {
 					throw new CmdLineException(CmdLineProcessor.this, arg);
 				}
-				optionAction.accept(this.pendingArg, option);
+
+				try {
+					optionAction.accept(arg, option);
+				} catch (RuntimeException e) {
+					throw new CmdLineException(CmdLineProcessor.this, arg, e);
+				}
 				this.pendingOptionAction = null;
 				this.pendingArg = null;
 				processed = true;
@@ -175,7 +184,7 @@ public final class CmdLineProcessor {
 			return processed;
 		}
 
-		public boolean processSwitchAction(String arg, List<SwitchCmdLineAction> actions) {
+		public boolean processSwitchAction(String arg, List<SwitchCmdLineAction> actions) throws CmdLineException {
 			// Check whether the argument is a known switch argument.
 			// If this is the case, invoke it.
 			Optional<SwitchCmdLineAction> optSwitchAction = actions.stream().filter(action -> action.contains(arg))
@@ -183,7 +192,11 @@ public final class CmdLineProcessor {
 			boolean processed = false;
 
 			if (optSwitchAction.isPresent()) {
-				optSwitchAction.get().accept(arg);
+				try {
+					optSwitchAction.get().accept(arg);
+				} catch (RuntimeException e) {
+					throw new CmdLineException(CmdLineProcessor.this, arg, e);
+				}
 				processed = true;
 			}
 			return processed;
