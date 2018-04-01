@@ -59,21 +59,21 @@ public final class CmdLineProcessor {
 	private Consumer<String> unknownAction = null;
 
 	/**
-	 * Construct {@linkplain CmdLineProcessor}.
+	 * Constructs a new {@linkplain CmdLineProcessor} instance.
 	 *
-	 * @param cmd The command executing the command line (used by {@linkplain #toString()} to build a complete command
+	 * @param cmd the command executing the command line (used by {@linkplain #toString()} to build a complete command
 	 *        line string).
-	 * @param args The command line to process.
+	 * @param args the command line to process.
 	 */
 	public CmdLineProcessor(String cmd, String[] args) {
 		this(cmd, Arrays.asList(args));
 	}
 
 	/**
-	 * Construct {@linkplain CmdLineProcessor}.
+	 * Constructs a new {@linkplain CmdLineProcessor} instance.
 	 *
-	 * @param cmd The command executing the command line.
-	 * @param args The command line to process.
+	 * @param cmd the command executing the command line.
+	 * @param args the command line to process.
 	 */
 	public CmdLineProcessor(String cmd, Iterable<String> args) {
 		this.cmd = cmd;
@@ -81,12 +81,12 @@ public final class CmdLineProcessor {
 	}
 
 	/**
-	 * Check whether an argument string is a valid action argument.
+	 * Checks whether an argument string is a valid action argument.
 	 * <p>
 	 * An action argument must be of the form single '-' and character (e.g. {@code -a}) or double '-' and a name (e.g.
 	 * {@code --argument}).
 	 *
-	 * @param arg The argument string to check.
+	 * @param arg the argument string to check.
 	 * @return {@code true} if the argument string is a valid action argument.
 	 */
 	public static boolean isActionArg(String arg) {
@@ -94,7 +94,7 @@ public final class CmdLineProcessor {
 	}
 
 	/**
-	 * Process the command line and invoke the correspond actions.
+	 * Processes the command line and invoke the correspond actions.
 	 *
 	 * @throws CmdLineException if the command line contains an error.
 	 * @see #onSwitch(Consumer)
