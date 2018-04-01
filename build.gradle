@@ -38,6 +38,12 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.0.1")
 }
 
+jar {
+	manifest {
+		attributes "Automatic-Module-Name": automaticModuleName
+	}
+}
+
 test {
 	useJUnitPlatform()
 	// To make sure System Properties are reset for every test
