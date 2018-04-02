@@ -16,6 +16,8 @@
  */
 package de.carne.test.util;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -65,6 +67,16 @@ class StringsTest {
 		Assertions.assertArrayEquals(new String[] { "l" }, Strings.split("l", '=', true));
 		Assertions.assertArrayEquals(new String[] { "", "l" }, Strings.split("=l", '=', true));
 		Assertions.assertArrayEquals(new String[] { "l", "" }, Strings.split("l=", '=', true));
+	}
+
+	@Test
+	void testJoin() {
+		final Iterable<String> strings = Arrays.asList("one", "two", "three");
+
+		Assertions.assertEquals("one, two, three", Strings.join(strings, ", "));
+		Assertions.assertEquals("", Strings.join(strings, ", ", 0));
+		Assertions.assertEquals(Strings.ELLIPSIS, Strings.join(strings, ", ", Strings.ELLIPSIS.length()));
+		Assertions.assertEquals("one, two, t...", Strings.join(strings, ", ", 14, "..."));
 	}
 
 	@Test

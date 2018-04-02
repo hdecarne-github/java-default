@@ -31,6 +31,11 @@ public final class Strings {
 	}
 
 	/**
+	 * Ellipsis string.
+	 */
+	public static final String ELLIPSIS = SystemProperties.value(Strings.class, ".ellipsis", "\\u2026");
+
+	/**
 	 * Checks whether a {@linkplain String} is empty.
 	 * <p>
 	 * A {@linkplain String} is considered empty if it is either {@code null} or of length {@code 0}.
@@ -93,7 +98,7 @@ public final class Strings {
 	 * @param all whether to split at all occurrences of the delimiter character ({@code true}) or only at the first one
 	 *        ({@code false}).
 	 * @return the splitted sub-strings. The actual number of sub-strings depends on the actual occurrences of the
-	 *         delimiter character as well as the {@code all} flag:
+	 *         delimiter character as well as the {@code all} flag.
 	 */
 	public static String[] split(String s, char delim, boolean all) {
 		List<String> splits = new ArrayList<>();
@@ -110,6 +115,71 @@ public final class Strings {
 			splitIndex = nextSplitIndex;
 		}
 		return splits.toArray(new String[splits.size()]);
+	}
+
+	/**
+	 * Join multiple {@linkplain String}s into a single one.
+	 *
+	 * @param ss the {@linkplain String}s to join.
+	 * @param delim the delimiter to use for joining.
+	 * @return the joined {@linkplain String}.
+	 */
+	public static String join(Iterable<String> ss, String delim) {
+		return join(ss, delim, Integer.MAX_VALUE, ELLIPSIS);
+	}
+
+	/**
+	 * Join multiple {@linkplain String}s into a single one.
+	 *
+	 * @param ss the {@linkplain String}s to join.
+	 * @param delim the delimiter to use for joining.
+	 * @param limit the maximum length of the joined {@linkplain String}.
+	 * @return the joined {@linkplain String}.
+	 */
+	public static String join(Iterable<String> ss, String delim, int limit) {
+		return join(ss, delim, limit, ELLIPSIS);
+	}
+
+	/**
+	 * Join multiple {@linkplain String}s into a single one.
+	 *
+	 * @param ss the {@linkplain String}s to join.
+	 * @param delim the delimiter to use for joining.
+	 * @param limit the maximum length of the joined {@linkplain String}.
+	 * @param ellipsis the ellipsis to place at the end of the joined string in case {@code limit} is reached.
+	 * @return the joined {@linkplain String}.
+	 */
+	public static String join(Iterable<String> ss, String delim, int limit, String ellipsis) {
+		StringBuilder joined = new StringBuilder();
+		boolean limitReached = false;
+
+		for (String s : ss) {
+			if (joined.length() > 0) {
+				limitReached = joinLimit(joined, delim, limit);
+			}
+			limitReached = limitReached || joinLimit(joined, s, limit);
+			if (limitReached) {
+				break;
+			}
+		}
+		if (limitReached) {
+			int joinedLength = joined.length();
+			int replaceLength = Math.min(ellipsis.length(), joinedLength);
+			int replaceStart = joinedLength - replaceLength;
+
+			for (int replaceIndex = 0; replaceIndex < replaceLength; replaceIndex++) {
+				joined.setCharAt(replaceStart + replaceIndex, ellipsis.charAt(replaceIndex));
+			}
+		}
+		return joined.toString();
+	}
+
+	private static boolean joinLimit(StringBuilder joined, String s, int limit) {
+		int maxAppend = limit - joined.length();
+		boolean limitReached = s.length() > maxAppend;
+
+		joined.append(!limitReached ? s : s.substring(0, maxAppend));
+		return limitReached;
 	}
 
 	private static char[] hexCharsUpper = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
