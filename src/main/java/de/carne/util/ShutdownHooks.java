@@ -32,7 +32,10 @@ public final class ShutdownHooks {
 	private static final List<Runnable> HOOKS = new LinkedList<>();
 
 	static {
-		Runtime.getRuntime().addShutdownHook(new Thread(ShutdownHooks::trigger, ShutdownHooks.class.getSimpleName()));
+		Thread shutdownHook = new Thread(ShutdownHooks::trigger, ShutdownHooks.class.getSimpleName());
+
+		shutdownHook.setDaemon(true);
+		Runtime.getRuntime().addShutdownHook(shutdownHook);
 	}
 
 	/**
