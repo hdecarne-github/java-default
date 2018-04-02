@@ -264,7 +264,7 @@ abstract class FilePreferencesStore {
 
 			Files.createDirectories(this.file.getParent(), FileAttributes.userDirectoryDefault(this.file));
 			try (FileChannel dataChannel = FileChannel.open(this.file, StandardOpenOption.READ,
-					StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+					StandardOpenOption.WRITE, StandardOpenOption.CREATE);
 					InputStream dataInputStream = Channels.newInputStream(dataChannel);
 					OutputStream dataOutputStream = Channels.newOutputStream(dataChannel);
 					FileLock dataLock = dataChannel.tryLock(0, Long.MAX_VALUE, false)) {
@@ -275,7 +275,8 @@ abstract class FilePreferencesStore {
 				for (Consumer<Properties> change : changes) {
 					change.accept(data);
 				}
-				data.store(dataOutputStream, this.file.toString());
+				dataChannel.truncate(0);
+				data.store(dataOutputStream, null);
 			}
 			return data;
 		}
