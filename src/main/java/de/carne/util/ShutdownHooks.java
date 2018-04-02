@@ -32,28 +32,35 @@ public final class ShutdownHooks {
 	private static final List<Runnable> HOOKS = new LinkedList<>();
 
 	static {
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			synchronized (HOOKS) {
-				for (Runnable hook : HOOKS) {
-					try {
-						hook.run();
-					} catch (Exception e) {
-						Exceptions.warn(e);
-					}
-				}
-			}
-		}, ShutdownHooks.class.getSimpleName()));
+		Runtime.getRuntime().addShutdownHook(new Thread(ShutdownHooks::trigger, ShutdownHooks.class.getSimpleName()));
 	}
 
 	/**
-	 * Add a shutdown hook to be invoked during VM shutdown.
+	 * Adds a shutdown hook to be invoked during VM shutdown.
 	 *
-	 * @param hook The shutdown hook to invoke.
+	 * @param hook the shutdown hook to invoke.
 	 * @see Runtime#addShutdownHook(Thread)
 	 */
 	public static void add(Runnable hook) {
 		synchronized (HOOKS) {
 			HOOKS.add(hook);
+		}
+	}
+
+	/**
+	 * Triggers execution of the registered shutdown hooks.
+	 */
+	@SuppressWarnings("squid:S1148")
+	public static void trigger() {
+		synchronized (HOOKS) {
+			for (Runnable hook : HOOKS) {
+				try {
+					hook.run();
+				} catch (Exception e) {
+					// Do not use any logging functionality or the like at this VM state
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

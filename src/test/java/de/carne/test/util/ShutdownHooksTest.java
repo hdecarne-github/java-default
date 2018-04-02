@@ -16,24 +16,31 @@
  */
 package de.carne.test.util;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import de.carne.util.ShutdownHooks;
-import de.carne.util.logging.Log;
 
 /**
  * Test {@linkplain ShutdownHooks} class.
  */
 class ShutdownHooksTest {
 
-	private static final Log LOG = new Log();
+	private AtomicBoolean hookInvoked = new AtomicBoolean(false);
 
 	@Test
 	void testToRuntimeFromChecked() {
-		// We only check whether add does not fail (actual invokation cannot be tested as it happens after VM shutdown)
 		ShutdownHooks.add(() -> {
-			LOG.notice("Shutdown hook invoked");
+			this.hookInvoked.set(true);
 		});
+
+		Assertions.assertFalse(this.hookInvoked.get());
+
+		ShutdownHooks.trigger();
+
+		Assertions.assertTrue(this.hookInvoked.get());
 	}
 
 }
