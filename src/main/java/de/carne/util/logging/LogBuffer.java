@@ -16,6 +16,10 @@
  */
 package de.carne.util.logging;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.Queue;
@@ -230,6 +234,55 @@ public class LogBuffer extends Handler {
 	 */
 	public synchronized void removeHandler(Handler handler) {
 		this.handlers.remove(handler);
+	}
+
+	/**
+	 * Exports the buffered {@linkplain LogRecord}s to a {@linkplain File}.
+	 * <p>
+	 * If the submitted {@linkplain Log} has no {@linkplain LogBuffer} attached the call is ignored.
+	 *
+	 * @param log the {@linkplain Log} identifying the {@linkplain LogBuffer} to export from.
+	 * @param file the {@linkplain File} to export to.
+	 * @param append whether to append ({@code true}) in case of an existing file or not ({@code false}).
+	 * @throws IOException if an I/O error occurs during export.
+	 */
+	public static void exportTo(Log log, File file, boolean append) throws IOException {
+		exportTo(log.logger(), file, append);
+	}
+
+	/**
+	 * Exports the buffered {@linkplain LogRecord}s to a {@linkplain File}.
+	 * <p>
+	 * If the submitted {@linkplain Logger} has no {@linkplain LogBuffer} attached the call is ignored.
+	 *
+	 * @param logger the {@linkplain Logger} identifying the {@linkplain LogBuffer} to export from.
+	 * @param file the {@linkplain File} to export to.
+	 * @param append whether to append ({@code true}) in case of an existing file or not ({@code false}).
+	 * @throws IOException if an I/O error occurs during export.
+	 */
+	public static void exportTo(Logger logger, File file, boolean append) throws IOException {
+		LogBuffer logBuffer = get(logger);
+
+		if (logBuffer != null) {
+			logBuffer.exportTo(file, append);
+		}
+	}
+
+	/**
+	 * Exports the buffered {@linkplain LogRecord}s to a {@linkplain File}.
+	 *
+	 * @param file the {@linkplain File} to export to.
+	 * @param append whether to append ({@code true}) in case of an existing file or not ({@code false}).
+	 * @throws IOException if an I/O error occurs during export.
+	 */
+	public synchronized void exportTo(File file, boolean append) throws IOException {
+		try (Writer writer = new FileWriter(file, append)) {
+			LogLineFormatter formatter = new LogLineFormatter();
+
+			for (LogRecord record : this.buffer) {
+				writer.write(formatter.format(record));
+			}
+		}
 	}
 
 	/**

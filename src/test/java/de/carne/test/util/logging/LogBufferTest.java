@@ -16,6 +16,7 @@
  */
 package de.carne.test.util.logging;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.junit.jupiter.api.Assertions;
@@ -39,8 +40,12 @@ class LogBufferTest {
 
 		Assertions.assertNotNull(LogBuffer.get(log));
 
+		// Log and flush (following checks should see no existing records)
+		LoggingTests.logTestMessages(log, 6);
+
 		LogBuffer.flush(log);
 
+		// Check if initial record count is 0
 		LogRecordCounter counter1 = new LogRecordCounter();
 
 		Assertions.assertNull(LogBuffer.getHandler(log, LogRecordCounter.class));
@@ -53,6 +58,7 @@ class LogBufferTest {
 		Assertions.assertEquals(0, counter1.getFlushCount());
 		Assertions.assertEquals(0, counter1.getCloseCount());
 
+		// Check if test records are coming through
 		LoggingTests.logTestMessages(log, 6);
 
 		Assertions.assertEquals(6, counter1.getPublishCount());
@@ -63,6 +69,13 @@ class LogBufferTest {
 
 		Assertions.assertEquals(5, counter2.getPublishCount());
 
+		// Check buffer export
+		File tempFile = File.createTempFile(getClass().getName(), ".log");
+
+		tempFile.deleteOnExit();
+		LogBuffer.exportTo(log, tempFile, false);
+
+		// Check if removing the handler stops record receiving
 		LogBuffer.removeHandler(log, counter2);
 		LogBuffer.flush(log);
 
@@ -73,6 +86,7 @@ class LogBufferTest {
 
 		Assertions.assertEquals(2, counter1.getFlushCount());
 
+		// Check if close is working
 		Check.notNull(LogBuffer.get(log)).close();
 
 		Assertions.assertEquals(1, counter1.getCloseCount());
