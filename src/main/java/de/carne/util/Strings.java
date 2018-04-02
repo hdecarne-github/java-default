@@ -18,6 +18,7 @@ package de.carne.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import de.carne.check.Nullable;
 
@@ -118,46 +119,52 @@ public final class Strings {
 	}
 
 	/**
-	 * Join multiple {@linkplain String}s into a single one.
+	 * Joins the {@linkplain String} representation of multiple {@linkplain Object}s into a single {@linkplain String}.
+	 * <p>
+	 * The {@linkplain Object#toString()} is used to retrieve the Objects' {@linkplain String} representation.
 	 *
-	 * @param ss the {@linkplain String}s to join.
+	 * @param objects the {@linkplain Objects}s to join.
 	 * @param delim the delimiter to use for joining.
 	 * @return the joined {@linkplain String}.
 	 */
-	public static String join(Iterable<String> ss, String delim) {
-		return join(ss, delim, Integer.MAX_VALUE, ELLIPSIS);
+	public static String join(Iterable<?> objects, String delim) {
+		return join(objects, delim, Integer.MAX_VALUE, ELLIPSIS);
 	}
 
 	/**
-	 * Join multiple {@linkplain String}s into a single one.
+	 * Joins the {@linkplain String} representation of multiple {@linkplain Object}s into a single {@linkplain String}.
+	 * <p>
+	 * The {@linkplain Object#toString()} is used to retrieve the Objects' {@linkplain String} representation.
 	 *
-	 * @param ss the {@linkplain String}s to join.
+	 * @param objects the {@linkplain String}s to join.
 	 * @param delim the delimiter to use for joining.
 	 * @param limit the maximum length of the joined {@linkplain String}.
 	 * @return the joined {@linkplain String}.
 	 */
-	public static String join(Iterable<String> ss, String delim, int limit) {
-		return join(ss, delim, limit, ELLIPSIS);
+	public static String join(Iterable<String> objects, String delim, int limit) {
+		return join(objects, delim, limit, ELLIPSIS);
 	}
 
 	/**
-	 * Join multiple {@linkplain String}s into a single one.
+	 * Joins the {@linkplain String} representation of multiple {@linkplain Object}s into a single {@linkplain String}.
+	 * <p>
+	 * The {@linkplain Object#toString()} is used to retrieve the Objects' {@linkplain String} representation.
 	 *
-	 * @param ss the {@linkplain String}s to join.
+	 * @param objects the {@linkplain Objects}s to join.
 	 * @param delim the delimiter to use for joining.
 	 * @param limit the maximum length of the joined {@linkplain String}.
 	 * @param ellipsis the ellipsis to place at the end of the joined string in case {@code limit} is reached.
 	 * @return the joined {@linkplain String}.
 	 */
-	public static String join(Iterable<String> ss, String delim, int limit, String ellipsis) {
+	public static String join(Iterable<?> objects, String delim, int limit, String ellipsis) {
 		StringBuilder joined = new StringBuilder();
 		boolean limitReached = false;
 
-		for (String s : ss) {
+		for (Object object : objects) {
 			if (joined.length() > 0) {
 				limitReached = joinLimit(joined, delim, limit);
 			}
-			limitReached = limitReached || joinLimit(joined, s, limit);
+			limitReached = limitReached || joinLimit(joined, object.toString(), limit);
 			if (limitReached) {
 				break;
 			}
