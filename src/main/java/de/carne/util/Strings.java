@@ -141,7 +141,7 @@ public final class Strings {
 	 * @param limit the maximum length of the joined {@linkplain String}.
 	 * @return the joined {@linkplain String}.
 	 */
-	public static String join(Iterable<String> objects, String delim, int limit) {
+	public static String join(Iterable<?> objects, String delim, int limit) {
 		return join(objects, delim, limit, ELLIPSIS);
 	}
 
