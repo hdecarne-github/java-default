@@ -18,11 +18,8 @@ package de.carne.test.util.prefs;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Properties;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
@@ -32,7 +29,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import de.carne.check.Nullable;
+import de.carne.nio.file.FileUtil;
 import de.carne.util.Late;
 import de.carne.util.prefs.FilePreferencesFactory;
 
@@ -52,23 +49,7 @@ class FilePreferencesTest {
 
 	@AfterAll
 	static void cleanUpTempPath() throws IOException {
-		Files.walkFileTree(TEMP_PATH.get(), new SimpleFileVisitor<Path>() {
-
-			@Override
-			public FileVisitResult visitFile(@Nullable Path file, @Nullable BasicFileAttributes attrs)
-					throws IOException {
-				Files.delete(file);
-				return FileVisitResult.CONTINUE;
-			}
-
-			@Override
-			public FileVisitResult postVisitDirectory(@Nullable Path dir, @Nullable IOException exc)
-					throws IOException {
-				Files.delete(dir);
-				return FileVisitResult.CONTINUE;
-			}
-
-		});
+		FileUtil.delete(TEMP_PATH.get());
 	}
 
 	@Test
