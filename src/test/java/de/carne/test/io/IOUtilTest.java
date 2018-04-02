@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 
 import org.junit.jupiter.api.Assertions;
@@ -59,6 +60,33 @@ class IOUtilTest {
 		byte[] fileData = fileDataOutputStream.toByteArray();
 
 		Assertions.assertArrayEquals(resourceData, fileData);
+	}
+
+	@Test
+	void testReadAllBytes() throws IOException {
+		// Prepare file
+		URL url = getClass().getResource("data.bin");
+		File file = Files.createTempFile(getClass().getName(), ".tmp").toFile();
+
+		file.deleteOnExit();
+		IOUtil.copyUrl(file, url);
+
+		ByteArrayOutputStream fileDataOutputStream = new ByteArrayOutputStream();
+
+		IOUtil.copyUrl(fileDataOutputStream, url);
+
+		byte[] bytes = fileDataOutputStream.toByteArray();
+
+		// Test read operations
+		Assertions.assertArrayEquals(bytes, IOUtil.readAllBytes(file));
+		Assertions.assertArrayEquals(bytes, IOUtil.readAllBytes(file, bytes.length));
+		Assertions.assertArrayEquals(bytes, IOUtil.readAllBytes(url, bytes.length));
+		Assertions.assertThrows(IOException.class, () -> {
+			IOUtil.readAllBytes(file, bytes.length - 1);
+		});
+		Assertions.assertThrows(IOException.class, () -> {
+			IOUtil.readAllBytes(url, bytes.length - 1);
+		});
 	}
 
 }
