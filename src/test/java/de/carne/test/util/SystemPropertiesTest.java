@@ -27,51 +27,57 @@ import de.carne.util.SystemProperties;
  */
 class SystemPropertiesTest {
 
-	private static final String KEY_UNDEFINED = "sysprop.undefined";
-	private static final String KEY_EMPTY = "sysprop.empty";
-	private static final String KEY_BOOLEAN_TRUE = "sysprop.boolean.true";
-	private static final String KEY_BOOLEAN_FALSE = "sysprop.boolean.false";
-	private static final String KEY_INT_0 = "sysprop.int.zero";
-	private static final String KEY_INT_42 = "sysprop.int.42";
-	private static final String KEY_LONG_0 = "sysprop.long.zero";
-	private static final String KEY_LONG_42 = "sysprop.long.42";
+	private static final String KEY_UNDEFINED = ".undefined";
+	private static final String KEY_EMPTY = ".empty";
+	private static final String KEY_BOOLEAN_TRUE = ".booleanTrue";
+	private static final String KEY_BOOLEAN_FALSE = ".booleanFalse";
+	private static final String KEY_INT_0 = ".intZero";
+	private static final String KEY_INT_42 = ".int42";
+	private static final String KEY_LONG_0 = ".longZero";
+	private static final String KEY_LONG_42 = ".long42";
 
 	@BeforeAll
 	static void setUpSystemProperties() {
-		System.setProperty(KEY_EMPTY, "");
-		System.setProperty(KEY_BOOLEAN_TRUE, Boolean.TRUE.toString());
-		System.setProperty(KEY_BOOLEAN_FALSE, Boolean.FALSE.toString());
-		System.setProperty(KEY_INT_0, "0");
-		System.setProperty(KEY_INT_42, "42");
-		System.setProperty(KEY_LONG_0, "0");
-		System.setProperty(KEY_LONG_42, "42");
+		System.setProperty(SystemPropertiesTest.class.getName() + KEY_EMPTY, "");
+		System.setProperty(SystemPropertiesTest.class.getName() + KEY_BOOLEAN_TRUE, Boolean.TRUE.toString());
+		System.setProperty(SystemPropertiesTest.class.getName() + KEY_BOOLEAN_FALSE, Boolean.FALSE.toString());
+		System.setProperty(SystemPropertiesTest.class.getName() + KEY_INT_0, "0");
+		System.setProperty(SystemPropertiesTest.class.getName() + KEY_INT_42, "42");
+		System.setProperty(SystemPropertiesTest.class.getName() + KEY_LONG_0, "0");
+		System.setProperty(SystemPropertiesTest.class.getName() + KEY_LONG_42, "42");
 	}
 
 	@Test
-	void testBooleans() {
-		Assertions.assertFalse(SystemProperties.booleanValue(KEY_UNDEFINED));
-		Assertions.assertTrue(SystemProperties.booleanValue(KEY_BOOLEAN_TRUE, false));
-		Assertions.assertFalse(SystemProperties.booleanValue(KEY_BOOLEAN_FALSE, true));
+	void testStringProperties() {
+		Assertions.assertEquals("?", SystemProperties.value(getClass(), KEY_UNDEFINED, "?"));
+		Assertions.assertEquals("", SystemProperties.value(getClass(), KEY_EMPTY, "?"));
+	}
+
+	@Test
+	void testBooleanProperties() {
+		Assertions.assertFalse(SystemProperties.booleanValue(getClass(), KEY_UNDEFINED));
+		Assertions.assertTrue(SystemProperties.booleanValue(getClass(), KEY_BOOLEAN_TRUE, false));
+		Assertions.assertFalse(SystemProperties.booleanValue(getClass(), KEY_BOOLEAN_FALSE, true));
 	}
 
 	@Test
 	void testInts() {
-		Assertions.assertEquals(0, SystemProperties.intValue(KEY_UNDEFINED));
-		Assertions.assertEquals(0, SystemProperties.intValue(KEY_BOOLEAN_TRUE));
-		Assertions.assertEquals(0, SystemProperties.intValue(KEY_UNDEFINED, 0));
-		Assertions.assertEquals(1, SystemProperties.intValue(KEY_UNDEFINED, 1));
-		Assertions.assertEquals(0, SystemProperties.intValue(KEY_INT_0, -1));
-		Assertions.assertEquals(42, SystemProperties.intValue(KEY_INT_42, -1));
+		Assertions.assertEquals(0, SystemProperties.intValue(getClass(), KEY_UNDEFINED));
+		Assertions.assertEquals(0, SystemProperties.intValue(getClass(), KEY_BOOLEAN_TRUE));
+		Assertions.assertEquals(0, SystemProperties.intValue(getClass(), KEY_UNDEFINED, 0));
+		Assertions.assertEquals(1, SystemProperties.intValue(getClass(), KEY_UNDEFINED, 1));
+		Assertions.assertEquals(0, SystemProperties.intValue(getClass(), KEY_INT_0, -1));
+		Assertions.assertEquals(42, SystemProperties.intValue(getClass(), KEY_INT_42, -1));
 	}
 
 	@Test
 	void testLongs() {
-		Assertions.assertEquals(0l, SystemProperties.longValue(KEY_UNDEFINED));
-		Assertions.assertEquals(0l, SystemProperties.longValue(KEY_BOOLEAN_TRUE));
-		Assertions.assertEquals(0l, SystemProperties.longValue(KEY_UNDEFINED, 0));
-		Assertions.assertEquals(1l, SystemProperties.longValue(KEY_UNDEFINED, 1));
-		Assertions.assertEquals(0l, SystemProperties.longValue(KEY_LONG_0, -1));
-		Assertions.assertEquals(42l, SystemProperties.longValue(KEY_LONG_42, -1));
+		Assertions.assertEquals(0l, SystemProperties.longValue(getClass(), KEY_UNDEFINED));
+		Assertions.assertEquals(0l, SystemProperties.longValue(getClass(), KEY_BOOLEAN_TRUE));
+		Assertions.assertEquals(0l, SystemProperties.longValue(getClass(), KEY_UNDEFINED, 0));
+		Assertions.assertEquals(1l, SystemProperties.longValue(getClass(), KEY_UNDEFINED, 1));
+		Assertions.assertEquals(0l, SystemProperties.longValue(getClass(), KEY_LONG_0, -1));
+		Assertions.assertEquals(42l, SystemProperties.longValue(getClass(), KEY_LONG_42, -1));
 	}
 
 }

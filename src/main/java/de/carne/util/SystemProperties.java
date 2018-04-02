@@ -30,21 +30,55 @@ public final class SystemProperties {
 	}
 
 	/**
-	 * Get {@code boolean} system property value.
+	 * Gets a system property value.
 	 *
-	 * @param key The property key to retrieve.
-	 * @return The property value or {@code false} if the property is not defined.
+	 * @param key the property key to get.
+	 * @param defaultValue the default value to return in case the property is not defined.
+	 * @return the property value or the submitted default value if the property is not defined.
+	 */
+	public static String value(String key, String defaultValue) {
+		return System.getProperty(key, defaultValue);
+	}
+
+	/**
+	 * Gets a system property value.
+	 *
+	 * @param clazz the {@linkplain Class} to derive the property key from.
+	 * @param key the property key (relative to the submitted {@linkplain Class}) to get.
+	 * @param defaultValue the default value to return in case the property is not defined.
+	 * @return the property value or the submitted default value if the property is not defined.
+	 */
+	public static String value(Class<?> clazz, String key, String defaultValue) {
+		return System.getProperty(clazz.getName() + key, defaultValue);
+	}
+
+	/**
+	 * Gets a {@code boolean} system property value.
+	 *
+	 * @param key the property key to retrieve.
+	 * @return the property value or {@code false} if the property is not defined.
 	 */
 	public static boolean booleanValue(String key) {
 		return booleanValue(key, false);
 	}
 
 	/**
-	 * Get {@code boolean} system property value.
+	 * Gets a {@code boolean} system property value.
 	 *
-	 * @param key The property key to retrieve.
-	 * @param defaultValue The default value to return in case the property is not defined.
-	 * @return The property value or the submitted default value if the property is not defined.
+	 * @param clazz the {@linkplain Class} to derive the property key from.
+	 * @param key the property key (relative to the submitted {@linkplain Class}) to get.
+	 * @return the property value or {@code false} if the property is not defined.
+	 */
+	public static boolean booleanValue(Class<?> clazz, String key) {
+		return booleanValue(clazz, key, false);
+	}
+
+	/**
+	 * Gets a {@code boolean} system property value.
+	 *
+	 * @param key the property key to retrieve.
+	 * @param defaultValue the default value to return in case the property is not defined.
+	 * @return the property value or the submitted default value if the property is not defined.
 	 */
 	public static boolean booleanValue(String key, boolean defaultValue) {
 		String value = System.getProperty(key);
@@ -57,21 +91,44 @@ public final class SystemProperties {
 	}
 
 	/**
-	 * Get {@code int} system property value.
+	 * Gets a {@code boolean} system property value.
 	 *
-	 * @param key The property key to retrieve.
-	 * @return The property value or {@code 0} if the property is not defined.
+	 * @param clazz the {@linkplain Class} to derive the property key from.
+	 * @param key the system property key (relative to the submitted {@linkplain Class}) to get.
+	 * @param defaultValue The default value to return in case the property is not defined.
+	 * @return The property value or the submitted default value if the property is not defined.
+	 */
+	public static boolean booleanValue(Class<?> clazz, String key, boolean defaultValue) {
+		return booleanValue(clazz.getName() + key, defaultValue);
+	}
+
+	/**
+	 * Gets a {@code int} system property value.
+	 *
+	 * @param key the property key to retrieve.
+	 * @return the property value or {@code 0} if the property is not defined.
 	 */
 	public static int intValue(String key) {
 		return intValue(key, 0);
 	}
 
 	/**
-	 * Get {@code int} system property value.
+	 * Gets a {@code int} system property value.
 	 *
-	 * @param key The property key to retrieve.
-	 * @param defaultValue The default value to return in case the property is not defined.
-	 * @return The property value or the submitted default value if the property is not defined.
+	 * @param clazz the {@linkplain Class} to derive the property key from.
+	 * @param key the property key (relative to the submitted {@linkplain Class}) to get.
+	 * @return the property value or {@code 0} if the property is not defined.
+	 */
+	public static int intValue(Class<?> clazz, String key) {
+		return intValue(clazz, key, 0);
+	}
+
+	/**
+	 * Gets a {@code int} system property value.
+	 *
+	 * @param key the property key to retrieve.
+	 * @param defaultValue the default value to return in case the property is not defined.
+	 * @return the property value or the submitted default value if the property is not defined.
 	 */
 	public static int intValue(String key, int defaultValue) {
 		String value = System.getProperty(key);
@@ -88,21 +145,44 @@ public final class SystemProperties {
 	}
 
 	/**
-	 * Get {@code long} system property value.
+	 * Gets a {@code int} system property value.
 	 *
-	 * @param key The property key to retrieve.
-	 * @return The property value or {@code 0} if the property is not defined.
+	 * @param clazz the {@linkplain Class} to derive the property key from.
+	 * @param key the property key (relative to the submitted {@linkplain Class}) to get.
+	 * @param defaultValue the default value to return in case the property is not defined.
+	 * @return the property value or the submitted default value if the property is not defined.
+	 */
+	public static int intValue(Class<?> clazz, String key, int defaultValue) {
+		return intValue(clazz.getName() + key, defaultValue);
+	}
+
+	/**
+	 * Gets a {@code long} system property value.
+	 *
+	 * @param key the property key to retrieve.
+	 * @return the property value or {@code 0} if the property is not defined.
 	 */
 	public static long longValue(String key) {
 		return longValue(key, 0);
 	}
 
 	/**
-	 * Get {@code long} system property value.
+	 * Gets a {@code long} system property value.
 	 *
-	 * @param key The property key to retrieve.
-	 * @param defaultValue The default value to return in case the property is not defined.
-	 * @return The property value or the submitted default value if the property is not defined.
+	 * @param clazz the {@linkplain Class} to derive the property key from.
+	 * @param key the property key (relative to the submitted {@linkplain Class}) to get.
+	 * @return the property value or {@code 0} if the property is not defined.
+	 */
+	public static long longValue(Class<?> clazz, String key) {
+		return longValue(clazz, key, 0);
+	}
+
+	/**
+	 * Gets a {@code long} system property value.
+	 *
+	 * @param key the property key to retrieve.
+	 * @param defaultValue the default value to return in case the property is not defined.
+	 * @return the property value or the submitted default value if the property is not defined.
 	 */
 	public static long longValue(String key, long defaultValue) {
 		String value = System.getProperty(key);
@@ -116,6 +196,18 @@ public final class SystemProperties {
 			}
 		}
 		return longValue;
+	}
+
+	/**
+	 * Gets a {@code long} system property value.
+	 *
+	 * @param clazz the {@linkplain Class} to derive the property key from.
+	 * @param key the property key (relative to the submitted {@linkplain Class}) to get.
+	 * @param defaultValue the default value to return in case the property is not defined.
+	 * @return the property value or the submitted default value if the property is not defined.
+	 */
+	public static long longValue(Class<?> clazz, String key, long defaultValue) {
+		return longValue(clazz.getName() + key, defaultValue);
 	}
 
 }
