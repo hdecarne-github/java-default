@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import de.carne.boot.logging.Log;
 import de.carne.check.Nullable;
-import de.carne.util.logging.Log;
 
 /**
  * Utility class providing {@linkplain Exception}/{@linkplain Throwable} handling related functions.

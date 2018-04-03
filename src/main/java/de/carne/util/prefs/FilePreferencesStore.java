@@ -38,12 +38,12 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
+import de.carne.boot.logging.Log;
 import de.carne.check.Nullable;
 import de.carne.nio.file.attribute.FileAttributes;
 import de.carne.util.Exceptions;
 import de.carne.util.ShutdownHooks;
 import de.carne.util.Strings;
-import de.carne.util.logging.Log;
 
 /**
  * This class provides the actual store access for all {@linkplain FilePreferences} objects.

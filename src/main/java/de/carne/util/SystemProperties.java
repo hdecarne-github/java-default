@@ -16,7 +16,7 @@
  */
 package de.carne.util;
 
-import de.carne.util.logging.Log;
+import de.carne.boot.logging.Log;
 
 /**
  * Utility class providing system properties related functions.
