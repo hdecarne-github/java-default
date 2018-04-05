@@ -19,8 +19,8 @@ package de.carne.util.prefs;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.BackingStoreException;
 
-import de.carne.check.Check;
-import de.carne.check.Nullable;
+import de.carne.boot.check.Check;
+import de.carne.boot.check.Nullable;
 
 /**
  * {@linkplain java.util.prefs.Preferences} implementation backed up by text configuration files.

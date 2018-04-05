@@ -19,7 +19,7 @@ package de.carne.io;
 import java.io.Closeable;
 import java.io.IOException;
 
-import de.carne.check.Nullable;
+import de.carne.boot.check.Nullable;
 import de.carne.util.Exceptions;
 
 /**

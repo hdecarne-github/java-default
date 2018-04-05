@@ -39,7 +39,7 @@ import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
 import de.carne.boot.logging.Log;
-import de.carne.check.Nullable;
+import de.carne.boot.check.Nullable;
 import de.carne.nio.file.attribute.FileAttributes;
 import de.carne.util.Exceptions;
 import de.carne.util.ShutdownHooks;

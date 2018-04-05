@@ -19,8 +19,8 @@ package de.carne.util;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import de.carne.check.Check;
-import de.carne.check.Nullable;
+import de.carne.boot.check.Check;
+import de.carne.boot.check.Nullable;
 
 /**
  * Utility class used to handle lazy initialized objects in a {@code null}-safe way.

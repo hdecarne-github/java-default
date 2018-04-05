@@ -21,7 +21,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import de.carne.boot.logging.Log;
-import de.carne.check.Nullable;
+import de.carne.boot.check.Nullable;
 
 /**
  * Utility class providing {@linkplain Exception}/{@linkplain Throwable} handling related functions.

@@ -19,7 +19,7 @@ package de.carne.util;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import de.carne.check.Nullable;
+import de.carne.boot.check.Nullable;
 
 /**
  * Utility class used to handle late initialized objects in a {@code null}-safe way.
