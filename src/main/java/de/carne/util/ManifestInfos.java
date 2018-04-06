@@ -25,6 +25,8 @@ import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import de.carne.boot.Exceptions;
+
 /**
  * Utility class used to retrieve version info and the like from the application manifest.
  */

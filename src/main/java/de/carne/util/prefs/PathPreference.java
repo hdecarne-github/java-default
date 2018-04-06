@@ -21,7 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.prefs.Preferences;
 
-import de.carne.util.Exceptions;
+import de.carne.boot.Exceptions;
 
 /**
  * {@linkplain Path} preference access.

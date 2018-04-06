@@ -16,6 +16,8 @@
  */
 package de.carne.util;
 
+import de.carne.boot.Exceptions;
+
 /**
  * Utility class providing {@linkplain Thread} related functions.
  */
