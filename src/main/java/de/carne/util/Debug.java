@@ -16,6 +16,8 @@
  */
 package de.carne.util;
 
+import de.carne.text.MemoryUnitFormat;
+
 /**
  * Utility class providing debug related functions.
  */
@@ -44,8 +46,6 @@ public final class Debug {
 		return caller;
 	}
 
-	private static final String[] MEMORY_UNIT = { "byte", "KiB", "MiB", "GiB", "TiB" };
-
 	/**
 	 * Formats the currently used memory in human readable format.
 	 *
@@ -54,13 +54,9 @@ public final class Debug {
 	public static String formatUsedMemory() {
 		Runtime runtime = Runtime.getRuntime();
 		long usedMemory = Math.max(0, runtime.totalMemory() - runtime.freeMemory());
-		int unitIndex = 0;
+		MemoryUnitFormat format = new MemoryUnitFormat();
 
-		while (usedMemory > (1 << 20) && (unitIndex + 1) < MEMORY_UNIT.length) {
-			usedMemory >>= 10;
-			unitIndex++;
-		}
-		return String.format("%1$,d %2$s", usedMemory, MEMORY_UNIT[unitIndex]);
+		return format.format(usedMemory);
 	}
 
 }
