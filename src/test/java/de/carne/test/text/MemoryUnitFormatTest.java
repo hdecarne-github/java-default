@@ -62,6 +62,15 @@ class MemoryUnitFormatTest {
 		Assertions.assertEquals(11 * 1024 * 1024, format.parse("11 MiB").longValue());
 		Assertions.assertEquals(1233, format.parse("1,205 KiB").longValue());
 		Assertions.assertEquals(12345933, format.parse("11,774 MiB").longValue());
+		Assertions.assertThrows(ParseException.class, () -> {
+			format.parse("x");
+		});
+		Assertions.assertThrows(ParseException.class, () -> {
+			format.parse("0");
+		});
+		Assertions.assertThrows(ParseException.class, () -> {
+			format.parse("0 XiB");
+		});
 	}
 
 }

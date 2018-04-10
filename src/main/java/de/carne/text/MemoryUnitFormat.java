@@ -54,7 +54,7 @@ public class MemoryUnitFormat extends NumberFormat {
 
 	/**
 	 * Constructs a new {@linkplain MemoryUnitFormat} instance.
-	 * 
+	 *
 	 * @param numberFormat the {@linkplain NumberFormat} to use for formatting and parsing.
 	 */
 	public MemoryUnitFormat(NumberFormat numberFormat) {
@@ -88,18 +88,28 @@ public class MemoryUnitFormat extends NumberFormat {
 	}
 
 	@Override
+	@Nullable
 	public Number parse(@Nullable String source, @Nullable ParsePosition parsePosition) {
-		Number number = this.numberFormat.parse(source, parsePosition);
+		ParsePosition checkedParsePosition = Check.notNull(parsePosition);
+		int initialParseIndex = checkedParsePosition.getIndex();
+		Number number = this.numberFormat.parse(source, checkedParsePosition);
 
-		if (number instanceof Long) {
-			number = parseLong((Long) number, Check.notNull(source), Check.notNull(parsePosition));
-		} else {
-			number = parseDouble((Double) number, Check.notNull(source), Check.notNull(parsePosition));
+		if (checkedParsePosition.getErrorIndex() < 0) {
+			if (number instanceof Long) {
+				number = parseLong((Long) number, Check.notNull(source), checkedParsePosition, initialParseIndex);
+			} else if (number instanceof Double) {
+				number = parseDouble((Double) number, Check.notNull(source), checkedParsePosition, initialParseIndex);
+			} else {
+				checkedParsePosition.setErrorIndex(checkedParsePosition.getIndex());
+				checkedParsePosition.setIndex(initialParseIndex);
+				number = null;
+			}
 		}
 		return number;
 	}
 
-	private Long parseLong(Long longNumber, String source, ParsePosition parsePosition) {
+	@Nullable
+	private Long parseLong(Long longNumber, String source, ParsePosition parsePosition, int initialParseIndex) {
 		long longValue = longNumber.longValue();
 		int parseIndex = parsePosition.getIndex();
 		Long parseResult;
@@ -117,12 +127,14 @@ public class MemoryUnitFormat extends NumberFormat {
 			parseResult = longValue;
 		} else {
 			parsePosition.setErrorIndex(parseIndex);
-			parseResult = longNumber;
+			parsePosition.setIndex(initialParseIndex);
+			parseResult = null;
 		}
 		return parseResult;
 	}
 
-	private Double parseDouble(Double doubleNumber, String source, ParsePosition parsePosition) {
+	@Nullable
+	private Double parseDouble(Double doubleNumber, String source, ParsePosition parsePosition, int initialParseIndex) {
 		double doubleValue = doubleNumber.doubleValue();
 		int parseIndex = parsePosition.getIndex();
 		Double parseResult;
@@ -140,7 +152,8 @@ public class MemoryUnitFormat extends NumberFormat {
 			parseResult = doubleValue;
 		} else {
 			parsePosition.setErrorIndex(parseIndex);
-			parseResult = doubleNumber;
+			parsePosition.setIndex(initialParseIndex);
+			parseResult = null;
 		}
 		return parseResult;
 	}
