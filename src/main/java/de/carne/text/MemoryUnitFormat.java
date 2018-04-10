@@ -34,6 +34,8 @@ public class MemoryUnitFormat extends NumberFormat {
 
 	private static final String[] UNITS = { " byte", " KiB", " MiB", " GiB", " TiB", " PiB", " EiB", " ZiB", " YiB" };
 
+	private static final ThreadLocal<MemoryUnitFormat> CACHED_INSTANCE = ThreadLocal.withInitial(MemoryUnitFormat::new);
+
 	private final NumberFormat numberFormat;
 
 	/**
@@ -59,6 +61,15 @@ public class MemoryUnitFormat extends NumberFormat {
 	 */
 	public MemoryUnitFormat(NumberFormat numberFormat) {
 		this.numberFormat = numberFormat;
+	}
+
+	/**
+	 * Gets the default {@linkplain MemoryUnitFormat} instance.
+	 * 
+	 * @return the default {@linkplain MemoryUnitFormat} instance.
+	 */
+	public static MemoryUnitFormat getMemoryUnitInstance() {
+		return CACHED_INSTANCE.get();
 	}
 
 	@Override

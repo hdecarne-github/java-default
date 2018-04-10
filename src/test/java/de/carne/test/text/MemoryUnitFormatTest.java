@@ -73,4 +73,15 @@ class MemoryUnitFormatTest {
 		});
 	}
 
+	@Test
+	void testInstanceCaching() {
+		MemoryUnitFormat instance1 = MemoryUnitFormat.getMemoryUnitInstance();
+
+		Assertions.assertNotNull(instance1);
+
+		MemoryUnitFormat instance2 = MemoryUnitFormat.getMemoryUnitInstance();
+
+		Assertions.assertSame(instance1, instance2);
+	}
+
 }

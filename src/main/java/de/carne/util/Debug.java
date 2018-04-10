@@ -54,9 +54,8 @@ public final class Debug {
 	public static String formatUsedMemory() {
 		Runtime runtime = Runtime.getRuntime();
 		long usedMemory = Math.max(0, runtime.totalMemory() - runtime.freeMemory());
-		MemoryUnitFormat format = new MemoryUnitFormat();
 
-		return format.format(usedMemory);
+		return MemoryUnitFormat.getMemoryUnitInstance().format(usedMemory);
 	}
 
 }
