@@ -19,7 +19,6 @@ package de.carne.test.nio.file.attribute;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.HashMap;
@@ -29,6 +28,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import de.carne.nio.file.FileUtil;
 import de.carne.nio.file.attribute.FileAttributes;
 
 /**
@@ -52,9 +52,8 @@ class FileAttributesTest {
 
 	@Test
 	void testUserDirectoryDefault() throws IOException {
-		Path tempDirectory = Paths.get("java.io.tmpdir");
-		Path userDirectory = Files.createTempDirectory(getClass().getName(),
-				FileAttributes.userDirectoryDefault(tempDirectory));
+		Path userDirectory = Files.createTempDirectory(FileUtil.TMP_DIR, getClass().getName(),
+				FileAttributes.userDirectoryDefault(FileUtil.TMP_DIR));
 
 		try {
 			checkFilePermissions(userDirectory, USER_DIRECTORY_PERMISSIONS);
@@ -65,8 +64,8 @@ class FileAttributesTest {
 
 	@Test
 	void testUserFileDefault() throws IOException {
-		Path tempDirectory = Paths.get("java.io.tmpdir");
-		Path userFile = Files.createTempFile(getClass().getName(), null, FileAttributes.userFileDefault(tempDirectory));
+		Path userFile = Files.createTempFile(FileUtil.TMP_DIR, getClass().getName(), null,
+				FileAttributes.userFileDefault(FileUtil.TMP_DIR));
 
 		try {
 			checkFilePermissions(userFile, USER_FILE_PERMISSIONS);

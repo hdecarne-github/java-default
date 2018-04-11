@@ -21,6 +21,7 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
@@ -36,6 +37,11 @@ public final class FileUtil {
 	private FileUtil() {
 		// prevent instantiation
 	}
+
+	/**
+	 * The temporary directory path.
+	 */
+	public static final Path TMP_DIR = Paths.get(System.getProperty("java.io.tmpdir"));
 
 	/**
 	 * Sets the submitted file last modified time to the current time.
