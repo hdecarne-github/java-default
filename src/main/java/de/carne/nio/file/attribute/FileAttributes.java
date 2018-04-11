@@ -38,10 +38,10 @@ public final class FileAttributes {
 	private static final String POSIX = "posix";
 
 	/**
-	 * Get the {@linkplain FileSystem} specific best choice for the access rights for a user's private directory.
+	 * Gets the {@linkplain FileSystem} specific best choice for the access rights for a user's private directory.
 	 *
-	 * @param fileSystem The {@linkplain FileSystem} to determine the access rights for.
-	 * @return The access rights to use for a user's private directory.
+	 * @param fileSystem the {@linkplain FileSystem} to determine the access rights for.
+	 * @return the access rights to use for a user's private directory.
 	 */
 	@SuppressWarnings("squid:S1452")
 	public static FileAttribute<?>[] userDirectoryDefault(FileSystem fileSystem) {
@@ -56,14 +56,43 @@ public final class FileAttributes {
 	}
 
 	/**
-	 * Get the {@linkplain FileSystem} specific best choice for the access rights for a user's private directory.
+	 * Gets the {@linkplain FileSystem} specific best choice for the access rights for a user's private directory.
 	 *
-	 * @param path The {@linkplain Path} to determine the access rights for.
-	 * @return The access rights to use for a user's private directory.
+	 * @param path the {@linkplain Path} to determine the access rights for.
+	 * @return the access rights to use for a user's private directory.
 	 */
 	@SuppressWarnings("squid:S1452")
 	public static FileAttribute<?>[] userDirectoryDefault(Path path) {
 		return userDirectoryDefault(path.getFileSystem());
+	}
+
+	/**
+	 * Gets the {@linkplain FileSystem} specific best choice for the access rights for a user's private file.
+	 *
+	 * @param fileSystem the {@linkplain FileSystem} to determine the access rights for.
+	 * @return the access rights to use for a user's private file.
+	 */
+	@SuppressWarnings("squid:S1452")
+	public static FileAttribute<?>[] userFileDefault(FileSystem fileSystem) {
+		List<FileAttribute<?>> userDefault = new ArrayList<>();
+		Set<String> fileAttributeViews = fileSystem.supportedFileAttributeViews();
+
+		if (fileAttributeViews.contains(POSIX)) {
+			userDefault.add(PosixFilePermissions
+					.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)));
+		}
+		return userDefault.toArray(new FileAttribute<?>[userDefault.size()]);
+	}
+
+	/**
+	 * Gets the {@linkplain FileSystem} specific best choice for the access rights for a user's private file.
+	 *
+	 * @param path the {@linkplain Path} to determine the access rights for.
+	 * @return the access rights to use for a user's private file.
+	 */
+	@SuppressWarnings("squid:S1452")
+	public static FileAttribute<?>[] userFileDefault(Path path) {
+		return userFileDefault(path.getFileSystem());
 	}
 
 }
