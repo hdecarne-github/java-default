@@ -28,6 +28,17 @@ public final class Threads {
 	}
 
 	/**
+	 * Checks whether the current {@linkplain Thread} has been interrupted.
+	 *
+	 * @throws InterruptedException if the current {@linkplain Thread} has been interrupted.
+	 */
+	public static void checkInterrupted() throws InterruptedException {
+		if (Thread.interrupted()) {
+			throw new InterruptedException();
+		}
+	}
+
+	/**
 	 * Causes the current {@linkplain Thread} to sleep.
 	 * <p>
 	 * In addition to {@linkplain Thread#sleep(long)} this function automatically handles possible

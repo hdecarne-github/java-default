@@ -27,6 +27,16 @@ import de.carne.util.Threads;
 class ThreadsTest {
 
 	@Test
+	void testInterrupted() throws InterruptedException {
+		Threads.checkInterrupted();
+
+		Thread.currentThread().interrupt();
+		Assertions.assertThrows(InterruptedException.class, () -> {
+			Threads.checkInterrupted();
+		});
+	}
+
+	@Test
 	void testSleep() throws InterruptedException {
 		// Sleep through
 		Assertions.assertTrue(Threads.sleep(250));
