@@ -18,6 +18,7 @@ package de.carne.test.io;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,21 @@ class CloseablesTest {
 		Assertions.assertThrows(IOException.class, () -> {
 			Closeables.close(FAILING_CLOSEABLE);
 		});
+	}
+
+	@Test
+	void testCloseAll() throws IOException {
+		final AtomicInteger closeCounter = new AtomicInteger();
+
+		Closeable closable = () -> closeCounter.incrementAndGet();
+
+		Closeables.closeAll(closable, null, closable);
+
+		Assertions.assertEquals(2, closeCounter.get());
+		Assertions.assertThrows(IOException.class, () -> {
+			Closeables.closeAll(closable, FAILING_CLOSEABLE, closable);
+		});
+		Assertions.assertEquals(4, closeCounter.get());
 	}
 
 	@Test
