@@ -21,7 +21,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -57,9 +59,19 @@ class IOUtilTest {
 
 		IOUtil.copyFile(fileDataOutputStream, file2);
 
-		byte[] fileData = fileDataOutputStream.toByteArray();
+		Assertions.assertArrayEquals(resourceData, fileDataOutputStream.toByteArray());
 
-		Assertions.assertArrayEquals(resourceData, fileData);
+		try (FileChannel file1Channel = FileChannel.open(file1.toPath(), StandardOpenOption.READ);
+				FileChannel file2Channel = FileChannel.open(file2.toPath(), StandardOpenOption.WRITE,
+						StandardOpenOption.TRUNCATE_EXISTING)) {
+			IOUtil.copyChannel(file2Channel, file1Channel);
+		}
+
+		fileDataOutputStream.reset();
+
+		IOUtil.copyFile(fileDataOutputStream, file2);
+
+		Assertions.assertArrayEquals(resourceData, fileDataOutputStream.toByteArray());
 	}
 
 	@Test

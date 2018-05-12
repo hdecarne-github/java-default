@@ -24,7 +24,10 @@ import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
 
 /**
  * Utility class providing I/O related functions.
@@ -80,7 +83,7 @@ public final class IOUtil {
 		long copied = 0;
 		int read;
 
-		while ((read = src.read(buffer)) > 0) {
+		while ((read = src.read(buffer)) >= 0) {
 			dst.write(buffer, 0, read);
 			copied += read;
 		}
@@ -168,6 +171,28 @@ public final class IOUtil {
 
 		try (InputStream srcStream = src.openStream()) {
 			copied = copyStream(dst, srcStream);
+		}
+		return copied;
+	}
+
+	/**
+	 * Copies all bytes from a {@linkplain ReadableByteChannel} to a {@linkplain WritableByteChannel}.
+	 *
+	 * @param dst the {@linkplain WritableByteChannel} to copy to.
+	 * @param src the {@linkplain ReadableByteChannel} to copy from.
+	 * @return the number of copied bytes.
+	 * @throws IOException if an I/O error occurs.
+	 */
+	public static long copyChannel(WritableByteChannel dst, ReadableByteChannel src) throws IOException {
+		ByteBuffer buffer = ByteBuffer.allocateDirect(CHANNEL_IO_BUFFER_SIZE);
+		long copied = 0;
+		int read;
+
+		while ((read = src.read(buffer)) >= 0) {
+			buffer.flip();
+			dst.write(buffer);
+			buffer.clear();
+			copied += read;
 		}
 		return copied;
 	}
