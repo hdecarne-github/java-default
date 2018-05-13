@@ -39,9 +39,22 @@ public final class FileUtil {
 	}
 
 	/**
-	 * The temporary directory path.
+	 * Gets the temporary directory path.
+	 * 
+	 * @return the temporary directory path.
 	 */
-	public static final Path TMP_DIR = Paths.get(System.getProperty("java.io.tmpdir"));
+	public static Path tmpDir() {
+		return Paths.get(System.getProperty("java.io.tmpdir")).toAbsolutePath();
+	}
+
+	/**
+	 * Gets the current working directory path.
+	 * 
+	 * @return the current working directory path.
+	 */
+	public static Path workingDir() {
+		return Paths.get(".").toAbsolutePath();
+	}
 
 	/**
 	 * Sets the submitted file last modified time to the current time.

@@ -34,6 +34,22 @@ import de.carne.util.Threads;
 class FileUtilTest {
 
 	@Test
+	void testTmpDir() {
+		Path tmpDir = FileUtil.tmpDir();
+
+		Assertions.assertTrue(Files.isDirectory(tmpDir));
+		Assertions.assertEquals(tmpDir.toAbsolutePath(), tmpDir);
+	}
+
+	@Test
+	void testWorkingDir() {
+		Path workingDir = FileUtil.workingDir();
+
+		Assertions.assertTrue(Files.isDirectory(workingDir));
+		Assertions.assertEquals(workingDir.toAbsolutePath(), workingDir);
+	}
+
+	@Test
 	void testTouch() throws IOException {
 		Path tempFile = Files.createTempFile(getClass().getName(), null);
 

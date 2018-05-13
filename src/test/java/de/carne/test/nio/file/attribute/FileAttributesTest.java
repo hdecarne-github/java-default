@@ -52,8 +52,8 @@ class FileAttributesTest {
 
 	@Test
 	void testUserDirectoryDefault() throws IOException {
-		Path userDirectory = Files.createTempDirectory(FileUtil.TMP_DIR, getClass().getName(),
-				FileAttributes.userDirectoryDefault(FileUtil.TMP_DIR));
+		Path userDirectory = Files.createTempDirectory(FileUtil.tmpDir(), getClass().getName(),
+				FileAttributes.userDirectoryDefault(FileUtil.tmpDir()));
 
 		try {
 			checkFilePermissions(userDirectory, USER_DIRECTORY_PERMISSIONS);
@@ -64,8 +64,8 @@ class FileAttributesTest {
 
 	@Test
 	void testUserFileDefault() throws IOException {
-		Path userFile = Files.createTempFile(FileUtil.TMP_DIR, getClass().getName(), null,
-				FileAttributes.userFileDefault(FileUtil.TMP_DIR));
+		Path userFile = Files.createTempFile(FileUtil.tmpDir(), getClass().getName(), null,
+				FileAttributes.userFileDefault(FileUtil.tmpDir()));
 
 		try {
 			checkFilePermissions(userFile, USER_FILE_PERMISSIONS);
