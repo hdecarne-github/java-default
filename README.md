@@ -1,7 +1,7 @@
 ### Common Java code shared between my projects
 [![Download](https://api.bintray.com/packages/hdecarne/maven/java-default/images/download.svg)](https://bintray.com/hdecarne/maven/java-default/_latestVersion)
 [![Build Status](https://travis-ci.com/hdecarne/java-default.svg?branch=master)](https://travis-ci.com/hdecarne/java-default)
-[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=de.carne.common:java-default)](https://sonarcloud.io/dashboard/index/de.carne.common:java-default)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=de.carne.common%3Ajava-default&metric=alert_status)](https://sonarcloud.io/dashboard/index/de.carne.common:java-default)
 
 #### License
 This project is subject to the the GNU General Public License version 3 or later version.
