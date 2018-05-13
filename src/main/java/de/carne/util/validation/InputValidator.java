@@ -89,7 +89,8 @@ public class InputValidator<I> implements Supplier<I> {
 
 	/**
 	 * Checks and converts the input value against the given conversion.
-	 * 
+	 *
+	 * @param <O> the actual output type.
 	 * @param conversion the {@linkplain Conversion} to apply.
 	 * @param message the validation message to create in case the conversion fails.
 	 * @return the converted {@linkplain InputValidator} instance for further validation steps.
