@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
@@ -44,7 +45,7 @@ class IOUtilTest {
 		file1.deleteOnExit();
 		file2.deleteOnExit();
 
-		// Test copy operations
+		// Test stream/file copy operations
 		ByteArrayOutputStream resourceDataOutputStream = new ByteArrayOutputStream();
 
 		IOUtil.copyUrl(resourceDataOutputStream, getClass().getResource("data.bin"));
@@ -61,6 +62,7 @@ class IOUtilTest {
 
 		Assertions.assertArrayEquals(resourceData, fileDataOutputStream.toByteArray());
 
+		// Test channel copy operations
 		try (FileChannel file1Channel = FileChannel.open(file1.toPath(), StandardOpenOption.READ);
 				FileChannel file2Channel = FileChannel.open(file2.toPath(), StandardOpenOption.WRITE,
 						StandardOpenOption.TRUNCATE_EXISTING)) {
@@ -72,6 +74,28 @@ class IOUtilTest {
 		IOUtil.copyFile(fileDataOutputStream, file2);
 
 		Assertions.assertArrayEquals(resourceData, fileDataOutputStream.toByteArray());
+
+		// Test channel copy operations
+		byte[] bufferBytes = new byte[Long.BYTES];
+		ByteBuffer indirectBuffer = ByteBuffer.wrap(bufferBytes);
+		ByteBuffer directBuffer = ByteBuffer.allocateDirect(Long.BYTES);
+
+		indirectBuffer.putLong(0x123456789abcdef0l);
+		indirectBuffer.flip();
+		directBuffer.putLong(0x123456789abcdef0l);
+		directBuffer.flip();
+
+		fileDataOutputStream.reset();
+
+		IOUtil.copyBuffer(fileDataOutputStream, directBuffer);
+
+		Assertions.assertArrayEquals(bufferBytes, fileDataOutputStream.toByteArray());
+
+		fileDataOutputStream.reset();
+
+		IOUtil.copyBuffer(fileDataOutputStream, indirectBuffer);
+
+		Assertions.assertArrayEquals(bufferBytes, fileDataOutputStream.toByteArray());
 	}
 
 	@Test

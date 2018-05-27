@@ -198,6 +198,37 @@ public final class IOUtil {
 	}
 
 	/**
+	 * Copies all available bytes from a {@linkplain ByteBuffer} to a {@linkplain OutputStream}.
+	 *
+	 * @param dst the {@linkplain OutputStream} to copy to.
+	 * @param buffer the {@linkplain ByteBuffer} to copy from.
+	 * @return the number of copied bytes.
+	 * @throws IOException if an I/O error occurs.
+	 */
+	public static int copyBuffer(OutputStream dst, ByteBuffer buffer) throws IOException {
+		int remaining = buffer.remaining();
+		int copied = 0;
+
+		if (remaining > 0) {
+			if (buffer.hasArray()) {
+				byte[] bufferArray = buffer.array();
+				int bufferArrayOffset = buffer.arrayOffset();
+				int bufferPosition = buffer.position();
+
+				dst.write(bufferArray, bufferArrayOffset + bufferPosition, remaining);
+				buffer.position(bufferPosition + remaining);
+			} else {
+				byte[] bufferBytes = new byte[remaining];
+
+				buffer.get(bufferBytes);
+				dst.write(bufferBytes);
+			}
+			copied = remaining;
+		}
+		return copied;
+	}
+
+	/**
 	 * Read all bytes from an {@linkplain InputStream}.
 	 *
 	 * @param src the {@linkplain InputStream} to read from.
