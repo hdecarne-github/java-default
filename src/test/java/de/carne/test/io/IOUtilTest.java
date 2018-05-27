@@ -75,7 +75,7 @@ class IOUtilTest {
 
 		Assertions.assertArrayEquals(resourceData, fileDataOutputStream.toByteArray());
 
-		// Test channel copy operations
+		// Test buffer copy operations
 		byte[] bufferBytes = new byte[Long.BYTES];
 		ByteBuffer indirectBuffer = ByteBuffer.wrap(bufferBytes);
 		ByteBuffer directBuffer = ByteBuffer.allocateDirect(Long.BYTES);
