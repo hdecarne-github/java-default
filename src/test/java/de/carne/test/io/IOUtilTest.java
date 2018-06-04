@@ -77,11 +77,11 @@ class IOUtilTest {
 
 		// Test buffer copy operations
 		byte[] bufferBytes = new byte[Long.BYTES];
-		ByteBuffer indirectBuffer = ByteBuffer.wrap(bufferBytes);
+		ByteBuffer heapBuffer = ByteBuffer.wrap(bufferBytes);
 		ByteBuffer directBuffer = ByteBuffer.allocateDirect(Long.BYTES);
 
-		indirectBuffer.putLong(0x123456789abcdef0l);
-		indirectBuffer.flip();
+		heapBuffer.putLong(0x123456789abcdef0l);
+		heapBuffer.flip();
 		directBuffer.putLong(0x123456789abcdef0l);
 		directBuffer.flip();
 
@@ -89,12 +89,14 @@ class IOUtilTest {
 
 		IOUtil.copyBuffer(fileDataOutputStream, directBuffer);
 
+		Assertions.assertFalse(directBuffer.hasRemaining());
 		Assertions.assertArrayEquals(bufferBytes, fileDataOutputStream.toByteArray());
 
 		fileDataOutputStream.reset();
 
-		IOUtil.copyBuffer(fileDataOutputStream, indirectBuffer);
+		IOUtil.copyBuffer(fileDataOutputStream, heapBuffer);
 
+		Assertions.assertFalse(heapBuffer.hasRemaining());
 		Assertions.assertArrayEquals(bufferBytes, fileDataOutputStream.toByteArray());
 	}
 
