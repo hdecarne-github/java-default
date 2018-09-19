@@ -48,6 +48,7 @@ class CloseablesTest {
 	void testCloseAll() throws IOException {
 		final AtomicInteger closeCounter = new AtomicInteger();
 
+		@SuppressWarnings("resource")
 		Closeable closable = () -> closeCounter.incrementAndGet();
 
 		Closeables.closeAll(closable, null, closable);
