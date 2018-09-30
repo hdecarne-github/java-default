@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-	api("de.carne.common:java-boot:2.5.0-SNAPSHOT")
+	api("de.carne.common:java-boot:2.5.0")
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.2.0")
 	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.2.0")
 }
