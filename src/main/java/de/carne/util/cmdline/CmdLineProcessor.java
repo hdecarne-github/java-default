@@ -24,7 +24,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Utility class for command line processing.
@@ -62,7 +62,7 @@ public final class CmdLineProcessor {
 	 * Constructs a new {@linkplain CmdLineProcessor} instance.
 	 *
 	 * @param cmd the command executing the command line (used by {@linkplain #toString()} to build a complete command
-	 *        line string).
+	 * line string).
 	 * @param args the command line to process.
 	 */
 	public CmdLineProcessor(String cmd, String[] args) {
@@ -285,7 +285,7 @@ public final class CmdLineProcessor {
 		}
 
 		@Override
-		public void accept(@Nullable String t) {
+		public void accept(String t) {
 			this.action.accept(t);
 		}
 
@@ -300,7 +300,7 @@ public final class CmdLineProcessor {
 		}
 
 		@Override
-		public void accept(@Nullable String t, @Nullable String u) {
+		public void accept(String t, String u) {
 			this.action.accept(t, u);
 		}
 

@@ -17,4 +17,4 @@
 @NonNullByDefault
 package de.carne.util.validation;
 
-import de.carne.boot.check.NonNullByDefault;
+import org.eclipse.jdt.annotation.NonNullByDefault;

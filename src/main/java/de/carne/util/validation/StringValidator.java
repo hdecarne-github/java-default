@@ -16,7 +16,7 @@
  */
 package de.carne.util.validation;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * {@linkplain InputValidator} implementation for {@linkplain String} input.

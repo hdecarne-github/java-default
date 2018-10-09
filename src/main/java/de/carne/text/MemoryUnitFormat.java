@@ -21,8 +21,9 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.Locale;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import de.carne.boot.check.Check;
-import de.carne.boot.check.Nullable;
 
 /**
  * {@linkplain NumberFormat} for memory units (byte, KiB, ...).
@@ -65,7 +66,7 @@ public class MemoryUnitFormat extends NumberFormat {
 
 	/**
 	 * Gets the default {@linkplain MemoryUnitFormat} instance.
-	 * 
+	 *
 	 * @return the default {@linkplain MemoryUnitFormat} instance.
 	 */
 	public static MemoryUnitFormat getMemoryUnitInstance() {
@@ -125,9 +126,7 @@ public class MemoryUnitFormat extends NumberFormat {
 		int parseIndex = parsePosition.getIndex();
 		Long parseResult;
 
-		for (int unitIndex = 0; unitIndex < UNITS.length; unitIndex++) {
-			String unit = UNITS[unitIndex];
-
+		for (String unit : UNITS) {
 			if (source.startsWith(unit, parseIndex)) {
 				parsePosition.setIndex(parseIndex + unit.length());
 				break;
@@ -150,9 +149,7 @@ public class MemoryUnitFormat extends NumberFormat {
 		int parseIndex = parsePosition.getIndex();
 		Double parseResult;
 
-		for (int unitIndex = 0; unitIndex < UNITS.length; unitIndex++) {
-			String unit = UNITS[unitIndex];
-
+		for (String unit : UNITS) {
 			if (source.startsWith(unit, parseIndex)) {
 				parsePosition.setIndex(parseIndex + unit.length());
 				break;

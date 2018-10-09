@@ -19,7 +19,7 @@ package de.carne.util;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Utility class used to handle late initialized objects in a {@code null}-safe way.
@@ -54,6 +54,7 @@ public class Late<T> implements Supplier<T> {
 	 */
 	@Override
 	public synchronized T get() {
+		@Nullable
 		T checkedObject = this.object;
 
 		if (checkedObject == null) {
@@ -67,12 +68,14 @@ public class Late<T> implements Supplier<T> {
 	 *
 	 * @return the {@linkplain Optional} wrapped object.
 	 */
+	@SuppressWarnings("null")
 	public Optional<T> toOptional() {
 		return Optional.ofNullable(this.object);
 	}
 
 	@Override
 	public String toString() {
+		@Nullable
 		T checkedObject = this.object;
 
 		return (checkedObject != null ? checkedObject.toString() : "<not initialized>");

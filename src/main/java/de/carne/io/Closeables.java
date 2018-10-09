@@ -19,8 +19,9 @@ package de.carne.io;
 import java.io.Closeable;
 import java.io.IOException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import de.carne.boot.Exceptions;
-import de.carne.boot.check.Nullable;
 
 /**
  * Utility class providing {@linkplain Closeable} related functions.

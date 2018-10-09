@@ -17,4 +17,4 @@
 @NonNullByDefault
 package de.carne.util.function;
 
-import de.carne.boot.check.NonNullByDefault;
+import org.eclipse.jdt.annotation.NonNullByDefault;

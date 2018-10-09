@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Utility class providing {@linkplain String} related functions.
@@ -97,9 +97,9 @@ public final class Strings {
 	 * @param s the {@linkplain String} to split.
 	 * @param delim the delimiter character to split at.
 	 * @param all whether to split at all occurrences of the delimiter character ({@code true}) or only at the first one
-	 *        ({@code false}).
+	 * ({@code false}).
 	 * @return the splitted sub-strings. The actual number of sub-strings depends on the actual occurrences of the
-	 *         delimiter character as well as the {@code all} flag.
+	 * delimiter character as well as the {@code all} flag.
 	 */
 	public static String[] split(String s, char delim, boolean all) {
 		List<String> splits = new ArrayList<>();
@@ -164,7 +164,7 @@ public final class Strings {
 			if (joined.length() > 0) {
 				limitReached = joinLimit(joined, delim, limit);
 			}
-			limitReached = limitReached || joinLimit(joined, object.toString(), limit);
+			limitReached = limitReached || joinLimit(joined, String.valueOf(object), limit);
 			if (limitReached) {
 				break;
 			}

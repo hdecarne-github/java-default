@@ -27,7 +27,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Utility class providing file related functions.
@@ -40,7 +40,7 @@ public final class FileUtil {
 
 	/**
 	 * Gets the temporary directory path.
-	 * 
+	 *
 	 * @return the temporary directory path.
 	 */
 	public static Path tmpDir() {
@@ -49,7 +49,7 @@ public final class FileUtil {
 
 	/**
 	 * Gets the current working directory path.
-	 * 
+	 *
 	 * @return the current working directory path.
 	 */
 	public static Path workingDir() {

@@ -18,7 +18,7 @@ package de.carne.util.validation;
 
 import java.util.function.Supplier;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Base class for all kinds of input validation classes.

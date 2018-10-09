@@ -16,7 +16,7 @@
  */
 package de.carne.util.validation;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Functional interface used to define an conversion step during an input validation.

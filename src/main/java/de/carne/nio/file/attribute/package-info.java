@@ -17,4 +17,4 @@
 @NonNullByDefault
 package de.carne.nio.file.attribute;
 
-import de.carne.boot.check.NonNullByDefault;
+import org.eclipse.jdt.annotation.NonNullByDefault;
