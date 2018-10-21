@@ -24,6 +24,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -52,11 +53,9 @@ public final class CmdLineProcessor {
 
 	private final List<OptionCmdLineAction> optionActions = new ArrayList<>();
 
-	@Nullable
-	private Consumer<String> unnamedAction = null;
+	private @Nullable Consumer<String> unnamedAction = null;
 
-	@Nullable
-	private Consumer<String> unknownAction = null;
+	private @Nullable Consumer<String> unknownAction = null;
 
 	/**
 	 * Constructs a new {@linkplain CmdLineProcessor} instance.
@@ -65,7 +64,7 @@ public final class CmdLineProcessor {
 	 * line string).
 	 * @param args the command line to process.
 	 */
-	public CmdLineProcessor(String cmd, String[] args) {
+	public CmdLineProcessor(String cmd, @NonNull String[] args) {
 		this(cmd, Arrays.asList(args));
 	}
 
@@ -127,10 +126,8 @@ public final class CmdLineProcessor {
 
 	private class ProcessingContext {
 
-		@Nullable
-		private OptionCmdLineAction pendingOptionAction = null;
-		@Nullable
-		private String pendingArg = null;
+		private @Nullable OptionCmdLineAction pendingOptionAction = null;
+		private @Nullable String pendingArg = null;
 
 		ProcessingContext() {
 			// Nothing to do, just to make it accessible for out class

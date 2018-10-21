@@ -16,6 +16,7 @@
  */
 package de.carne.util;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -28,8 +29,7 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Late<T> implements Supplier<T> {
 
-	@Nullable
-	private T object = null;
+	private @Nullable T object = null;
 
 	/**
 	 * Sets/initializes the object.
@@ -54,8 +54,7 @@ public class Late<T> implements Supplier<T> {
 	 */
 	@Override
 	public synchronized T get() {
-		@Nullable
-		T checkedObject = this.object;
+		@Nullable T checkedObject = this.object;
 
 		if (checkedObject == null) {
 			throw new IllegalStateException("Not initialized");
@@ -68,17 +67,13 @@ public class Late<T> implements Supplier<T> {
 	 *
 	 * @return the {@linkplain Optional} wrapped object.
 	 */
-	@SuppressWarnings("null")
 	public Optional<T> toOptional() {
 		return Optional.ofNullable(this.object);
 	}
 
 	@Override
 	public String toString() {
-		@Nullable
-		T checkedObject = this.object;
-
-		return (checkedObject != null ? checkedObject.toString() : "<not initialized>");
+		return Strings.safe(Objects.toString(this.object, "<not initialized>"));
 	}
 
 }

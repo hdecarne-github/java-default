@@ -23,6 +23,7 @@ import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
@@ -81,7 +82,7 @@ class FileAttributesTest {
 			if ("posix".equals(fileAttributeView)) {
 				PosixFileAttributeView attributeView = Files.getFileAttributeView(path, PosixFileAttributeView.class);
 				Set<PosixFilePermission> actualPermissions = attributeView.readAttributes().permissions();
-				Object[] expectedPermissions = expectedPermissionsMap.get(fileAttributeView);
+				Object[] expectedPermissions = Objects.requireNonNull(expectedPermissionsMap.get(fileAttributeView));
 
 				Assertions.assertEquals(expectedPermissions.length, actualPermissions.size());
 				for (Object expectedPermission : expectedPermissions) {

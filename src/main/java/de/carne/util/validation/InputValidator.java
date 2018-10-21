@@ -97,7 +97,7 @@ public class InputValidator<I> implements Supplier<I> {
 	 * @throws ValidationException if the conversion fails.
 	 */
 	public <O> O convert(Conversion<I, O> conversion, ValidationMessage message) throws ValidationException {
-		O convertedInput = null;
+		@Nullable O convertedInput = null;
 
 		try {
 			convertedInput = conversion.checkAndApply(this.input);

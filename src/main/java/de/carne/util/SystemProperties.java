@@ -36,6 +36,7 @@ public final class SystemProperties {
 	 * @param defaultValue the default value to return in case the property is not defined.
 	 * @return the property value or the submitted default value if the property is not defined.
 	 */
+	@SuppressWarnings("null")
 	public static String value(String key, String defaultValue) {
 		return System.getProperty(key, defaultValue);
 	}
@@ -48,6 +49,7 @@ public final class SystemProperties {
 	 * @param defaultValue the default value to return in case the property is not defined.
 	 * @return the property value or the submitted default value if the property is not defined.
 	 */
+	@SuppressWarnings("null")
 	public static String value(Class<?> clazz, String key, String defaultValue) {
 		return System.getProperty(clazz.getName() + key, defaultValue);
 	}

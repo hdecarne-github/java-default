@@ -25,7 +25,7 @@ public class StringPreference extends Preference<String> {
 
 	/**
 	 * Constructs a new {@linkplain StringPreference} instance.
-	 * 
+	 *
 	 * @param key the preference key to access.
 	 * @param defaultValue the default preference value to use.
 	 */
@@ -34,6 +34,7 @@ public class StringPreference extends Preference<String> {
 	}
 
 	@Override
+	@SuppressWarnings("null")
 	public String get(Preferences prefs, String def) {
 		return prefs.get(key(), def);
 	}

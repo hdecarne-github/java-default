@@ -26,6 +26,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
+import java.util.Objects;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -44,7 +45,7 @@ public final class FileUtil {
 	 * @return the temporary directory path.
 	 */
 	public static Path tmpDir() {
-		return Paths.get(System.getProperty("java.io.tmpdir")).toAbsolutePath();
+		return Paths.get(Objects.requireNonNull(System.getProperty("java.io.tmpdir"))).toAbsolutePath();
 	}
 
 	/**

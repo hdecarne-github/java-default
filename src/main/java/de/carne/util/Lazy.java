@@ -16,12 +16,11 @@
  */
 package de.carne.util;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.eclipse.jdt.annotation.Nullable;
-
-import de.carne.boot.check.Check;
 
 /**
  * Utility class used to handle lazy initialized objects in a {@code null}-safe way.
@@ -32,8 +31,7 @@ public class Lazy<T> implements Supplier<T> {
 
 	private final Supplier<T> initializer;
 
-	@Nullable
-	private T object = null;
+	private @Nullable T object = null;
 
 	/**
 	 * Construct {@linkplain Lazy}.
@@ -53,11 +51,10 @@ public class Lazy<T> implements Supplier<T> {
 	 */
 	@Override
 	public synchronized T get() {
-		@Nullable
-		T checkedObject = this.object;
+		@Nullable T checkedObject = this.object;
 
 		if (checkedObject == null) {
-			this.object = checkedObject = Check.notNull(this.initializer.get());
+			this.object = checkedObject = Objects.requireNonNull(this.initializer.get());
 		}
 		return checkedObject;
 	}
@@ -73,9 +70,7 @@ public class Lazy<T> implements Supplier<T> {
 
 	@Override
 	public String toString() {
-		T checkedObject = this.object;
-
-		return (checkedObject != null ? checkedObject.toString() : "<not initialized>");
+		return Strings.safe(Objects.toString(this.object, "<not initialized>"));
 	}
 
 }

@@ -18,6 +18,7 @@ package de.carne.test.util;
 
 import java.util.Arrays;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -36,6 +37,19 @@ class StringsTest {
 		Assertions.assertFalse(Strings.notEmpty(null));
 		Assertions.assertFalse(Strings.notEmpty(""));
 		Assertions.assertTrue(Strings.notEmpty(" "));
+	}
+
+	@Test
+	void testValueOf() {
+		Assertions.assertNotNull(Strings.valueOf(null));
+		Assertions.assertNotNull(Strings.valueOf(new Object() {
+
+			@Override
+			public @Nullable String toString() {
+				return null;
+			}
+
+		}));
 	}
 
 	@Test

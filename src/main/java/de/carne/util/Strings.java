@@ -61,6 +61,17 @@ public final class Strings {
 	}
 
 	/**
+	 * Gets the string representation of the submitted object and never returns {@code null}.
+	 *
+	 * @param o the object to get the string representation of.
+	 * @return the string representation of the submitted object (never {@code null}).
+	 */
+	@SuppressWarnings("null")
+	public static String valueOf(@Nullable Object o) {
+		return String.valueOf(String.valueOf(o));
+	}
+
+	/**
 	 * Makes sure a {@linkplain String} is not {@code null}.
 	 *
 	 * @param s the {@linkplain String} to check.
@@ -86,8 +97,7 @@ public final class Strings {
 	 * @param s the {@linkplain String} to trim.
 	 * @return the submitted {@linkplain String} in trimmed form or {@code null} if {@code null} was submitted.
 	 */
-	@Nullable
-	public static String trim(@Nullable String s) {
+	public static @Nullable String trim(@Nullable String s) {
 		return (s != null ? s.trim() : s);
 	}
 
@@ -115,7 +125,7 @@ public final class Strings {
 			splits.add(s.substring(splitIndex + 1, nextSplitIndex));
 			splitIndex = nextSplitIndex;
 		}
-		return splits.toArray(new String[splits.size()]);
+		return splits.toArray(new @Nullable String[splits.size()]);
 	}
 
 	/**
@@ -164,7 +174,7 @@ public final class Strings {
 			if (joined.length() > 0) {
 				limitReached = joinLimit(joined, delim, limit);
 			}
-			limitReached = limitReached || joinLimit(joined, String.valueOf(object), limit);
+			limitReached = limitReached || joinLimit(joined, valueOf(object), limit);
 			if (limitReached) {
 				break;
 			}

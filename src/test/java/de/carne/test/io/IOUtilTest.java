@@ -25,6 +25,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.util.Objects;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ class IOUtilTest {
 		// Test stream/file copy operations
 		ByteArrayOutputStream resourceDataOutputStream = new ByteArrayOutputStream();
 
-		IOUtil.copyUrl(resourceDataOutputStream, getClass().getResource("data.bin"));
+		IOUtil.copyUrl(resourceDataOutputStream, Objects.requireNonNull(getClass().getResource("data.bin")));
 
 		byte[] resourceData = resourceDataOutputStream.toByteArray();
 		ByteArrayInputStream resourceDataInputStream = new ByteArrayInputStream(resourceData);
@@ -103,7 +104,7 @@ class IOUtilTest {
 	@Test
 	void testReadAllBytes() throws IOException {
 		// Prepare file
-		URL url = getClass().getResource("data.bin");
+		URL url = Objects.requireNonNull(getClass().getResource("data.bin"));
 		File file = Files.createTempFile(getClass().getName(), ".tmp").toFile();
 
 		file.deleteOnExit();

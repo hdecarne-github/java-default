@@ -26,6 +26,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * Utility class providing {@linkplain FileAttribute} related functions.
  */
@@ -52,7 +54,7 @@ public final class FileAttributes {
 			userDefault.add(PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ,
 					PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_EXECUTE)));
 		}
-		return userDefault.toArray(new FileAttribute<?>[userDefault.size()]);
+		return userDefault.toArray(new @Nullable FileAttribute<?>[userDefault.size()]);
 	}
 
 	/**
@@ -81,7 +83,7 @@ public final class FileAttributes {
 			userDefault.add(PosixFilePermissions
 					.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)));
 		}
-		return userDefault.toArray(new FileAttribute<?>[userDefault.size()]);
+		return userDefault.toArray(new @Nullable FileAttribute<?>[userDefault.size()]);
 	}
 
 	/**

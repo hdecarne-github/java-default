@@ -62,6 +62,7 @@ public final class ManifestInfos {
 		APPLICATION_BUILD = values.getOrDefault(names[2], UNDEFINED_ATTRIBUTE);
 	}
 
+	@SuppressWarnings("null")
 	private static Map<String, String> findAttributeValues(String... names) {
 		Map<String, String> values = new HashMap<>();
 
