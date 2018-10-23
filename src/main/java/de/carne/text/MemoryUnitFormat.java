@@ -99,7 +99,8 @@ public class MemoryUnitFormat extends NumberFormat {
 	}
 
 	@Override
-	public @Nullable Number parse(@Nullable String source, @Nullable ParsePosition parsePosition) {
+	@Nullable
+	public Number parse(@Nullable String source, @Nullable ParsePosition parsePosition) {
 		Objects.requireNonNull(source);
 		Objects.requireNonNull(parsePosition);
 
@@ -120,8 +121,8 @@ public class MemoryUnitFormat extends NumberFormat {
 		return number;
 	}
 
-	private @Nullable Long parseLong(Long longNumber, String source, ParsePosition parsePosition,
-			int initialParseIndex) {
+	@Nullable
+	private Long parseLong(Long longNumber, String source, ParsePosition parsePosition, int initialParseIndex) {
 		long longValue = longNumber.longValue();
 		int parseIndex = parsePosition.getIndex();
 		Long parseResult;
@@ -143,8 +144,8 @@ public class MemoryUnitFormat extends NumberFormat {
 		return parseResult;
 	}
 
-	private @Nullable Double parseDouble(Double doubleNumber, String source, ParsePosition parsePosition,
-			int initialParseIndex) {
+	@Nullable
+	private Double parseDouble(Double doubleNumber, String source, ParsePosition parsePosition, int initialParseIndex) {
 		double doubleValue = doubleNumber.doubleValue();
 		int parseIndex = parsePosition.getIndex();
 		Double parseResult;

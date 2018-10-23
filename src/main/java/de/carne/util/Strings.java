@@ -97,7 +97,8 @@ public final class Strings {
 	 * @param s the {@linkplain String} to trim.
 	 * @return the submitted {@linkplain String} in trimmed form or {@code null} if {@code null} was submitted.
 	 */
-	public static @Nullable String trim(@Nullable String s) {
+	@Nullable
+	public static String trim(@Nullable String s) {
 		return (s != null ? s.trim() : s);
 	}
 

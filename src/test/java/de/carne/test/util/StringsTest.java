@@ -45,7 +45,8 @@ class StringsTest {
 		Assertions.assertNotNull(Strings.valueOf(new Object() {
 
 			@Override
-			public @Nullable String toString() {
+			@Nullable
+			public String toString() {
 				return null;
 			}
 
