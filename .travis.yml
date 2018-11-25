@@ -1,7 +1,7 @@
 language: java
 
 env:
-  JAVA_OPTS="-Xmx2g -XX:MaxPermSize=256m -Dfile.encoding=UTF-8"
+  JAVA_OPTS="-Xmx2g -Dfile.encoding=UTF-8"
 
 addons:
   sonarcloud:
