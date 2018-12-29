@@ -18,7 +18,7 @@ package de.carne.test.util.cmdline;
 
 import java.util.Arrays;
 
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -112,7 +112,7 @@ class CmdLineProcessorTest {
 
 	@Test
 	void testInvalidArgFailure() {
-		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(), new @NonNull String[0]);
+		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(), new @Nullable String[0]);
 
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			cmdLine.onOption((arg, option) -> {

@@ -24,7 +24,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -47,7 +46,7 @@ public final class CmdLineProcessor {
 
 	private final String cmd;
 
-	private final Iterable<String> args;
+	private final Iterable<@Nullable String> args;
 
 	private final List<SwitchCmdLineAction> switchActions = new ArrayList<>();
 
@@ -64,7 +63,7 @@ public final class CmdLineProcessor {
 	 * line string).
 	 * @param args the command line to process.
 	 */
-	public CmdLineProcessor(String cmd, @NonNull String[] args) {
+	public CmdLineProcessor(String cmd, @Nullable String[] args) {
 		this(cmd, Arrays.asList(args));
 	}
 
@@ -74,7 +73,7 @@ public final class CmdLineProcessor {
 	 * @param cmd the command executing the command line.
 	 * @param args the command line to process.
 	 */
-	public CmdLineProcessor(String cmd, Iterable<String> args) {
+	public CmdLineProcessor(String cmd, Iterable<@Nullable String> args) {
 		this.cmd = cmd;
 		this.args = args;
 	}
@@ -105,7 +104,8 @@ public final class CmdLineProcessor {
 		ProcessingContext context = new ProcessingContext();
 
 		for (String arg : this.args) {
-			if (!context.processPendingOptionAction(arg) && !context.processOptionAction(arg, this.optionActions)
+			if (arg != null && !context.processPendingOptionAction(arg)
+					&& !context.processOptionAction(arg, this.optionActions)
 					&& !context.processSwitchAction(arg, this.switchActions)) {
 				// No action found so far. Invoke the corresponding default action.
 				Consumer<String> defaultAction = (isActionArg(arg) ? this.unknownAction : this.unnamedAction);
