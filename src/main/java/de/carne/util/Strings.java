@@ -17,6 +17,7 @@
 package de.carne.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -138,6 +139,19 @@ public final class Strings {
 	 * @param delim the delimiter to use for joining.
 	 * @return the joined {@linkplain String}.
 	 */
+	public static String join(Object[] objects, String delim) {
+		return join(Arrays.asList(objects), delim, Integer.MAX_VALUE, ELLIPSIS);
+	}
+
+	/**
+	 * Joins the {@linkplain String} representation of multiple {@linkplain Object}s into a single {@linkplain String}.
+	 * <p>
+	 * The {@linkplain Object#toString()} is used to retrieve the Objects' {@linkplain String} representation.
+	 *
+	 * @param objects the {@linkplain Objects}s to join.
+	 * @param delim the delimiter to use for joining.
+	 * @return the joined {@linkplain String}.
+	 */
 	public static String join(Iterable<?> objects, String delim) {
 		return join(objects, delim, Integer.MAX_VALUE, ELLIPSIS);
 	}
@@ -152,8 +166,37 @@ public final class Strings {
 	 * @param limit the maximum length of the joined {@linkplain String}.
 	 * @return the joined {@linkplain String}.
 	 */
+	public static String join(Object[] objects, String delim, int limit) {
+		return join(Arrays.asList(objects), delim, limit, ELLIPSIS);
+	}
+
+	/**
+	 * Joins the {@linkplain String} representation of multiple {@linkplain Object}s into a single {@linkplain String}.
+	 * <p>
+	 * The {@linkplain Object#toString()} is used to retrieve the Objects' {@linkplain String} representation.
+	 *
+	 * @param objects the {@linkplain String}s to join.
+	 * @param delim the delimiter to use for joining.
+	 * @param limit the maximum length of the joined {@linkplain String}.
+	 * @return the joined {@linkplain String}.
+	 */
 	public static String join(Iterable<?> objects, String delim, int limit) {
 		return join(objects, delim, limit, ELLIPSIS);
+	}
+
+	/**
+	 * Joins the {@linkplain String} representation of multiple {@linkplain Object}s into a single {@linkplain String}.
+	 * <p>
+	 * The {@linkplain Object#toString()} is used to retrieve the Objects' {@linkplain String} representation.
+	 *
+	 * @param objects the {@linkplain Objects}s to join.
+	 * @param delim the delimiter to use for joining.
+	 * @param limit the maximum length of the joined {@linkplain String}.
+	 * @param ellipsis the ellipsis to place at the end of the joined string in case {@code limit} is reached.
+	 * @return the joined {@linkplain String}.
+	 */
+	public static String join(Object[] objects, String delim, int limit, String ellipsis) {
+		return join(Arrays.asList(objects), delim, limit, ellipsis);
 	}
 
 	/**

@@ -16,8 +16,6 @@
  */
 package de.carne.test.util;
 
-import java.util.Arrays;
-
 import org.eclipse.jdt.annotation.Nullable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -86,7 +84,7 @@ class StringsTest {
 
 	@Test
 	void testJoin() {
-		final Iterable<String> strings = Arrays.asList("one", "two", "three");
+		final String[] strings = new String[] { "one", "two", "three" };
 
 		Assertions.assertEquals("one, two, three", Strings.join(strings, ", "));
 		Assertions.assertEquals("", Strings.join(strings, ", ", 0));
