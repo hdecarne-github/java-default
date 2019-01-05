@@ -18,10 +18,11 @@ addons:
     organization: "hdecarne-github"
 
 git:
-  depth: false  
+  depth: false
 
-script:
-  - ./gradlew --stacktrace clean build
+install: ./gradlew --refresh-dependencies assemble
+
+script: ./gradlew --stacktrace clean build
 
 after_success:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./gradlew --stacktrace artifactoryPublish sonarqube; fi
