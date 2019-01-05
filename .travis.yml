@@ -20,9 +20,9 @@ addons:
 git:
   depth: false
 
-install: ./gradlew --refresh-dependencies assemble
+install: ./gradlew --refresh-dependencies clean assemble
 
-script: ./gradlew --stacktrace clean build
+script: ./gradlew --stacktrace build
 
 after_success:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./gradlew --stacktrace artifactoryPublish sonarqube; fi
