@@ -45,21 +45,20 @@ class LazyTest {
 
 		Lazy<LazyTest> lazy = new Lazy<>(initializer);
 
-		Assertions.assertFalse(lazy.toOptional().isPresent());
+		Assertions.assertFalse(lazy.getOptional().isPresent());
 		Assertions.assertEquals("<not initialized>", lazy.toString());
 		Assertions.assertEquals(this, lazy.get());
-		Assertions.assertTrue(lazy.toOptional().isPresent());
+		Assertions.assertTrue(lazy.getOptional().isPresent());
 		Assertions.assertEquals(this, lazy.get());
 		Assertions.assertEquals(toString(), lazy.toString());
 	}
 
 	@Test
 	void testInvalidSupplierAccess() {
-		@SuppressWarnings("null")
-		Supplier<LazyTest> initializer = () -> null;
+		@SuppressWarnings("null") Supplier<LazyTest> initializer = () -> null;
 		Lazy<LazyTest> lazy = new Lazy<>(initializer);
 
-		Assertions.assertFalse(lazy.toOptional().isPresent());
+		Assertions.assertFalse(lazy.getOptional().isPresent());
 		Assertions.assertEquals("<not initialized>", lazy.toString());
 		Assertions.assertThrows(NullPointerException.class, () -> {
 			lazy.get();

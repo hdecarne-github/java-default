@@ -46,9 +46,20 @@ public class Late<T> implements Supplier<T> {
 	}
 
 	/**
+	 * Sets/initializes the object.
+	 *
+	 * @param supplier the {@linkplain Supplier} providing the object to set.
+	 * @return the set object.
+	 */
+	public synchronized T set(Supplier<T> supplier) {
+		return set(supplier.get());
+	}
+
+	/**
 	 * Gets the object.
 	 * <p>
 	 * If the object has not yet been set/initialized an {@linkplain IllegalStateException} will be thrown.
+	 * </p>
 	 *
 	 * @return the object.
 	 */
@@ -63,11 +74,11 @@ public class Late<T> implements Supplier<T> {
 	}
 
 	/**
-	 * Wraps the object in an {@linkplain Optional}.
+	 * Gets the object as an {@linkplain Optional}.
 	 *
-	 * @return the {@linkplain Optional} wrapped object.
+	 * @return the object as an {@linkplain Optional}.
 	 */
-	public Optional<T> toOptional() {
+	public Optional<T> getOptional() {
 		return Optional.ofNullable(this.object);
 	}
 

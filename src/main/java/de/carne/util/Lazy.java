@@ -60,11 +60,11 @@ public class Lazy<T> implements Supplier<T> {
 	}
 
 	/**
-	 * Wraps the object in an {@linkplain Optional}.
+	 * Gets the object as an {@linkplain Optional}.
 	 *
-	 * @return the {@linkplain Optional} wrapped object.
+	 * @return the object as an {@linkplain Optional}.
 	 */
-	public Optional<T> toOptional() {
+	public Optional<T> getOptional() {
 		return Optional.ofNullable(this.object);
 	}
 

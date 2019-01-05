@@ -32,9 +32,9 @@ class LateTest {
 
 		Assertions.assertEquals("<not initialized>", late.toString());
 
-		late.set(this);
+		late.set(() -> this);
 
-		Assertions.assertTrue(late.toOptional().isPresent());
+		Assertions.assertTrue(late.getOptional().isPresent());
 		Assertions.assertEquals(toString(), late.toString());
 		Assertions.assertEquals(this, late.get());
 	}
@@ -43,7 +43,7 @@ class LateTest {
 	void testInvalidAccess() {
 		Late<LateTest> late = new Late<>();
 
-		Assertions.assertFalse(late.toOptional().isPresent());
+		Assertions.assertFalse(late.getOptional().isPresent());
 		Assertions.assertEquals("<not initialized>", late.toString());
 		Assertions.assertThrows(IllegalStateException.class, () -> {
 			late.get();
