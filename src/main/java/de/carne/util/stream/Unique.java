@@ -49,6 +49,7 @@ public final class Unique<T, R> implements Collector<T, UniqueLatch<T>, R> {
 	 *
 	 * @return the unique result element.
 	 * @throws NoSuchElementException if the stream operation result contains zero or more than one element.
+	 * @param <T> the actual result type.
 	 */
 	public static <T> Unique<T, T> get() {
 		return new Unique<>(UniqueLatch::get);
@@ -58,6 +59,7 @@ public final class Unique<T, R> implements Collector<T, UniqueLatch<T>, R> {
 	 * Collects and gets the unique result element as an {@linkplain Optional}.
 	 *
 	 * @return the unique result element.
+	 * @param <T> the actual result type.
 	 */
 	public static <T> Unique<T, Optional<T>> getOptional() {
 		return new Unique<>(UniqueLatch::getOptional);
