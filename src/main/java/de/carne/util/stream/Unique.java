@@ -31,7 +31,7 @@ import java.util.stream.Collector;
  * {@linkplain Collector} implementation ensuring a one element collection at the end of a stream operation.
  *
  * @param <T> the actual stream element type.
- * @param <R> the actual result type (either T or Optional<T>).
+ * @param <R> the actual result type (either T or Optional&lt;T&gt;).
  */
 public final class Unique<T, R> implements Collector<T, UniqueLatch<T>, R> {
 
