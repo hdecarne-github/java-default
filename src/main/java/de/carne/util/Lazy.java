@@ -28,7 +28,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @param <T> The actual object type.
  */
-public class Lazy<T> implements Supplier<@NonNull T> {
+public class Lazy<@NonNull T> implements Supplier<T> {
 
 	private final Supplier<T> initializer;
 
