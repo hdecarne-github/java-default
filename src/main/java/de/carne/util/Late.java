@@ -38,7 +38,7 @@ public class Late<T> implements Supplier<@NonNull T> {
 	 * @param object the object to set.
 	 * @return the set object.
 	 */
-	public synchronized T set(@NonNull T object) {
+	public synchronized T set(T object) {
 		if (this.object != null) {
 			throw new IllegalStateException("Already initialized");
 		}
