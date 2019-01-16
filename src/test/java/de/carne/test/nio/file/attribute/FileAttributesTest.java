@@ -80,7 +80,8 @@ class FileAttributesTest {
 
 		for (String fileAttributeView : fileAttributeViews) {
 			if ("posix".equals(fileAttributeView)) {
-				PosixFileAttributeView attributeView = Files.getFileAttributeView(path, PosixFileAttributeView.class);
+				PosixFileAttributeView attributeView = Objects
+						.requireNonNull(Files.getFileAttributeView(path, PosixFileAttributeView.class));
 				Set<PosixFilePermission> actualPermissions = attributeView.readAttributes().permissions();
 				Object[] expectedPermissions = Objects.requireNonNull(expectedPermissionsMap.get(fileAttributeView));
 

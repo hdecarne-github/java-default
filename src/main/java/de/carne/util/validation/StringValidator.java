@@ -16,12 +16,13 @@
  */
 package de.carne.util.validation;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * {@linkplain InputValidator} implementation for {@linkplain String} input.
  */
-public class StringValidator extends InputValidator<String> {
+public class StringValidator extends InputValidator<@NonNull String> {
 
 	private StringValidator(String input) {
 		super(input);

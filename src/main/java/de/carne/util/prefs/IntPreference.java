@@ -18,10 +18,12 @@ package de.carne.util.prefs;
 
 import java.util.prefs.Preferences;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * {@linkplain Integer} preference access.
  */
-public class IntPreference extends Preference<Integer> {
+public class IntPreference extends Preference<@NonNull Integer> {
 
 	/**
 	 * Constructs a new {@linkplain IntPreference} instance.
@@ -35,7 +37,7 @@ public class IntPreference extends Preference<Integer> {
 
 	@Override
 	public Integer get(Preferences prefs, Integer def) {
-		return prefs.getInt(key(), defaultValue().intValue());
+		return prefs.getInt(key(), def.intValue());
 	}
 
 	@Override

@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -27,7 +28,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @param <T> The actual object type.
  */
-public class Late<T> implements Supplier<T> {
+public class Late<T> implements Supplier<@NonNull T> {
 
 	private @Nullable T object = null;
 
@@ -37,7 +38,7 @@ public class Late<T> implements Supplier<T> {
 	 * @param object the object to set.
 	 * @return the set object.
 	 */
-	public synchronized T set(T object) {
+	public synchronized T set(@NonNull T object) {
 		if (this.object != null) {
 			throw new IllegalStateException("Already initialized");
 		}
@@ -51,7 +52,7 @@ public class Late<T> implements Supplier<T> {
 	 * @param supplier the {@linkplain Supplier} providing the object to set.
 	 * @return the set object.
 	 */
-	public synchronized T set(Supplier<T> supplier) {
+	public synchronized T set(Supplier<@NonNull T> supplier) {
 		return set(supplier.get());
 	}
 

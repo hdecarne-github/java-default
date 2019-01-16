@@ -22,6 +22,7 @@ import java.text.ParsePosition;
 import java.util.Locale;
 import java.util.Objects;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -34,7 +35,8 @@ public class MemoryUnitFormat extends NumberFormat {
 
 	private static final String[] UNITS = { " byte", " KiB", " MiB", " GiB", " TiB", " PiB", " EiB", " ZiB", " YiB" };
 
-	private static final ThreadLocal<MemoryUnitFormat> CACHED_INSTANCE = ThreadLocal.withInitial(MemoryUnitFormat::new);
+	private static final ThreadLocal<@NonNull MemoryUnitFormat> CACHED_INSTANCE = ThreadLocal
+			.withInitial(MemoryUnitFormat::new);
 
 	private final NumberFormat numberFormat;
 
@@ -73,7 +75,7 @@ public class MemoryUnitFormat extends NumberFormat {
 	}
 
 	@Override
-	public StringBuffer format(double number, @Nullable StringBuffer toAppendTo, @Nullable FieldPosition pos) {
+	public StringBuffer format(double number, StringBuffer toAppendTo, FieldPosition pos) {
 		int unitIndex = 0;
 		double normalizedNumber = Math.abs(number);
 
@@ -86,7 +88,7 @@ public class MemoryUnitFormat extends NumberFormat {
 	}
 
 	@Override
-	public StringBuffer format(long number, @Nullable StringBuffer toAppendTo, @Nullable FieldPosition pos) {
+	public StringBuffer format(long number, StringBuffer toAppendTo, FieldPosition pos) {
 		int unitIndex = 0;
 		long normalizedNumber = Math.abs(number);
 
@@ -100,7 +102,7 @@ public class MemoryUnitFormat extends NumberFormat {
 
 	@Override
 	@Nullable
-	public Number parse(@Nullable String source, @Nullable ParsePosition parsePosition) {
+	public Number parse(String source, ParsePosition parsePosition) {
 		Objects.requireNonNull(source);
 		Objects.requireNonNull(parsePosition);
 

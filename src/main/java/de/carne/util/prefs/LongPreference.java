@@ -18,10 +18,12 @@ package de.carne.util.prefs;
 
 import java.util.prefs.Preferences;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * {@linkplain Long} preference access.
  */
-public class LongPreference extends Preference<Long> {
+public class LongPreference extends Preference<@NonNull Long> {
 
 	/**
 	 * Constructs a new {@linkplain LongPreference} instance.
@@ -35,7 +37,7 @@ public class LongPreference extends Preference<Long> {
 
 	@Override
 	public Long get(Preferences prefs, Long def) {
-		return prefs.getLong(key(), defaultValue().longValue());
+		return prefs.getLong(key(), def.longValue());
 	}
 
 	@Override

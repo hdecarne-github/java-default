@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -27,7 +28,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @param <T> The actual object type.
  */
-public class Lazy<T> implements Supplier<T> {
+public class Lazy<T> implements Supplier<@NonNull T> {
 
 	private final Supplier<T> initializer;
 

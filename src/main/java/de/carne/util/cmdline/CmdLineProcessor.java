@@ -24,6 +24,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -48,13 +49,13 @@ public final class CmdLineProcessor {
 
 	private final Iterable<String> args;
 
-	private final List<SwitchCmdLineAction> switchActions = new ArrayList<>();
+	private final List<@NonNull SwitchCmdLineAction> switchActions = new ArrayList<>();
 
-	private final List<OptionCmdLineAction> optionActions = new ArrayList<>();
+	private final List<@NonNull OptionCmdLineAction> optionActions = new ArrayList<>();
 
-	private @Nullable Consumer<String> unnamedAction = null;
+	private @Nullable Consumer<@NonNull String> unnamedAction = null;
 
-	private @Nullable Consumer<String> unknownAction = null;
+	private @Nullable Consumer<@NonNull String> unknownAction = null;
 
 	/**
 	 * Constructs a new {@linkplain CmdLineProcessor} instance.
@@ -63,7 +64,6 @@ public final class CmdLineProcessor {
 	 * line string).
 	 * @param args the command line to process.
 	 */
-	@SuppressWarnings("null")
 	public CmdLineProcessor(String cmd, String[] args) {
 		this(cmd, Arrays.asList(args));
 	}
@@ -208,7 +208,7 @@ public final class CmdLineProcessor {
 	 * @param action The {@linkplain Consumer} to invoke with the argument string.
 	 * @return The created {@linkplain CmdLineAction}.
 	 */
-	public CmdLineAction onSwitch(Consumer<String> action) {
+	public CmdLineAction onSwitch(Consumer<@NonNull String> action) {
 		SwitchCmdLineAction switchAction = new SwitchCmdLineAction(action);
 
 		this.switchActions.add(switchAction);
@@ -221,7 +221,7 @@ public final class CmdLineProcessor {
 	 * @param action The {@linkplain BiConsumer} to invoke with the argument and option string.
 	 * @return The created {@linkplain CmdLineAction}.
 	 */
-	public CmdLineAction onOption(BiConsumer<String, String> action) {
+	public CmdLineAction onOption(BiConsumer<@NonNull String, @NonNull String> action) {
 		OptionCmdLineAction optionAction = new OptionCmdLineAction(action);
 
 		this.optionActions.add(optionAction);
@@ -236,7 +236,7 @@ public final class CmdLineProcessor {
 	 *
 	 * @param action The {@linkplain Consumer} to invoke with the option string.
 	 */
-	public void onUnnamedOption(Consumer<String> action) {
+	public void onUnnamedOption(Consumer<@NonNull String> action) {
 		this.unnamedAction = action;
 	}
 
@@ -248,7 +248,7 @@ public final class CmdLineProcessor {
 	 *
 	 * @param action The {@linkplain Consumer} to invoke with the argument string.
 	 */
-	public void onUnknownArg(Consumer<String> action) {
+	public void onUnknownArg(Consumer<@NonNull String> action) {
 		this.unknownAction = action;
 	}
 
@@ -274,11 +274,11 @@ public final class CmdLineProcessor {
 		return buffer.toString();
 	}
 
-	private class SwitchCmdLineAction extends CmdLineAction implements Consumer<String> {
+	private class SwitchCmdLineAction extends CmdLineAction implements Consumer<@NonNull String> {
 
-		private final Consumer<String> action;
+		private final Consumer<@NonNull String> action;
 
-		SwitchCmdLineAction(Consumer<String> action) {
+		SwitchCmdLineAction(Consumer<@NonNull String> action) {
 			this.action = action;
 		}
 
@@ -289,11 +289,11 @@ public final class CmdLineProcessor {
 
 	}
 
-	private class OptionCmdLineAction extends CmdLineAction implements BiConsumer<String, String> {
+	private class OptionCmdLineAction extends CmdLineAction implements BiConsumer<@NonNull String, @NonNull String> {
 
-		private final BiConsumer<String, String> action;
+		private final BiConsumer<@NonNull String, @NonNull String> action;
 
-		OptionCmdLineAction(BiConsumer<String, String> action) {
+		OptionCmdLineAction(BiConsumer<@NonNull String, @NonNull String> action) {
 			this.action = action;
 		}
 

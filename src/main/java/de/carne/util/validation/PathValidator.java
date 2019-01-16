@@ -19,10 +19,12 @@ package de.carne.util.validation;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * {@linkplain InputValidator} implementation for {@linkplain Path} input.
  */
-public class PathValidator extends InputValidator<Path> {
+public class PathValidator extends InputValidator<@NonNull Path> {
 
 	private PathValidator(Path input) {
 		super(input);

@@ -71,6 +71,8 @@ class FileUtilTest {
 		FileTime mtimeNew = Files.getLastModifiedTime(tempFile);
 
 		Assertions.assertTrue(mtimeOld.compareTo(mtimeNew) < 0);
+
+		Files.delete(tempFile);
 	}
 
 	@Test

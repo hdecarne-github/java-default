@@ -18,10 +18,12 @@ package de.carne.util.prefs;
 
 import java.util.prefs.Preferences;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * {@linkplain String} preference access.
  */
-public class StringPreference extends Preference<String> {
+public class StringPreference extends Preference<@NonNull String> {
 
 	/**
 	 * Constructs a new {@linkplain StringPreference} instance.

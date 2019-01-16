@@ -55,7 +55,7 @@ class LazyTest {
 
 	@Test
 	void testInvalidSupplierAccess() {
-		@SuppressWarnings("null") Supplier<LazyTest> initializer = () -> null;
+		Supplier<LazyTest> initializer = () -> null;
 		Lazy<LazyTest> lazy = new Lazy<>(initializer);
 
 		Assertions.assertFalse(lazy.getOptional().isPresent());

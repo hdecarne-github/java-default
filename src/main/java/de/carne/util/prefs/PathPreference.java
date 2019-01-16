@@ -21,12 +21,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.prefs.Preferences;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import de.carne.boot.Exceptions;
 
 /**
  * {@linkplain Path} preference access.
  */
-public class PathPreference extends Preference<Path> {
+public class PathPreference extends Preference<@NonNull Path> {
 
 	/**
 	 * Constructs a new {@linkplain PathPreference} instance.
@@ -41,7 +43,7 @@ public class PathPreference extends Preference<Path> {
 	@Override
 	public Path get(Preferences prefs, Path def) {
 		String pathString = prefs.get(key(), null);
-		Path path = defaultValue();
+		Path path = def;
 
 		if (pathString != null) {
 			try {

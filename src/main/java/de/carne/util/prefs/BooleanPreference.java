@@ -18,10 +18,12 @@ package de.carne.util.prefs;
 
 import java.util.prefs.Preferences;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * {@linkplain Boolean} preference access.
  */
-public class BooleanPreference extends Preference<Boolean> {
+public class BooleanPreference extends Preference<@NonNull Boolean> {
 
 	/**
 	 * Constructs a new {@linkplain BooleanPreference} instance.
@@ -35,7 +37,7 @@ public class BooleanPreference extends Preference<Boolean> {
 
 	@Override
 	public Boolean get(Preferences prefs, Boolean def) {
-		return prefs.getBoolean(key(), defaultValue().booleanValue());
+		return prefs.getBoolean(key(), def.booleanValue());
 	}
 
 	@Override

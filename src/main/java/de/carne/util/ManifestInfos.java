@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
@@ -57,12 +58,11 @@ public final class ManifestInfos {
 		String[] names = new String[] { "X-Application-Name", "X-Application-Version", "X-Application-Build" };
 		Map<String, String> values = findAttributeValues(names);
 
-		APPLICATION_NAME = values.getOrDefault(names[0], UNDEFINED_ATTRIBUTE);
-		APPLICATION_VERSION = values.getOrDefault(names[1], UNDEFINED_ATTRIBUTE);
-		APPLICATION_BUILD = values.getOrDefault(names[2], UNDEFINED_ATTRIBUTE);
+		APPLICATION_NAME = Objects.toString(values.getOrDefault(names[0], UNDEFINED_ATTRIBUTE));
+		APPLICATION_VERSION = Objects.toString(values.getOrDefault(names[1], UNDEFINED_ATTRIBUTE));
+		APPLICATION_BUILD = Objects.toString(values.getOrDefault(names[2], UNDEFINED_ATTRIBUTE));
 	}
 
-	@SuppressWarnings("null")
 	private static Map<String, String> findAttributeValues(String... names) {
 		Map<String, String> values = new HashMap<>();
 

@@ -34,8 +34,10 @@ repositories {
 }
 
 dependencies {
-	api(group: "de.carne.common", name: "java-boot", version: "2.7.0-SNAPSHOT")
-	testImplementation(group: "de.carne.common", name: "java-test", version: "1.0.0")
+	compileOnly(group: "org.eclipse.jdt", name: "org.eclipse.jdt.annotation", version: project.annotationVersion)
+	testCompileOnly(group: "org.eclipse.jdt", name: "org.eclipse.jdt.annotation", version: project.annotationVersion)
+	api(group: "de.carne.common", name: "java-boot", version: project.javaBootVersion)
+	testImplementation(group: "de.carne.common", name: "java-test", version: project.javaTestVersion)
 }
 
 jar {
