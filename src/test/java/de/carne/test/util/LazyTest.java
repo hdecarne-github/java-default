@@ -18,6 +18,7 @@ package de.carne.test.util;
 
 import java.util.function.Supplier;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +31,7 @@ class LazyTest {
 
 	@Test
 	void testValidSupplierAccess() {
-		Supplier<LazyTest> initializer = new Supplier<LazyTest>() {
+		Supplier<@NonNull LazyTest> initializer = new Supplier<@NonNull LazyTest>() {
 
 			private boolean initialized = false;
 
@@ -43,7 +44,7 @@ class LazyTest {
 
 		};
 
-		Lazy<LazyTest> lazy = new Lazy<>(initializer);
+		Lazy<@NonNull LazyTest> lazy = new Lazy<>(initializer);
 
 		Assertions.assertFalse(lazy.getOptional().isPresent());
 		Assertions.assertEquals("<not initialized>", lazy.toString());
@@ -55,8 +56,9 @@ class LazyTest {
 
 	@Test
 	void testInvalidSupplierAccess() {
-		Supplier<LazyTest> initializer = () -> null;
-		Lazy<LazyTest> lazy = new Lazy<>(initializer);
+		// Intentional check with non-conform initializer
+		@SuppressWarnings("null") Supplier<@NonNull LazyTest> initializer = () -> null;
+		Lazy<@NonNull LazyTest> lazy = new Lazy<>(initializer);
 
 		Assertions.assertFalse(lazy.getOptional().isPresent());
 		Assertions.assertEquals("<not initialized>", lazy.toString());

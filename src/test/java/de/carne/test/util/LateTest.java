@@ -16,6 +16,7 @@
  */
 package de.carne.test.util;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +29,7 @@ class LateTest {
 
 	@Test
 	void testInitializedAccess() {
-		Late<LateTest> late = new Late<>();
+		Late<@NonNull LateTest> late = new Late<>();
 
 		Assertions.assertEquals("<not initialized>", late.toString());
 
@@ -41,7 +42,7 @@ class LateTest {
 
 	@Test
 	void testInvalidAccess() {
-		Late<LateTest> late = new Late<>();
+		Late<@NonNull LateTest> late = new Late<>();
 
 		Assertions.assertFalse(late.getOptional().isPresent());
 		Assertions.assertEquals("<not initialized>", late.toString());
