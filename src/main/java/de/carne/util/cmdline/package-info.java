@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2016-2019 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,11 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-@NonNullByDefault({ PARAMETER, RETURN_TYPE, FIELD })
+@NonNullByDefault()
 package de.carne.util.cmdline;
-
-import static org.eclipse.jdt.annotation.DefaultLocation.FIELD;
-import static org.eclipse.jdt.annotation.DefaultLocation.PARAMETER;
-import static org.eclipse.jdt.annotation.DefaultLocation.RETURN_TYPE;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;

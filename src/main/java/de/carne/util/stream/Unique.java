@@ -35,7 +35,7 @@ import org.eclipse.jdt.annotation.NonNull;
  * @param <T> the actual stream element type.
  * @param <R> the actual result type (either T or Optional&lt;T&gt;).
  */
-public final class Unique<T, R> implements Collector<T, @NonNull UniqueLatch<T>, R> {
+public final class Unique<T, R> implements Collector<T, UniqueLatch<T>, R> {
 
 	private static final Set<Characteristics> CHARACTERISTICS = Collections
 			.unmodifiableSet(EnumSet.of(Characteristics.CONCURRENT, Characteristics.UNORDERED));

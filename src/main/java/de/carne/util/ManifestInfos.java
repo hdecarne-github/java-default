@@ -26,6 +26,8 @@ import java.util.Objects;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import de.carne.boot.Exceptions;
 
 /**
@@ -55,7 +57,8 @@ public final class ManifestInfos {
 	private static final String UNDEFINED_ATTRIBUTE = "<undefined>";
 
 	static {
-		String[] names = new String[] { "X-Application-Name", "X-Application-Version", "X-Application-Build" };
+		@NonNull String[] names = new @NonNull String[] { "X-Application-Name", "X-Application-Version",
+				"X-Application-Build" };
 		Map<String, String> values = findAttributeValues(names);
 
 		APPLICATION_NAME = Objects.toString(values.getOrDefault(names[0], UNDEFINED_ATTRIBUTE));
@@ -63,7 +66,7 @@ public final class ManifestInfos {
 		APPLICATION_BUILD = Objects.toString(values.getOrDefault(names[2], UNDEFINED_ATTRIBUTE));
 	}
 
-	private static Map<String, String> findAttributeValues(String... names) {
+	private static Map<String, String> findAttributeValues(@NonNull String... names) {
 		Map<String, String> values = new HashMap<>();
 
 		try {

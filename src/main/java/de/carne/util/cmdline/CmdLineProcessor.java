@@ -47,7 +47,7 @@ public final class CmdLineProcessor {
 
 	private final String cmd;
 
-	private final Iterable<String> args;
+	private final Iterable<@Nullable String> args;
 
 	private final List<@NonNull SwitchCmdLineAction> switchActions = new ArrayList<>();
 
@@ -64,7 +64,7 @@ public final class CmdLineProcessor {
 	 * line string).
 	 * @param args the command line to process.
 	 */
-	public CmdLineProcessor(String cmd, String[] args) {
+	public CmdLineProcessor(String cmd, @Nullable String[] args) {
 		this(cmd, Arrays.asList(args));
 	}
 
@@ -74,7 +74,7 @@ public final class CmdLineProcessor {
 	 * @param cmd the command executing the command line.
 	 * @param args the command line to process.
 	 */
-	public CmdLineProcessor(String cmd, Iterable<String> args) {
+	public CmdLineProcessor(String cmd, Iterable<@Nullable String> args) {
 		this.cmd = cmd;
 		this.args = args;
 	}
