@@ -27,8 +27,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 /**
  * {@linkplain Collector} implementation ensuring a one element collection at the end of a stream operation.
  *
@@ -40,9 +38,9 @@ public final class Unique<T, R> implements Collector<T, UniqueLatch<T>, R> {
 	private static final Set<Characteristics> CHARACTERISTICS = Collections
 			.unmodifiableSet(EnumSet.of(Characteristics.CONCURRENT, Characteristics.UNORDERED));
 
-	private final Function<@NonNull UniqueLatch<T>, R> finisher;
+	private final Function<UniqueLatch<T>, R> finisher;
 
-	private Unique(Function<@NonNull UniqueLatch<T>, R> finisher) {
+	private Unique(Function<UniqueLatch<T>, R> finisher) {
 		this.finisher = finisher;
 	}
 
@@ -68,22 +66,22 @@ public final class Unique<T, R> implements Collector<T, UniqueLatch<T>, R> {
 	}
 
 	@Override
-	public Supplier<@NonNull UniqueLatch<T>> supplier() {
+	public Supplier<UniqueLatch<T>> supplier() {
 		return UniqueLatch::new;
 	}
 
 	@Override
-	public BiConsumer<@NonNull UniqueLatch<T>, T> accumulator() {
+	public BiConsumer<UniqueLatch<T>, T> accumulator() {
 		return UniqueLatch::accumulate;
 	}
 
 	@Override
-	public BinaryOperator<@NonNull UniqueLatch<T>> combiner() {
+	public BinaryOperator<UniqueLatch<T>> combiner() {
 		return UniqueLatch::combine;
 	}
 
 	@Override
-	public Function<@NonNull UniqueLatch<T>, R> finisher() {
+	public Function<UniqueLatch<T>, R> finisher() {
 		return this.finisher;
 	}
 
