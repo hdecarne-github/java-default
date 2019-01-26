@@ -253,8 +253,17 @@ public final class Strings {
 	 * @return the encoded characters.
 	 */
 	public static String encode(CharSequence chars) {
-		StringBuilder buffer = new StringBuilder();
+		return encode(new StringBuilder(), chars).toString();
+	}
 
+	/**
+	 * Encodes a {@linkplain CharSequence} to a pure ASCII representation by quoting non printable characters.
+	 * 
+	 * @param buffer the {@linkplain StringBuilder} to encode into.
+	 * @param chars the {@linkplain CharSequence} to encode.
+	 * @return the encoded characters.
+	 */
+	public static StringBuilder encode(StringBuilder buffer, CharSequence chars) {
 		chars.chars().forEach(c -> {
 			if (c == '\\') {
 				buffer.append("\\\\");
@@ -288,7 +297,7 @@ public final class Strings {
 				}
 			}
 		});
-		return buffer.toString();
+		return buffer;
 	}
 
 	/**
