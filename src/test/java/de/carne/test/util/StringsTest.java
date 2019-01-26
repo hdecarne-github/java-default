@@ -94,8 +94,8 @@ class StringsTest {
 
 	@Test
 	void testEncodeDecodeFunctions() {
-		String decoded = "\\\0\u08af\b\t\n\f\ra";
-		String encoded = "\\\\\\0\\u08AF\\b\\t\\n\\f\\ra";
+		String decoded = "\\\0\u08af\b\t\n\f\ra\"";
+		String encoded = "\\\\\\0\\u08AF\\b\\t\\n\\f\\ra\\\"";
 
 		Assertions.assertEquals(encoded, Strings.encode(decoded));
 		Assertions.assertEquals(decoded, Strings.decode(encoded));

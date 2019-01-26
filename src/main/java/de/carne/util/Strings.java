@@ -258,6 +258,8 @@ public final class Strings {
 		chars.chars().forEach(c -> {
 			if (c == '\\') {
 				buffer.append("\\\\");
+			} else if (c == '"') {
+				buffer.append("\\\"");
 			} else if (32 <= c && c <= 126) {
 				buffer.append((char) c);
 			} else {
@@ -355,6 +357,9 @@ public final class Strings {
 					break;
 				case 'r':
 					this.buffer.append('\r');
+					break;
+				case '"':
+					this.buffer.append('"');
 					break;
 				default:
 					throw new IllegalArgumentException("Unexpected quoted character: " + ((char) c));
