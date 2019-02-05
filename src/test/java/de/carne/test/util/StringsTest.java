@@ -16,7 +16,6 @@
  */
 package de.carne.test.util;
 
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -42,8 +41,8 @@ class StringsTest {
 		Assertions.assertNotNull(Strings.valueOf(null));
 		Assertions.assertNotNull(Strings.valueOf(new Object() {
 
+			@SuppressWarnings("null")
 			@Override
-			@Nullable
 			public String toString() {
 				return null;
 			}
