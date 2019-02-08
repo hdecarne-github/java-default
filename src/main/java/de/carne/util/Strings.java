@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -98,8 +99,7 @@ public final class Strings {
 	 * @param s the {@linkplain String} to trim.
 	 * @return the submitted {@linkplain String} in trimmed form or {@code null} if {@code null} was submitted.
 	 */
-	@Nullable
-	public static String trim(@Nullable String s) {
+	public static @Nullable String trim(@Nullable String s) {
 		return (s != null ? s.trim() : s);
 	}
 
@@ -113,7 +113,8 @@ public final class Strings {
 	 * @return the splitted sub-strings. The actual number of sub-strings depends on the actual occurrences of the
 	 * delimiter character as well as the {@code all} flag.
 	 */
-	public static String[] split(String s, char delim, boolean all) {
+	@SuppressWarnings("null")
+	public static @NonNull String[] split(String s, char delim, boolean all) {
 		List<String> splits = new ArrayList<>();
 		int splitIndex = -1;
 
@@ -258,7 +259,7 @@ public final class Strings {
 
 	/**
 	 * Encodes a {@linkplain CharSequence} to a pure ASCII representation by quoting non printable characters.
-	 * 
+	 *
 	 * @param buffer the {@linkplain StringBuilder} to encode into.
 	 * @param chars the {@linkplain CharSequence} to encode.
 	 * @return the encoded characters.
@@ -401,6 +402,52 @@ public final class Strings {
 			return this.buffer.toString();
 		}
 
+	}
+
+	/**
+	 * Encodes a {@linkplain CharSequence} to a HTML conform representation by quoting special characters.
+	 *
+	 * @param chars the {@linkplain CharSequence} to encode.
+	 * @return the encoded characters.
+	 */
+	public static String encodeHtml(CharSequence chars) {
+		return encodeHtml(new StringBuilder(), chars).toString();
+	}
+
+	/**
+	 * Encodes a {@linkplain CharSequence} to a HTML conform representation by quoting special characters.
+	 *
+	 * @param buffer the {@linkplain StringBuilder} to encode into.
+	 * @param chars the {@linkplain CharSequence} to encode.
+	 * @return the encoded characters.
+	 */
+	public static StringBuilder encodeHtml(StringBuilder buffer, CharSequence chars) {
+		chars.chars().forEach(c -> {
+			switch (c) {
+			case '<':
+				buffer.append("&lt;");
+				break;
+			case '>':
+				buffer.append("&gt;");
+				break;
+			case '&':
+				buffer.append("&amp;");
+				break;
+			case '"':
+				buffer.append("&quot;");
+				break;
+			case '\'':
+				buffer.append("&#39;");
+				break;
+			default:
+				if (Character.isAlphabetic(c)) {
+					buffer.append((char) c);
+				} else {
+					buffer.append('&').append(c).append(';');
+				}
+			}
+		});
+		return buffer;
 	}
 
 }

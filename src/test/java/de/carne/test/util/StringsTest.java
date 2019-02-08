@@ -92,7 +92,7 @@ class StringsTest {
 	}
 
 	@Test
-	void testEncodeDecodeFunctions() {
+	void testEncodeDecode() {
 		String decoded = "\\\0\u08af\b\t\n\f\ra\"";
 		String encoded = "\\\\\\0\\u08AF\\b\\t\\n\\f\\ra\\\"";
 
@@ -108,6 +108,14 @@ class StringsTest {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			Strings.decode("\\uXXXXXx");
 		});
+	}
+
+	@Test
+	void testEncodeHtml() {
+		String decoded = "<script>'alert(\"&\\test\")';\n</script>";
+		String encoded = "&lt;script&gt;&#39;alert&40;&quot;&amp;&92;test&quot;&41;&#39;&59;&10;&lt;&47;script&gt;";
+
+		Assertions.assertEquals(encoded, Strings.encodeHtml(decoded));
 	}
 
 }
