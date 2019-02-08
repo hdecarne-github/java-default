@@ -443,7 +443,7 @@ public final class Strings {
 				if (Character.isAlphabetic(c)) {
 					buffer.append((char) c);
 				} else {
-					buffer.append('&').append(c).append(';');
+					buffer.append("&#").append(c).append(';');
 				}
 			}
 		});
