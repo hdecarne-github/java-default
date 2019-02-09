@@ -28,7 +28,7 @@ import de.carne.boot.Exceptions;
 /**
  * Utility class used to access a module's manifest.
  */
-public final class ManifestInfos {
+public class ManifestInfos {
 
 	/**
 	 * Module name attribute.
