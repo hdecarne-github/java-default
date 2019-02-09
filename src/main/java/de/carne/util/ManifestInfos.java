@@ -31,60 +31,91 @@ import org.eclipse.jdt.annotation.NonNull;
 import de.carne.boot.Exceptions;
 
 /**
- * Utility class used to retrieve version info and the like from the application manifest.
+ * Utility class used to retrieve version info and the like from a module's manifest.
  */
 public final class ManifestInfos {
 
-	private ManifestInfos() {
-		// prevent instantiation
-	}
-
-	/**
-	 * The application name (X-Application-Name).
-	 */
-	public static final String APPLICATION_NAME;
-
-	/**
-	 * The application version (X-Application-Version).
-	 */
-	public static final String APPLICATION_VERSION;
-
-	/**
-	 * The application build (X-Application-Build).
-	 */
-	public static final String APPLICATION_BUILD;
-
 	private static final String UNDEFINED_ATTRIBUTE = "<undefined>";
 
-	static {
-		@NonNull String[] names = new @NonNull String[] { "X-Application-Name", "X-Application-Version",
-				"X-Application-Build" };
-		Map<String, String> values = findAttributeValues(names);
+	private final String name;
+	private final String version;
+	private final String build;
 
-		APPLICATION_NAME = Objects.toString(values.getOrDefault(names[0], UNDEFINED_ATTRIBUTE));
-		APPLICATION_VERSION = Objects.toString(values.getOrDefault(names[1], UNDEFINED_ATTRIBUTE));
-		APPLICATION_BUILD = Objects.toString(values.getOrDefault(names[2], UNDEFINED_ATTRIBUTE));
+	/**
+	 * Constructs a new {@linkplain ManifestInfos} instance.
+	 *
+	 * @param module a {@linkplain Class} identifying the module to get the version infos for.
+	 */
+	public ManifestInfos(Class<?> module) {
+		@NonNull String[] names = new @NonNull String[] { "X-Module-Name", "X-Module-Version", "X-Module-Build" };
+		Map<String, String> values = findAttributeValues(module, names);
+
+		this.name = Objects.toString(values.getOrDefault(names[0], UNDEFINED_ATTRIBUTE));
+		this.version = Objects.toString(values.getOrDefault(names[1], UNDEFINED_ATTRIBUTE));
+		this.build = Objects.toString(values.getOrDefault(names[2], UNDEFINED_ATTRIBUTE));
 	}
 
-	private static Map<String, String> findAttributeValues(@NonNull String... names) {
+	/**
+	 * Gets the module name stored in the manifest.
+	 * <p>
+	 * A default value is returned if no manifest was found or if the manifest contained no information.
+	 * </p>
+	 *
+	 * @return the module name stored in the manifest.
+	 */
+	public String name() {
+		return this.name;
+	}
+
+	/**
+	 * Gets the module version stored in the manifest.
+	 * <p>
+	 * A default value is returned if no manifest was found or if the manifest contained no information.
+	 * </p>
+	 *
+	 * @return the module version stored in the manifest.
+	 */
+	public String version() {
+		return this.version;
+	}
+
+	/**
+	 * Gets the module build identifier stored in the manifest.
+	 * <p>
+	 * A default value is returned if no manifest was found or if the manifest contained no information.
+	 * </p>
+	 *
+	 * @return the module build identifier stored in the manifest.
+	 */
+	public String build() {
+		return this.build;
+	}
+
+	private static Map<String, String> findAttributeValues(Class<?> module, @NonNull String... names) {
 		Map<String, String> values = new HashMap<>();
+		URL moduleUrl = module.getProtectionDomain().getCodeSource().getLocation();
 
 		try {
-			Enumeration<URL> manifestUrls = ManifestInfos.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
+			Enumeration<URL> manifestUrls = module.getClassLoader().getResources("META-INF/MANIFEST.MF");
 
 			while (manifestUrls.hasMoreElements()) {
 				URL manifestUrl = manifestUrls.nextElement();
 
-				try (InputStream manifestStream = manifestUrl.openStream()) {
-					Manifest manifest = new Manifest(manifestStream);
-					Attributes attributes = manifest.getMainAttributes();
+				if (manifestUrl.getProtocol().equals(moduleUrl.getProtocol())
+						&& manifestUrl.getHost().equals(moduleUrl.getHost())
+						&& manifestUrl.getPort() == moduleUrl.getPort()
+						&& manifestUrl.getPath().startsWith(moduleUrl.getPath())) {
+					try (InputStream manifestStream = manifestUrl.openStream()) {
+						Manifest manifest = new Manifest(manifestStream);
+						Attributes attributes = manifest.getMainAttributes();
 
-					if (attributes != null) {
-						for (String name : names) {
-							String value = attributes.getValue(name);
+						if (attributes != null) {
+							for (String name : names) {
+								String value = attributes.getValue(name);
 
-							if (value != null) {
-								values.put(name, value);
+								if (value != null) {
+									values.put(name, value);
+								}
 							}
 						}
 					}
@@ -94,6 +125,11 @@ public final class ManifestInfos {
 			Exceptions.ignore(e);
 		}
 		return values;
+	}
+
+	@Override
+	public String toString() {
+		return this.name + " " + this.version + "(build: " + this.build + ")";
 	}
 
 }

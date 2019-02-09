@@ -28,26 +28,13 @@ class ManifestInfosTest {
 
 	@Test
 	void testInfos() {
+		ManifestInfos manifestInfos = new ManifestInfos(getClass());
+
 		// As defined in our test manifest
-		Assertions.assertEquals("Test Application", getApplicationName());
-		Assertions.assertEquals("1.0-test", getApplicationVersion());
+		Assertions.assertEquals("Test Application", manifestInfos.name());
+		Assertions.assertEquals("1.0-test", manifestInfos.version());
 		// As undefined in our test manifest
-		Assertions.assertEquals("<undefined>", getApplicationBuild());
-	}
-
-	// wrap in function to keep Sonar happy
-	private static String getApplicationName() {
-		return ManifestInfos.APPLICATION_NAME;
-	}
-
-	// wrap in function to keep Sonar happy
-	private static String getApplicationVersion() {
-		return ManifestInfos.APPLICATION_VERSION;
-	}
-
-	// wrap in function to keep Sonar happy
-	private static String getApplicationBuild() {
-		return ManifestInfos.APPLICATION_BUILD;
+		Assertions.assertEquals("<undefined>", manifestInfos.build());
 	}
 
 }
