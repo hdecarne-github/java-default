@@ -20,51 +20,65 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-
-import org.eclipse.jdt.annotation.NonNull;
 
 import de.carne.boot.Exceptions;
 
 /**
- * Utility class used to retrieve version info and the like from a module's manifest.
+ * Utility class used to access a module's manifest.
  */
 public final class ManifestInfos {
 
-	private static final String UNDEFINED_ATTRIBUTE = "<undefined>";
+	/**
+	 * Module name attribute.
+	 */
+	public static final String ATTRIBUTE_MODULE_NAME = "X-Module-Name";
 
-	private final String name;
-	private final String version;
-	private final String build;
+	/**
+	 * Module version attribute.
+	 */
+	public static final String ATTRIBUTE_MODULE_VERSION = "X-Module-Version";
+
+	/**
+	 * Module build identifier attribute.
+	 */
+	public static final String ATTRIBUTE_MODULE_BUILD = "X-Module-Build";
+
+	private final String moduleName;
+	private final Manifest manifest;
 
 	/**
 	 * Constructs a new {@linkplain ManifestInfos} instance.
 	 *
-	 * @param moduleName the name of the module to get the version information for.
+	 * @param moduleName the name of the module to get the manifest for.
 	 */
 	public ManifestInfos(String moduleName) {
-		@NonNull String[] names = new @NonNull String[] { "X-Module-Name", "X-Module-Version", "X-Module-Build" };
-		Map<String, String> values = findAttributeValues(moduleName, names);
+		this.moduleName = moduleName;
+		this.manifest = findManifest(moduleName);
+	}
 
-		this.name = Objects.toString(values.getOrDefault(names[0], UNDEFINED_ATTRIBUTE));
-		this.version = Objects.toString(values.getOrDefault(names[1], UNDEFINED_ATTRIBUTE));
-		this.build = Objects.toString(values.getOrDefault(names[2], UNDEFINED_ATTRIBUTE));
+	/**
+	 * Gets a manifest's main attribute.
+	 *
+	 * @param attributeName the attribute name to get.
+	 * @param defaultValue the default value to return in case the attribute undefined.
+	 * @return the found attribute value or the submitted default value in case the attribute is undefined.
+	 */
+	public String getMainAttribute(String attributeName, String defaultValue) {
+		Attributes attributes = this.manifest.getMainAttributes();
+		String attributeValue = (attributes != null ? attributes.getValue(attributeName) : null);
+
+		return (attributeValue != null ? attributeValue : defaultValue);
 	}
 
 	/**
 	 * Gets the module name stored in the manifest.
-	 * <p>
-	 * A default value is returned if no manifest was found or if the manifest contained no information.
-	 * </p>
 	 *
 	 * @return the module name stored in the manifest.
 	 */
 	public String name() {
-		return this.name;
+		return this.moduleName;
 	}
 
 	/**
@@ -76,7 +90,7 @@ public final class ManifestInfos {
 	 * @return the module version stored in the manifest.
 	 */
 	public String version() {
-		return this.version;
+		return getMainAttribute(ATTRIBUTE_MODULE_VERSION, "n/a");
 	}
 
 	/**
@@ -88,11 +102,11 @@ public final class ManifestInfos {
 	 * @return the module build identifier stored in the manifest.
 	 */
 	public String build() {
-		return this.build;
+		return getMainAttribute(ATTRIBUTE_MODULE_BUILD, "n/a");
 	}
 
-	private static Map<String, String> findAttributeValues(String name0Value, @NonNull String... names) {
-		Map<String, String> values = new HashMap<>();
+	private static Manifest findManifest(String moduleName) {
+		Manifest found = null;
 
 		try {
 			Enumeration<URL> manifestUrls = ManifestInfos.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
@@ -104,26 +118,21 @@ public final class ManifestInfos {
 					Manifest manifest = new Manifest(manifestStream);
 					Attributes attributes = manifest.getMainAttributes();
 
-					if (attributes != null && name0Value.equals(attributes.getValue(names[0]))) {
-						for (String name : names) {
-							String value = attributes.getValue(name);
-
-							if (value != null) {
-								values.put(name, value);
-							}
-						}
+					if (attributes != null && moduleName.equals(attributes.getValue(ATTRIBUTE_MODULE_NAME))) {
+						found = manifest;
+						break;
 					}
 				}
 			}
 		} catch (IOException e) {
 			Exceptions.ignore(e);
 		}
-		return values;
+		return (found != null ? found : new Manifest());
 	}
 
 	@Override
 	public String toString() {
-		return this.name + " " + this.version + "(build: " + this.build + ")";
+		return name() + " " + version() + "(build: " + build() + ")";
 	}
 
 }

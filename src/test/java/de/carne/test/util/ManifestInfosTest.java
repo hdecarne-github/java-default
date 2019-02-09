@@ -34,7 +34,7 @@ class ManifestInfosTest {
 		Assertions.assertEquals("Test Application", manifestInfos.name());
 		Assertions.assertEquals("1.0-test", manifestInfos.version());
 		// As undefined in our test manifest
-		Assertions.assertEquals("<undefined>", manifestInfos.build());
+		Assertions.assertEquals("n/a", manifestInfos.build());
 	}
 
 }
