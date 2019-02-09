@@ -27,8 +27,8 @@ import de.carne.util.ManifestInfos;
 class ManifestInfosTest {
 
 	@Test
-	void testInfos() {
-		ManifestInfos manifestInfos = new ManifestInfos(getClass());
+	void testFileInfos() {
+		ManifestInfos manifestInfos = new ManifestInfos("Test Application");
 
 		// As defined in our test manifest
 		Assertions.assertEquals("Test Application", manifestInfos.name());

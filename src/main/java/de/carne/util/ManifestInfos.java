@@ -44,11 +44,11 @@ public final class ManifestInfos {
 	/**
 	 * Constructs a new {@linkplain ManifestInfos} instance.
 	 *
-	 * @param module a {@linkplain Class} identifying the module to get the version infos for.
+	 * @param moduleName the name of the module to get the version information for.
 	 */
-	public ManifestInfos(Class<?> module) {
+	public ManifestInfos(String moduleName) {
 		@NonNull String[] names = new @NonNull String[] { "X-Module-Name", "X-Module-Version", "X-Module-Build" };
-		Map<String, String> values = findAttributeValues(module, names);
+		Map<String, String> values = findAttributeValues(moduleName, names);
 
 		this.name = Objects.toString(values.getOrDefault(names[0], UNDEFINED_ATTRIBUTE));
 		this.version = Objects.toString(values.getOrDefault(names[1], UNDEFINED_ATTRIBUTE));
@@ -91,31 +91,25 @@ public final class ManifestInfos {
 		return this.build;
 	}
 
-	private static Map<String, String> findAttributeValues(Class<?> module, @NonNull String... names) {
+	private static Map<String, String> findAttributeValues(String name0Value, @NonNull String... names) {
 		Map<String, String> values = new HashMap<>();
-		URL moduleUrl = module.getProtectionDomain().getCodeSource().getLocation();
 
 		try {
-			Enumeration<URL> manifestUrls = module.getClassLoader().getResources("META-INF/MANIFEST.MF");
+			Enumeration<URL> manifestUrls = ManifestInfos.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
 
 			while (manifestUrls.hasMoreElements()) {
 				URL manifestUrl = manifestUrls.nextElement();
 
-				if (manifestUrl.getProtocol().equals(moduleUrl.getProtocol())
-						&& manifestUrl.getHost().equals(moduleUrl.getHost())
-						&& manifestUrl.getPort() == moduleUrl.getPort()
-						&& manifestUrl.getPath().startsWith(moduleUrl.getPath())) {
-					try (InputStream manifestStream = manifestUrl.openStream()) {
-						Manifest manifest = new Manifest(manifestStream);
-						Attributes attributes = manifest.getMainAttributes();
+				try (InputStream manifestStream = manifestUrl.openStream()) {
+					Manifest manifest = new Manifest(manifestStream);
+					Attributes attributes = manifest.getMainAttributes();
 
-						if (attributes != null) {
-							for (String name : names) {
-								String value = attributes.getValue(name);
+					if (attributes != null && name0Value.equals(attributes.getValue(names[0]))) {
+						for (String name : names) {
+							String value = attributes.getValue(name);
 
-								if (value != null) {
-									values.put(name, value);
-								}
+							if (value != null) {
+								values.put(name, value);
 							}
 						}
 					}
