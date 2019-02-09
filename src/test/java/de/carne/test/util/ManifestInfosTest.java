@@ -27,13 +27,22 @@ import de.carne.util.ManifestInfos;
 class ManifestInfosTest {
 
 	@Test
-	void testFileInfos() {
+	void testKnownManifestInfos() {
 		ManifestInfos manifestInfos = new ManifestInfos("Test Application");
 
 		// As defined in our test manifest
 		Assertions.assertEquals("Test Application", manifestInfos.name());
 		Assertions.assertEquals("1.0-test", manifestInfos.version());
 		// As undefined in our test manifest
+		Assertions.assertEquals("n/a", manifestInfos.build());
+	}
+
+	@Test
+	void testUnknownManifestInfos() {
+		ManifestInfos manifestInfos = new ManifestInfos("Unknown Application");
+
+		Assertions.assertEquals("Unknown Application", manifestInfos.name());
+		Assertions.assertEquals("n/a", manifestInfos.version());
 		Assertions.assertEquals("n/a", manifestInfos.build());
 	}
 
