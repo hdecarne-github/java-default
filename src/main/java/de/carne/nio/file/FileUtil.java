@@ -28,6 +28,7 @@ import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.util.Objects;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -123,8 +124,8 @@ public final class FileUtil {
 	 * @param path the path to split.
 	 * @return the three path parts.
 	 */
-	public static String[] splitPath(String path) {
-		String[] split = new String[] { "", "", "" };
+	public static @NonNull String[] splitPath(String path) {
+		@NonNull String[] split = new @NonNull String[] { "", "", "" };
 		int baseIndex = Math.max(path.lastIndexOf('/'), path.lastIndexOf('\\'));
 		String fileName;
 
