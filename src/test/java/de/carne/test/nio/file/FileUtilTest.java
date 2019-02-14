@@ -94,4 +94,16 @@ class FileUtilTest {
 		Assertions.assertFalse(FileUtil.delete(tempFile));
 	}
 
+	@Test
+	void testSplitPath() {
+		Assertions.assertArrayEquals(new String[] { "/directory", "name", "ext" },
+				FileUtil.splitPath("/directory/name.ext"));
+		Assertions.assertArrayEquals(new String[] { "\\directory", "name", "ext" },
+				FileUtil.splitPath("\\directory\\name.ext"));
+		Assertions.assertArrayEquals(new String[] { "", "name", "ext" }, FileUtil.splitPath("name.ext"));
+		Assertions.assertArrayEquals(new String[] { "", "name", "" }, FileUtil.splitPath("name"));
+		Assertions.assertArrayEquals(new String[] { "/", "name", "" }, FileUtil.splitPath("/name"));
+		Assertions.assertArrayEquals(new String[] { "", ".name", "" }, FileUtil.splitPath(".name"));
+	}
+
 }

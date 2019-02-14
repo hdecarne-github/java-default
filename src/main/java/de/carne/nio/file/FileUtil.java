@@ -114,4 +114,39 @@ public final class FileUtil {
 		return deleted;
 	}
 
+	/**
+	 * Splits a path into it's three parts directory, name and extension.
+	 * <p>
+	 * For missing parts the empty string is returned.
+	 * </p>
+	 *
+	 * @param path the path to split.
+	 * @return the three path parts.
+	 */
+	public static String[] splitPath(String path) {
+		String[] split = new String[] { "", "", "" };
+		int baseIndex = Math.max(path.lastIndexOf('/'), path.lastIndexOf('\\'));
+		String fileName;
+
+		if (baseIndex > 0) {
+			split[0] = path.substring(0, baseIndex);
+			fileName = path.substring(baseIndex + 1);
+		} else if (baseIndex == 0) {
+			split[0] = path.substring(0, baseIndex + 1);
+			fileName = path.substring(baseIndex + 1);
+		} else {
+			fileName = path;
+		}
+
+		int extIndex = fileName.lastIndexOf('.');
+
+		if (extIndex > 0) {
+			split[1] = fileName.substring(0, extIndex);
+			split[2] = fileName.substring(extIndex + 1);
+		} else {
+			split[1] = fileName;
+		}
+		return split;
+	}
+
 }
