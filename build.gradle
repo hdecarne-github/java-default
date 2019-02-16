@@ -5,7 +5,7 @@ plugins {
 	id "maven-publish"
 	id "eclipse"
 	id "org.sonarqube" version "2.7"
-	id "com.jfrog.artifactory" version "4.9.0" 
+	id "com.jfrog.artifactory" version "4.9.1" 
 	id "com.jfrog.bintray" version "1.8.4"
 }
 // Build helpers
@@ -49,13 +49,13 @@ jar {
 test {
 	useJUnitPlatform()
 	testLogging {
-		events "failed"
+		events "started", "failed", "passed", "skipped"
 		exceptionFormat "full"
 	}
 }
 
 jacoco {
-	toolVersion = "0.8.2"
+	toolVersion = "0.8.3"
 }
 
 jacocoTestReport {
