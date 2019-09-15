@@ -19,33 +19,31 @@ package de.carne.test.io;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.carne.io.IOUtil;
+import de.carne.test.api.io.TempFile;
+import de.carne.test.extension.TempPathExtension;
 
 /**
  * Test {@linkplain IOUtil} class.
  */
+@ExtendWith(TempPathExtension.class)
 class IOUtilTest {
 
 	@Test
-	void testCopy() throws IOException {
-		// Prepare files
-		File file1 = Files.createTempFile(getClass().getName(), ".tmp").toFile();
-		File file2 = Files.createTempFile(getClass().getName(), ".tmp").toFile();
-
-		file1.deleteOnExit();
-		file2.deleteOnExit();
-
+	void testCopy(@TempFile File file1, @TempFile File file2) throws IOException {
 		// Test stream/file copy operations
 		ByteArrayOutputStream resourceDataOutputStream = new ByteArrayOutputStream();
 
@@ -102,12 +100,10 @@ class IOUtilTest {
 	}
 
 	@Test
-	void testReadAllBytes() throws IOException {
+	void testReadAllBytes(@TempFile File file) throws IOException {
 		// Prepare file
 		URL url = Objects.requireNonNull(getClass().getResource("data.bin"));
-		File file = Files.createTempFile(getClass().getName(), ".tmp").toFile();
 
-		file.deleteOnExit();
 		IOUtil.copyUrl(file, url);
 
 		ByteArrayOutputStream fileDataOutputStream = new ByteArrayOutputStream();
@@ -126,6 +122,25 @@ class IOUtilTest {
 		Assertions.assertThrows(IOException.class, () -> {
 			IOUtil.readAllBytes(url, bytes.length - 1);
 		});
+	}
+
+	@Test
+	void testReadEager(@TempFile File file) throws IOException {
+		// Prepare file
+		URL url = Objects.requireNonNull(getClass().getResource("data.bin"));
+
+		IOUtil.copyUrl(file, url);
+
+		ByteArrayOutputStream fileDataOutputStream = new ByteArrayOutputStream();
+
+		IOUtil.copyUrl(fileDataOutputStream, url);
+
+		byte[] buffer = new byte[fileDataOutputStream.size()];
+
+		try (InputStream in = new FileInputStream(file)) {
+			IOUtil.readEager(in, buffer);
+		}
+		Assertions.assertArrayEquals(fileDataOutputStream.toByteArray(), buffer);
 	}
 
 }

@@ -16,6 +16,7 @@
  */
 package de.carne.io;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -323,6 +324,42 @@ public final class IOUtil {
 
 		try (InputStream srcStream = src.openStream()) {
 			read = readAllBytes(srcStream, limit);
+		}
+		return read;
+	}
+
+	/**
+	 * Reads eagerly the requested number of bytes and fails if they are not available.
+	 *
+	 * @param in the {@linkplain InputStream} to read from.
+	 * @param b the buffer to read into.
+	 * @return the number of read bytes (always the size of the buffer).
+	 * @throws IOException if an I/O error occurs or a premature EOF has been reached.
+	 */
+	public static int readEager(InputStream in, byte[] b) throws IOException {
+		return readEager(in, b, 0, b.length);
+	}
+
+	/**
+	 * Reads eagerly the requested number of bytes and fails if they are not available.
+	 *
+	 * @param in the {@linkplain InputStream} to read from.
+	 * @param b the buffer to read into.
+	 * @param off the buffer offset to use.
+	 * @param len the number of bytes to read.
+	 * @return the number of read bytes (always the size of the buffer).
+	 * @throws IOException if an I/O error occurs or a premature EOF has been reached.
+	 */
+	public static int readEager(InputStream in, byte[] b, int off, int len) throws IOException {
+		int read = 0;
+
+		while (read < len) {
+			int read0 = in.read(b, off + read, len - read);
+
+			if (read0 < 0) {
+				throw new EOFException("Unexepcted EOF (expected: " + len + " got: " + read);
+			}
+			read += read0;
 		}
 		return read;
 	}
