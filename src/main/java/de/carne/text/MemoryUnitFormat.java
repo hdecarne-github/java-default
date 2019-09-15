@@ -35,6 +35,7 @@ public class MemoryUnitFormat extends NumberFormat {
 
 	private static final String[] UNITS = { " byte", " KiB", " MiB", " GiB", " TiB", " PiB", " EiB", " ZiB", " YiB" };
 
+	@SuppressWarnings("squid:S5164")
 	private static final ThreadLocal<@NonNull MemoryUnitFormat> CACHED_INSTANCE = ThreadLocal
 			.withInitial(MemoryUnitFormat::new);
 
