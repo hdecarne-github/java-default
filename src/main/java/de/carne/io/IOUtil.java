@@ -329,6 +329,42 @@ public final class IOUtil {
 	}
 
 	/**
+	 * Reads up to the requested number of bytes and blocks until they are all read or EOF is reached.
+	 *
+	 * @param in the {@linkplain InputStream} to read from.
+	 * @param b the buffer to read into.
+	 * @return the number of read bytes.
+	 * @throws IOException if an I/O error occurs.
+	 */
+	public static int readBlocking(InputStream in, byte[] b) throws IOException {
+		return readBlocking(in, b, 0, b.length);
+	}
+
+	/**
+	 * Reads up to the requested number of bytes and blocks until they are all read or EOF is reached.
+	 *
+	 * @param in the {@linkplain InputStream} to read from.
+	 * @param b the buffer to read into.
+	 * @param off the buffer offset to use.
+	 * @param len the maximum number of bytes to read.
+	 * @return the number of read bytes.
+	 * @throws IOException if an I/O error occurs.
+	 */
+	public static int readBlocking(InputStream in, byte[] b, int off, int len) throws IOException {
+		int read = 0;
+
+		while (read < len) {
+			int read0 = in.read(b, off + read, len - read);
+
+			if (read0 < 0) {
+				break;
+			}
+			read += read0;
+		}
+		return read;
+	}
+
+	/**
 	 * Reads eagerly the requested number of bytes and fails if they are not available.
 	 *
 	 * @param in the {@linkplain InputStream} to read from.

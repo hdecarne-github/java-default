@@ -125,6 +125,32 @@ class IOUtilTest {
 	}
 
 	@Test
+	void testReadBlocking(@TempFile File file) throws IOException {
+		// Prepare file
+		URL url = Objects.requireNonNull(getClass().getResource("data.bin"));
+
+		IOUtil.copyUrl(file, url);
+
+		ByteArrayOutputStream fileDataOutputStream = new ByteArrayOutputStream();
+
+		IOUtil.copyUrl(fileDataOutputStream, url);
+
+		byte[] buffer = new byte[fileDataOutputStream.size() + 1];
+		int read;
+
+		try (InputStream in = new FileInputStream(file)) {
+			read = IOUtil.readBlocking(in, buffer);
+		}
+
+		Assertions.assertEquals(buffer.length - 1, read);
+
+		byte[] bufferSlice = new byte[fileDataOutputStream.size()];
+
+		System.arraycopy(buffer, 0, bufferSlice, 0, read);
+		Assertions.assertArrayEquals(fileDataOutputStream.toByteArray(), bufferSlice);
+	}
+
+	@Test
 	void testReadEager(@TempFile File file) throws IOException {
 		// Prepare file
 		URL url = Objects.requireNonNull(getClass().getResource("data.bin"));
