@@ -30,9 +30,8 @@ import org.eclipse.jdt.annotation.Nullable;
 /**
  * Utility class for command line processing.
  * <p>
- * An instance of this class wraps a single command line.
- * <p>
- * Actions can be added to define how the encountered arguments are processed. The following action types are supported:
+ * An instance of this class wraps a single command line. Actions can be added to define how the encountered arguments
+ * are processed. The following action types are supported:
  * <ul>
  * <li>switch (e.g. {@code --switch} or {@code -s}; see {@linkplain #onSwitch(Consumer)})</li>
  * <li>option (e.g. {@code --option value} or {@code -o value}; see {@linkplain #onOption(BiConsumer)})</li>
@@ -40,6 +39,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * <li>unknown (default processing; see {@linkplain #onUnknownArg(Consumer)})
  * </ul>
  * Invoking the {@linkplain #process()} function processes all arguments and invokes the corresponding actions.
+ * </p>
  */
 public final class CmdLineProcessor {
 

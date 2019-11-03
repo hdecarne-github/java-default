@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
  * This class represents an action associated with a set of recognized command line args.
  * <p>
  * An action can either be a switch (e.g. {@code --switch}) or an option (e.g. {«code --option value}).
+ * </p>
  *
  * @see CmdLineProcessor#onSwitch(java.util.function.Consumer)
  * @see CmdLineProcessor#onOption(java.util.function.BiConsumer)
@@ -33,10 +34,10 @@ public abstract class CmdLineAction {
 	private final Set<String> args = new HashSet<>();
 
 	/**
-	 * Add an argument string that should be trigger this {@linkplain CmdLineAction}.
+	 * Adds an argument string that should trigger this {@linkplain CmdLineAction} instance.
 	 *
-	 * @param arg The argument string to be associated with this {@linkplain CmdLineAction}.
-	 * @return The updated {@linkplain CmdLineAction}.
+	 * @param arg the argument string to be associated with this {@linkplain CmdLineAction} instance.
+	 * @return the updated {@linkplain CmdLineAction} instance.
 	 */
 	public CmdLineAction arg(String arg) {
 		if (!CmdLineProcessor.isActionArg(arg)) {
@@ -47,10 +48,10 @@ public abstract class CmdLineAction {
 	}
 
 	/**
-	 * Check whether the submitted argument string is a trigger for this {@linkplain CmdLineAction}.
+	 * Checks whether the submitted argument string is a trigger for this {@linkplain CmdLineAction} instance.
 	 *
-	 * @param arg The argument string to check.
-	 * @return {@code true} if the argument string is associated with this {@linkplain CmdLineAction}.
+	 * @param arg the argument string to check.
+	 * @return {@code true} if the argument string is associated with this {@linkplain CmdLineAction} instance.
 	 * @see #arg(String)
 	 */
 	public boolean contains(String arg) {

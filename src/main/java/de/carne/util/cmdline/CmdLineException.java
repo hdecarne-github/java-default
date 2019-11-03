@@ -30,7 +30,7 @@ public class CmdLineException extends Exception {
 	private final String arg;
 
 	/**
-	 * Construct a new {@linkplain CmdLineException} instance.
+	 * Constructs a new {@linkplain CmdLineException} instance.
 	 *
 	 * @param cmdLine the {@linkplain CmdLineProcessor} throwing this exception.
 	 * @param arg the argument string causing this exception.
@@ -42,7 +42,7 @@ public class CmdLineException extends Exception {
 	}
 
 	/**
-	 * Construct a new {@linkplain CmdLineException} instance.
+	 * Constructs a new {@linkplain CmdLineException} instance.
 	 *
 	 * @param cmdLine the {@linkplain CmdLineProcessor} throwing this exception.
 	 * @param arg the argument string causing this exception.

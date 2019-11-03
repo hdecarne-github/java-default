@@ -24,20 +24,20 @@ public class FunctionException extends RuntimeException {
 	private static final long serialVersionUID = 126730001007643670L;
 
 	/**
-	 * Construct {@linkplain FunctionException}.
+	 * Constructs a new {@linkplain FunctionException} instance.
 	 *
-	 * @param cause The exception to wrap.
+	 * @param cause the exception to wrap.
 	 */
 	public FunctionException(Exception cause) {
 		super(cause);
 	}
 
 	/**
-	 * Get the wrapped exception for re-throwing.
+	 * Gets the wrapped exception for re-throwing.
 	 *
-	 * @param <T> The wrapped excption's type.
-	 * @param exceptionType The wrapped exception type.
-	 * @return The wrapped exception.
+	 * @param <T> the wrapped excption's type.
+	 * @param exceptionType the wrapped exception type.
+	 * @return the wrapped exception.
 	 */
 	public <T extends Exception> T rethrow(Class<T> exceptionType) {
 		return exceptionType.cast(getCause());

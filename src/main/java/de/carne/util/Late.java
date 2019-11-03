@@ -26,7 +26,7 @@ import org.eclipse.jdt.annotation.Nullable;
 /**
  * Utility class used to handle late initialized objects in a {@code null}-safe way.
  *
- * @param <T> The actual object type.
+ * @param <T> the actual object type.
  */
 public class Late<@NonNull T> implements Supplier<T> {
 
