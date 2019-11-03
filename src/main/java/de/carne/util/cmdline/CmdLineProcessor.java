@@ -39,7 +39,6 @@ import org.eclipse.jdt.annotation.Nullable;
  * <li>unknown (default processing; see {@linkplain #onUnknownArg(Consumer)})
  * </ul>
  * Invoking the {@linkplain #process()} function processes all arguments and invokes the corresponding actions.
- * </p>
  */
 public final class CmdLineProcessor {
 
