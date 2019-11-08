@@ -42,6 +42,14 @@ class FileUtilTest {
 	}
 
 	@Test
+	void testUserHomeDir() {
+		Path userHomeDir = FileUtil.userHomeDir();
+
+		Assertions.assertTrue(Files.isDirectory(userHomeDir));
+		Assertions.assertEquals(userHomeDir.toAbsolutePath(), userHomeDir);
+	}
+
+	@Test
 	void testWorkingDir() {
 		Path workingDir = FileUtil.workingDir();
 

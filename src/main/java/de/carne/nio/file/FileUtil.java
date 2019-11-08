@@ -50,6 +50,15 @@ public final class FileUtil {
 	}
 
 	/**
+	 * Gets the user's home directory path.
+	 *
+	 * @return the user's home directory path.
+	 */
+	public static Path userHomeDir() {
+		return Paths.get(Objects.requireNonNull(System.getProperty("user.home"))).toAbsolutePath();
+	}
+
+	/**
 	 * Gets the current working directory path.
 	 *
 	 * @return the current working directory path.
