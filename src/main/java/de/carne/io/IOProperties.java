@@ -36,6 +36,17 @@ public final class IOProperties {
 	/**
 	 * Default buffer size for I/O operations.
 	 */
-	public static final int DEFAULT_BUFFER_SIZE = SystemProperties.intValue(DEFAULT_BUFFER_SIZE_PROPERTY, 8192);
+	public static final int DEFAULT_BUFFER_SIZE = SystemProperties.intValue(DEFAULT_BUFFER_SIZE_PROPERTY, 1 << 12);
+
+	/**
+	 * {@linkplain #MAX_BUFFER_SIZE} property.
+	 */
+	public static final String MAX_BUFFER_SIZE_PROPERTY = IOProperties.class.getPackage().getName()
+			+ ".MAX_BUFFER_SIZE";
+
+	/**
+	 * Maximum buffer size for I/O operations.
+	 */
+	public static final int MAX_BUFFER_SIZE = SystemProperties.intValue(MAX_BUFFER_SIZE_PROPERTY, 1 << 22);
 
 }
