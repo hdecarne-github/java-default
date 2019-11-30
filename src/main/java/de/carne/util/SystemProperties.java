@@ -17,6 +17,8 @@
 package de.carne.util;
 
 import de.carne.boot.logging.Log;
+import de.carne.text.IntegerParser;
+import de.carne.text.LongParser;
 
 /**
  * Utility class providing system properties related functions.
@@ -111,7 +113,7 @@ public final class SystemProperties {
 	 * @return the property value or {@code 0} if the property is not defined.
 	 */
 	public static int intValue(String key) {
-		return intValue(key, 0);
+		return intValue(key, IntegerParser.ANY, 0);
 	}
 
 	/**
@@ -122,7 +124,7 @@ public final class SystemProperties {
 	 * @return the property value or {@code 0} if the property is not defined.
 	 */
 	public static int intValue(Class<?> clazz, String key) {
-		return intValue(clazz, key, 0);
+		return intValue(clazz, key, IntegerParser.ANY, 0);
 	}
 
 	/**
@@ -133,17 +135,7 @@ public final class SystemProperties {
 	 * @return the property value or the submitted default value if the property is not defined.
 	 */
 	public static int intValue(String key, int defaultValue) {
-		String value = System.getProperty(key);
-		int intValue = defaultValue;
-
-		if (value != null) {
-			try {
-				intValue = Integer.parseInt(value);
-			} catch (NumberFormatException e) {
-				LOG.warning(e, "Ignoring invalid int system propert: ''{0}'' = ''{1}''", key, value);
-			}
-		}
-		return intValue;
+		return intValue(key, IntegerParser.ANY, defaultValue);
 	}
 
 	/**
@@ -155,7 +147,42 @@ public final class SystemProperties {
 	 * @return the property value or the submitted default value if the property is not defined.
 	 */
 	public static int intValue(Class<?> clazz, String key, int defaultValue) {
-		return intValue(clazz.getName() + key, defaultValue);
+		return intValue(clazz.getName() + key, IntegerParser.ANY, defaultValue);
+	}
+
+	/**
+	 * Gets a {@code int} system property value.
+	 *
+	 * @param key the property key to retrieve.
+	 * @param parser the {@linkplain IntegerParser} to use for property value parsing.
+	 * @param defaultValue the default value to return in case the property is not defined.
+	 * @return the property value or the submitted default value if the property is not defined.
+	 */
+	public static int intValue(String key, IntegerParser parser, int defaultValue) {
+		String value = System.getProperty(key);
+		int intValue = defaultValue;
+
+		if (value != null) {
+			try {
+				intValue = parser.parseInt(value);
+			} catch (RuntimeException e) {
+				LOG.warning(e, "Ignoring invalid int system propert: ''{0}'' = ''{1}''", key, value);
+			}
+		}
+		return intValue;
+	}
+
+	/**
+	 * Gets a {@code int} system property value.
+	 *
+	 * @param clazz the {@linkplain Class} to derive the property key from.
+	 * @param key the property key (relative to the submitted {@linkplain Class}) to get.
+	 * @param parser the {@linkplain IntegerParser} to use for property value parsing.
+	 * @param defaultValue the default value to return in case the property is not defined.
+	 * @return the property value or the submitted default value if the property is not defined.
+	 */
+	public static int intValue(Class<?> clazz, String key, IntegerParser parser, int defaultValue) {
+		return intValue(clazz.getName() + key, parser, defaultValue);
 	}
 
 	/**
@@ -165,7 +192,7 @@ public final class SystemProperties {
 	 * @return the property value or {@code 0} if the property is not defined.
 	 */
 	public static long longValue(String key) {
-		return longValue(key, 0);
+		return longValue(key, LongParser.ANY, 0);
 	}
 
 	/**
@@ -176,7 +203,7 @@ public final class SystemProperties {
 	 * @return the property value or {@code 0} if the property is not defined.
 	 */
 	public static long longValue(Class<?> clazz, String key) {
-		return longValue(clazz, key, 0);
+		return longValue(clazz, key, LongParser.ANY, 0);
 	}
 
 	/**
@@ -187,17 +214,7 @@ public final class SystemProperties {
 	 * @return the property value or the submitted default value if the property is not defined.
 	 */
 	public static long longValue(String key, long defaultValue) {
-		String value = System.getProperty(key);
-		long longValue = defaultValue;
-
-		if (value != null) {
-			try {
-				longValue = Long.parseLong(value);
-			} catch (NumberFormatException e) {
-				LOG.warning(e, "Ignoring invalid long system propert: ''{0}'' = ''{1}''", key, value);
-			}
-		}
-		return longValue;
+		return longValue(key, LongParser.ANY, defaultValue);
 	}
 
 	/**
@@ -209,7 +226,42 @@ public final class SystemProperties {
 	 * @return the property value or the submitted default value if the property is not defined.
 	 */
 	public static long longValue(Class<?> clazz, String key, long defaultValue) {
-		return longValue(clazz.getName() + key, defaultValue);
+		return longValue(clazz.getName() + key, LongParser.ANY, defaultValue);
+	}
+
+	/**
+	 * Gets a {@code long} system property value.
+	 *
+	 * @param key the property key to retrieve.
+	 * @param parser the {@linkplain LongParser} to use for property value parsing.
+	 * @param defaultValue the default value to return in case the property is not defined.
+	 * @return the property value or the submitted default value if the property is not defined.
+	 */
+	public static long longValue(String key, LongParser parser, long defaultValue) {
+		String value = System.getProperty(key);
+		long longValue = defaultValue;
+
+		if (value != null) {
+			try {
+				longValue = parser.parseLong(value);
+			} catch (RuntimeException e) {
+				LOG.warning(e, "Ignoring invalid long system propert: ''{0}'' = ''{1}''", key, value);
+			}
+		}
+		return longValue;
+	}
+
+	/**
+	 * Gets a {@code long} system property value.
+	 *
+	 * @param clazz the {@linkplain Class} to derive the property key from.
+	 * @param key the property key (relative to the submitted {@linkplain Class}) to get.
+	 * @param parser the {@linkplain LongParser} to use for property value parsing.
+	 * @param defaultValue the default value to return in case the property is not defined.
+	 * @return the property value or the submitted default value if the property is not defined.
+	 */
+	public static long longValue(Class<?> clazz, String key, LongParser parser, long defaultValue) {
+		return longValue(clazz.getName() + key, parser, defaultValue);
 	}
 
 }
