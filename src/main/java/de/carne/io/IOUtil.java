@@ -66,7 +66,7 @@ public final class IOUtil {
 		long remaining = src.size();
 
 		while (remaining > 0) {
-			long transferred = dst.transferFrom(src, position, IOProperties.DEFAULT_BUFFER_SIZE);
+			long transferred = dst.transferFrom(src, position, Defaults.DEFAULT_BUFFER_SIZE);
 
 			position += transferred;
 			remaining -= transferred;
@@ -76,7 +76,7 @@ public final class IOUtil {
 	}
 
 	private static long copyStreamStandard(OutputStream dst, InputStream src) throws IOException {
-		byte[] buffer = new byte[IOProperties.DEFAULT_BUFFER_SIZE];
+		byte[] buffer = new byte[Defaults.DEFAULT_BUFFER_SIZE];
 		long copied = 0;
 		int read;
 
@@ -181,7 +181,7 @@ public final class IOUtil {
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public static long copyChannel(WritableByteChannel dst, ReadableByteChannel src) throws IOException {
-		ByteBuffer buffer = ByteBuffer.allocateDirect(IOProperties.DEFAULT_BUFFER_SIZE);
+		ByteBuffer buffer = ByteBuffer.allocateDirect(Defaults.DEFAULT_BUFFER_SIZE);
 		long copied = 0;
 		int read;
 
@@ -245,7 +245,7 @@ public final class IOUtil {
 	 * @throws IOException if an I/O error occurs or {@code limit} is reached.
 	 */
 	public static byte[] readAllBytes(InputStream src, int limit) throws IOException {
-		byte[] buffer = new byte[IOProperties.DEFAULT_BUFFER_SIZE];
+		byte[] buffer = new byte[Defaults.DEFAULT_BUFFER_SIZE];
 		byte[] bytes = new byte[0];
 		int read;
 

@@ -16,37 +16,39 @@
  */
 package de.carne.io;
 
+import de.carne.text.IntegerParser;
 import de.carne.util.SystemProperties;
 
 /**
- * I/O property definitions.
+ * I/O default properties.
  */
-public final class IOProperties {
+public final class Defaults {
 
-	private IOProperties() {
+	private Defaults() {
 		// prevent instantiation
 	}
 
 	/**
 	 * {@linkplain #DEFAULT_BUFFER_SIZE} property.
 	 */
-	public static final String DEFAULT_BUFFER_SIZE_PROPERTY = IOProperties.class.getPackage().getName()
+	public static final String DEFAULT_BUFFER_SIZE_PROPERTY = Defaults.class.getPackage().getName()
 			+ ".DEFAULT_BUFFER_SIZE";
 
 	/**
 	 * Default buffer size for I/O operations.
 	 */
-	public static final int DEFAULT_BUFFER_SIZE = SystemProperties.intValue(DEFAULT_BUFFER_SIZE_PROPERTY, 1 << 12);
+	public static final int DEFAULT_BUFFER_SIZE = SystemProperties.intValue(DEFAULT_BUFFER_SIZE_PROPERTY,
+			IntegerParser.POSITIVE, 1 << 12);
 
 	/**
 	 * {@linkplain #MAX_BUFFER_SIZE} property.
 	 */
-	public static final String MAX_BUFFER_SIZE_PROPERTY = IOProperties.class.getPackage().getName()
-			+ ".MAX_BUFFER_SIZE";
+	public static final String MAX_BUFFER_SIZE_PROPERTY = Defaults.class.getPackage().getName() + ".MAX_BUFFER_SIZE";
 
 	/**
 	 * Maximum buffer size for I/O operations.
 	 */
-	public static final int MAX_BUFFER_SIZE = SystemProperties.intValue(MAX_BUFFER_SIZE_PROPERTY, 1 << 22);
+	public static final int MAX_BUFFER_SIZE = SystemProperties.intValue(MAX_BUFFER_SIZE_PROPERTY,
+			IntegerParser.POSITIVE, 1 << 22);
 
 }
