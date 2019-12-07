@@ -437,10 +437,10 @@ public final class Strings {
 				buffer.append("&quot;");
 				break;
 			case '\'':
-				buffer.append("&#39;");
+				buffer.append("&apos;");
 				break;
 			default:
-				if (Character.isAlphabetic(c)) {
+				if (32 <= c && c <= 126) {
 					buffer.append((char) c);
 				} else {
 					buffer.append("&#").append(c).append(';');
