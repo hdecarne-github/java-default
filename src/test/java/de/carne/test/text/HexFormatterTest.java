@@ -32,6 +32,7 @@ class HexFormatterTest {
 
 		Assertions.assertEquals("00", formatter.format((byte) 0x00));
 		Assertions.assertEquals("ff", formatter.format((byte) 0xff));
+		Assertions.assertEquals("00 80 ff", formatter.format(new byte[] { 0x00, (byte) 0x80, (byte) 0xff }));
 		Assertions.assertEquals("0000", formatter.format((short) 0x0000));
 		Assertions.assertEquals("ffff", formatter.format((short) 0xffff));
 		Assertions.assertEquals("00000000", formatter.format(0x00000000));
@@ -46,6 +47,7 @@ class HexFormatterTest {
 
 		Assertions.assertEquals("00", formatter.format((byte) 0x00));
 		Assertions.assertEquals("FF", formatter.format((byte) 0xff));
+		Assertions.assertEquals("00 80 FF", formatter.format(new byte[] { 0x00, (byte) 0x80, (byte) 0xff }));
 		Assertions.assertEquals("0000", formatter.format((short) 0x0000));
 		Assertions.assertEquals("FFFF", formatter.format((short) 0xffff));
 		Assertions.assertEquals("00000000", formatter.format(0x00000000));

@@ -68,6 +68,58 @@ public final class HexFormatter {
 	}
 
 	/**
+	 * Formats a {@code byte} array.
+	 *
+	 * @param bs the {@code byte} array to format.
+	 * @return the format result.
+	 */
+	public String format(byte[] bs) {
+		return format(new StringBuilder(), bs).toString();
+	}
+
+	/**
+	 * Formats a {@code byte} array.
+	 *
+	 * @param buffer the {@linkplain StringBuilder} to format into.
+	 * @param bs the {@code byte} array to format.
+	 * @return the format result.
+	 */
+	public StringBuilder format(StringBuilder buffer, byte[] bs) {
+		return format(buffer, bs, 0, bs.length);
+	}
+
+	/**
+	 * Formats a {@code byte} array range.
+	 *
+	 * @param bs the {@code byte} array to format.
+	 * @param off the offset of the first byte to format.
+	 * @param len the number of bytes to format.
+	 * @return the format result.
+	 */
+	public String format(byte[] bs, int off, int len) {
+		return format(new StringBuilder(), bs, off, len).toString();
+	}
+
+	/**
+	 * Formats a {@code byte} array range.
+	 *
+	 * @param buffer the {@linkplain StringBuilder} to format into.
+	 * @param bs the {@code byte} array to format.
+	 * @param off the offset of the first byte to format.
+	 * @param len the number of bytes to format.
+	 * @return the format result.
+	 */
+	public StringBuilder format(StringBuilder buffer, byte[] bs, int off, int len) {
+		for (int bIndex = 0; bIndex < len; bIndex++) {
+			if (bIndex > 0) {
+				buffer.append(' ');
+			}
+			format(buffer, bs[off + bIndex]);
+		}
+		return buffer;
+	}
+
+	/**
 	 * Formats a {@code short} value.
 	 *
 	 * @param s the {@code short} value to format.
