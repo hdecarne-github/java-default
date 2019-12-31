@@ -40,11 +40,6 @@ dependencies {
 	testImplementation(group: "de.carne.common", name: "java-test", version: project.javaTestVersion)
 }
 
-tasks.withType(JavaCompile) {
-	// Do not generate debug infos
-	options.compilerArgs += ["-g:none"]
-}
-
 jar {
 	manifest {
 		attributes "Automatic-Module-Name": automaticModuleName
