@@ -26,14 +26,17 @@ public final class HexFormatter {
 	private static final char[] LOWER_CASE_HEX_CHARS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b',
 			'c', 'd', 'e', 'f' };
 
-	private final char[] hexChars;
+	/**
+	 * Upper case {@linkplain HexFormatter} instance.
+	 */
+	public static final HexFormatter UPPER_CASE = new HexFormatter(true);
 
 	/**
-	 * Constructs a default {@linkplain HexFormatter} instance.
+	 * Lower case {@linkplain HexFormatter} instance.
 	 */
-	public HexFormatter() {
-		this(false);
-	}
+	public static final HexFormatter LOWER_CASE = new HexFormatter(false);
+
+	private final char[] hexChars;
 
 	/**
 	 * Constructs a {@linkplain HexFormatter} instance.

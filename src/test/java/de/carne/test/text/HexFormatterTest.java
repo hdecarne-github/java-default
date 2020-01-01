@@ -28,7 +28,7 @@ class HexFormatterTest {
 
 	@Test
 	void testLowerCaseFormat() {
-		HexFormatter formatter = new HexFormatter();
+		HexFormatter formatter = HexFormatter.LOWER_CASE;
 
 		Assertions.assertEquals("00", formatter.format((byte) 0x00));
 		Assertions.assertEquals("ff", formatter.format((byte) 0xff));
@@ -43,7 +43,7 @@ class HexFormatterTest {
 
 	@Test
 	void testUpperCaseFormat() {
-		HexFormatter formatter = new HexFormatter(true);
+		HexFormatter formatter = HexFormatter.UPPER_CASE;
 
 		Assertions.assertEquals("00", formatter.format((byte) 0x00));
 		Assertions.assertEquals("FF", formatter.format((byte) 0xff));
