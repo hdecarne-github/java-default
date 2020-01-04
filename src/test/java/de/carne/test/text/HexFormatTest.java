@@ -19,16 +19,16 @@ package de.carne.test.text;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import de.carne.text.HexFormatter;
+import de.carne.text.HexFormat;
 
 /**
- * Test {@linkplain HexFormatter} class.
+ * Test {@linkplain HexFormat} class.
  */
-class HexFormatterTest {
+class HexFormatTest {
 
 	@Test
 	void testLowerCaseFormat() {
-		HexFormatter formatter = HexFormatter.LOWER_CASE;
+		HexFormat formatter = HexFormat.LOWER_CASE;
 
 		Assertions.assertEquals("00", formatter.format((byte) 0x00));
 		Assertions.assertEquals("ff", formatter.format((byte) 0xff));
@@ -43,7 +43,7 @@ class HexFormatterTest {
 
 	@Test
 	void testUpperCaseFormat() {
-		HexFormatter formatter = HexFormatter.UPPER_CASE;
+		HexFormat formatter = HexFormat.UPPER_CASE;
 
 		Assertions.assertEquals("00", formatter.format((byte) 0x00));
 		Assertions.assertEquals("FF", formatter.format((byte) 0xff));

@@ -19,32 +19,27 @@ package de.carne.text;
 /**
  * Basic hex formatting support.
  */
-public final class HexFormatter {
-
-	private static final char[] UPPER_CASE_HEX_CHARS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B',
-			'C', 'D', 'E', 'F' };
-	private static final char[] LOWER_CASE_HEX_CHARS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b',
-			'c', 'd', 'e', 'f' };
+public final class HexFormat {
 
 	/**
-	 * Upper case {@linkplain HexFormatter} instance.
+	 * Upper case {@linkplain HexFormat} instance.
 	 */
-	public static final HexFormatter UPPER_CASE = new HexFormatter(true);
+	public static final HexFormat UPPER_CASE = new HexFormat(true);
 
 	/**
-	 * Lower case {@linkplain HexFormatter} instance.
+	 * Lower case {@linkplain HexFormat} instance.
 	 */
-	public static final HexFormatter LOWER_CASE = new HexFormatter(false);
+	public static final HexFormat LOWER_CASE = new HexFormat(false);
 
 	private final char[] hexChars;
 
 	/**
-	 * Constructs a {@linkplain HexFormatter} instance.
+	 * Constructs a {@linkplain HexFormat} instance.
 	 *
 	 * @param upperCase whether to use upper case ({@code true}) or lower case ({@code false}) formatting.
 	 */
-	public HexFormatter(boolean upperCase) {
-		this.hexChars = (upperCase ? UPPER_CASE_HEX_CHARS : LOWER_CASE_HEX_CHARS);
+	public HexFormat(boolean upperCase) {
+		this.hexChars = (upperCase ? HexChars.UPPER_CASE : HexChars.LOWER_CASE);
 	}
 
 	/**
@@ -54,7 +49,7 @@ public final class HexFormatter {
 	 * @return the format result.
 	 */
 	public String format(byte b) {
-		return format(new StringBuilder(), b).toString();
+		return format(new StringBuilder(2), b).toString();
 	}
 
 	/**
@@ -77,7 +72,7 @@ public final class HexFormatter {
 	 * @return the format result.
 	 */
 	public String format(byte[] bs) {
-		return format(new StringBuilder(), bs).toString();
+		return format(new StringBuilder(bs.length * 2), bs).toString();
 	}
 
 	/**
@@ -100,7 +95,7 @@ public final class HexFormatter {
 	 * @return the format result.
 	 */
 	public String format(byte[] bs, int off, int len) {
-		return format(new StringBuilder(), bs, off, len).toString();
+		return format(new StringBuilder(len), bs, off, len).toString();
 	}
 
 	/**
@@ -129,7 +124,7 @@ public final class HexFormatter {
 	 * @return the format result.
 	 */
 	public String format(short s) {
-		return format(new StringBuilder(), s).toString();
+		return format(new StringBuilder(4), s).toString();
 	}
 
 	/**
@@ -154,7 +149,7 @@ public final class HexFormatter {
 	 * @return the format result.
 	 */
 	public String format(int i) {
-		return format(new StringBuilder(), i).toString();
+		return format(new StringBuilder(8), i).toString();
 	}
 
 	/**
@@ -183,7 +178,7 @@ public final class HexFormatter {
 	 * @return the format result.
 	 */
 	public String format(long l) {
-		return format(new StringBuilder(), l).toString();
+		return format(new StringBuilder(16), l).toString();
 	}
 
 	/**
