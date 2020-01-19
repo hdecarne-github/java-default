@@ -16,6 +16,8 @@
  */
 package de.carne.text;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * Basic hex formatting support.
  */
@@ -32,6 +34,9 @@ public final class HexFormat {
 	public static final HexFormat LOWER_CASE = new HexFormat(false);
 
 	private final char[] hexChars;
+	private final @Nullable String prefix;
+	private final @Nullable String suffix;
+	private final int baseBufferSize;
 
 	/**
 	 * Constructs a {@linkplain HexFormat} instance.
@@ -39,7 +44,22 @@ public final class HexFormat {
 	 * @param upperCase whether to use upper case ({@code true}) or lower case ({@code false}) formatting.
 	 */
 	public HexFormat(boolean upperCase) {
+		this(upperCase, null, null);
+	}
+
+	/**
+	 * Constructs a {@linkplain HexFormat} instance.
+	 *
+	 * @param upperCase whether to use upper case ({@code true}) or lower case ({@code false}) formatting.
+	 * @param prefix the prefix to use for formatting (may by {@code null}).
+	 * @param suffix the suffix to use for formatting (may by {@code null}).
+	 */
+	public HexFormat(boolean upperCase, @Nullable String prefix, @Nullable String suffix) {
 		this.hexChars = (upperCase ? HexChars.UPPER_CASE : HexChars.LOWER_CASE);
+		this.prefix = prefix;
+		this.suffix = suffix;
+		this.baseBufferSize = (this.prefix != null ? this.prefix.length() : 0)
+				+ (this.suffix != null ? this.suffix.length() : 0);
 	}
 
 	/**
@@ -49,7 +69,7 @@ public final class HexFormat {
 	 * @return the format result.
 	 */
 	public String format(byte b) {
-		return format(new StringBuilder(2), b).toString();
+		return format(new StringBuilder(this.baseBufferSize + 2), b).toString();
 	}
 
 	/**
@@ -60,8 +80,14 @@ public final class HexFormat {
 	 * @return the format result.
 	 */
 	public StringBuilder format(StringBuilder buffer, byte b) {
+		if (this.prefix != null) {
+			buffer.append(this.prefix);
+		}
 		buffer.append(this.hexChars[(b >> 4) & 0xf]);
 		buffer.append(this.hexChars[b & 0xf]);
+		if (this.suffix != null) {
+			buffer.append(this.suffix);
+		}
 		return buffer;
 	}
 
@@ -72,7 +98,7 @@ public final class HexFormat {
 	 * @return the format result.
 	 */
 	public String format(byte[] bs) {
-		return format(new StringBuilder(bs.length * 2), bs).toString();
+		return format(new StringBuilder(((this.baseBufferSize + 3) * bs.length) - 1), bs).toString();
 	}
 
 	/**
@@ -95,7 +121,7 @@ public final class HexFormat {
 	 * @return the format result.
 	 */
 	public String format(byte[] bs, int off, int len) {
-		return format(new StringBuilder(len), bs, off, len).toString();
+		return format(new StringBuilder(((this.baseBufferSize + 3) * len) - 1), bs, off, len).toString();
 	}
 
 	/**
@@ -124,7 +150,7 @@ public final class HexFormat {
 	 * @return the format result.
 	 */
 	public String format(short s) {
-		return format(new StringBuilder(4), s).toString();
+		return format(new StringBuilder(this.baseBufferSize + 4), s).toString();
 	}
 
 	/**
@@ -135,10 +161,16 @@ public final class HexFormat {
 	 * @return the format result.
 	 */
 	public StringBuilder format(StringBuilder buffer, short s) {
+		if (this.prefix != null) {
+			buffer.append(this.prefix);
+		}
 		buffer.append(this.hexChars[(s >> 12) & 0xf]);
 		buffer.append(this.hexChars[(s >> 8) & 0xf]);
 		buffer.append(this.hexChars[(s >> 4) & 0xf]);
 		buffer.append(this.hexChars[s & 0xf]);
+		if (this.suffix != null) {
+			buffer.append(this.suffix);
+		}
 		return buffer;
 	}
 
@@ -149,7 +181,7 @@ public final class HexFormat {
 	 * @return the format result.
 	 */
 	public String format(int i) {
-		return format(new StringBuilder(8), i).toString();
+		return format(new StringBuilder(this.baseBufferSize + 8), i).toString();
 	}
 
 	/**
@@ -160,6 +192,9 @@ public final class HexFormat {
 	 * @return the format result.
 	 */
 	public StringBuilder format(StringBuilder buffer, int i) {
+		if (this.prefix != null) {
+			buffer.append(this.prefix);
+		}
 		buffer.append(this.hexChars[(i >> 28) & 0xf]);
 		buffer.append(this.hexChars[(i >> 24) & 0xf]);
 		buffer.append(this.hexChars[(i >> 20) & 0xf]);
@@ -168,6 +203,9 @@ public final class HexFormat {
 		buffer.append(this.hexChars[(i >> 8) & 0xf]);
 		buffer.append(this.hexChars[(i >> 4) & 0xf]);
 		buffer.append(this.hexChars[i & 0xf]);
+		if (this.suffix != null) {
+			buffer.append(this.suffix);
+		}
 		return buffer;
 	}
 
@@ -178,7 +216,7 @@ public final class HexFormat {
 	 * @return the format result.
 	 */
 	public String format(long l) {
-		return format(new StringBuilder(16), l).toString();
+		return format(new StringBuilder(this.baseBufferSize + 16), l).toString();
 	}
 
 	/**
@@ -189,6 +227,9 @@ public final class HexFormat {
 	 * @return the format result.
 	 */
 	public StringBuilder format(StringBuilder buffer, long l) {
+		if (this.prefix != null) {
+			buffer.append(this.prefix);
+		}
 		buffer.append(this.hexChars[(int) ((l >> 60) & 0xfl)]);
 		buffer.append(this.hexChars[(int) ((l >> 56) & 0xfl)]);
 		buffer.append(this.hexChars[(int) ((l >> 52) & 0xfl)]);
@@ -205,6 +246,9 @@ public final class HexFormat {
 		buffer.append(this.hexChars[(int) ((l >> 8) & 0xfl)]);
 		buffer.append(this.hexChars[(int) ((l >> 4) & 0xfl)]);
 		buffer.append(this.hexChars[(int) (l & 0xfl)]);
+		if (this.suffix != null) {
+			buffer.append(this.suffix);
+		}
 		return buffer;
 	}
 

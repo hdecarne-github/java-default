@@ -56,4 +56,34 @@ class HexFormatTest {
 		Assertions.assertEquals("FFFFFFFFFFFFFFFF", formatter.format(0xffffffffffffffffl));
 	}
 
+	@Test
+	void testPrefixFormat() {
+		HexFormat formatter = new HexFormat(true, "0x", null);
+
+		Assertions.assertEquals("0x00", formatter.format((byte) 0x00));
+		Assertions.assertEquals("0xFF", formatter.format((byte) 0xff));
+		Assertions.assertEquals("0x00 0x80 0xFF", formatter.format(new byte[] { 0x00, (byte) 0x80, (byte) 0xff }));
+		Assertions.assertEquals("0x0000", formatter.format((short) 0x0000));
+		Assertions.assertEquals("0xFFFF", formatter.format((short) 0xffff));
+		Assertions.assertEquals("0x00000000", formatter.format(0x00000000));
+		Assertions.assertEquals("0xFFFFFFFF", formatter.format(0xffffffff));
+		Assertions.assertEquals("0x0000000000000000", formatter.format(0x0000000000000000l));
+		Assertions.assertEquals("0xFFFFFFFFFFFFFFFF", formatter.format(0xffffffffffffffffl));
+	}
+
+	@Test
+	void testSuffixFormat() {
+		HexFormat formatter = new HexFormat(true, null, "h");
+
+		Assertions.assertEquals("00h", formatter.format((byte) 0x00));
+		Assertions.assertEquals("FFh", formatter.format((byte) 0xff));
+		Assertions.assertEquals("00h 80h FFh", formatter.format(new byte[] { 0x00, (byte) 0x80, (byte) 0xff }));
+		Assertions.assertEquals("0000h", formatter.format((short) 0x0000));
+		Assertions.assertEquals("FFFFh", formatter.format((short) 0xffff));
+		Assertions.assertEquals("00000000h", formatter.format(0x00000000));
+		Assertions.assertEquals("FFFFFFFFh", formatter.format(0xffffffff));
+		Assertions.assertEquals("0000000000000000h", formatter.format(0x0000000000000000l));
+		Assertions.assertEquals("FFFFFFFFFFFFFFFFh", formatter.format(0xffffffffffffffffl));
+	}
+
 }
