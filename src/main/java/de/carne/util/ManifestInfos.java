@@ -31,6 +31,11 @@ import de.carne.boot.Exceptions;
 public class ManifestInfos {
 
 	/**
+	 * Module id attribute.
+	 */
+	public static final String ATTRIBUTE_MODULE_ID = "X-Module-Id";
+
+	/**
 	 * Module name attribute.
 	 */
 	public static final String ATTRIBUTE_MODULE_NAME = "X-Module-Name";
@@ -41,21 +46,26 @@ public class ManifestInfos {
 	public static final String ATTRIBUTE_MODULE_VERSION = "X-Module-Version";
 
 	/**
-	 * Module build identifier attribute.
+	 * Build timestamp attribute.
 	 */
-	public static final String ATTRIBUTE_MODULE_BUILD = "X-Module-Build";
+	public static final String ATTRIBUTE_BUILD_TIMESTAMP = "Build-Timestamp";
 
-	private final String moduleName;
+	/**
+	 * The default value used in case an attribute is not defined in the manifest.
+	 */
+	public static final String NA = "n/a";
+
+	private final String moduleId;
 	private final Manifest manifest;
 
 	/**
 	 * Constructs a new {@linkplain ManifestInfos} instance.
 	 *
-	 * @param moduleName the name of the module to get the manifest for.
+	 * @param moduleId the id of the module to get the manifest for.
 	 */
-	public ManifestInfos(String moduleName) {
-		this.moduleName = moduleName;
-		this.manifest = findManifest(moduleName);
+	public ManifestInfos(String moduleId) {
+		this.moduleId = moduleId;
+		this.manifest = findManifest(moduleId);
 	}
 
 	/**
@@ -73,39 +83,51 @@ public class ManifestInfos {
 	}
 
 	/**
+	 * Gets the module id stored in the manifest.
+	 *
+	 * @return the module id stored in the manifest.
+	 */
+	public String id() {
+		return this.moduleId;
+	}
+
+	/**
 	 * Gets the module name stored in the manifest.
+	 * <p>
+	 * {@linkplain #NA} is returned if no manifest was found or if the manifest contains no information.
+	 * </p>
 	 *
 	 * @return the module name stored in the manifest.
 	 */
 	public String name() {
-		return this.moduleName;
+		return getMainAttribute(ATTRIBUTE_MODULE_NAME, NA);
 	}
 
 	/**
 	 * Gets the module version stored in the manifest.
 	 * <p>
-	 * A default value is returned if no manifest was found or if the manifest contained no information.
+	 * {@linkplain #NA} is returned if no manifest was found or if the manifest contains no information.
 	 * </p>
 	 *
 	 * @return the module version stored in the manifest.
 	 */
 	public String version() {
-		return getMainAttribute(ATTRIBUTE_MODULE_VERSION, "n/a");
+		return getMainAttribute(ATTRIBUTE_MODULE_VERSION, NA);
 	}
 
 	/**
 	 * Gets the module build identifier stored in the manifest.
 	 * <p>
-	 * A default value is returned if no manifest was found or if the manifest contained no information.
+	 * {@linkplain #NA} is returned if no manifest was found or if the manifest contains no information.
 	 * </p>
 	 *
 	 * @return the module build identifier stored in the manifest.
 	 */
 	public String build() {
-		return getMainAttribute(ATTRIBUTE_MODULE_BUILD, "n/a");
+		return getMainAttribute(ATTRIBUTE_BUILD_TIMESTAMP, NA);
 	}
 
-	private static Manifest findManifest(String moduleName) {
+	private static Manifest findManifest(String moduleId) {
 		Manifest found = null;
 
 		try {
@@ -118,7 +140,7 @@ public class ManifestInfos {
 					Manifest manifest = new Manifest(manifestStream);
 					Attributes attributes = manifest.getMainAttributes();
 
-					if (attributes != null && moduleName.equals(attributes.getValue(ATTRIBUTE_MODULE_NAME))) {
+					if (attributes != null && moduleId.equals(attributes.getValue(ATTRIBUTE_MODULE_ID))) {
 						found = manifest;
 						break;
 					}

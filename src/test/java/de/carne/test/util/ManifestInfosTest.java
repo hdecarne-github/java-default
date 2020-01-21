@@ -28,22 +28,24 @@ class ManifestInfosTest {
 
 	@Test
 	void testKnownManifestInfos() {
-		ManifestInfos manifestInfos = new ManifestInfos("Test Application");
+		ManifestInfos manifestInfos = new ManifestInfos("test");
 
 		// As defined in our test manifest
+		Assertions.assertEquals("test", manifestInfos.id());
 		Assertions.assertEquals("Test Application", manifestInfos.name());
 		Assertions.assertEquals("1.0-test", manifestInfos.version());
 		// As undefined in our test manifest
-		Assertions.assertEquals("n/a", manifestInfos.build());
+		Assertions.assertEquals(ManifestInfos.NA, manifestInfos.build());
 	}
 
 	@Test
 	void testUnknownManifestInfos() {
-		ManifestInfos manifestInfos = new ManifestInfos("Unknown Application");
+		ManifestInfos manifestInfos = new ManifestInfos("unknown");
 
-		Assertions.assertEquals("Unknown Application", manifestInfos.name());
-		Assertions.assertEquals("n/a", manifestInfos.version());
-		Assertions.assertEquals("n/a", manifestInfos.build());
+		Assertions.assertEquals("unknown", manifestInfos.id());
+		Assertions.assertEquals(ManifestInfos.NA, manifestInfos.name());
+		Assertions.assertEquals(ManifestInfos.NA, manifestInfos.version());
+		Assertions.assertEquals(ManifestInfos.NA, manifestInfos.build());
 	}
 
 }

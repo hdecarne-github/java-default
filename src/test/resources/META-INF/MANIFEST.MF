@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
+X-Module-Id: test
 X-Module-Name: Test Application
 X-Module-Version: 1.0-test
