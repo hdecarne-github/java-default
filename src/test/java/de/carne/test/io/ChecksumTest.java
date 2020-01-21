@@ -16,12 +16,19 @@
  */
 package de.carne.test.io;
 
-import java.security.GeneralSecurityException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import de.carne.io.Checksum;
+import de.carne.io.ChecksumInputStream;
+import de.carne.io.ChecksumOutputStream;
+import de.carne.io.IOUtil;
+import de.carne.io.NullOutputStream;
 import de.carne.io.SHA256Checksum;
 import de.carne.text.HexBytes;
 
@@ -41,11 +48,16 @@ class ChecksumTest {
 	private static final String TEST_DATA_SHA256 = "40aff2e9d2d8922e47afd4648e6967497158785fbd1da870e7110266bf944880";
 
 	@Test
-	void testSHA256Checksum() throws GeneralSecurityException {
+	void testSHA256Checksum() throws Exception {
 		Checksum sha256 = SHA256Checksum.getInstance();
 
 		testChecksumBulked(sha256, TEST_DATA_SHA256);
+		sha256.reset();
 		testChecksumChunked(sha256, TEST_DATA_SHA256);
+		sha256.reset();
+		testChecksumInputStream(sha256, TEST_DATA_SHA256);
+		sha256.reset();
+		testChecksumOutputStream(sha256, TEST_DATA_SHA256);
 	}
 
 	private void testChecksumBulked(Checksum checksum, String expected) {
@@ -66,6 +78,28 @@ class ChecksumTest {
 
 		String actual = HexBytes.toStringL(checksum.getValue());
 
+		Assertions.assertEquals(expected, actual);
+	}
+
+	private void testChecksumInputStream(Checksum checksum, String expected) throws IOException {
+		String actual;
+
+		try (ChecksumInputStream in = new ChecksumInputStream(new ByteArrayInputStream(TEST_DATA), checksum);
+				OutputStream out = new NullOutputStream()) {
+			IOUtil.copyStream(out, in);
+			actual = HexBytes.toStringL(in.getChecksumValue());
+		}
+		Assertions.assertEquals(expected, actual);
+	}
+
+	private void testChecksumOutputStream(Checksum checksum, String expected) throws IOException {
+		String actual;
+
+		try (InputStream in = new ByteArrayInputStream(TEST_DATA);
+				ChecksumOutputStream out = new ChecksumOutputStream(new NullOutputStream(), checksum)) {
+			IOUtil.copyStream(out, in);
+			actual = HexBytes.toStringL(out.getChecksumValue());
+		}
 		Assertions.assertEquals(expected, actual);
 	}
 
