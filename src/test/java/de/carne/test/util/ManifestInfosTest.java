@@ -55,7 +55,7 @@ class ManifestInfosTest {
 		SortedMap<String, ManifestInfos> runtimeInfos = ManifestInfos.getRuntimeInfos();
 
 		Assertions.assertTrue(runtimeInfos.containsKey("test"));
-		Assertions.assertEquals(2, runtimeInfos.size());
+		Assertions.assertEquals(3, runtimeInfos.size());
 	}
 
 }
