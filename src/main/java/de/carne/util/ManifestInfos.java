@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
@@ -58,14 +60,47 @@ public class ManifestInfos {
 	private final String moduleId;
 	private final Manifest manifest;
 
+	private ManifestInfos(String moduleId, Manifest manifest) {
+		this.moduleId = moduleId;
+		this.manifest = manifest;
+	}
+
 	/**
 	 * Constructs a new {@linkplain ManifestInfos} instance.
 	 *
 	 * @param moduleId the id of the module to get the manifest for.
 	 */
 	public ManifestInfos(String moduleId) {
-		this.moduleId = moduleId;
-		this.manifest = findManifest(moduleId);
+		this(moduleId, findManifest(moduleId));
+	}
+
+	/**
+	 * Collects all {@linkplain ManifestInfos} available in the current runtime environment.
+	 *
+	 * @return all {@linkplain ManifestInfos} available in the current runtime environment.
+	 */
+	public static SortedMap<String, ManifestInfos> getRuntimeInfos() {
+		SortedMap<String, ManifestInfos> runtimeInfos = new TreeMap<>();
+
+		try {
+			Enumeration<URL> manifestUrls = getManifestResources();
+
+			while (manifestUrls.hasMoreElements()) {
+				Manifest manifest = loadManifestResource(manifestUrls.nextElement());
+				Attributes attributes = manifest.getMainAttributes();
+
+				if (attributes != null) {
+					String moduleId = attributes.getValue(ATTRIBUTE_MODULE_ID);
+
+					if (moduleId != null) {
+						runtimeInfos.put(moduleId, new ManifestInfos(moduleId, manifest));
+					}
+				}
+			}
+		} catch (IOException e) {
+			Exceptions.ignore(e);
+		}
+		return runtimeInfos;
 	}
 
 	/**
@@ -131,19 +166,15 @@ public class ManifestInfos {
 		Manifest found = null;
 
 		try {
-			Enumeration<URL> manifestUrls = ManifestInfos.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
+			Enumeration<URL> manifestUrls = getManifestResources();
 
 			while (manifestUrls.hasMoreElements()) {
-				URL manifestUrl = manifestUrls.nextElement();
+				Manifest manifest = loadManifestResource(manifestUrls.nextElement());
+				Attributes attributes = manifest.getMainAttributes();
 
-				try (InputStream manifestStream = manifestUrl.openStream()) {
-					Manifest manifest = new Manifest(manifestStream);
-					Attributes attributes = manifest.getMainAttributes();
-
-					if (attributes != null && moduleId.equals(attributes.getValue(ATTRIBUTE_MODULE_ID))) {
-						found = manifest;
-						break;
-					}
+				if (attributes != null && moduleId.equals(attributes.getValue(ATTRIBUTE_MODULE_ID))) {
+					found = manifest;
+					break;
 				}
 			}
 		} catch (IOException e) {
@@ -152,9 +183,22 @@ public class ManifestInfos {
 		return (found != null ? found : new Manifest());
 	}
 
+	private static Enumeration<URL> getManifestResources() throws IOException {
+		return ManifestInfos.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
+	}
+
+	private static Manifest loadManifestResource(URL manifestUrl) throws IOException {
+		Manifest manifest;
+
+		try (InputStream manifestStream = manifestUrl.openStream()) {
+			manifest = new Manifest(manifestStream);
+		}
+		return manifest;
+	}
+
 	@Override
 	public String toString() {
-		return name() + " " + version() + "(build: " + build() + ")";
+		return name() + " " + version() + " (build: " + build() + ")";
 	}
 
 }

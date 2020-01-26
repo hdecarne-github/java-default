@@ -16,6 +16,8 @@
  */
 package de.carne.test.util;
 
+import java.util.SortedMap;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -46,6 +48,14 @@ class ManifestInfosTest {
 		Assertions.assertEquals(ManifestInfos.NA, manifestInfos.name());
 		Assertions.assertEquals(ManifestInfos.NA, manifestInfos.version());
 		Assertions.assertEquals(ManifestInfos.NA, manifestInfos.build());
+	}
+
+	@Test
+	void testRuntimeInfos() {
+		SortedMap<String, ManifestInfos> runtimeInfos = ManifestInfos.getRuntimeInfos();
+
+		Assertions.assertTrue(runtimeInfos.containsKey("test"));
+		Assertions.assertEquals(2, runtimeInfos.size());
 	}
 
 }
