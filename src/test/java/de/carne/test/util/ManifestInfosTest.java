@@ -55,6 +55,8 @@ class ManifestInfosTest {
 		SortedMap<String, ManifestInfos> runtimeInfos = ManifestInfos.getRuntimeInfos();
 
 		Assertions.assertTrue(runtimeInfos.containsKey("test"));
+		Assertions.assertTrue(runtimeInfos.containsKey("java-boot"));
+		Assertions.assertTrue(runtimeInfos.containsKey("java-default"));
 		Assertions.assertEquals(3, runtimeInfos.size());
 	}
 
