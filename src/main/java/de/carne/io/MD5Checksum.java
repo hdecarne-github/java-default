@@ -21,36 +21,36 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
 /**
- * SHA-256 based checksum generator.
+ * MD5 based checksum generator.
  */
-public class SHA256Checksum extends MessageDigestChecksum {
+public class MD5Checksum extends MessageDigestChecksum {
 
-	private static final String MESSAGE_DIGEST_ALGORITHM = "SHA-256";
+	private static final String MESSAGE_DIGEST_ALGORITHM = "MD5";
 
-	private SHA256Checksum(MessageDigest messageDigest) {
+	private MD5Checksum(MessageDigest messageDigest) {
 		super(messageDigest);
 	}
 
 	/**
-	 * Gets a {@linkplain SHA256Checksum} instance for checksum generation.
+	 * Gets a {@linkplain MD5Checksum} instance for checksum generation.
 	 *
-	 * @return a {@linkplain SHA256Checksum} instance for checksum generation.
+	 * @return a {@linkplain MD5Checksum} instance for checksum generation.
 	 * @throws NoSuchAlgorithmException if the necessary algorithm is not available on the running platform.
 	 */
-	public static SHA256Checksum getInstance() throws NoSuchAlgorithmException {
-		return new SHA256Checksum(MessageDigest.getInstance(MESSAGE_DIGEST_ALGORITHM));
+	public static MD5Checksum getInstance() throws NoSuchAlgorithmException {
+		return new MD5Checksum(MessageDigest.getInstance(MESSAGE_DIGEST_ALGORITHM));
 	}
 
 	/**
-	 * Gets a {@linkplain SHA256Checksum} instance for checksum generation.
+	 * Gets a {@linkplain MD5Checksum} instance for checksum generation.
 	 *
 	 * @param provider the security provider to use.
-	 * @return a {@linkplain SHA256Checksum} instance for checksum generation.
+	 * @return a {@linkplain MD5Checksum} instance for checksum generation.
 	 * @throws NoSuchProviderException if the requested provider is not available on the running platform.
 	 * @throws NoSuchAlgorithmException if the necessary algorithm is not available on the running platform.
 	 */
-	public static SHA256Checksum getInstance(String provider) throws NoSuchProviderException, NoSuchAlgorithmException {
-		return new SHA256Checksum(MessageDigest.getInstance(MESSAGE_DIGEST_ALGORITHM, provider));
+	public static MD5Checksum getInstance(String provider) throws NoSuchProviderException, NoSuchAlgorithmException {
+		return new MD5Checksum(MessageDigest.getInstance(MESSAGE_DIGEST_ALGORITHM, provider));
 	}
 
 }

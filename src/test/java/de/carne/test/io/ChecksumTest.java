@@ -28,6 +28,7 @@ import de.carne.io.Checksum;
 import de.carne.io.ChecksumInputStream;
 import de.carne.io.ChecksumOutputStream;
 import de.carne.io.IOUtil;
+import de.carne.io.MD5Checksum;
 import de.carne.io.NullOutputStream;
 import de.carne.io.SHA256Checksum;
 import de.carne.text.HexBytes;
@@ -46,6 +47,7 @@ class ChecksumTest {
 	}
 
 	private static final String TEST_DATA_SHA256 = "40aff2e9d2d8922e47afd4648e6967497158785fbd1da870e7110266bf944880";
+	private static final String TEST_DATA_MD5 = "e2c865db4162bed963bfaa9ef6ac18f0";
 
 	@Test
 	void testSHA256Checksum() throws Exception {
@@ -58,6 +60,19 @@ class ChecksumTest {
 		testChecksumInputStream(sha256, TEST_DATA_SHA256);
 		sha256.reset();
 		testChecksumOutputStream(sha256, TEST_DATA_SHA256);
+	}
+
+	@Test
+	void testMD5Checksum() throws Exception {
+		Checksum md5 = MD5Checksum.getInstance();
+
+		testChecksumBulked(md5, TEST_DATA_MD5);
+		md5.reset();
+		testChecksumChunked(md5, TEST_DATA_MD5);
+		md5.reset();
+		testChecksumInputStream(md5, TEST_DATA_MD5);
+		md5.reset();
+		testChecksumOutputStream(md5, TEST_DATA_MD5);
 	}
 
 	private void testChecksumBulked(Checksum checksum, String expected) {
