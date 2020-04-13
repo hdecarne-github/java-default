@@ -57,7 +57,8 @@ class ManifestInfosTest {
 		Assertions.assertTrue(runtimeInfos.containsKey("test"));
 		Assertions.assertTrue(runtimeInfos.containsKey("java-boot"));
 		Assertions.assertTrue(runtimeInfos.containsKey("java-default"));
-		Assertions.assertEquals(3, runtimeInfos.size());
+		Assertions.assertTrue(runtimeInfos.containsKey("java-test"));
+		Assertions.assertEquals(4, runtimeInfos.size());
 	}
 
 }
