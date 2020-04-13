@@ -31,7 +31,7 @@ class LazyTest {
 
 	@Test
 	void testValidSupplierAccess() {
-		Supplier<@NonNull LazyTest> initializer = new Supplier<@NonNull LazyTest>() {
+		Supplier<@NonNull LazyTest> initializer = new Supplier<>() {
 
 			private boolean initialized = false;
 
