@@ -27,7 +27,7 @@ import java.util.prefs.PreferencesFactory;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import de.carne.boot.Exceptions;
+import de.carne.util.Exceptions;
 import de.carne.util.logging.Log;
 
 /**

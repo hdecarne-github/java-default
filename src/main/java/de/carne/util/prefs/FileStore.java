@@ -32,7 +32,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import de.carne.boot.Exceptions;
+import de.carne.util.Exceptions;
 
 /**
  * File based store.

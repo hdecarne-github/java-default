@@ -23,7 +23,7 @@ import java.util.prefs.Preferences;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import de.carne.boot.Exceptions;
+import de.carne.util.Exceptions;
 
 /**
  * {@linkplain Path} preference access.

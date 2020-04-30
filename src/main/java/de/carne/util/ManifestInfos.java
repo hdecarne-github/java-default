@@ -25,8 +25,6 @@ import java.util.TreeMap;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
-import de.carne.boot.Exceptions;
-
 /**
  * Utility class used to access a module's manifest.
  */
