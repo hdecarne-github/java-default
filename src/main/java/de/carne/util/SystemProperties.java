@@ -16,9 +16,9 @@
  */
 package de.carne.util;
 
-import de.carne.boot.logging.Log;
 import de.carne.text.IntegerParser;
 import de.carne.text.LongParser;
+import de.carne.util.logging.Log;
 
 /**
  * Utility class providing system properties related functions.

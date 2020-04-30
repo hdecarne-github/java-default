@@ -29,17 +29,17 @@ import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.carne.io.IOUtil;
 import de.carne.test.api.io.TempFile;
-import de.carne.test.extension.TempPathExtension;
 
 /**
  * Test {@linkplain IOUtil} class.
  */
-@ExtendWith(TempPathExtension.class)
+@Disabled
+// @ExtendWith(TempPathExtension.class)
 class IOUtilTest {
 
 	@Test

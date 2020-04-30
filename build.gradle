@@ -30,10 +30,14 @@ repositories {
 }
 
 dependencies {
-	compileOnly(group: "org.eclipse.jdt", name: "org.eclipse.jdt.annotation", version: project.annotationVersion)
-	testCompileOnly(group: "org.eclipse.jdt", name: "org.eclipse.jdt.annotation", version: project.annotationVersion)
-	api(group: "de.carne.common", name: "java-boot", version: project.javaBootVersion)
+	api(group: "org.eclipse.jdt", name: "org.eclipse.jdt.annotation", version: project.annotationVersion)
+	compileOnly(group: "org.slf4j", name: "slf4j-api", version: project.slf4jVersion)
+	compileOnly(group: "org.apache.logging.log4j", name: "log4j-api", version: project.log4jVersion)
 	testImplementation(group: "de.carne.common", name: "java-test", version: project.javaTestVersion)
+	testImplementation(group: "org.apache.logging.log4j", name: "log4j-core", version: project.log4jVersion)
+	testRuntimeOnly(group: "org.slf4j", name: "slf4j-api", version: project.slf4jVersion)
+	testRuntimeOnly(group: "org.apache.logging.log4j", name: "log4j-api", version: project.log4jVersion)
+	testRuntimeOnly(group: "org.apache.logging.log4j", name: "log4j-slf4j-impl", version: project.log4jVersion)
 }
 
 jar {
@@ -60,6 +64,8 @@ test {
 		events "started", "failed", "passed", "skipped"
 		exceptionFormat "full"
 	}
+	// Needed because Application class is statefull
+	forkEvery = 1
 }
 
 jacoco {

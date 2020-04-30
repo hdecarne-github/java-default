@@ -24,8 +24,8 @@ import java.util.prefs.Preferences;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import de.carne.boot.prefs.FilePreferencesFactory;
 import de.carne.util.prefs.BooleanPreference;
+import de.carne.util.prefs.FilePreferencesFactory;
 import de.carne.util.prefs.IntPreference;
 import de.carne.util.prefs.LongPreference;
 import de.carne.util.prefs.PathPreference;
