@@ -111,6 +111,10 @@ publishing {
 	publications {
 		Bintray(MavenPublication) {
 			from components.java
+			suppressPomMetadataWarningsFor("log4jApiElements")
+			suppressPomMetadataWarningsFor("log4jRuntimeElements")
+			suppressPomMetadataWarningsFor("slf4jApiElements")
+			suppressPomMetadataWarningsFor("slf4jRuntimeElements")
 			artifact sourceJar
 			artifact javadocJar
 			pom {
