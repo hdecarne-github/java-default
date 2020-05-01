@@ -59,7 +59,8 @@ public class LogEventCounter extends AbstractAppender {
 	 */
 	public LogEventCounter(String name, Filter filter, Layout<? extends Serializable> layout, boolean ignoreExceptions,
 			Property... properties) {
-		super(name, filter, layout, ignoreExceptions, properties);
+		// TODO: Re-integrate properties after dependency update
+		super(name, filter, layout, ignoreExceptions /* , properties */);
 	}
 
 	/**
