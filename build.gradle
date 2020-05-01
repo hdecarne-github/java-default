@@ -20,6 +20,12 @@ def resolveProperty(propertyName, envName, defValue = "<undefined>") {
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
+plugins.withType(JavaPlugin).configureEach {
+	java {
+		modularity.inferModulePath = true
+	}
+}
+
 repositories {
 	if(snapshotBuild) {
 		mavenLocal()
@@ -43,7 +49,6 @@ dependencies {
 jar {
 	manifest {
 		attributes(
-			'Automatic-Module-Name': automaticModuleName,
 			'Created-By': "Gradle ${gradle.gradleVersion} (${System.properties['os.name']}:${System.properties['os.arch']}:${System.properties['os.version']})",
 			'Build-Jdk' : System.properties['java.version'],
 			'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ").format(new Date()),
