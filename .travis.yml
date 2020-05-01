@@ -11,7 +11,8 @@ dist: bionic
 osx_image: xcode11.3
 
 env:
-  JAVA_OPTS="-Xmx2g -Dfile.encoding=UTF-8"
+  JAVA_OPTS="-Xmx4g -Dfile.encoding=UTF-8"
+  BUILD_JDK="adopt@1.11.0-6"
 
 addons:
   sonarcloud:
