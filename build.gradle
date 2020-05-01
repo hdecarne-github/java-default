@@ -23,6 +23,12 @@ targetCompatibility = JavaVersion.VERSION_11
 plugins.withType(JavaPlugin).configureEach {
 	java {
 		modularity.inferModulePath = true
+		registerFeature('log4j') {
+			usingSourceSet(sourceSets.main)
+		}	
+		registerFeature('slf4j') {
+			usingSourceSet(sourceSets.main)
+		}	
 	}
 }
 
@@ -37,8 +43,8 @@ repositories {
 
 dependencies {
 	api(group: "org.eclipse.jdt", name: "org.eclipse.jdt.annotation", version: project.annotationVersion)
-	implementation(group: "org.apache.logging.log4j", name: "log4j-api", version: project.log4jVersion)
-	implementation(group: "org.slf4j", name: "slf4j-api", version: project.slf4jVersion)
+	log4jImplementation(group: "org.apache.logging.log4j", name: "log4j-api", version: project.log4jVersion)
+	slf4jImplementation(group: "org.slf4j", name: "slf4j-api", version: project.slf4jVersion)
 	testImplementation(group: "de.carne.common", name: "java-test", version: project.javaTestVersion)
 	testImplementation(group: "org.apache.logging.log4j", name: "log4j-core", version: project.log4jVersion)
 	testImplementation(group: "org.apache.logging.log4j", name: "log4j-slf4j-impl", version: project.log4jVersion)
