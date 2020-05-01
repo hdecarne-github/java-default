@@ -17,6 +17,7 @@ module de.carne {
 	exports de.carne.util;
 	exports de.carne.util.cmdline;
 	exports de.carne.util.function;
+	exports de.carne.util.logging;
 	exports de.carne.util.prefs;
 	exports de.carne.util.stream;
 	exports de.carne.util.validation;
