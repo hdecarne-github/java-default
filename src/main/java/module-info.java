@@ -2,10 +2,11 @@
  * module-info
  */
 module de.carne {
-	requires java.logging;
-	requires java.prefs;
-	requires org.apache.logging.log4j;
+	requires transitive java.logging;
+	requires transitive java.prefs;
+
 	requires org.eclipse.jdt.annotation;
+	requires org.apache.logging.log4j;
 
 	exports de.carne.boot;
 	exports de.carne.io;
