@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.carne.io.IOUtil;
-import de.carne.test.api.io.TempFile;
+import de.carne.test.annotation.io.TempFile;
 import de.carne.test.extension.io.TempPathExtension;
 
 /**
