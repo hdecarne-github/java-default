@@ -1,7 +1,7 @@
 /**
  * module-info
  *
- * @uses de.carne.boot.Application
+ * @uses de.carne.boot.ApplicationMain for application startup
  */
 module de.carne {
 	requires transitive java.logging;
@@ -24,5 +24,5 @@ module de.carne {
 	exports de.carne.util.stream;
 	exports de.carne.util.validation;
 
-	uses de.carne.boot.Application;
+	uses de.carne.boot.ApplicationMain;
 }
