@@ -4,9 +4,9 @@
 module de.carne {
 	requires transitive java.logging;
 	requires transitive java.prefs;
+	requires transitive org.eclipse.jdt.annotation;
 
 	requires org.apache.logging.log4j;
-	requires org.eclipse.jdt.annotation;
 	requires org.slf4j;
 
 	exports de.carne.boot;
