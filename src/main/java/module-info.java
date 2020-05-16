@@ -1,13 +1,15 @@
 /**
  * module-info
+ *
+ * @uses de.carne.boot.Application
  */
 module de.carne {
 	requires transitive java.logging;
 	requires transitive java.prefs;
 	requires transitive org.eclipse.jdt.annotation;
 
-	requires org.apache.logging.log4j;
-	requires org.slf4j;
+	requires static org.apache.logging.log4j;
+	requires static org.slf4j;
 
 	exports de.carne.boot;
 	exports de.carne.io;
@@ -21,4 +23,6 @@ module de.carne {
 	exports de.carne.util.prefs;
 	exports de.carne.util.stream;
 	exports de.carne.util.validation;
+
+	uses de.carne.boot.Application;
 }
