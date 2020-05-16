@@ -22,6 +22,11 @@ defaultTasks "classes", "testClasses"
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
+tasks.withType(JavaCompile) {
+	// Caused by org.eclipse.jdt.annotation
+	options.compilerArgs += ["-Xlint:-requires-transitive-automatic"]
+}
+
 plugins.withType(JavaPlugin).configureEach {
 	java {
 		modularity.inferModulePath = true
