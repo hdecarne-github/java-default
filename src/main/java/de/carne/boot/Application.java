@@ -37,7 +37,7 @@ public final class Application {
 		// prevent instantiation
 	}
 
-	// Early log support
+	// Debug support
 	private static final boolean DEBUG = Boolean.getBoolean(Application.class.getName() + ".debug");
 
 	@SuppressWarnings("squid:S106")

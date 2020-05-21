@@ -29,6 +29,9 @@ public final class ShutdownHooks {
 		// Prevent instantiation
 	}
 
+	// Debug support
+	private static final boolean DEBUG = Boolean.getBoolean(ShutdownHooks.class.getName() + ".debug");
+
 	private static final List<Runnable> HOOKS = new LinkedList<>();
 
 	static {
@@ -60,8 +63,10 @@ public final class ShutdownHooks {
 				try {
 					hook.run();
 				} catch (Exception e) {
-					// Do not use any logging functionality or the like at this VM state
-					e.printStackTrace();
+					if (DEBUG) {
+						// Do not use any logging functionality or the like at this VM state
+						e.printStackTrace();
+					}
 				}
 			}
 		}
