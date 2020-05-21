@@ -60,7 +60,7 @@ class UniqueTest {
 	void testNonUnique() {
 		@NonNull String[] elements = new @NonNull String[] { "1", "2" };
 		Stream<String> elementsStream = Arrays.asList(elements).stream();
-		Unique<String, Optional<String>> uniqueCollector = Unique.getOptional();
+		Unique<String, String> uniqueCollector = Unique.get();
 
 		Assertions.assertThrows(NoSuchElementException.class, () -> elementsStream.collect(uniqueCollector));
 		Assertions.assertFalse(Arrays.asList(elements).stream().collect(Unique.getOptional()).isPresent());
