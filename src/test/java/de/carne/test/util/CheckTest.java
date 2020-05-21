@@ -27,11 +27,12 @@ import de.carne.util.Check;
 class CheckTest {
 
 	private static final String MESSAGE_PATTERN = "Check failed: {0}";
+	private static final String MESSAGE_ARGUMENT = CheckTest.class.getSimpleName();
 
 	@Test
 	void testCheckIsInstanceOf() {
 		Assertions.assertEquals(this, Check.isInstanceOf(this, CheckTest.class));
-		Assertions.assertEquals(this, Check.isInstanceOf(this, CheckTest.class, getClass().getSimpleName()));
+		Assertions.assertEquals(this, Check.isInstanceOf(this, CheckTest.class, MESSAGE_PATTERN, MESSAGE_ARGUMENT));
 		Assertions.assertThrows(NullPointerException.class, () -> {
 			Check.isInstanceOf(null, String.class);
 		});
@@ -39,10 +40,10 @@ class CheckTest {
 			Check.isInstanceOf(this, String.class);
 		});
 		Assertions.assertThrows(NullPointerException.class, () -> {
-			Check.isInstanceOf(null, String.class, MESSAGE_PATTERN, getClass().getSimpleName());
+			Check.isInstanceOf(null, String.class, MESSAGE_PATTERN, MESSAGE_ARGUMENT);
 		});
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			Check.isInstanceOf(this, String.class, MESSAGE_PATTERN, getClass().getSimpleName());
+			Check.isInstanceOf(this, String.class, MESSAGE_PATTERN, MESSAGE_ARGUMENT);
 		});
 	}
 
@@ -54,10 +55,7 @@ class CheckTest {
 			Check.isTrue(false);
 		});
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			Check.isTrue(false, getClass().getSimpleName());
-		});
-		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			Check.isTrue(false, MESSAGE_PATTERN, getClass().getSimpleName());
+			Check.isTrue(false, MESSAGE_PATTERN, MESSAGE_ARGUMENT);
 		});
 	}
 
@@ -69,10 +67,7 @@ class CheckTest {
 			Check.assertTrue(false);
 		});
 		Assertions.assertThrows(IllegalStateException.class, () -> {
-			Check.assertTrue(false, getClass().getSimpleName());
-		});
-		Assertions.assertThrows(IllegalStateException.class, () -> {
-			Check.assertTrue(false, MESSAGE_PATTERN, getClass().getSimpleName());
+			Check.assertTrue(false, MESSAGE_PATTERN, MESSAGE_ARGUMENT);
 		});
 	}
 
@@ -80,10 +75,7 @@ class CheckTest {
 	void testCheckFail() {
 		Assertions.assertThrows(IllegalStateException.class, () -> Check.fail());
 		Assertions.assertThrows(IllegalStateException.class, () -> {
-			Check.fail(getClass().getSimpleName());
-		});
-		Assertions.assertThrows(IllegalStateException.class, () -> {
-			Check.fail(MESSAGE_PATTERN, getClass().getSimpleName());
+			Check.fail(MESSAGE_PATTERN, MESSAGE_ARGUMENT);
 		});
 	}
 

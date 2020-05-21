@@ -63,10 +63,10 @@ public final class Check {
 	 */
 	public static <T> T isInstanceOf(@Nullable Object object, Class<T> type, String pattern, Object... arguments) {
 		if (object == null) {
-			throw new NullPointerException(formatMessage(pattern, arguments));
+			throw new NullPointerException(MessageFormat.format(pattern, arguments));
 		}
 		if (!type.isAssignableFrom(object.getClass())) {
-			throw new IllegalArgumentException(formatMessage(pattern, arguments));
+			throw new IllegalArgumentException(MessageFormat.format(pattern, arguments));
 		}
 		return type.cast(object);
 	}
@@ -95,7 +95,7 @@ public final class Check {
 	 */
 	public static void isTrue(boolean condition, String pattern, Object... arguments) {
 		if (!condition) {
-			throw new IllegalArgumentException(formatMessage(pattern, arguments));
+			throw new IllegalArgumentException(MessageFormat.format(pattern, arguments));
 		}
 	}
 
@@ -123,7 +123,7 @@ public final class Check {
 	 */
 	public static void assertTrue(boolean condition, String pattern, Object... arguments) {
 		if (!condition) {
-			throw new IllegalStateException(formatMessage(pattern, arguments));
+			throw new IllegalStateException(MessageFormat.format(pattern, arguments));
 		}
 	}
 
@@ -148,7 +148,7 @@ public final class Check {
 	 * @throws IllegalStateException any time this function is called.
 	 */
 	public static IllegalStateException fail(String pattern, Object... arguments) {
-		throw new IllegalStateException(formatMessage(pattern, arguments));
+		throw new IllegalStateException(MessageFormat.format(pattern, arguments));
 	}
 
 	/**
@@ -160,10 +160,6 @@ public final class Check {
 	 */
 	public static IllegalStateException unexpected(Object object) {
 		throw new IllegalStateException("Unexpected " + object.getClass().getName() + ": " + object);
-	}
-
-	private static String formatMessage(String pattern, Object... arguments) {
-		return (arguments.length > 0 ? MessageFormat.format(pattern, arguments) : pattern);
 	}
 
 }
