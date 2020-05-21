@@ -16,7 +16,6 @@
  */
 package de.carne.util.logging;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -145,20 +144,11 @@ public final class Logs {
 		applyApplicationConfig(manager);
 	}
 
-	@SuppressWarnings("resource")
 	private static InputStream openConfig(String config) throws FileNotFoundException {
-		InputStream configInputStream;
+		InputStream configInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(config);
 
-		try {
-			configInputStream = new FileInputStream(config);
-		} catch (@SuppressWarnings("unused") FileNotFoundException e) {
-			configInputStream = null;
-		}
 		if (configInputStream == null) {
-			configInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(config);
-			if (configInputStream == null) {
-				throw new FileNotFoundException("Unable to open logging config: " + config);
-			}
+			throw new FileNotFoundException("Unable to open logging config: " + config);
 		}
 		return configInputStream;
 	}
@@ -177,6 +167,7 @@ public final class Logs {
 				}
 
 				LogLevel rootLoggerLogLevel = LogLevel.fromLevel(rootLoggerLevel);
+
 				for (String handlerName : handlerNames) {
 					try {
 						Handler handler = newClassInstance(handlerName, Handler.class);
