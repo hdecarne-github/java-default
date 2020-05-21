@@ -18,10 +18,12 @@ package de.carne.test.util.validation;
 
 import java.nio.file.Path;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import de.carne.nio.file.FileUtil;
+import de.carne.util.validation.InputValidator;
 import de.carne.util.validation.PathValidator;
 import de.carne.util.validation.StringValidator;
 import de.carne.util.validation.ValidationException;
@@ -37,10 +39,9 @@ class PathValidatorTest {
 
 	@Test
 	void testPathValidation() throws ValidationException {
-		String input1 = "\\//:|<>*?\0\n";
+		@NonNull String input1 = "\\//:|<>*?\0\n";
 		String message1 = Assertions.assertThrows(ValidationException.class, () -> {
-			StringValidator.checkNotEmpty(input1, VALIDATION_MESSAGE).convert(PathValidator::fromString,
-					VALIDATION_MESSAGE);
+			InputValidator.input(input1).convert(PathValidator::fromString, VALIDATION_MESSAGE);
 		}).getMessage();
 
 		Assertions.assertEquals(VALIDATION_MESSAGE.format(input1), message1);
