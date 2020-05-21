@@ -19,7 +19,9 @@ package de.carne.test.util.stream;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Stream;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -46,19 +48,21 @@ class UniqueTest {
 
 	@Test
 	void testEmpty() {
-		String[] elements = new String[] {};
+		@NonNull String[] elements = new @NonNull String[] {};
+		Stream<String> elementsStream = Arrays.asList(elements).stream();
+		Unique<String, String> uniqueCollector = Unique.get();
 
-		Assertions.assertThrows(NoSuchElementException.class,
-				() -> Arrays.asList(elements).stream().collect(Unique.get()));
+		Assertions.assertThrows(NoSuchElementException.class, () -> elementsStream.collect(uniqueCollector));
 		Assertions.assertFalse(Arrays.asList(elements).stream().collect(Unique.getOptional()).isPresent());
 	}
 
 	@Test
 	void testNonUnique() {
-		String[] elements = new String[] { "1", "2" };
+		@NonNull String[] elements = new @NonNull String[] { "1", "2" };
+		Stream<String> elementsStream = Arrays.asList(elements).stream();
+		Unique<String, Optional<String>> uniqueCollector = Unique.getOptional();
 
-		Assertions.assertThrows(NoSuchElementException.class,
-				() -> Arrays.asList(elements).stream().collect(Unique.get()));
+		Assertions.assertThrows(NoSuchElementException.class, () -> elementsStream.collect(uniqueCollector));
 		Assertions.assertFalse(Arrays.asList(elements).stream().collect(Unique.getOptional()).isPresent());
 	}
 

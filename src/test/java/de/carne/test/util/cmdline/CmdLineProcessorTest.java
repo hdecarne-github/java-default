@@ -22,6 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import de.carne.util.cmdline.CmdLineAction;
 import de.carne.util.cmdline.CmdLineException;
 import de.carne.util.cmdline.CmdLineProcessor;
 
@@ -113,21 +114,18 @@ class CmdLineProcessorTest {
 	@Test
 	void testInvalidArgFailure() {
 		CmdLineProcessor cmdLine = new CmdLineProcessor(getClass().getSimpleName(), new @Nullable String[0]);
+		CmdLineAction cmdLineAction = cmdLine.onOption((arg, option) -> {
+			Assertions.fail("Unexpected invokation");
+		});
 
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			cmdLine.onOption((arg, option) -> {
-				Assertions.fail("Unexpected invokation");
-			}).arg("o");
+			cmdLineAction.arg("o");
 		});
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			cmdLine.onOption((arg, option) -> {
-				Assertions.fail("Unexpected invokation");
-			}).arg("---o");
+			cmdLineAction.arg("---o");
 		});
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			cmdLine.onOption((arg, option) -> {
-				Assertions.fail("Unexpected invokation");
-			}).arg("-option");
+			cmdLineAction.arg("-option");
 		});
 	}
 

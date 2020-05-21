@@ -33,22 +33,14 @@ class ExceptionsTest {
 	@Test
 	void testToRuntimeFromChecked() {
 		Assertions.assertThrows(RuntimeException.class, () -> {
-			try {
-				throw new IOException();
-			} catch (Exception e) {
-				throw Exceptions.toRuntime(e);
-			}
+			throw Exceptions.toRuntime(new IOException());
 		});
 	}
 
 	@Test
 	void testToRuntimeFromUnchecked() {
 		Assertions.assertThrows(IllegalStateException.class, () -> {
-			try {
-				throw new IllegalStateException();
-			} catch (Exception e) {
-				throw Exceptions.toRuntime(e);
-			}
+			throw Exceptions.toRuntime(new IllegalStateException());
 		});
 	}
 
