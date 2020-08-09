@@ -22,8 +22,8 @@ git:
 
 before_install:
   - if [[ -e "./.travis/$TRAVIS_OS_NAME/before_install.sh" ]]; then bash -x ./.travis/$TRAVIS_OS_NAME/before_install.sh; fi
+  - $JABBA_BEFORE_INSTALL
 install:
-  - source ~/.jabba/jabba.sh
   - jabba install $BUILD_JDK
   - java -Xmx32m -version
   - ./gradlew -v
