@@ -10,12 +10,9 @@ osx_image: xcode11.3
 
 env:
   JAVA_OPTS="-Xmx4g -Dfile.encoding=UTF-8"
+  GRADLE_OPTS="-Dsonar.organization=hdecarne-github -Dsonar.login=$SONAR_TOKEN"
   BUILD_JDK="adopt@1.11.0-7"
   DEPLOY_OS_NAME="linux"
-
-addons:
-  sonarcloud:
-    organization: "hdecarne-github"
 
 git:
   depth: false  
@@ -28,7 +25,7 @@ install:
   - ./gradlew -s --no-daemon --refresh-dependencies clean classes testClasses
 
 before_script:
-  - if [[ -e "./.travis/$TRAVIS_OS_NAME/before_script.sh" ]]; then bash ./.travis/$TRAVIS_OS_NAME/before_script.sh; fi
+  - if [[ -e "./.travis/$TRAVIS_OS_NAME/before_script.sh" ]]; then source ./.travis/$TRAVIS_OS_NAME/before_script.sh; fi
 script:
   - if [[ "$TRAVIS_OS_NAME" == "$DEPLOY_OS_NAME" ]]; then ./gradlew -s --no-daemon clean build artifactoryPublish sonarqube checkDependencyVersions; else ./gradlew -s --no-daemon clean build; fi
 
@@ -36,6 +33,7 @@ notifications:
   email: false
   webhooks: $TEAMS_WEBHOOK
   on_success: change
+  on_failure: change
 
 before_cache:
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
