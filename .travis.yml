@@ -22,9 +22,10 @@ git:
 
 before_install:
   - if [[ -e "./.travis/$TRAVIS_OS_NAME/before_install.sh" ]]; then source ./.travis/$TRAVIS_OS_NAME/before_install.sh; fi
-install:
   - jabba install $BUILD_JDK
   - jabba use $BUILD_JDK
+  - export PATH="$JAVA_HOME/bin:$PATH"
+install:
   - java -Xmx32m -version
   - ./gradlew -v
   - ./gradlew -s --no-daemon --refresh-dependencies clean classes testClasses
