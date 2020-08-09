@@ -25,9 +25,9 @@ import de.carne.util.logging.LogRecorder;
 /**
  * Common logging test functions.
  */
-class LoggingTests {
+class LoggingTestHelper {
 
-	private LoggingTests() {
+	private LoggingTestHelper() {
 		// Prevent instantiation
 	}
 

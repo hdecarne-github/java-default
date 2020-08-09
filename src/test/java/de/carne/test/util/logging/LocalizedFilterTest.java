@@ -41,15 +41,15 @@ class LocalizedFilterTest {
 		LogRecordCounter counter = new LogRecordCounter();
 
 		LogBuffer.addHandler(standardLog, counter, true);
-		LoggingTests.logTestMessagesAndAssert(localizedLog1, 6);
+		LoggingTestHelper.logTestMessagesAndAssert(localizedLog1, 6);
 
 		Assertions.assertEquals(6, counter.getPublishCount());
 
-		LoggingTests.logTestMessagesAndAssert(localizedLog2, 6);
+		LoggingTestHelper.logTestMessagesAndAssert(localizedLog2, 6);
 
 		Assertions.assertEquals(12, counter.getPublishCount());
 
-		LoggingTests.logTestMessagesAndAssert(standardLog, 6);
+		LoggingTestHelper.logTestMessagesAndAssert(standardLog, 6);
 
 		Assertions.assertEquals(12, counter.getPublishCount());
 	}

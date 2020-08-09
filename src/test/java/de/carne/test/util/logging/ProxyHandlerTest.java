@@ -36,7 +36,7 @@ class ProxyHandlerTest {
 		Log log = new Log();
 
 		LogEventCounter.resetCounter();
-		LoggingTests.logTestMessages(log);
+		LoggingTestHelper.logTestMessages(log);
 		Assertions.assertEquals(10, LogEventCounter.getCounter());
 	}
 
@@ -47,7 +47,7 @@ class ProxyHandlerTest {
 		Log log = new Log();
 
 		LogEventCounter.resetCounter();
-		LoggingTests.logTestMessages(log);
+		LoggingTestHelper.logTestMessages(log);
 		Assertions.assertEquals(10, LogEventCounter.getCounter());
 	}
 
@@ -58,7 +58,7 @@ class ProxyHandlerTest {
 		Log log = new Log();
 
 		LogEventCounter.resetCounter();
-		LoggingTests.logTestMessages(log);
+		LoggingTestHelper.logTestMessages(log);
 		Assertions.assertEquals(10, LogEventCounter.getCounter());
 	}
 

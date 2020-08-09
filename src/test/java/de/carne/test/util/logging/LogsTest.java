@@ -51,34 +51,34 @@ class LogsTest {
 
 		Assertions.assertTrue(log.isWarningLoggable());
 		Assertions.assertFalse(log.isInfoLoggable());
-		LoggingTests.logTestMessagesAndAssert(log, 6);
+		LoggingTestHelper.logTestMessagesAndAssert(log, 6);
 		Logs.readConfig("logging-notice.properties");
 		Assertions.assertTrue(log.isNoticeLoggable());
 		Assertions.assertFalse(log.isErrorLoggable());
-		LoggingTests.logTestMessagesAndAssert(log, 2);
+		LoggingTestHelper.logTestMessagesAndAssert(log, 2);
 		Logs.readConfig("logging-error.properties");
 		Assertions.assertTrue(log.isErrorLoggable());
 		Assertions.assertFalse(log.isWarningLoggable());
-		LoggingTests.logTestMessagesAndAssert(log, 4);
+		LoggingTestHelper.logTestMessagesAndAssert(log, 4);
 		Logs.readConfig("logging-warning.properties");
 		Assertions.assertTrue(log.isWarningLoggable());
 		Assertions.assertFalse(log.isInfoLoggable());
-		LoggingTests.logTestMessagesAndAssert(log, 6);
+		LoggingTestHelper.logTestMessagesAndAssert(log, 6);
 		Logs.readConfig("logging-info.properties");
 		Assertions.assertTrue(log.isInfoLoggable());
 		Assertions.assertFalse(log.isDebugLoggable());
-		LoggingTests.logTestMessagesAndAssert(log, 8);
+		LoggingTestHelper.logTestMessagesAndAssert(log, 8);
 		Logs.readConfig("logging-debug.properties");
 		Assertions.assertTrue(log.isDebugLoggable());
 		Assertions.assertFalse(log.isTraceLoggable());
-		LoggingTests.logTestMessagesAndAssert(log, 10);
+		LoggingTestHelper.logTestMessagesAndAssert(log, 10);
 		Logs.readConfig("logging-trace.properties");
 		Assertions.assertTrue(log.isTraceLoggable());
-		LoggingTests.logTestMessagesAndAssert(log, 12);
+		LoggingTestHelper.logTestMessagesAndAssert(log, 12);
 		Logs.readConfig(Objects.requireNonNull(getClass().getResource("/logging-warning.properties")));
 		Assertions.assertTrue(log.isWarningLoggable());
 		Assertions.assertFalse(log.isInfoLoggable());
-		LoggingTests.logTestMessagesAndAssert(log, 6);
+		LoggingTestHelper.logTestMessagesAndAssert(log, 6);
 	}
 
 	@Test

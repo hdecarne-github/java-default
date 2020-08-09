@@ -40,7 +40,7 @@ class LogBufferTest {
 		Assertions.assertNotNull(LogBuffer.get(log));
 
 		// Log and flush (following checks should see no existing records)
-		LoggingTests.logTestMessagesAndAssert(log, 6);
+		LoggingTestHelper.logTestMessagesAndAssert(log, 6);
 
 		LogBuffer.flush(log);
 
@@ -58,7 +58,7 @@ class LogBufferTest {
 		Assertions.assertEquals(0, counter1.getCloseCount());
 
 		// Check if test records are coming through
-		LoggingTests.logTestMessagesAndAssert(log, 6);
+		LoggingTestHelper.logTestMessagesAndAssert(log, 6);
 
 		Assertions.assertEquals(6, counter1.getPublishCount());
 
