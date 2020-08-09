@@ -6,7 +6,7 @@ os:
   - windows
 
 dist: bionic
-osx_image: xcode12u
+osx_image: xcode12
 
 env:
   JAVA_OPTS="-Xmx4g -Dfile.encoding=UTF-8"
@@ -37,6 +37,7 @@ notifications:
 
 before_cache:
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+  - rm -f  $HOME/.gradle/caches/*/fileContent/fileContent.lock
   - rm -f  $HOME/.gradle/caches/*/fileHashes/fileHashes.lock
   - rm -f  $HOME/.gradle/caches/*/javaCompile/javaCompile.lock
   - rm -f  $HOME/.gradle/caches/journal-1/file-access.bin
