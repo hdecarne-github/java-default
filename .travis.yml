@@ -1,7 +1,4 @@
-language: java
-
-jdk:
-  - openjdk11
+language: bash
 
 os:
   - linux
