@@ -3,7 +3,7 @@ language: generic
 os:
   - linux
   - osx
-  - windows
+#  - windows
 
 dist: bionic
 osx_image: xcode12
