@@ -6,7 +6,7 @@ plugins {
 	id "eclipse"
 	id "de.carne.java-tools" version "0.9.0"
 	id "org.sonarqube" version "3.0"
-	id "com.jfrog.artifactory" version "4.17.2" 
+	id "com.jfrog.artifactory" version "4.18.0" 
 	id "com.jfrog.bintray" version "1.8.5"
 }
 
@@ -41,12 +41,12 @@ plugins.withType(JavaPlugin).configureEach {
 }
 
 repositories {
+	jcenter()
+	maven { url "https://oss.jfrog.org/libs-release/" }
 	if(snapshotBuild) {
 		mavenLocal()
 		maven { url "https://oss.jfrog.org/libs-snapshot/" }
 	}
-	jcenter()
-	maven { url "https://oss.jfrog.org/libs-release/" }
 }
 
 dependencies {
