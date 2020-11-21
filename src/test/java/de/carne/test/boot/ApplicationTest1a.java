@@ -25,6 +25,7 @@ import de.carne.boot.Application;
 /**
  * Test {@linkplain Application} class.
  */
+@SuppressWarnings("java:S3577")
 class ApplicationTest1a {
 
 	@BeforeAll

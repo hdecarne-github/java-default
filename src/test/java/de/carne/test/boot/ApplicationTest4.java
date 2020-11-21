@@ -26,6 +26,7 @@ import de.carne.boot.ApplicationInitializationException;
 /**
  * Test {@linkplain Application} class.
  */
+@SuppressWarnings("java:S3577")
 class ApplicationTest4 {
 
 	@BeforeAll
