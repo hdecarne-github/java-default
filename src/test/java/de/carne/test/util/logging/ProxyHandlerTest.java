@@ -31,29 +31,21 @@ class ProxyHandlerTest {
 
 	@Test
 	void testLog4j2Proxy() throws IOException {
-		Logs.readConfig("logging-log4j2proxy.properties");
-
-		Log log = new Log();
-
-		LogEventCounter.resetCounter();
-		LoggingTestHelper.logTestMessages(log);
-		Assertions.assertEquals(10, LogEventCounter.getCounter());
+		testProxyConfig("logging-log4j2proxy.properties");
 	}
 
 	@Test
 	void testSlf4jProxy() throws IOException {
-		Logs.readConfig("logging-slf4jproxy.properties");
-
-		Log log = new Log();
-
-		LogEventCounter.resetCounter();
-		LoggingTestHelper.logTestMessages(log);
-		Assertions.assertEquals(10, LogEventCounter.getCounter());
+		testProxyConfig("logging-slf4jproxy.properties");
 	}
 
 	@Test
 	void testAutoProxy() throws IOException {
-		Logs.readConfig("logging-autoproxy.properties");
+		testProxyConfig("logging-autoproxy.properties");
+	}
+
+	private void testProxyConfig(String config) throws IOException {
+		Logs.readConfig(config);
 
 		Log log = new Log();
 
