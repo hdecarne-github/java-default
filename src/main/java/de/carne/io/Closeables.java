@@ -79,6 +79,36 @@ public final class Closeables {
 	}
 
 	/**
+	 * Closes multiple {@linkplain Closeable}s in a safe manner.
+	 * <p>
+	 * This function ensures that for every submitted non-null {@linkplain Closeable} instance the corresponding
+	 * {@linkplain Closeable#close()} method is called. The first encountered {@linkplain IOException} will be forwarded
+	 * to the caller. Any additional {@linkplain IOException} will be added to the initial one as a suppressed
+	 * exception.
+	 *
+	 * @param closeables the {@linkplain Closeable}s to close (may contain {@code null} values).
+	 * @throws IOException if one or more {@link Closeable#close()} calls fail.
+	 */
+	public static void closeAll(Iterable<Closeable> closeables) throws IOException {
+		IOException exception = null;
+
+		for (Closeable closable : closeables) {
+			try {
+				closable.close();
+			} catch (IOException e) {
+				if (exception == null) {
+					exception = e;
+				} else {
+					exception.addSuppressed(e);
+				}
+			}
+		}
+		if (exception != null) {
+			throw exception;
+		}
+	}
+
+	/**
 	 * Close potential {@linkplain Closeable}.
 	 * <p>
 	 * An {@linkplain IOException} caused by {@linkplain Closeable#close()} is ignored.

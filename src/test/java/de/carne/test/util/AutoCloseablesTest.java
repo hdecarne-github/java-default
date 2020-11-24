@@ -14,75 +14,73 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test.io;
+package de.carne.test.util;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import de.carne.io.Closeables;
+import de.carne.util.AutoCloseables;
 
 /**
- * Test {@linkplain Closeables} class.
+ * Test {@linkplain AutoCloseables} class.
  */
-class CloseablesTest {
+class AutoCloseablesTest {
 
-	private static final Closeable FAILING_CLOSEABLE = () -> {
-		throw new IOException();
+	private static final AutoCloseable FAILING_CLOSEABLE = () -> {
+		throw new Exception();
 	};
 
 	@Test
-	void testClose() throws IOException {
-		Closeables.close(null);
-		Closeables.close(this);
+	void testClose() throws Exception {
+		AutoCloseables.close(null);
+		AutoCloseables.close(this);
 
-		Assertions.assertThrows(IOException.class, () -> {
-			Closeables.close(FAILING_CLOSEABLE);
+		Assertions.assertThrows(Exception.class, () -> {
+			AutoCloseables.close(FAILING_CLOSEABLE);
 		});
 	}
 
 	@Test
-	void testCloseAll() throws IOException {
+	void testCloseAll() throws Exception {
 		final AtomicInteger closeCounter = new AtomicInteger();
 
-		@SuppressWarnings("resource") Closeable closeable = () -> closeCounter.incrementAndGet();
+		@SuppressWarnings("resource") AutoCloseable closeable = () -> closeCounter.incrementAndGet();
 
-		Closeables.closeAll(closeable, null, closeable);
+		AutoCloseables.closeAll(closeable, null, closeable);
 
 		Assertions.assertEquals(2, closeCounter.get());
-		Assertions.assertThrows(IOException.class, () -> {
-			Closeables.closeAll(closeable, FAILING_CLOSEABLE, closeable);
+		Assertions.assertThrows(Exception.class, () -> {
+			AutoCloseables.closeAll(closeable, FAILING_CLOSEABLE, closeable);
 		});
 		Assertions.assertEquals(4, closeCounter.get());
 
-		Closeables.closeAll(Arrays.asList(closeable, closeable, closeable));
+		AutoCloseables.closeAll(Arrays.asList(closeable, closeable, closeable));
 
 		Assertions.assertEquals(7, closeCounter.get());
 	}
 
 	@Test
 	void testSafeClose() {
-		Closeables.safeClose(null);
-		Closeables.safeClose(this);
-		Closeables.safeClose(FAILING_CLOSEABLE);
+		AutoCloseables.safeClose(null);
+		AutoCloseables.safeClose(this);
+		AutoCloseables.safeClose(FAILING_CLOSEABLE);
 
-		IOException outerException = new IOException();
-
-		Assertions.assertEquals(0, outerException.getSuppressed().length);
-
-		Closeables.safeClose(outerException, null);
+		Exception outerException = new Exception();
 
 		Assertions.assertEquals(0, outerException.getSuppressed().length);
 
-		Closeables.safeClose(outerException, this);
+		AutoCloseables.safeClose(outerException, null);
 
 		Assertions.assertEquals(0, outerException.getSuppressed().length);
 
-		Closeables.safeClose(outerException, FAILING_CLOSEABLE);
+		AutoCloseables.safeClose(outerException, this);
+
+		Assertions.assertEquals(0, outerException.getSuppressed().length);
+
+		AutoCloseables.safeClose(outerException, FAILING_CLOSEABLE);
 
 		Assertions.assertEquals(1, outerException.getSuppressed().length);
 	}
