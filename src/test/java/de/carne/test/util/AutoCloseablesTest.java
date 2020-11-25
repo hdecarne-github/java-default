@@ -38,6 +38,12 @@ class AutoCloseablesTest {
 		AutoCloseables.close(null);
 		AutoCloseables.close(this);
 
+		final AtomicInteger closeCounter = new AtomicInteger();
+		@SuppressWarnings("resource") AutoCloseable closeable = () -> closeCounter.incrementAndGet();
+
+		AutoCloseables.close(closeable);
+
+		Assertions.assertEquals(1, closeCounter.get());
 		Assertions.assertThrows(Exception.class, () -> {
 			AutoCloseables.close(FAILING_CLOSEABLE);
 		});
@@ -46,20 +52,23 @@ class AutoCloseablesTest {
 	@Test
 	void testCloseAll() throws Exception {
 		final AtomicInteger closeCounter = new AtomicInteger();
-
 		@SuppressWarnings("resource") AutoCloseable closeable = () -> closeCounter.incrementAndGet();
 
 		AutoCloseables.closeAll(closeable, null, closeable);
 
 		Assertions.assertEquals(2, closeCounter.get());
 		Assertions.assertThrows(Exception.class, () -> {
-			AutoCloseables.closeAll(closeable, FAILING_CLOSEABLE, closeable);
+			AutoCloseables.closeAll(closeable, FAILING_CLOSEABLE, closeable, FAILING_CLOSEABLE);
 		});
 		Assertions.assertEquals(4, closeCounter.get());
 
 		AutoCloseables.closeAll(Arrays.asList(closeable, closeable, closeable));
 
 		Assertions.assertEquals(7, closeCounter.get());
+		Assertions.assertThrows(Exception.class, () -> {
+			AutoCloseables.closeAll(Arrays.asList(closeable, FAILING_CLOSEABLE, closeable, FAILING_CLOSEABLE));
+		});
+		Assertions.assertEquals(9, closeCounter.get());
 	}
 
 	@Test
@@ -67,6 +76,13 @@ class AutoCloseablesTest {
 		AutoCloseables.safeClose(null);
 		AutoCloseables.safeClose(this);
 		AutoCloseables.safeClose(FAILING_CLOSEABLE);
+
+		final AtomicInteger closeCounter = new AtomicInteger();
+		@SuppressWarnings("resource") AutoCloseable closeable = () -> closeCounter.incrementAndGet();
+
+		AutoCloseables.safeClose(closeable);
+
+		Assertions.assertEquals(1, closeCounter.get());
 
 		Exception outerException = new Exception();
 
@@ -78,6 +94,11 @@ class AutoCloseablesTest {
 
 		AutoCloseables.safeClose(outerException, this);
 
+		Assertions.assertEquals(0, outerException.getSuppressed().length);
+
+		AutoCloseables.safeClose(outerException, closeable);
+
+		Assertions.assertEquals(2, closeCounter.get());
 		Assertions.assertEquals(0, outerException.getSuppressed().length);
 
 		AutoCloseables.safeClose(outerException, FAILING_CLOSEABLE);

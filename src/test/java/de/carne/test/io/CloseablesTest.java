@@ -40,6 +40,12 @@ class CloseablesTest {
 		Closeables.close(null);
 		Closeables.close(this);
 
+		final AtomicInteger closeCounter = new AtomicInteger();
+		@SuppressWarnings("resource") Closeable closeable = () -> closeCounter.incrementAndGet();
+
+		Closeables.close(closeable);
+
+		Assertions.assertEquals(1, closeCounter.get());
 		Assertions.assertThrows(IOException.class, () -> {
 			Closeables.close(FAILING_CLOSEABLE);
 		});
@@ -48,26 +54,36 @@ class CloseablesTest {
 	@Test
 	void testCloseAll() throws IOException {
 		final AtomicInteger closeCounter = new AtomicInteger();
-
 		@SuppressWarnings("resource") Closeable closeable = () -> closeCounter.incrementAndGet();
 
 		Closeables.closeAll(closeable, null, closeable);
 
 		Assertions.assertEquals(2, closeCounter.get());
 		Assertions.assertThrows(IOException.class, () -> {
-			Closeables.closeAll(closeable, FAILING_CLOSEABLE, closeable);
+			Closeables.closeAll(closeable, FAILING_CLOSEABLE, closeable, FAILING_CLOSEABLE);
 		});
 		Assertions.assertEquals(4, closeCounter.get());
 
 		Closeables.closeAll(Arrays.asList(closeable, closeable, closeable));
 
 		Assertions.assertEquals(7, closeCounter.get());
+		Assertions.assertThrows(IOException.class, () -> {
+			Closeables.closeAll(Arrays.asList(closeable, FAILING_CLOSEABLE, closeable, FAILING_CLOSEABLE));
+		});
+		Assertions.assertEquals(9, closeCounter.get());
 	}
 
 	@Test
 	void testSafeClose() {
 		Closeables.safeClose(null);
 		Closeables.safeClose(this);
+
+		final AtomicInteger closeCounter = new AtomicInteger();
+		@SuppressWarnings("resource") Closeable closeable = () -> closeCounter.incrementAndGet();
+
+		Closeables.safeClose(closeable);
+
+		Assertions.assertEquals(1, closeCounter.get());
 		Closeables.safeClose(FAILING_CLOSEABLE);
 
 		IOException outerException = new IOException();
@@ -80,6 +96,11 @@ class CloseablesTest {
 
 		Closeables.safeClose(outerException, this);
 
+		Assertions.assertEquals(0, outerException.getSuppressed().length);
+
+		Closeables.safeClose(outerException, closeable);
+
+		Assertions.assertEquals(2, closeCounter.get());
 		Assertions.assertEquals(0, outerException.getSuppressed().length);
 
 		Closeables.safeClose(outerException, FAILING_CLOSEABLE);
