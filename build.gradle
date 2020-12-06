@@ -18,7 +18,7 @@ def resolveProperty(propertyName, envName, defValue = "<undefined>") {
 }
 
 // Project
-defaultTasks "classes", "testClasses"
+defaultTasks "classes", "testClasses", "javadoc"
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -152,7 +152,7 @@ publishing {
 }
 
 artifactory {
-	contextUrl = "https://oss.jfrog.org/artifactory"
+	contextUrl = project.resolveProperty("artifactory_url", "ARTIFACTORY_URL", "https://oss.jfrog.org/artifactory")
 	publish {
 		repository {
 			repoKey = (snapshotBuild ? "oss-snapshot-local" : "oss-release-local")
