@@ -19,11 +19,12 @@ package de.carne.util.logging;
 import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.jdt.annotation.Nullable;
+
+import de.carne.util.Lazy;
 
 /**
  * Wrapper class for the JDK's {@linkplain Logger} class to make logging easy and more efficient.
@@ -81,16 +82,15 @@ public final class Log {
 		this.logger = logger;
 	}
 
-	private static final AtomicReference<@Nullable Log> rootHolder = new AtomicReference<>();
+	private static final Lazy<Log> rootHolder = new Lazy<>(() -> new Log(Logger.getLogger("")));
 
 	/**
 	 * Gets the {@linkplain Log} instance that represents the root {@linkplain Logger}.
 	 *
 	 * @return the {@linkplain Log} instance that represents the root {@linkplain Logger}.
 	 */
-	@SuppressWarnings("null")
 	public static Log root() {
-		return rootHolder.updateAndGet(rootLog -> (rootLog != null ? rootLog : new Log(Logger.getLogger(""))));
+		return rootHolder.get();
 	}
 
 	/**
@@ -100,6 +100,22 @@ public final class Log {
 	 */
 	public Logger logger() {
 		return this.logger;
+	}
+
+	/**
+	 * Gets the log level configured for this instance.
+	 *
+	 * @return the log level configured for this instance.
+	 */
+	public Level level() {
+		Logger currentLogger = this.logger;
+		Level level = currentLogger.getLevel();
+
+		while (level == null) {
+			currentLogger = (currentLogger != null ? currentLogger.getParent() : null);
+			level = (currentLogger != null ? currentLogger.getLevel() : LogLevel.LEVEL_INFO);
+		}
+		return level;
 	}
 
 	/**

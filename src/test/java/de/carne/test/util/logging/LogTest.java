@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import de.carne.util.logging.Log;
+import de.carne.util.logging.LogLevel;
 
 /**
  * Test {@linkplain Log} class.
@@ -42,6 +43,17 @@ class LogTest {
 
 		Assertions.assertEquals("", rootLog.logger().getName());
 		Assertions.assertEquals("", rootLog.toString());
+	}
+
+	@Test
+	void testLogLevel() {
+		Log log = new Log();
+
+		Assertions.assertEquals(LogLevel.LEVEL_DEBUG, log.level());
+
+		Log rootLog = Log.root();
+
+		Assertions.assertEquals(LogLevel.LEVEL_INFO, rootLog.level());
 	}
 
 }
