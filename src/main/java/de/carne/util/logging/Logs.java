@@ -37,6 +37,8 @@ import java.util.logging.Logger;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
+import de.carne.util.Strings;
+
 /**
  * Utility class providing {@linkplain Log} related functions.
  */
@@ -183,6 +185,44 @@ public final class Logs {
 			} else {
 				Logs.DEFAULT_ERROR_MANAGER.error("Root logger not yet available; failed to apply application handlers",
 						null, ErrorManager.GENERIC_FAILURE);
+			}
+		}
+	}
+
+	/**
+	 * Applies individual level configuration to the current configuration.
+	 * <p>
+	 * The level configuration to apply is defined as follows: {@code (<logger name>=<level name>)*}
+	 * </p>
+	 *
+	 * @param levelConfig the level configuration to apply.
+	 */
+	public static void applyLevelConfig(String levelConfig) {
+		StringTokenizer configEntries = new StringTokenizer(levelConfig, ";");
+
+		while (configEntries.hasMoreElements()) {
+			String configEntry = configEntries.nextToken();
+
+			try {
+				String[] split = Strings.split(configEntry, '=', false);
+
+				if (split.length != 2) {
+					throw new IllegalArgumentException();
+				}
+
+				String loggerName = split[0].trim();
+				String levelName = split[1].trim();
+
+				if (Strings.isEmpty(loggerName) || Strings.isEmpty(levelName)) {
+					throw new IllegalArgumentException();
+				}
+
+				Level level = Level.parse(levelName);
+
+				Logger.getLogger(loggerName).setLevel(level);
+			} catch (IllegalArgumentException e) {
+				Logs.DEFAULT_ERROR_MANAGER.error("Unrecognized level config: " + configEntry, e,
+						ErrorManager.GENERIC_FAILURE);
 			}
 		}
 	}

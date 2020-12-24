@@ -55,6 +55,15 @@ class ConfigTest {
 		Assertions.assertTrue(log.isTraceLoggable());
 
 		LoggingTestHelper.logTestMessagesAndAssert(log, 12);
+
+		// Check for (modified) level configuration
+		System.setProperty(Config.class.getName(), "logging-trace.properties");
+		System.setProperty(Config.class.getPackageName(),
+				"de.carne.test.util.logging.ConfigTest=OFF;default=unknown;invalid;=invalid;invalid=");
+
+		new Config();
+
+		Assertions.assertFalse(log.isErrorLoggable());
 	}
 
 }

@@ -29,15 +29,24 @@ import org.eclipse.jdt.annotation.NonNull;
  */
 public final class Config {
 
+	private static final String PROPERTY_CONFIG = Config.class.getName();
+
+	private static final String PROPERTY_LEVEL_CONFIG = Config.class.getPackageName();
+
 	/**
-	 * Constructs a {@linkplain Config} instance and applies default logging configuration.
+	 * Constructs a new {@linkplain Config} instance for applying the default logging configuration.
 	 */
+	@SuppressWarnings("java:S1118")
 	public Config() {
-		@SuppressWarnings("null") @NonNull String config = System.getProperty(getClass().getName(),
-				Logs.CONFIG_DEFAULT);
+		@SuppressWarnings("null")
+		@NonNull String config = System.getProperty(PROPERTY_CONFIG, Logs.CONFIG_DEFAULT);
+		String levelConfig = System.getProperty(PROPERTY_LEVEL_CONFIG);
 
 		try {
 			Logs.readConfig(config);
+			if (levelConfig != null) {
+				Logs.applyLevelConfig(levelConfig);
+			}
 		} catch (IOException e) {
 			Logs.DEFAULT_ERROR_MANAGER.error("Failed to read logging config: " + config, e,
 					ErrorManager.GENERIC_FAILURE);
