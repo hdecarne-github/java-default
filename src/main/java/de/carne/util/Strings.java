@@ -36,7 +36,7 @@ public final class Strings {
 	/**
 	 * Ellipsis string.
 	 */
-	public static final String ELLIPSIS = SystemProperties.value(Strings.class, ".ellipsis", "\\u2026");
+	public static final String ELLIPSIS = SystemProperties.value(Strings.class, ".ellipsis", "\u2026");
 
 	/**
 	 * Checks whether a {@linkplain String} is empty.
