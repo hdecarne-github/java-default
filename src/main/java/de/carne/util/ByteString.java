@@ -16,6 +16,8 @@
  */
 package de.carne.util;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -138,6 +140,16 @@ public final class ByteString implements Serializable, Comparable<ByteString> {
 	}
 
 	/**
+	 * Copies this instances bytes to the given {@linkplain OutputStream}.
+	 *
+	 * @param out the {@linkplain OutputStream} to write to.
+	 * @throws IOException if an I/O error occurs.
+	 */
+	public void write(OutputStream out) throws IOException {
+		out.write(this.bytes, this.start, this.length);
+	}
+
+	/**
 	 * Slices a sub-section from this instance.
 	 *
 	 * @param sliceStart the index of the first byte to slice.
@@ -148,7 +160,8 @@ public final class ByteString implements Serializable, Comparable<ByteString> {
 		Check.isTrue(this.start <= sliceStart);
 		Check.isTrue(sliceStart + sliceLength <= this.length);
 
-		return new ByteString(this.bytes, this.start + sliceStart, sliceLength);
+		return (this.start == sliceStart && this.length == sliceLength ? this
+				: new ByteString(this.bytes, this.start + sliceStart, sliceLength));
 	}
 
 	@Override

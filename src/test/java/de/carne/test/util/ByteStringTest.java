@@ -16,6 +16,8 @@
  */
 package de.carne.test.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Assertions;
@@ -38,9 +40,11 @@ class ByteStringTest {
 
 	@Test
 	void testWrapping() {
-		ByteString bs0 = ByteString.wrap(TEST_BYTES_0);
+		ByteString bs0a = ByteString.wrap(TEST_BYTES_0);
+		ByteString bs0b = ByteString.wrap(TEST_BYTES_0, 0, TEST_BYTES_0.length);
 
-		Assertions.assertSame(ByteString.EMPTY, bs0);
+		Assertions.assertSame(ByteString.EMPTY, bs0a);
+		Assertions.assertSame(ByteString.EMPTY, bs0b);
 
 		byte[] mutableBytes1 = Arrays.copyOf(TEST_BYTES_1, TEST_BYTES_1.length);
 
@@ -89,10 +93,24 @@ class ByteStringTest {
 	}
 
 	@Test
+	void testWriteTo() throws IOException {
+		ByteString bs1 = ByteString.wrap(TEST_BYTES_1);
+
+		try (ByteArrayOutputStream bs1Copy = new ByteArrayOutputStream()) {
+			bs1.write(bs1Copy);
+
+			Assertions.assertArrayEquals(TEST_BYTES_1, bs1Copy.toByteArray());
+		}
+	}
+
+	@Test
 	void testSlicing() {
 		ByteString bs1 = ByteString.wrap(TEST_BYTES_1);
+		ByteString bs1Total = bs1.slice(0, TEST_BYTES_1.length);
 		ByteString bs1Begin = bs1.slice(0, 1);
 		ByteString bs1End = bs1.slice(1, TEST_BYTES_1.length - 1);
+
+		Assertions.assertSame(bs1, bs1Total);
 
 		Assertions.assertEquals(1, bs1Begin.length());
 		Assertions.assertEquals(TEST_BYTES_1.length - 1, bs1End.length());
