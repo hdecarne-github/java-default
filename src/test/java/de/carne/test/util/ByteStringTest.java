@@ -56,6 +56,11 @@ class ByteStringTest {
 			Assertions.assertEquals(TEST_BYTES_1[byteIndex], bs1.byteAt(byteIndex));
 		}
 
+		byte[] bs1Bytes = bs1.bytes();
+
+		Assertions.assertNotSame(mutableBytes1, bs1Bytes);
+		Assertions.assertArrayEquals(mutableBytes1, bs1Bytes);
+
 		mutableBytes1[1] = (byte) 0x02;
 
 		Assertions.assertNotEquals(TEST_BYTES_1[1], bs1.byteAt(1));
@@ -76,6 +81,11 @@ class ByteStringTest {
 		for (int byteIndex = 0; byteIndex < TEST_BYTES_1.length; byteIndex++) {
 			Assertions.assertEquals(TEST_BYTES_1[byteIndex], bs1.byteAt(byteIndex));
 		}
+
+		byte[] bs1Bytes = bs1.bytes();
+
+		Assertions.assertNotSame(mutableBytes1, bs1Bytes);
+		Assertions.assertArrayEquals(mutableBytes1, bs1Bytes);
 
 		mutableBytes1[1] = (byte) 0x02;
 

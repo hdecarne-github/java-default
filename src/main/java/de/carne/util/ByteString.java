@@ -114,10 +114,19 @@ public final class ByteString implements Serializable, Comparable<ByteString> {
 	}
 
 	/**
+	 * Gets a copy of this instance's byte values.
+	 *
+	 * @return a copy of this instance's byte values.
+	 */
+	public byte[] bytes() {
+		return Arrays.copyOfRange(this.bytes, this.start, this.length);
+	}
+
+	/**
 	 * Gets the this instance's byte value at the given index.
 	 *
 	 * @param index the index of the byte to get.
-	 * @return the byte value at the given index
+	 * @return the byte value at the given index.
 	 */
 	public byte byteAt(int index) {
 		Check.isTrue(0 <= index);
