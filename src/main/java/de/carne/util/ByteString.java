@@ -166,7 +166,8 @@ public final class ByteString implements Serializable, Comparable<ByteString> {
 	 * @return the sliced byte string.
 	 */
 	public ByteString slice(int sliceStart, int sliceLength) {
-		Check.isTrue(this.start <= sliceStart);
+		Check.isTrue(0 <= sliceStart);
+		Check.isTrue(0 <= sliceLength);
 		Check.isTrue(sliceStart + sliceLength <= this.length);
 
 		return (this.start == sliceStart && this.length == sliceLength ? this
