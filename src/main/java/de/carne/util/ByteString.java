@@ -119,7 +119,7 @@ public final class ByteString implements Serializable, Comparable<ByteString> {
 	 * @return a copy of this instance's byte values.
 	 */
 	public byte[] bytes() {
-		return Arrays.copyOfRange(this.bytes, this.start, this.length);
+		return Arrays.copyOfRange(this.bytes, this.start, this.start + this.length);
 	}
 
 	/**
