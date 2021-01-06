@@ -100,8 +100,8 @@ public final class HexBytes {
 
 		while (cIndex < sLength) {
 			int bIndex = cIndex / 2;
-			int valueH = valueOf0(s.charAt(cIndex++));
-			int valueL = valueOf0(s.charAt(cIndex++));
+			int valueH = valueOf(s.charAt(cIndex++));
+			int valueL = valueOf(s.charAt(cIndex++));
 
 			value[bIndex] = (byte) ((valueH << 4) | valueL);
 		}
@@ -115,7 +115,7 @@ public final class HexBytes {
 	 * @return the byte value represented by the submitted hex character.
 	 * @throws NumberFormatException if the hex character is invalid.
 	 */
-	public static int valueOf0(char c) {
+	public static int valueOf(char c) {
 		int value;
 
 		if ('0' <= c && c <= '9') {
