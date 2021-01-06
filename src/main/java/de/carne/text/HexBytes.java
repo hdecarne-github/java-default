@@ -108,7 +108,14 @@ public final class HexBytes {
 		return value;
 	}
 
-	private static int valueOf0(char c) {
+	/**
+	 * Converts a hex character to a byte value.
+	 *
+	 * @param c the hex character to convert.
+	 * @return the byte value represented by the submitted hex character.
+	 * @throws NumberFormatException if the hex character is invalid.
+	 */
+	public static int valueOf0(char c) {
 		int value;
 
 		if ('0' <= c && c <= '9') {
