@@ -182,7 +182,7 @@ public class ManifestInfos {
 	}
 
 	private static Enumeration<URL> getManifestResources() throws IOException {
-		return ManifestInfos.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
+		return Threads.getContextClassLoader().getResources("META-INF/MANIFEST.MF");
 	}
 
 	private static Manifest loadManifestResource(URL manifestUrl) throws IOException {

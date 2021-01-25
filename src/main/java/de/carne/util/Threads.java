@@ -59,4 +59,17 @@ public final class Threads {
 		return !interrupted;
 	}
 
+	/**
+	 * Gets the context {@linkplain ClassLoader} of the current {@linkplain Thread} or the system
+	 * {@linkplain ClassLoader} if none is set.
+	 *
+	 * @return the context {@linkplain ClassLoader} of the current {@linkplain Thread} or the system
+	 * {@linkplain ClassLoader} if none is set.
+	 */
+	public static ClassLoader getContextClassLoader() {
+		ClassLoader cl = Thread.currentThread().getContextClassLoader();
+
+		return (cl != null ? cl : ClassLoader.getSystemClassLoader());
+	}
+
 }

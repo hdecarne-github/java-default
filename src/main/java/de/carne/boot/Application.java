@@ -240,7 +240,7 @@ public final class Application {
 		ClassLoader bootstrapClassLoader = Thread.currentThread().getContextClassLoader();
 
 		if (bootstrapClassLoader == null) {
-			bootstrapClassLoader = Application.class.getClassLoader();
+			bootstrapClassLoader = ClassLoader.getSystemClassLoader();
 		}
 
 		Objects.requireNonNull(bootstrapClassLoader);

@@ -147,7 +147,7 @@ public final class Logs {
 	}
 
 	private static InputStream openConfig(String config) throws FileNotFoundException {
-		InputStream configInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(config);
+		InputStream configInputStream = getContextClassLoader().getResourceAsStream(config);
 
 		if (configInputStream == null) {
 			throw new FileNotFoundException("Unable to open logging config: " + config);
@@ -376,12 +376,13 @@ public final class Logs {
 	}
 
 	private static <T> T newClassInstance(String name, Class<T> type) throws ReflectiveOperationException {
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		return Class.forName(name, false, getContextClassLoader()).asSubclass(type).getConstructor().newInstance();
+	}
 
-		if (classLoader == null) {
-			classLoader = Logs.class.getClassLoader();
-		}
-		return Class.forName(name, false, classLoader).asSubclass(type).getConstructor().newInstance();
+	private static ClassLoader getContextClassLoader() {
+		ClassLoader cl = Thread.currentThread().getContextClassLoader();
+
+		return (cl != null ? cl : ClassLoader.getSystemClassLoader());
 	}
 
 }
