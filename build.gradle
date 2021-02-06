@@ -34,10 +34,10 @@ plugins.withType(JavaPlugin).configureEach {
 		modularity.inferModulePath = true
 		registerFeature('log4j') {
 			usingSourceSet(sourceSets.main)
-		}	
+		}
 		registerFeature('slf4j') {
 			usingSourceSet(sourceSets.main)
-		}	
+		}
 	}
 }
 
