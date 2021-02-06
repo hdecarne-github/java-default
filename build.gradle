@@ -48,8 +48,8 @@ repositories {
 	mavenCentral()
 	if(snapshotBuild) {
 		maven { url mavenSnapshotRepository }
-		mavenLocal()
 	}
+	mavenLocal()
 }
 
 dependencies {
