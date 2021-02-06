@@ -56,7 +56,7 @@ dependencies {
 	api(group: "org.eclipse.jdt", name: "org.eclipse.jdt.annotation", version: project.annotationVersion)
 	log4jImplementation(group: "org.apache.logging.log4j", name: "log4j-api", version: project.log4jVersion)
 	slf4jImplementation(group: "org.slf4j", name: "slf4j-api", version: project.slf4jVersion)
-	testImplementation(group: "de.carne.common", name: "java-test", version: project.javaTestVersion)
+	testImplementation(group: "de.carne", name: "java-test", version: project.javaTestVersion)
 	testImplementation(group: "org.apache.logging.log4j", name: "log4j-core", version: project.log4jVersion)
 	testImplementation(group: "org.apache.logging.log4j", name: "log4j-slf4j-impl", version: project.log4jVersion)
 }
@@ -124,7 +124,7 @@ publishing {
 		}
 	}
     publications {
-		mavenPublication(MavenPublication) {
+		javaArtifacts(MavenPublication) {
 			from components.java
 			suppressPomMetadataWarningsFor("log4jApiElements")
 			suppressPomMetadataWarningsFor("log4jRuntimeElements")
@@ -157,7 +157,7 @@ publishing {
 }
 
 signing {
-	sign publishing.publications.mavenPublication
+	sign publishing.publications.javaArtifacts
 }
 
 tasks.withType(Sign) {
