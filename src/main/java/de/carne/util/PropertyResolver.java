@@ -94,7 +94,6 @@ public final class PropertyResolver {
 	 * </ol>
 	 * For Custom and system properties the key is used unchanged. For environment variables the key is converted to
 	 * upper case and any period character ({@code '.'}) is replaced by an underscore ({@code '_'}).
-	 * </p>
 	 *
 	 * @param key the key to resolve.
 	 * @return the resolved value or {@code null} if the key is undefined.
