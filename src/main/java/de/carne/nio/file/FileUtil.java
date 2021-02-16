@@ -73,15 +73,17 @@ public final class FileUtil {
 	 * If the file does not yet exist, it will be created.
 	 *
 	 * @param file the file to touch.
+	 * @return the submitted file.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	@SuppressWarnings("squid:S3725")
-	public static void touch(Path file) throws IOException {
+	public static Path touch(Path file) throws IOException {
 		if (Files.exists(file)) {
 			Files.setLastModifiedTime(file, FileTime.from(Instant.now()));
 		} else {
 			Files.createFile(file);
 		}
+		return file;
 	}
 
 	/**
