@@ -37,6 +37,9 @@ import de.carne.util.Platform;
  */
 public class ConsoleFormatter extends Formatter {
 
+	private static final boolean FORCE_ANSI_OUPUT = Boolean
+			.parseBoolean(System.getProperty(ConsoleFormatter.class.getName() + ".forceAnsiOutput"));
+
 	private static final String ANSI_STYLE_PREFIX = "\033[";
 	private static final String ANSI_RESET = "\033[0m";
 
@@ -78,7 +81,7 @@ public class ConsoleFormatter extends Formatter {
 	}
 
 	private static boolean enableAnsiOutputDefault() {
-		return (Platform.IS_LINUX || Platform.IS_MACOS) && System.console() != null;
+		return FORCE_ANSI_OUPUT || (System.console() != null && (Platform.IS_LINUX || Platform.IS_MACOS));
 	}
 
 	@Override
