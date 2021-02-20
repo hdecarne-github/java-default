@@ -63,7 +63,8 @@ public final class CmdLineProcessor {
 	 * line string).
 	 * @param args the command line to process.
 	 */
-	public CmdLineProcessor(String cmd, @Nullable String[] args) {
+	@SuppressWarnings("null")
+	public CmdLineProcessor(String cmd, String[] args) {
 		this(cmd, Arrays.asList(args));
 	}
 
