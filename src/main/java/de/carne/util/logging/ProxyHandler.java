@@ -56,7 +56,7 @@ public class ProxyHandler extends Handler {
 
 		private final Class<? extends Proxy> proxyClass;
 
-		private Type(Class<? extends Proxy> proxyClass) {
+		Type(Class<? extends Proxy> proxyClass) {
 			this.proxyClass = proxyClass;
 		}
 
@@ -80,6 +80,7 @@ public class ProxyHandler extends Handler {
 
 	};
 
+	private final PublishLock lock = PublishLock.getInstance();
 	private final Proxy proxy;
 
 	/**
@@ -95,6 +96,10 @@ public class ProxyHandler extends Handler {
 
 	@Override
 	public void publish(@Nullable LogRecord record) {
+		this.lock.ifNotLocked(() -> publish0(record));
+	}
+
+	private void publish0(@Nullable LogRecord record) {
 		if (record != null) {
 			Formatter formatter = getFormatter();
 
@@ -109,7 +114,7 @@ public class ProxyHandler extends Handler {
 
 	@Override
 	public void close() {
-		// Nothing to do here
+		this.lock.close();
 	}
 
 	private static Type getTypeProperty(LogManager manager, String name, Type defaultValue) {

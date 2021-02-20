@@ -33,6 +33,7 @@ import java.util.logging.StreamHandler;
  */
 public class ConsoleHandler extends StreamHandler {
 
+	private final PublishLock lock = PublishLock.getInstance();
 	private final boolean consoleOnly;
 
 	/**
@@ -49,6 +50,10 @@ public class ConsoleHandler extends StreamHandler {
 
 	@Override
 	public synchronized void publish(LogRecord record) {
+		this.lock.ifNotLocked(() -> publish0(record));
+	}
+
+	private void publish0(LogRecord record) {
 		Console console = System.console();
 
 		if (console != null) {
@@ -100,6 +105,7 @@ public class ConsoleHandler extends StreamHandler {
 
 	@Override
 	public synchronized void close() {
+		this.lock.close();
 		flush();
 	}
 
