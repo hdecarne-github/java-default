@@ -16,11 +16,17 @@
  */
 package de.carne.test.util.logging;
 
+import java.io.IOException;
+import java.util.Collection;
+import java.util.logging.LogRecord;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import de.carne.util.logging.Log;
 import de.carne.util.logging.LogLevel;
+import de.carne.util.logging.LogRecorder;
+import de.carne.util.logging.Logs;
 
 /**
  * Test {@linkplain Log} class.
@@ -54,6 +60,45 @@ class LogTest {
 		Log rootLog = Log.root();
 
 		Assertions.assertEquals(LogLevel.LEVEL_INFO, rootLog.level());
+	}
+
+	@Test
+	void testLogCallee() throws IOException {
+		Logs.readConfig("logging-debug.properties");
+
+		Log log = new Log();
+		LogRecorder recorder = new LogRecorder(LogLevel.LEVEL_TRACE);
+
+		recorder.includeRecord(record -> true);
+		recorder.addLog(log);
+		try (LogRecorder.Session session = recorder.start(true)) {
+			session.includeThread(thread -> true);
+			logCalleeDefault(log);
+
+			Collection<LogRecord> records = session.getRecords();
+
+			Assertions.assertEquals(1, records.size());
+			Assertions.assertEquals("de.carne.test.util.logging.LogTest.logCalleeDefault(LogTest.java:97)",
+					records.iterator().next().getMessage());
+		}
+		try (LogRecorder.Session session = recorder.start(true)) {
+			session.includeThread(thread -> true);
+			logCalleeNotice(log);
+
+			Collection<LogRecord> records = session.getRecords();
+
+			Assertions.assertEquals(1, records.size());
+			Assertions.assertEquals("de.carne.test.util.logging.LogTest.logCalleeNotice(LogTest.java:101)",
+					records.iterator().next().getMessage());
+		}
+	}
+
+	private void logCalleeDefault(Log log) {
+		log.callee();
+	}
+
+	private void logCalleeNotice(Log log) {
+		log.callee(LogLevel.LEVEL_NOTICE);
 	}
 
 }

@@ -328,18 +328,47 @@ public final class Log {
 		log(LogLevel.LEVEL_TRACE, thrown, msg, parameters);
 	}
 
-	private static String getCallerClassName() {
-		int steIndex = 0;
-		StackTraceElement[] stes = Thread.currentThread().getStackTrace();
-		String myClassName = Log.class.getName();
+	/**
+	 * Logs the calling functions signature with {@linkplain LogLevel#LEVEL_DEBUG}.
+	 */
+	public void callee() {
+		callee(LogLevel.LEVEL_DEBUG);
+	}
 
-		while (steIndex < stes.length && !myClassName.equals(stes[steIndex].getClassName())) {
+	/**
+	 * Logs the calling functions signature with the given severity.
+	 *
+	 * @param level the {@linkplain Level} to lag at.
+	 */
+	public void callee(Level level) {
+		log(level, null, getCalleeSignature());
+	}
+
+	private static String getCallerClassName() {
+		StackTraceElement caller = getCaller();
+
+		return (caller != null ? caller.getClassName() : Log.class.getName());
+	}
+
+	private static String getCalleeSignature() {
+		StackTraceElement caller = getCaller();
+
+		return (caller != null ? caller.toString() : "<unkown>");
+	}
+
+	@Nullable
+	private static StackTraceElement getCaller() {
+		String thisClassName = Log.class.getName();
+		StackTraceElement[] stes = Thread.currentThread().getStackTrace();
+		int steIndex = 0;
+
+		while (steIndex < stes.length && !thisClassName.equals(stes[steIndex].getClassName())) {
 			steIndex++;
 		}
-		while (steIndex < stes.length && myClassName.equals(stes[steIndex].getClassName())) {
+		while (steIndex < stes.length && thisClassName.equals(stes[steIndex].getClassName())) {
 			steIndex++;
 		}
-		return (steIndex < stes.length ? stes[steIndex].getClassName() : myClassName);
+		return (steIndex < stes.length ? stes[steIndex] : null);
 	}
 
 	@Override
