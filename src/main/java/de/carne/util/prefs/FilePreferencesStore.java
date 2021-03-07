@@ -151,7 +151,8 @@ abstract class FilePreferencesStore {
 
 	public synchronized void flush() throws BackingStoreException {
 		if (!this.changeLog.isEmpty()) {
-			LOG.info("FLushing preferences store ''{0}''...", this);
+			LOG.debug("FLushing preferences store ''{0}''...", this);
+
 			try {
 				syncData(this.changeLog);
 			} catch (IOException e) {
