@@ -29,8 +29,8 @@ import de.carne.util.PropertyResolver;
  */
 class PropertyResolverTest {
 
-	private static final String TEST_SYSTEM_PROPERTY_KEY = System.getProperties().keys().nextElement().toString();
-	private static final String TEST_ENVIRONMENT_KEY = System.getenv().keySet().iterator().next().toString();
+	private static final String TEST_SYSTEM_PROPERTY_KEY = "java.version";
+	private static final String TEST_ENVIRONMENT_KEY = "PATH";
 
 	private static final String UNDEFINED_KEY = "undefined.property.42";
 	private static final String EXPECTED_UNDEFINED_VALUE = PropertyResolver.class.getSimpleName();
