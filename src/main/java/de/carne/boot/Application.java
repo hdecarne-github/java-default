@@ -34,7 +34,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public final class Application {
 
 	private Application() {
-		// prevent instantiation
+		// Prevent instantiation
 	}
 
 	// Debug support

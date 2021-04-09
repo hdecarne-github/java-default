@@ -25,7 +25,7 @@ import de.carne.util.SystemProperties;
 public final class Defaults {
 
 	private Defaults() {
-		// prevent instantiation
+		// Prevent instantiation
 	}
 
 	/**

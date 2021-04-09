@@ -24,7 +24,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public final class AutoCloseables {
 
 	private AutoCloseables() {
-		// prevent instantiation
+		// Prevent instantiation
 	}
 
 	/**

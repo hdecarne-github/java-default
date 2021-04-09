@@ -45,7 +45,7 @@ import de.carne.util.Strings;
 public final class Logs {
 
 	private Logs() {
-		// prevent instantiation
+		// Prevent instantiation
 	}
 
 	/**

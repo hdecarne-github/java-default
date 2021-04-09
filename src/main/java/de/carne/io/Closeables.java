@@ -29,7 +29,7 @@ import de.carne.util.Exceptions;
 public final class Closeables {
 
 	private Closeables() {
-		// prevent instantiation
+		// Prevent instantiation
 	}
 
 	/**

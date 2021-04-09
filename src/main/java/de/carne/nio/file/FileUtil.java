@@ -37,7 +37,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public final class FileUtil {
 
 	private FileUtil() {
-		// prevent instantiation
+		// Prevent instantiation
 	}
 
 	/**

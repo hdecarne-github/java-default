@@ -36,7 +36,7 @@ import java.nio.channels.WritableByteChannel;
 public final class IOUtil {
 
 	private IOUtil() {
-		// prevent instantiation
+		// Prevent instantiation
 	}
 
 	/**
