@@ -31,7 +31,7 @@ import de.carne.util.Platform;
  * <p>
  * If {@linkplain System#console()} yields {@code null}, {@linkplain System#out} is used instead. In the latter case any
  * ANSI sequence is filtered out prior to emitting the output.
- * <p>
+ * </p>
  */
 public final class ConsoleWriter extends PrintWriter {
 
