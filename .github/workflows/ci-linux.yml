@@ -5,11 +5,11 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        JAVA_OPTS: "-Xmx4g -Dfile.encoding=UTF-8
-        GRADLE_OPTS: "-Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=hdecarne-github"
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      JAVA_OPTS: "-Xmx4g -Dfile.encoding=UTF-8
+      GRADLE_OPTS: "-Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=hdecarne-github"
     steps:
       - uses: actions/checkout@v2
       - name: Set up Java
