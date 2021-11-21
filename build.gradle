@@ -6,7 +6,7 @@ plugins {
 	id "signing"
 	id "eclipse"
 	id "de.carne.java-tools" version "1.2.0"
-	id "org.sonarqube" version "3.1.1"
+	id "org.sonarqube" version "3.3"
 }
 
 // Build helpers
