@@ -1,6 +1,6 @@
 ### Common Java code shared between my projects
 [![Publication](https://img.shields.io/maven-central/v/de.carne/java-default)](https://search.maven.org/artifact/de.carne/java-default)
-![Build](https://github.com/hdecarne/java-default/actions/workflows/build-on-linux.yml/badge.svg)
+[![Build](https://github.com/hdecarne/java-default/actions/workflows/build-on-linux.yml/badge.svg)](https://github.com/hdecarne/java-default/actions)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=de.carne%3Ajava-default&metric=coverage)](https://sonarcloud.io/dashboard?id=de.carne%3Ajava-default)
 
 #### License
