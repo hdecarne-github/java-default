@@ -18,6 +18,11 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           cache: 'gradle'
+      - name: Cache dependency check data
+        uses: actions/cache@v2
+        with:
+        path: ~/.gradle/dependency-check-data
+        key: ${{ runner.os }}-dependency-check-data
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: Init Build
@@ -27,5 +32,6 @@ jobs:
       - name: Upload Reports
         uses: actions/upload-artifact@v2
         with:
-          name: Reports
+          name: build-reports
           path: ./build/reports
+          retention-days: 7
