@@ -22,7 +22,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.gradle/dependency-check-data
-          key: ${{ runner.os }}-dependency-check-data
+          key: gradle-dependency-check-data
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: Init Build
