@@ -49,28 +49,28 @@ public class ConsoleHandler extends StreamHandler {
 	}
 
 	@Override
-	public synchronized void publish(LogRecord record) {
-		this.lock.ifNotLocked(() -> publish0(record));
+	public synchronized void publish(LogRecord logRecord) {
+		this.lock.ifNotLocked(() -> publish0(logRecord));
 	}
 
-	private void publish0(LogRecord record) {
+	private void publish0(LogRecord logRecord) {
 		Console console = System.console();
 
 		if (console != null) {
-			if (isLoggable(record)) {
-				publishToConsole(console, record, true);
+			if (isLoggable(logRecord)) {
+				publishToConsole(console, logRecord, true);
 			}
 		} else if (!this.consoleOnly) {
-			super.publish(record);
+			super.publish(logRecord);
 			super.flush();
 		}
 	}
 
-	private void publishToConsole(Console console, LogRecord record, boolean flush) {
+	private void publishToConsole(Console console, LogRecord logRecord, boolean flush) {
 		String message = null;
 
 		try {
-			message = getFormatter().format(record);
+			message = getFormatter().format(logRecord);
 		} catch (Exception e) {
 			reportError(null, e, ErrorManager.FORMAT_FAILURE);
 		}

@@ -74,8 +74,8 @@ public class ProxyHandler extends Handler {
 	private static final Formatter DEFAULT_FORMATTER = new Formatter() {
 
 		@Override
-		public String format(@Nullable LogRecord record) {
-			return formatMessage(record);
+		public String format(@Nullable LogRecord logRecord) {
+			return formatMessage(logRecord);
 		}
 
 	};
@@ -95,15 +95,15 @@ public class ProxyHandler extends Handler {
 	}
 
 	@Override
-	public void publish(@Nullable LogRecord record) {
-		this.lock.ifNotLocked(() -> publish0(record));
+	public void publish(@Nullable LogRecord logRecord) {
+		this.lock.ifNotLocked(() -> publish0(logRecord));
 	}
 
-	private void publish0(@Nullable LogRecord record) {
-		if (record != null) {
+	private void publish0(@Nullable LogRecord logRecord) {
+		if (logRecord != null) {
 			Formatter formatter = getFormatter();
 
-			this.proxy.publish(record, (formatter != null ? formatter : DEFAULT_FORMATTER));
+			this.proxy.publish(logRecord, (formatter != null ? formatter : DEFAULT_FORMATTER));
 		}
 	}
 

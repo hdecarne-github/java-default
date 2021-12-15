@@ -125,9 +125,10 @@ public final class LogRecorder {
 		this.loggers.stream().forEach(logger -> logger.removeHandler(session));
 	}
 
-	boolean testRecord(LogRecord record) {
-		return this.excludeRecords.stream().noneMatch(exclude -> exclude.test(record)) && (this.includeRecords.isEmpty()
-				|| this.includeRecords.stream().anyMatch(include -> include.test(record)));
+	boolean testRecord(LogRecord logRecord) {
+		return this.excludeRecords.stream().noneMatch(exclude -> exclude.test(logRecord))
+				&& (this.includeRecords.isEmpty()
+						|| this.includeRecords.stream().anyMatch(include -> include.test(logRecord)));
 	}
 
 	/**
@@ -145,6 +146,7 @@ public final class LogRecorder {
 
 		private final AtomicBoolean locked = new AtomicBoolean();
 
+		@SuppressWarnings("resource")
 		Session(boolean currentThreadOnly) {
 			if (currentThreadOnly) {
 				Thread currentThread = Thread.currentThread();
@@ -199,10 +201,10 @@ public final class LogRecorder {
 		}
 
 		@Override
-		public void publish(@Nullable LogRecord record) {
-			if (record != null && this.locked.compareAndSet(false, true) && testThread(Thread.currentThread())
-					&& testRecord(record)) {
-				this.buffer.add(record);
+		public void publish(@Nullable LogRecord logRecord) {
+			if (logRecord != null && this.locked.compareAndSet(false, true) && testThread(Thread.currentThread())
+					&& testRecord(logRecord)) {
+				this.buffer.add(logRecord);
 				this.locked.set(false);
 			}
 		}

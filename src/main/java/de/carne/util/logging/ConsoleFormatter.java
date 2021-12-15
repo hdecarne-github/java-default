@@ -85,19 +85,19 @@ public class ConsoleFormatter extends Formatter {
 	}
 
 	@Override
-	public String format(@Nullable LogRecord record) {
+	public String format(@Nullable LogRecord logRecord) {
 		StringBuilder buffer = new StringBuilder();
 
-		if (record != null) {
-			formatMillis(buffer, record.getMillis());
+		if (logRecord != null) {
+			formatMillis(buffer, logRecord.getMillis());
 			buffer.append(' ');
-			formatLevel(buffer, record.getLevel());
+			formatLevel(buffer, logRecord.getLevel());
 			buffer.append(' ');
-			buffer.append(record.getLoggerName());
+			buffer.append(logRecord.getLoggerName());
 			buffer.append(": ");
-			buffer.append(formatMessage(record));
+			buffer.append(formatMessage(logRecord));
 			buffer.append(System.lineSeparator());
-			formatThrown(buffer, record.getThrown());
+			formatThrown(buffer, logRecord.getThrown());
 		}
 		return buffer.toString();
 	}

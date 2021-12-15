@@ -29,8 +29,8 @@ import org.eclipse.jdt.annotation.Nullable;
 public class LocalizedFilter implements Filter {
 
 	@Override
-	public boolean isLoggable(@Nullable LogRecord record) {
-		return (record != null && record.getResourceBundleName() != null);
+	public boolean isLoggable(@Nullable LogRecord logRecord) {
+		return (logRecord != null && logRecord.getResourceBundleName() != null);
 	}
 
 }

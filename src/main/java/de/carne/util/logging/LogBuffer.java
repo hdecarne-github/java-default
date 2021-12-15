@@ -134,8 +134,8 @@ public class LogBuffer extends Handler {
 	 * @param republishBuffer whether to republish buffered {@linkplain LogRecord}s to the {@linkplain Handler}.
 	 */
 	public synchronized void addHandler(Handler handler, boolean republishBuffer) {
-		for (LogRecord record : this.buffer) {
-			handler.publish(record);
+		for (LogRecord logRecord : this.buffer) {
+			handler.publish(logRecord);
 		}
 		this.handlers.add(handler);
 	}
@@ -279,8 +279,8 @@ public class LogBuffer extends Handler {
 		try (Writer writer = new FileWriter(file, append)) {
 			LogLineFormatter formatter = new LogLineFormatter();
 
-			for (LogRecord record : this.buffer) {
-				writer.write(formatter.format(record));
+			for (LogRecord logRecord : this.buffer) {
+				writer.write(formatter.format(logRecord));
 			}
 		}
 	}
@@ -318,15 +318,15 @@ public class LogBuffer extends Handler {
 	}
 
 	@Override
-	public void publish(@Nullable LogRecord record) {
-		if (record != null && isLoggable(record) && this.locked.compareAndSet(false, true)) {
+	public void publish(@Nullable LogRecord logRecord) {
+		if (logRecord != null && isLoggable(logRecord) && this.locked.compareAndSet(false, true)) {
 			try {
 				synchronized (this) {
 					while (this.buffer.size() >= this.limit) {
 						this.buffer.remove();
 					}
-					this.buffer.add(record);
-					this.handlers.forEach(handler -> handler.publish(record));
+					this.buffer.add(logRecord);
+					this.handlers.forEach(handler -> handler.publish(logRecord));
 				}
 			} finally {
 				this.locked.set(false);
