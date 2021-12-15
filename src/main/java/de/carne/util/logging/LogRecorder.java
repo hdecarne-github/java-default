@@ -49,7 +49,7 @@ public final class LogRecorder {
 	 * below this level are ignored).
 	 */
 	public LogRecorder(Level level) {
-		excludeRecord(record -> record.getLevel().intValue() < level.intValue());
+		excludeRecord(logRecord -> logRecord.getLevel().intValue() < level.intValue());
 	}
 
 	/**

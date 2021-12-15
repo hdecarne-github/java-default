@@ -40,22 +40,22 @@ public class LogLineFormatter extends Formatter {
 	public static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss,SSS");
 
 	@Override
-	public String format(@Nullable LogRecord record) {
+	public String format(@Nullable LogRecord logRecord) {
 		String message = null;
 
-		if (record != null) {
+		if (logRecord != null) {
 			try (StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw)) {
-				pw.print(formatMillis(record));
+				pw.print(formatMillis(logRecord));
 				pw.print(" [");
-				pw.print(record.getThreadID());
+				pw.print(logRecord.getThreadID());
 				pw.print("] ");
-				pw.print(record.getLevel());
+				pw.print(logRecord.getLevel());
 				pw.print(" ");
-				pw.print(record.getLoggerName());
+				pw.print(logRecord.getLoggerName());
 				pw.print(": ");
-				pw.println(formatMessage(record));
+				pw.println(formatMessage(logRecord));
 
-				Throwable thrown = record.getThrown();
+				Throwable thrown = logRecord.getThrown();
 
 				if (thrown != null) {
 					thrown.printStackTrace(pw);
@@ -72,12 +72,12 @@ public class LogLineFormatter extends Formatter {
 	/**
 	 * Formats a {@linkplain LogRecord}'s time attribute.
 	 * 
-	 * @param record the {@linkplain LogRecord} to format.
+	 * @param logRecord the {@linkplain LogRecord} to format.
 	 * @return the formatted {@linkplain LogRecord} time.
 	 * @see LogRecord#getMillis()
 	 */
-	public String formatMillis(LogRecord record) {
-		LocalDateTime recordTimestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(record.getMillis()),
+	public String formatMillis(LogRecord logRecord) {
+		LocalDateTime recordTimestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(logRecord.getMillis()),
 				ZoneId.systemDefault());
 
 		return DATE_TIME_FORMAT.format(recordTimestamp);
